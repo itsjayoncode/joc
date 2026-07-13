@@ -1,0 +1,130 @@
+:root {
+  --vp-c-brand-1: #2563eb;
+  --vp-c-brand-2: #1d4ed8;
+  --vp-c-brand-3: #1e40af;
+  --vp-c-brand-soft: rgba(37, 99, 235, 0.14);
+  --vp-c-bg: #fcfbf8;
+  --vp-c-bg-soft: #f4f1ea;
+  --vp-c-bg-mute: #ece7de;
+  --vp-c-text-1: #151926;
+  --vp-c-text-2: #4c5568;
+  --vp-font-family-base: "IBM Plex Sans", "Avenir Next", "Segoe UI", sans-serif;
+  --vp-font-family-mono: "IBM Plex Mono", "SFMono-Regular", "SFMono-Regular", monospace;
+}
+
+.dark {
+  --vp-c-bg: #0f172a;
+  --vp-c-bg-soft: #121c31;
+  --vp-c-bg-mute: #17233c;
+  --vp-c-text-1: #edf2ff;
+  --vp-c-text-2: #b5c0d5;
+  --vp-c-brand-1: #60a5fa;
+  --vp-c-brand-2: #3b82f6;
+  --vp-c-brand-3: #2563eb;
+  --vp-c-brand-soft: rgba(96, 165, 250, 0.18);
+}
+
+.VPHome {
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.1), transparent 24%);
+}
+
+.VPHomeHero .heading {
+  letter-spacing: -0.04em;
+  max-width: 11ch;
+}
+
+.VPHomeHero .name {
+  color: var(--vp-c-text-1);
+}
+
+.VPHomeHero .text {
+  color: var(--vp-c-brand-2);
+}
+
+.VPHomeHero .tagline {
+  max-width: 42rem;
+  color: var(--vp-c-text-2);
+}
+
+.VPButton.brand {
+  border-radius: 999px;
+  padding-inline: 1.2rem;
+}
+
+.VPButton.alt {
+  border-radius: 999px;
+}
+
+.joc-home-section {
+  margin: 0 auto;
+  max-width: 1160px;
+  padding: 1.5rem 1.5rem 3rem;
+}
+
+.joc-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.joc-card {
+  border: 1px solid rgba(76, 85, 104, 0.16);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.64);
+  backdrop-filter: blur(10px);
+  padding: 1.2rem;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.06);
+}
+
+.dark .joc-card {
+  background: rgba(18, 28, 49, 0.75);
+  border-color: rgba(181, 192, 213, 0.16);
+  box-shadow: none;
+}
+
+.joc-card h3,
+.joc-section-title {
+  letter-spacing: -0.03em;
+}
+
+.joc-muted {
+  color: var(--vp-c-text-2);
+}
+
+.joc-kicker {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  border-radius: 999px;
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-2);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.35rem 0.7rem;
+  text-transform: uppercase;
+}
+
+.joc-two-column {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.vp-doc h1,
+.vp-doc h2,
+.vp-doc h3 {
+  letter-spacing: -0.03em;
+}
+
+.vp-doc table {
+  display: table;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .joc-home-section {
+    padding-inline: 1rem;
+  }
+}

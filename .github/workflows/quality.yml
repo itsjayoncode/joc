@@ -1,0 +1,90 @@
+name: Quality
+
+on:
+  workflow_call:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 4 * * 1"
+
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate Monorepo
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.13.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check workspace health
+        run: pnpm workspace:health
+
+      - name: Typecheck repository
+        run: pnpm typecheck
+
+      - name: Lint repository
+        run: pnpm lint
+
+      - name: Verify formatting
+        run: pnpm format:check
+
+      - name: Run tests with coverage
+        run: pnpm test:coverage
+
+      - name: Build typed workspace packages
+        run: pnpm build
+
+      - name: Verify package integrity
+        run: pnpm package:integrity
+
+      - name: Verify release readiness
+        run: pnpm release:readiness
+
+      - name: Verify package blueprint
+        run: pnpm package:blueprint
+
+      - name: Upload coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: |
+            coverage
+            !coverage/README.md
+          if-no-files-found: warn
+
+      - name: Publish job summary
+        if: always()
+        run: |
+          {
+            echo "## Quality Gates"
+            echo ""
+            echo "- Workspace health"
+            echo "- TypeScript build validation"
+            echo "- ESLint"
+            echo "- Prettier"
+            echo "- Vitest with coverage"
+            echo "- Typed package build"
+            echo "- Package integrity"
+            echo "- Release readiness"
+            echo "- Package blueprint"
+          } >> "$GITHUB_STEP_SUMMARY"

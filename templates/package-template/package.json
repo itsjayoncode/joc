@@ -1,0 +1,37 @@
+{
+  "name": "@joc/package-name",
+  "version": "0.0.0",
+  "description": "Describe the package responsibility clearly and narrowly.",
+  "license": "MIT",
+  "author": "JayOnCode",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JayOnCode/joc.git",
+    "directory": "packages/package-name"
+  },
+  "homepage": "https://github.com/JayOnCode/joc/tree/main/packages/package-name",
+  "bugs": {
+    "url": "https://github.com/JayOnCode/joc/issues"
+  },
+  "keywords": [
+    "joc",
+    "package-name"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

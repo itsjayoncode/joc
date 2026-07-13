@@ -1,0 +1,9 @@
+node_modules
+.turbo
+coverage
+dist
+build
+lib
+*.tsbuildinfo
+pnpm-lock.yaml
+_constuction

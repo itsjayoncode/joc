@@ -1,0 +1,40 @@
+{
+  "name": "@jayoncode/browser-lifecycle",
+  "version": "0.0.0",
+  "private": false,
+  "description": "Browser lifecycle manager infrastructure for the JOC ecosystem.",
+  "license": "MIT",
+  "author": "JayOnCode",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JayOnCode/joc.git",
+    "directory": "packages/browser-lifecycle"
+  },
+  "homepage": "https://github.com/JayOnCode/joc/tree/main/packages/browser-lifecycle",
+  "bugs": {
+    "url": "https://github.com/JayOnCode/joc/issues"
+  },
+  "keywords": [
+    "browser",
+    "joc",
+    "jayoncode",
+    "lifecycle"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

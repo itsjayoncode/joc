@@ -1,0 +1,12 @@
+{
+  "name": "@joc/theme",
+  "version": "0.0.0",
+  "private": false,
+  "description": "Future theme package for the JOC ecosystem.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JayOnCode/joc.git",
+    "directory": "packages/theme"
+  }
+}

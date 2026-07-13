@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false,
+    "incremental": false,
+    "declaration": false,
+    "declarationMap": false,
+    "noEmit": true
+  },
+  "include": [
+    "packages/**/*.test.ts",
+    "packages/**/*.spec.ts",
+    "packages/**/*.test.tsx",
+    "packages/**/*.spec.tsx",
+    "tests/**/*.ts",
+    "tests/**/*.tsx",
+    "test-utils/**/*.ts",
+    "test-utils/**/*.tsx"
+  ],
+  "exclude": ["coverage", "dist", "build", "lib", "node_modules"]
+}

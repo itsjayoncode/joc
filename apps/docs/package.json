@@ -1,0 +1,21 @@
+{
+  "name": "@joc/docs",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "VitePress documentation site for the JOC ecosystem.",
+  "scripts": {
+    "docs:dev": "vitepress dev docs --host 127.0.0.1 --port 4175",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs --host 127.0.0.1 --port 4176"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JayOnCode/joc.git",
+    "directory": "apps/docs"
+  },
+  "devDependencies": {
+    "vitepress": "^1.6.4"
+  }
+}
