@@ -16,7 +16,12 @@ export type BrowserLifecycleActivityEventName =
  * Supported error codes for the public infrastructure surface.
  */
 export type BrowserLifecycleErrorCode =
-  "configuration_error" | "initialization_error" | "plugin_error" | "unsupported_feature_error";
+  | "configuration_error"
+  | "initialization_error"
+  | "lifecycle_error"
+  | "module_registry_error"
+  | "plugin_error"
+  | "unsupported_feature_error";
 
 /**
  * Common browser capability names exposed by the feature detection helpers.

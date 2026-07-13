@@ -1,4 +1,7 @@
 export {
+  createBrowserLifecycle,
+} from "./browser-lifecycle.js";
+export {
   createBrowserLifecycleConfig,
   getDefaultBrowserLifecycleConfig,
   getPluginIds,
@@ -9,6 +12,8 @@ export {
   BrowserLifecycleError,
   ConfigurationError,
   InitializationError,
+  LifecycleError,
+  ModuleRegistryError,
   PluginError,
   UnsupportedFeatureError,
 } from "./errors/index.js";
@@ -20,6 +25,7 @@ export {
   supportsRequestIdleCallback,
   supportsVisibility,
 } from "./browser/features/index.js";
+export { TypedEventEmitter } from "./events/index.js";
 export {
   assert,
   deepFreeze,
@@ -39,3 +45,35 @@ export type {
   BrowserLifecyclePlugin,
   ResolvedBrowserLifecycleConfig,
 } from "./types/index.js";
+export type {
+  BrowserLifecycle,
+  BrowserLifecycleActivityState,
+  BrowserLifecycleAttentionState,
+  BrowserLifecycleConnectivityState,
+  BrowserLifecycleEvent,
+  BrowserLifecycleEventListener,
+  BrowserLifecycleEventMap,
+  BrowserLifecycleEventName,
+  BrowserLifecycleEventSource,
+  BrowserLifecyclePageState,
+  BrowserLifecyclePhase,
+  BrowserLifecycleSnapshot,
+  BrowserLifecycleSubscriber,
+  BrowserLifecycleTabState,
+  BrowserLifecycleTimestamps,
+} from "./core/session/index.js";
+export type {
+  EmitEventOptions,
+  EventDefinition,
+  EventDispatchContext,
+  EventDispatchMetadata,
+  EventInternalMetadata,
+  EventListener,
+  EventListenerErrorHandler,
+  EventMap,
+  EventName,
+  EventPayload,
+  EventRegistryStats,
+  EventSubscription,
+  TypedEventEmitterOptions,
+} from "./events/index.js";

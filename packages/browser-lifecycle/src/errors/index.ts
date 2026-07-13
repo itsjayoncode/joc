@@ -58,6 +58,26 @@ export class InitializationError extends BrowserLifecycleError {
 }
 
 /**
+ * Error thrown when a lifecycle transition is invalid.
+ */
+export class LifecycleError extends BrowserLifecycleError {
+  public constructor(message: string, options: BrowserLifecycleErrorOptions = {}) {
+    super(message, "lifecycle_error", options);
+    this.name = "LifecycleError";
+  }
+}
+
+/**
+ * Error thrown when the module registry is used incorrectly.
+ */
+export class ModuleRegistryError extends BrowserLifecycleError {
+  public constructor(message: string, options: BrowserLifecycleErrorOptions = {}) {
+    super(message, "module_registry_error", options);
+    this.name = "ModuleRegistryError";
+  }
+}
+
+/**
  * Placeholder plugin error used before the plugin system is implemented.
  */
 export class PluginError extends BrowserLifecycleError {
