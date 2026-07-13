@@ -1,0 +1,21 @@
+name: Pull Request Validation
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+
+concurrency:
+  group: pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Pull Request Quality Gates
+    uses: ./.github/workflows/quality.yml
+    permissions:
+      contents: read
+    secrets: inherit

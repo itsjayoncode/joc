@@ -1,0 +1,95 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+    inputs:
+      create_draft_release:
+        description: "Create or update a draft GitHub release for an existing tag"
+        required: false
+        default: false
+        type: boolean
+      tag_name:
+        description: "Existing git tag to use for a draft release"
+        required: false
+        type: string
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  quality:
+    name: Release Quality Gates
+    uses: ./.github/workflows/quality.yml
+    permissions:
+      contents: read
+    secrets: inherit
+
+  version-pr:
+    name: Prepare Version Pull Request
+    needs: quality
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.13.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Create or update release PR
+        uses: changesets/action@v1
+        with:
+          version: pnpm release:version
+          commit: "chore(release): version packages"
+          title: "chore(release): version packages"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  draft-release:
+    name: Draft GitHub Release
+    needs: quality
+    if: github.event_name == 'workflow_dispatch' && inputs.create_draft_release && inputs.tag_name != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Ensure the requested tag exists
+        run: git rev-parse "refs/tags/${{ inputs.tag_name }}"
+
+      - name: Create or update draft release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if gh release view "${{ inputs.tag_name }}" >/dev/null 2>&1; then
+            gh release edit "${{ inputs.tag_name }}" --draft --notes-file CHANGELOG.md
+          else
+            gh release create "${{ inputs.tag_name }}" --draft --generate-notes
+          fi

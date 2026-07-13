@@ -1,0 +1,12 @@
+{
+  "name": "@joc/queue",
+  "version": "0.0.0",
+  "private": false,
+  "description": "Future queue package for the JOC ecosystem.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JayOnCode/joc.git",
+    "directory": "packages/queue"
+  }
+}

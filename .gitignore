@@ -1,0 +1,9 @@
+node_modules
+.turbo
+dist
+build
+lib
+coverage/*
+!coverage/README.md
+*.tsbuildinfo
+.DS_Store
