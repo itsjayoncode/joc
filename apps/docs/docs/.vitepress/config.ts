@@ -339,9 +339,9 @@ export default defineConfig({
         },
       ],
     },
-    socialLinks: [{ icon: "github", link: "https://github.com/JayOnCode/joc" }],
+    socialLinks: [{ icon: "github", link: "https://github.com/itsjayoncode/joc" }],
     editLink: {
-      pattern: "https://github.com/JayOnCode/joc/edit/master/apps/docs/docs/:path",
+      pattern: "https://github.com/itsjayoncode/joc/edit/master/apps/docs/docs/:path",
       text: "Edit this page on GitHub",
     },
     footer: {

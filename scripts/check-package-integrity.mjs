@@ -40,7 +40,7 @@ for (const packageDirectory of packageDirectories) {
   }
 
   const allowedVersions =
-    packageDirectory === "browser-lifecycle" ? new Set(["0.1.0"]) : new Set(["0.0.0"]);
+    packageDirectory === "browser-lifecycle" ? new Set(["0.1.0", "0.1.1"]) : new Set(["0.0.0"]);
 
   if (!allowedVersions.has(manifest.version)) {
     failures.push(

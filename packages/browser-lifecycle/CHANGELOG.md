@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.1] — 2026-07-15
+
+### Changed
+
+- Improved npm package metadata, description, keywords, and README for clearer install and quick-start guidance.
+- Point repository, bugs, and homepage links at `itsjayoncode/joc` and the published docs site.
+
 ## [0.1.0] — 2026-07-15
 
 First public pre-release of the Browser Lifecycle package.
