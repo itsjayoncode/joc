@@ -1,9 +1,10 @@
-import { access, readFile } from "node:fs/promises";
+import { access, readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
+const PUBLISHABLE_PACKAGES = new Set(["@jayoncode/browser-lifecycle"]);
 
 const requiredFiles = [
   ".changeset/config.json",
@@ -45,6 +46,61 @@ try {
     !changesetConfig.ignore.includes("@jayoncode/shared")
   ) {
     failures.push("Changesets ignore list should exclude the internal shared package.");
+  }
+
+  const ignoredPackages = new Set(changesetConfig.ignore ?? []);
+
+  if (ignoredPackages.has("@jayoncode/browser-lifecycle")) {
+    failures.push("Changesets ignore list must not exclude @jayoncode/browser-lifecycle.");
+  }
+
+  const workspaceManifests = [];
+
+  for (const workspaceDir of ["packages", "apps"]) {
+    const entries = await readdir(path.join(rootDir, workspaceDir), { withFileTypes: true });
+
+    for (const entry of entries) {
+      if (!entry.isDirectory()) {
+        continue;
+      }
+
+      const manifestPath = path.join(rootDir, workspaceDir, entry.name, "package.json");
+
+      try {
+        await access(manifestPath);
+      } catch {
+        continue;
+      }
+
+      try {
+        const manifest = JSON.parse(await readFile(manifestPath, "utf8"));
+        workspaceManifests.push(manifest);
+      } catch {
+        failures.push(`Unreadable workspace package manifest: ${workspaceDir}/${entry.name}/package.json`);
+      }
+    }
+  }
+
+  for (const manifest of workspaceManifests) {
+    if (!manifest.name) {
+      continue;
+    }
+
+    const isPublishable = PUBLISHABLE_PACKAGES.has(manifest.name);
+
+    if (isPublishable) {
+      if (ignoredPackages.has(manifest.name)) {
+        failures.push(`Publishable package ${manifest.name} must not be in the changesets ignore list.`);
+      }
+
+      continue;
+    }
+
+    if (!ignoredPackages.has(manifest.name)) {
+      failures.push(
+        `Non-publishable package ${manifest.name} must be listed in the changesets ignore list.`,
+      );
+    }
   }
 } catch {
   failures.push("Changesets configuration is unreadable.");
