@@ -17,3 +17,4 @@ Demonstrates page lifecycle normalization via `src/lib/playground-lifecycle.ts`.
 ## Interactive Playground
 
 Explore this topic live in the [Lifecycle Playground](http://127.0.0.1:4273/lifecycle).
+

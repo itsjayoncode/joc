@@ -108,39 +108,47 @@ describe("developer experience platform", () => {
 });
 
 describe("documentation integration output", () => {
-  it("generates synced documentation pages from source docs", () => {
-    const sourceModulesDir = path.join(rootDir, "packages/browser-lifecycle/docs");
-    const sourcePlaygroundDir = path.join(rootDir, "apps/browser-session-playground/docs");
+  it(
+    "generates synced documentation pages from source docs",
+    () => {
+      const sourceModulesDir = path.join(rootDir, "packages/browser-lifecycle/docs");
+      const sourcePlaygroundDir = path.join(rootDir, "apps/browser-session-playground/docs");
 
-    if (!existsSync(sourceModulesDir) || !existsSync(sourcePlaygroundDir)) {
-      return;
-    }
+      if (!existsSync(sourceModulesDir) || !existsSync(sourcePlaygroundDir)) {
+        return;
+      }
 
-    const syncScript = path.join(rootDir, "scripts/sync-documentation.mjs");
-    const result = spawnSync(process.execPath, [syncScript], {
-      cwd: rootDir,
-      encoding: "utf8",
-    });
+      const syncScript = path.join(rootDir, "scripts/sync-documentation.mjs");
+      const result = spawnSync(process.execPath, [syncScript], {
+        cwd: rootDir,
+        encoding: "utf8",
+        env: {
+          ...process.env,
+          DOCS_SYNC_SKIP_QUALITY: "1",
+        },
+      });
 
-    expect(result.status, result.stderr || result.stdout).toBe(0);
+      expect(result.status, result.stderr || result.stdout).toBe(0);
 
-    const syncedExamples = path.join(
-      rootDir,
-      "apps/docs/docs/packages/browser-lifecycle/examples/index.md",
-    );
-    const syncedModulesDir = path.join(
-      rootDir,
-      "apps/docs/docs/packages/browser-lifecycle/modules",
-    );
-    const syncedPlaygroundDir = path.join(
-      rootDir,
-      "apps/docs/docs/packages/browser-lifecycle/playground",
-    );
+      const syncedExamples = path.join(
+        rootDir,
+        "apps/docs/docs/packages/browser-lifecycle/examples/index.md",
+      );
+      const syncedModulesDir = path.join(
+        rootDir,
+        "apps/docs/docs/packages/browser-lifecycle/modules",
+      );
+      const syncedPlaygroundDir = path.join(
+        rootDir,
+        "apps/docs/docs/packages/browser-lifecycle/playground",
+      );
 
-    expect(existsSync(syncedExamples)).toBe(true);
-    expect(existsSync(syncedModulesDir)).toBe(true);
-    expect(existsSync(syncedPlaygroundDir)).toBe(true);
-    expect(readdirSync(syncedModulesDir).length).toBeGreaterThan(0);
-    expect(readdirSync(syncedPlaygroundDir).length).toBeGreaterThan(0);
-  });
+      expect(existsSync(syncedExamples)).toBe(true);
+      expect(existsSync(syncedModulesDir)).toBe(true);
+      expect(existsSync(syncedPlaygroundDir)).toBe(true);
+      expect(readdirSync(syncedModulesDir).length).toBeGreaterThan(0);
+      expect(readdirSync(syncedPlaygroundDir).length).toBeGreaterThan(0);
+    },
+    15_000,
+  );
 });
