@@ -1,8 +1,30 @@
-# GitHub Automation
+# JOC — JayOnCode TypeScript Libraries
 
-Repository workflows, templates, and policies for the JOC monorepo.
+[![npm](https://img.shields.io/npm/v/@jayoncode/browser-lifecycle.svg)](https://www.npmjs.com/package/@jayoncode/browser-lifecycle)
+[![docs](https://img.shields.io/badge/docs-itsjayoncode.github.io-2563eb)](https://itsjayoncode.github.io/joc/)
+[![CI](https://github.com/itsjayoncode/joc/actions/workflows/ci.yml/badge.svg)](https://github.com/itsjayoncode/joc/actions/workflows/ci.yml)
 
-## Workflows
+**JOC** (JayOnCode) is an open source monorepo of focused, independently installable **TypeScript browser libraries**. Each `@jayoncode/*` package solves one problem well, ships on its own version line, and documents under its own section on the [official docs site](https://itsjayoncode.github.io/joc/).
+
+The first published package is [`@jayoncode/browser-lifecycle`](https://www.npmjs.com/package/@jayoncode/browser-lifecycle) — a framework-agnostic, SSR-safe session lifecycle manager for page visibility, focus, connectivity, idle detection, cross-tab coordination, and plugin diagnostics.
+
+## Links
+
+| Resource               | URL                                                              |
+| ---------------------- | ---------------------------------------------------------------- |
+| Documentation          | https://itsjayoncode.github.io/joc/                              |
+| Browser Lifecycle docs | https://itsjayoncode.github.io/joc/packages/browser-lifecycle/   |
+| Interactive playground | https://itsjayoncode.github.io/joc/playground/browser-lifecycle/ |
+| npm scope              | https://www.npmjs.com/~jayoncode                                 |
+| Repository root README | [../README.md](../README.md)                                     |
+
+For development setup, repository layout, and release workflow, see the [root README](../README.md).
+
+## Repository automation
+
+This directory holds GitHub Actions workflows, issue and pull request templates, Dependabot configuration, and related repository policies.
+
+### Workflows
 
 | Workflow                    | Trigger                                       | Purpose                                                                            |
 | --------------------------- | --------------------------------------------- | ---------------------------------------------------------------------------------- |
@@ -15,7 +37,7 @@ Repository workflows, templates, and policies for the JOC monorepo.
 
 On push to `master` or `main`, expect **two** workflow runs: **CI** and **CodeQL**.
 
-## Default-branch CI pipeline
+### Default-branch CI pipeline
 
 When CI runs on `main` or `master`, jobs execute in this order:
 
@@ -26,13 +48,13 @@ When CI runs on `main` or `master`, jobs execute in this order:
 
 Documentation archives under `apps/docs/archives/` are copied into the site during `docs:prepare`, so older package doc versions remain available at versioned URLs (for example `/joc/packages/browser-lifecycle/v0.1.2/`).
 
-## Package publication
+### Package publication
 
 Only public, non-ignored packages are eligible for npm publication. At present that is `@jayoncode/browser-lifecycle`. Placeholder packages are marked `private: true` and listed in `.changeset/config.json` `ignore`.
 
 The **Release** workflow does not publish packages. Use Changesets via the CI version PR flow or `pnpm release:publish` locally with appropriate credentials.
 
-## Also in this directory
+### Also in this directory
 
 - Dependabot configuration (`.github/dependabot.yml`)
 - Issue and pull request templates
