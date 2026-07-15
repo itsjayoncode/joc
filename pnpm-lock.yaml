@@ -103,6 +103,40 @@ importers:
         specifier: ^1.6.4
         version: 1.6.4(@algolia/client-search@5.55.2)(@types/node@22.20.1)(@types/react@18.3.31)(postcss@8.5.19)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)(typescript@5.9.3)
 
+  apps/form-intelligent-playground:
+    dependencies:
+      '@jayoncode/form-intelligent':
+        specifier: workspace:*
+        version: link:../../packages/form-intelligent
+      '@jayoncode/object-diff':
+        specifier: workspace:*
+        version: link:../../packages/object-diff
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.30.1
+        version: 6.30.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.12
+        version: 18.3.31
+      '@types/react-dom':
+        specifier: ^18.3.1
+        version: 18.3.7(@types/react@18.3.31)
+      '@vitejs/plugin-react':
+        specifier: ^4.3.4
+        version: 4.7.0(vite@5.4.21(@types/node@22.20.1))
+      vite:
+        specifier: ^5.4.11
+        version: 5.4.21(@types/node@22.20.1)
+      vite-tsconfig-paths:
+        specifier: ^5.1.4
+        version: 5.1.4(typescript@5.9.3)(vite@5.4.21(@types/node@22.20.1))
+
   apps/object-diff-playground:
     dependencies:
       '@jayoncode/object-diff':
@@ -174,6 +208,8 @@ importers:
   packages/config: {}
 
   packages/doctor: {}
+
+  packages/form-intelligent: {}
 
   packages/forms: {}
 
