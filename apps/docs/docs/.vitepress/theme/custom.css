@@ -184,6 +184,52 @@
   font-weight: 700;
 }
 
+.VPNavBarTitle:has(.joc-nav-doc-version) {
+  position: relative;
+  align-self: center;
+  min-height: 2.5rem;
+  padding-bottom: 0.55rem;
+}
+
+.VPNavBarTitle:has(.joc-nav-doc-version) .title {
+  align-items: center;
+}
+
+.joc-nav-doc-version {
+  position: absolute;
+  left: 2.7rem;
+  bottom: 15px;
+  display: inline-block;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--joc-primary-rgb), 0.28);
+  background: rgba(var(--joc-primary-rgb), 0.08);
+  color: var(--joc-secondary);
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  padding: 0.14rem 0.45rem;
+}
+
+.VPHome .joc-nav-doc-version {
+  border-color: rgba(var(--joc-primary-rgb), 0.32);
+  background: rgba(var(--joc-primary-rgb), 0.1);
+  color: var(--joc-primary);
+}
+
+@media (max-width: 768px) {
+  .VPNavBarTitle:has(.joc-nav-doc-version) {
+    min-height: 2.35rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .joc-nav-doc-version {
+    left: 2.55rem;
+    font-size: 0.62rem;
+  }
+}
+
 .VPNav {
   backdrop-filter: blur(16px);
 }
@@ -1521,4 +1567,43 @@ html.joc-home-cursor-active .VPHome button {
   .joc-home-fx__cursor-ring {
     display: none;
   }
+}
+
+/* ── Package version badge (docs pages) ─────────────── */
+
+.vp-doc .joc-pkg-version {
+  display: inline-block;
+  margin-left: 0.65rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--joc-primary-rgb), 0.28);
+  background: rgba(var(--joc-primary-rgb), 0.08);
+  color: var(--joc-secondary);
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  vertical-align: middle;
+}
+
+.vp-doc .joc-pkg-version-block {
+  margin: 0;
+  color: var(--vp-c-text-2);
+  line-height: 1.65;
+}
+
+.vp-doc .joc-pkg-install-note {
+  margin: 0 0 1.25rem;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--joc-border);
+  background: var(--joc-surface);
+}
+
+.vp-doc .joc-pkg-install-note p {
+  margin: 0 0 0.65rem;
+}
+
+.vp-doc .joc-pkg-install-note pre {
+  margin: 0;
 }

@@ -18,4 +18,4 @@ Construction documents may refer to `createBrowserSession()` and `@jayoncode/bro
 See also:
 
 - `docs/examples.md`
-- `packages/browser-lifecycle/examples/`
+- `examples/` in the monorepo root

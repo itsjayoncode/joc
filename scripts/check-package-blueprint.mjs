@@ -12,7 +12,7 @@ const requiredPaths = [
   "templates/package-template/src/package-name.ts",
   "templates/package-template/tests/README.md",
   "templates/package-template/docs/README.md",
-  "templates/package-template/examples/README.md",
+  "templates/package-template/packages/browser-lifecycle/examples/README.md",
   "engineering/008-package-architecture.md",
   "engineering/009-api-design-guidelines.md",
   "engineering/010-browser-support-policy.md",

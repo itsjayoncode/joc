@@ -3,7 +3,7 @@
  * Syncs source-of-truth documentation into the VitePress site.
  *
  * - packages/browser-lifecycle/docs → apps/docs/docs/packages/browser-lifecycle/modules
- * - apps/browser-session-playground/docs → apps/docs/docs/playground
+ * - apps/browser-session-playground/docs → apps/docs/docs/packages/browser-lifecycle/playground
  */
 
 import {
@@ -38,10 +38,10 @@ const PLAYGROUND_ROUTES = {
 };
 
 const MODULE_PLAYGROUND_LINKS = {
-  "visibility.md": "/playground/visibility-playground",
-  "events.md": "/playground/event-explorer",
-  "session-core.md": "/playground/lifecycle-playground",
-  "core-infrastructure.md": "/playground/configuration-playground",
+  "visibility.md": "/packages/browser-lifecycle/playground/visibility-playground",
+  "events.md": "/packages/browser-lifecycle/playground/event-explorer",
+  "session-core.md": "/packages/browser-lifecycle/playground/lifecycle-playground",
+  "core-infrastructure.md": "/packages/browser-lifecycle/playground/configuration-playground",
 };
 
 const PLAYGROUND_BASE_URL = "http://127.0.0.1:4273";
@@ -82,7 +82,7 @@ function rewritePackageDocLinks(body) {
   return body
     .replace(
       /\]\(\.\.\/examples\/([^)]+)\)/g,
-      "](https://github.com/JayOnCode/joc/tree/main/packages/browser-lifecycle/examples/$1)",
+      "](https://github.com/itsjayoncode/joc/tree/main/packages/browser-lifecycle/examples/$1)",
     )
     .replace(
       /\]\(\.\/engineering\/([^)]+)\)/g,
@@ -121,7 +121,7 @@ function syncPackageModules() {
       const playgroundDoc = MODULE_PLAYGROUND_LINKS[file];
       const rewritten = rewritePackageDocLinks(body);
       const enriched = playgroundDoc
-        ? appendPlaygroundLink(rewritten, playgroundDoc.replace("/playground/", "/"), toTitle(file))
+        ? appendPlaygroundLink(rewritten, playgroundDoc.replace("/packages/browser-lifecycle/playground/", "/"), toTitle(file))
         : rewritten;
 
       return withFrontmatter(file, enriched, {
@@ -129,7 +129,7 @@ function syncPackageModules() {
         description: `Browser Lifecycle module documentation for ${toTitle(file)}.`,
         playgroundRoute: playgroundDoc
           ? playgroundDoc
-              .replace("/playground/", "/")
+              .replace("/packages/browser-lifecycle/playground/", "/")
               .replace(/-playground$/, "")
               .replace(/-explorer$/, "")
           : undefined,
@@ -140,7 +140,7 @@ function syncPackageModules() {
 
 function syncPlaygroundDocs() {
   const sourceDir = path.join(rootDir, "apps/browser-session-playground/docs");
-  const targetDir = path.join(docsRoot, "playground");
+  const targetDir = path.join(docsRoot, "packages/browser-lifecycle/playground");
 
   return syncDirectory({
     sourceDir,
@@ -160,7 +160,7 @@ function syncPlaygroundDocs() {
 
 function syncFrameworkExamplesIndex() {
   const examplesDir = path.join(rootDir, "examples");
-  const targetFile = path.join(docsRoot, "examples/index.md");
+  const targetFile = path.join(docsRoot, "packages/browser-lifecycle/examples/index.md");
 
   const frameworks = readdirSync(examplesDir, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
@@ -192,9 +192,9 @@ ${rows}
 
 ## Related Documentation
 
-- [Usage Guide](/guides/browser-lifecycle/usage)
-- [Best Practices](/best-practices/)
-- [Common Patterns](/patterns/)
+- [Usage Guide](/packages/browser-lifecycle/guides/usage)
+- [Best Practices](/packages/browser-lifecycle/best-practices/)
+- [Common Patterns](/packages/browser-lifecycle/patterns/)
 - [Playground](${PLAYGROUND_BASE_URL})
 `;
 

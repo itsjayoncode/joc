@@ -112,7 +112,7 @@ joc/
 
 - `apps/` holds first-party applications such as docs, playground, browser-session-playground, and the future website.
 - `apps/docs/` contains the VitePress documentation platform.
-- `apps/playground/` contains the generic local package exploration workbench.
+- `apps/browser-session-playground/` contains the interactive browser lifecycle playground and its documentation sources.
 - `apps/browser-session-playground/` contains the long-lived Browser Lifecycle engineering shell for manual QA and module integration.
 - `packages/` holds independently installable JOC libraries plus internal shared workspace code.
 - `examples/` will contain practical usage references once packages exist.
