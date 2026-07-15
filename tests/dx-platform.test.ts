@@ -104,8 +104,10 @@ describe("developer experience platform", () => {
     const manifestPath = path.join(rootDir, "apps/docs/doc-versions/browser-lifecycle.json");
     const config = readText("apps/docs/docs/.vitepress/config.ts");
     const rootPackage = readText("package.json");
+    const versioningLib = path.join(rootDir, "scripts/lib/doc-versioning.mjs");
 
     expect(existsSync(manifestPath)).toBe(true);
+    expect(existsSync(versioningLib)).toBe(true);
     expect(config).toContain("browser-lifecycle-versions");
     expect(config).toContain("createBrowserLifecycleSidebarMap");
     expect(rootPackage).toContain('"docs:archive"');
