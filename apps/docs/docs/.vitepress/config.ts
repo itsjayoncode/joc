@@ -1,6 +1,8 @@
 import { defineConfig } from "vitepress";
 
 import { browserLifecycleMeta } from "./browser-lifecycle-meta.js";
+import { createBrowserLifecycleSidebarMap } from "./browser-lifecycle-sidebar.js";
+import { browserLifecycleDocVersions } from "./browser-lifecycle-versions.js";
 import {
   buildOrganizationJsonLd,
   buildSoftwarePackageJsonLd,
@@ -18,7 +20,7 @@ const PLAYGROUND_URL = docsPlaygroundUrl;
 const ogImageUrl = resolvePublicAssetUrl("logo.png");
 const sitemapHostname = docsSiteUrl.endsWith("/") ? docsSiteUrl : `${docsSiteUrl}/`;
 
-const PKG = "/packages/browser-lifecycle";
+const PKG = browserLifecycleDocVersions.basePath;
 const browserLifecycleVersionLabel = browserLifecycleMeta.versionLabel;
 const browserLifecycleMenuLabel = `Browser Lifecycle · ${browserLifecycleVersionLabel}`;
 
@@ -38,153 +40,11 @@ const packageItems = [
   { text: "Object Diff", link: "/packages/object-diff/" },
 ];
 
-const browserLifecycleGuides = [
-  { text: "Quick Start", link: `${PKG}/guides/quick-start` },
-  { text: "Usage", link: `${PKG}/guides/usage` },
-  { text: "Configuration", link: `${PKG}/guides/configuration` },
-  { text: "Browser Support", link: `${PKG}/guides/browser-support` },
-  { text: "SSR", link: `${PKG}/guides/ssr` },
-  { text: "Error Handling", link: `${PKG}/guides/error-handling` },
-  { text: "Deployment", link: `${PKG}/guides/deployment` },
-];
-
-const browserLifecycleModules = [
-  { text: "Core Infrastructure", link: `${PKG}/modules/core-infrastructure` },
-  { text: "Session Core", link: `${PKG}/modules/session-core` },
-  { text: "Events", link: `${PKG}/modules/events` },
-  { text: "Visibility", link: `${PKG}/modules/visibility` },
-];
-
-const playgroundItems = [
-  { text: "Overview", link: `${PKG}/playground/playground` },
-  { text: "Visibility", link: `${PKG}/playground/visibility-playground` },
-  { text: "Focus", link: `${PKG}/playground/focus-playground` },
-  { text: "Connectivity", link: `${PKG}/playground/connectivity-playground` },
-  { text: "Idle", link: `${PKG}/playground/idle-playground` },
-  { text: "Lifecycle", link: `${PKG}/playground/lifecycle-playground` },
-  { text: "Cross Tab", link: `${PKG}/playground/cross-tab-playground` },
-  { text: "Plugins", link: `${PKG}/playground/plugin-playground` },
-  { text: "Events", link: `${PKG}/playground/event-explorer` },
-  { text: "State", link: `${PKG}/playground/state-explorer` },
-  { text: "Configuration", link: `${PKG}/playground/configuration-playground` },
-  { text: "Performance", link: `${PKG}/playground/performance-playground` },
-  { text: "Developer Tools", link: `${PKG}/playground/developer-tools` },
-];
-
-const tutorialItems = [
-  { text: "Beginner", link: `${PKG}/tutorials/beginner` },
-  { text: "Intermediate", link: `${PKG}/tutorials/intermediate` },
-  { text: "Advanced", link: `${PKG}/tutorials/advanced` },
-];
-
-const bestPracticeItems = [
-  { text: "Overview", link: `${PKG}/best-practices/` },
-  { text: "Session Lifecycle", link: `${PKG}/best-practices/session-lifecycle` },
-  { text: "Memory Management", link: `${PKG}/best-practices/memory-management` },
-  { text: "Event Cleanup", link: `${PKG}/best-practices/event-cleanup` },
-  { text: "Performance", link: `${PKG}/best-practices/performance` },
-  { text: "Configuration", link: `${PKG}/best-practices/configuration` },
-  { text: "Cross-Tab", link: `${PKG}/best-practices/cross-tab` },
-  { text: "Idle Detection", link: `${PKG}/best-practices/idle-detection` },
-  { text: "Visibility Handling", link: `${PKG}/best-practices/visibility-handling` },
-  { text: "Framework Integration", link: `${PKG}/best-practices/framework-integration` },
-  { text: "Plugin Development", link: `${PKG}/best-practices/plugin-development` },
-  { text: "SSR Safety", link: `${PKG}/best-practices/ssr-safety` },
-  { text: "Security", link: `${PKG}/best-practices/security` },
-  { text: "Accessibility", link: `${PKG}/best-practices/accessibility` },
-  { text: "Testing", link: `${PKG}/best-practices/testing` },
-  { text: "Debugging", link: `${PKG}/best-practices/debugging` },
-];
-
-const patternItems = [
-  { text: "Overview", link: `${PKG}/patterns/` },
-  { text: "Auto Save", link: `${PKG}/patterns/auto-save` },
-  { text: "Analytics", link: `${PKG}/patterns/analytics` },
-  { text: "Presence Detection", link: `${PKG}/patterns/presence-detection` },
-  { text: "Session Timeout", link: `${PKG}/patterns/session-timeout` },
-  { text: "Background Sync", link: `${PKG}/patterns/background-sync` },
-  { text: "Offline First", link: `${PKG}/patterns/offline-first` },
-  { text: "Polling", link: `${PKG}/patterns/polling` },
-  { text: "Page Tracking", link: `${PKG}/patterns/page-tracking` },
-  { text: "Visibility Pause", link: `${PKG}/patterns/visibility-pause` },
-  { text: "Focus Resume", link: `${PKG}/patterns/focus-resume` },
-  { text: "Shared WebSocket", link: `${PKG}/patterns/shared-websocket` },
-  { text: "Leader Election", link: `${PKG}/patterns/leader-election` },
-  { text: "Plugin Architecture", link: `${PKG}/patterns/plugin-architecture` },
-  { text: "State Synchronization", link: `${PKG}/patterns/state-synchronization` },
-];
-
-const faqItems = [
-  { text: "Overview", link: `${PKG}/faq/` },
-  { text: "Getting Started", link: `${PKG}/faq/getting-started` },
-  { text: "Installation", link: `${PKG}/faq/installation` },
-  { text: "Configuration", link: `${PKG}/faq/configuration` },
-  { text: "Visibility", link: `${PKG}/faq/visibility` },
-  { text: "Focus", link: `${PKG}/faq/focus` },
-  { text: "Connectivity", link: `${PKG}/faq/connectivity` },
-  { text: "Idle", link: `${PKG}/faq/idle` },
-  { text: "Lifecycle", link: `${PKG}/faq/lifecycle` },
-  { text: "Cross Tab", link: `${PKG}/faq/cross-tab` },
-  { text: "Plugins", link: `${PKG}/faq/plugins` },
-  { text: "Events", link: `${PKG}/faq/events` },
-  { text: "Performance", link: `${PKG}/faq/performance` },
-  { text: "Debugging", link: `${PKG}/faq/debugging` },
-  { text: "Browser Support", link: `${PKG}/faq/browser-support` },
-  { text: "Frameworks", link: `${PKG}/faq/frameworks` },
-  { text: "Deployment", link: `${PKG}/faq/deployment` },
-  { text: "SSR", link: `${PKG}/faq/ssr` },
-];
-
-const browserLifecycleSidebar = [
-  {
-    text: browserLifecycleMenuLabel,
-    items: [
-      { text: "Overview", link: `${PKG}/` },
-      { text: "Installation", link: `${PKG}/installation` },
-      ...browserLifecycleGuides,
-    ],
-  },
-  {
-    text: "Modules",
-    items: browserLifecycleModules,
-  },
-  {
-    text: "API",
-    items: [{ text: "API Reference", link: `${PKG}/api/` }],
-  },
-  {
-    text: "Examples",
-    items: [{ text: "Framework Examples", link: `${PKG}/examples/` }],
-  },
-  {
-    text: "Tutorials",
-    items: tutorialItems,
-  },
-  {
-    text: "Best Practices",
-    items: bestPracticeItems,
-  },
-  {
-    text: "Patterns",
-    items: patternItems,
-  },
-  {
-    text: "FAQ",
-    items: faqItems,
-  },
-  {
-    text: "Playground",
-    items: playgroundItems,
-  },
-  {
-    text: "Support",
-    items: [
-      { text: "Troubleshooting", link: `${PKG}/troubleshooting/` },
-      { text: "Migration", link: `${PKG}/migration/` },
-      { text: "Changelog", link: "/changelog/" },
-    ],
-  },
-];
+const browserLifecycleSidebar = createBrowserLifecycleSidebarMap(
+  PKG,
+  browserLifecycleVersionLabel,
+  browserLifecycleDocVersions.archives,
+);
 
 export default defineConfig({
   base: docsBase,
@@ -276,7 +136,7 @@ export default defineConfig({
           ],
         },
       ],
-      [`${PKG}/`]: browserLifecycleSidebar,
+      ...browserLifecycleSidebar,
       "/guides/": [
         {
           text: "Contributor Guides",

@@ -254,6 +254,7 @@ function formatGeneratedFiles() {
     path.join(docsRoot, "packages/browser-lifecycle/examples"),
     path.join(docsRoot, ".vitepress/browser-lifecycle-meta.ts"),
     path.join(docsRoot, ".vitepress/docs-meta.ts"),
+    path.join(docsRoot, ".vitepress/browser-lifecycle-versions.ts"),
   ];
 
   const result = spawnSync(process.execPath, [prettierBin, "--write", ...generatedPaths], {
@@ -271,6 +272,7 @@ function lintGeneratedMetaFiles() {
   const generatedMetaFiles = [
     path.join(docsRoot, ".vitepress/browser-lifecycle-meta.ts"),
     path.join(docsRoot, ".vitepress/docs-meta.ts"),
+    path.join(docsRoot, ".vitepress/browser-lifecycle-versions.ts"),
   ];
 
   const result = spawnSync(process.execPath, [eslintBin, ...generatedMetaFiles], {
