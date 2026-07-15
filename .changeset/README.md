@@ -35,7 +35,8 @@ npx pnpm@10.13.1 release:publish
 ## Important Notes
 
 - `@jayoncode/browser-lifecycle` is the only publishable npm package today
-- `@jayoncode/docs`, `@jayoncode/playground`, `@jayoncode/browser-session-playground`, `@jayoncode/shared`, and placeholder packages under `packages/` are excluded from publishable release planning
+- placeholder packages under `packages/` stay `private: true` until they are ready for npm
+- `@jayoncode/docs`, `@jayoncode/playground`, `@jayoncode/browser-session-playground`, `@jayoncode/shared`, and placeholder packages are also excluded from changesets release planning
 - publishing runs through `pnpm release:publish` after the release versioning pull request merges
 - GitHub draft releases should be reviewed before any future publication step
 - detailed `changeset:status` output depends on a git repository with a `main` branch reference

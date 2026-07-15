@@ -1,7 +1,7 @@
 {
   "name": "@jayoncode/logger",
   "version": "0.0.0",
-  "private": false,
+  "private": true,
   "description": "Future logger package for the JOC ecosystem.",
   "license": "MIT",
   "repository": {

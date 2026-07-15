@@ -1,7 +1,7 @@
 {
   "name": "@jayoncode/request",
   "version": "0.0.0",
-  "private": false,
+  "private": true,
   "description": "Future request package for the JOC ecosystem.",
   "license": "MIT",
   "repository": {
