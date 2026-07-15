@@ -8,6 +8,7 @@ const rootDir = path.resolve(__dirname, "..");
 const requiredFiles = [
   ".changeset/config.json",
   ".changeset/README.md",
+  ".github/workflows/ci.yml",
   ".github/workflows/release.yml",
   "engineering/007-release-engineering.md",
 ];
@@ -23,6 +24,7 @@ for (const relativePath of requiredFiles) {
 }
 
 const changesetConfigPath = path.join(rootDir, ".changeset/config.json");
+const ciWorkflowPath = path.join(rootDir, ".github/workflows/ci.yml");
 const releaseWorkflowPath = path.join(rootDir, ".github/workflows/release.yml");
 
 try {
@@ -49,21 +51,27 @@ try {
 }
 
 try {
-  const workflowContent = await readFile(releaseWorkflowPath, "utf8");
+  const ciWorkflowContent = await readFile(ciWorkflowPath, "utf8");
 
-  if (!workflowContent.includes("changesets/action")) {
-    failures.push("Release workflow should use changesets/action for version PR preparation.");
+  if (!ciWorkflowContent.includes("changesets/action")) {
+    failures.push("CI workflow should use changesets/action for version PR preparation.");
   }
 
-  if (!workflowContent.includes("publish:")) {
-    failures.push("Release workflow should publish packages through changesets/action.");
+  if (!ciWorkflowContent.includes("publish:")) {
+    failures.push("CI workflow should publish packages through changesets/action.");
   }
 
-  if (!workflowContent.includes("NPM_TOKEN")) {
-    failures.push("Release workflow should pass NPM_TOKEN for npm publication.");
+  if (!ciWorkflowContent.includes("NPM_TOKEN")) {
+    failures.push("CI workflow should pass NPM_TOKEN for npm publication.");
   }
+} catch {
+  failures.push("CI workflow is unreadable.");
+}
 
-  if (!workflowContent.includes("draft")) {
+try {
+  const releaseWorkflowContent = await readFile(releaseWorkflowPath, "utf8");
+
+  if (!releaseWorkflowContent.includes("draft")) {
     failures.push("Release workflow should prepare draft GitHub releases.");
   }
 } catch {
