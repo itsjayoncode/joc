@@ -4,8 +4,8 @@ Production guidance for Browser Lifecycle adoption.
 
 ## Topics
 
-| Topic                                                          | Summary                                          |
-| -------------------------------------------------------------- | ------------------------------------------------ |
+| Topic                                                                                     | Summary                                          |
+| ----------------------------------------------------------------------------------------- | ------------------------------------------------ |
 | [Session Lifecycle](/packages/browser-lifecycle/best-practices/session-lifecycle)         | One session per tab, explicit start/stop/dispose |
 | [Memory Management](/packages/browser-lifecycle/best-practices/memory-management)         | Unsubscribe and dispose promptly                 |
 | [Event Cleanup](/packages/browser-lifecycle/best-practices/event-cleanup)                 | Track unsubscribe handles                        |

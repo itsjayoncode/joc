@@ -21,8 +21,8 @@ const pkg = browserLifecycleMeta;
   <p v-else-if="mode === 'overview'" class="joc-pkg-version-block">
     Current npm version:
     <strong>{{ pkg.versionLabel }}</strong>
-    (<code>{{ pkg.npmName }}</code>).
-    See
+    (<code>{{ pkg.npmName }}</code
+    >). See
     <a href="/packages/browser-lifecycle/migration/">Migration</a>
     and
     <a href="/changelog/">Changelog</a>

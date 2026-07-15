@@ -42,15 +42,15 @@ lifecycle.on("page:hidden", () => {
 | Topic              | Page                                                                   |
 | ------------------ | ---------------------------------------------------------------------- |
 | Installation       | [Installation](/packages/browser-lifecycle/installation)               |
-| Usage              | [Usage Guide](/packages/browser-lifecycle/guides/usage)                         |
-| Configuration      | [Configuration](/packages/browser-lifecycle/guides/configuration)               |
+| Usage              | [Usage Guide](/packages/browser-lifecycle/guides/usage)                |
+| Configuration      | [Configuration](/packages/browser-lifecycle/guides/configuration)      |
 | Modules            | [Module docs](/packages/browser-lifecycle/modules/core-infrastructure) |
-| API Reference      | [Generated API](/packages/browser-lifecycle/api/)                               |
+| API Reference      | [Generated API](/packages/browser-lifecycle/api/)                      |
 | Playground         | [Interactive docs](http://127.0.0.1:4273)                              |
-| Framework examples | [Examples](/packages/browser-lifecycle/examples/)                                                 |
-| Best practices     | [Best Practices](/packages/browser-lifecycle/best-practices/)                                     |
-| Patterns           | [Common Patterns](/packages/browser-lifecycle/patterns/)                                          |
-| FAQ                | [FAQ](/packages/browser-lifecycle/faq/)                                                           |
+| Framework examples | [Examples](/packages/browser-lifecycle/examples/)                      |
+| Best practices     | [Best Practices](/packages/browser-lifecycle/best-practices/)          |
+| Patterns           | [Common Patterns](/packages/browser-lifecycle/patterns/)               |
+| FAQ                | [FAQ](/packages/browser-lifecycle/faq/)                                |
 
 ## Interactive playground
 

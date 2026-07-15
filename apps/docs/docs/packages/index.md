@@ -9,11 +9,11 @@ JayOnCode (JOC) is a **monorepo of focused TypeScript packages**. Each `@jayonco
 
 ## How the docs are organized
 
-| Level | What you will find |
-| --- | --- |
-| **Monorepo** | [Getting started](/getting-started/introduction), [philosophy](/getting-started/philosophy), [ecosystem](/getting-started/ecosystem), [roadmap](/roadmap/), [changelog](/changelog/) |
-| **Contributor** | [Contribution](/guides/contribution), [monorepo guide](/guides/monorepo), [package standards](/guides/package-standards) |
-| **Package** | Guides, API, examples, FAQ, patterns, and playgrounds scoped to that package |
+| Level           | What you will find                                                                                                                                                                   |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Monorepo**    | [Getting started](/getting-started/introduction), [philosophy](/getting-started/philosophy), [ecosystem](/getting-started/ecosystem), [roadmap](/roadmap/), [changelog](/changelog/) |
+| **Contributor** | [Contribution](/guides/contribution), [monorepo guide](/guides/monorepo), [package standards](/guides/package-standards)                                                             |
+| **Package**     | Guides, API, examples, FAQ, patterns, and playgrounds scoped to that package                                                                                                         |
 
 Start with the live package today, then explore planned libraries as they land.
 
@@ -35,18 +35,18 @@ Start with the live package today, then explore planned libraries as they land.
 
 These packages are tracked in the monorepo and documented as stubs until they publish:
 
-| Package | npm name | Docs |
-| --- | --- | --- |
-| Request | `@jayoncode/request` | [Overview](/packages/request/) |
-| Scroll | `@jayoncode/scroll` | [Overview](/packages/scroll/) |
-| Keyboard | `@jayoncode/keyboard` | [Overview](/packages/keyboard/) |
-| Responsive | `@jayoncode/responsive` | [Overview](/packages/responsive/) |
-| Theme | `@jayoncode/theme` | [Overview](/packages/theme/) |
-| Forms | `@jayoncode/forms` | [Overview](/packages/forms/) |
-| Layers | `@jayoncode/layers` | [Overview](/packages/layers/) |
-| Audit | `@jayoncode/audit` | [Overview](/packages/audit/) |
+| Package     | npm name                 | Docs                               |
+| ----------- | ------------------------ | ---------------------------------- |
+| Request     | `@jayoncode/request`     | [Overview](/packages/request/)     |
+| Scroll      | `@jayoncode/scroll`      | [Overview](/packages/scroll/)      |
+| Keyboard    | `@jayoncode/keyboard`    | [Overview](/packages/keyboard/)    |
+| Responsive  | `@jayoncode/responsive`  | [Overview](/packages/responsive/)  |
+| Theme       | `@jayoncode/theme`       | [Overview](/packages/theme/)       |
+| Forms       | `@jayoncode/forms`       | [Overview](/packages/forms/)       |
+| Layers      | `@jayoncode/layers`      | [Overview](/packages/layers/)      |
+| Audit       | `@jayoncode/audit`       | [Overview](/packages/audit/)       |
 | Permissions | `@jayoncode/permissions` | [Overview](/packages/permissions/) |
-| Workflow | `@jayoncode/workflow` | [Overview](/packages/workflow/) |
+| Workflow    | `@jayoncode/workflow`    | [Overview](/packages/workflow/)    |
 | Object Diff | `@jayoncode/object-diff` | [Overview](/packages/object-diff/) |
 
 ## New to JOC?
