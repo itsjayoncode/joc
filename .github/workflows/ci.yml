@@ -64,7 +64,7 @@ jobs:
           VITE_FORM_INTELLIGENT_PLAYGROUND_BASE: /joc/playground/form-intelligent/
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: apps/docs/docs/.vitepress/dist
 
