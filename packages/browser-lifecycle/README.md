@@ -6,7 +6,7 @@
 
 **Typed, framework-agnostic browser session lifecycle for modern web apps.**
 
-Track visibility, focus, connectivity, idle state, page lifecycle, and cross-tab coordination through one composable session API — with SSR-safe feature detection and a plugin system.
+Track page visibility, window focus, online/offline connectivity, user idle state, page lifecycle, and cross-tab coordination through one composable TypeScript API — with SSR-safe feature detection and a plugin system. Works with React, Vue, Angular, Svelte, Next.js, and vanilla JavaScript.
 
 ## Install
 

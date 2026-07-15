@@ -1,0 +1,61 @@
+const DEFAULT_SITE_URL = "https://itsjayoncode.github.io/joc";
+const DEFAULT_PLAYGROUND_URL = "https://itsjayoncode.github.io/joc/playground/";
+
+export const docsSiteUrl = (process.env.VITE_DOCS_SITE_URL ?? DEFAULT_SITE_URL).replace(/\/$/, "");
+export const docsPlaygroundUrl = process.env.VITE_DOCS_PLAYGROUND_URL ?? DEFAULT_PLAYGROUND_URL;
+
+export const siteName = "JOC by JayOnCode";
+export const siteTagline =
+  "TypeScript browser libraries, documentation, and interactive tooling for session lifecycle, visibility, idle detection, and cross-tab coordination.";
+
+export const defaultKeywords = [
+  "JOC",
+  "JayOnCode",
+  "browser lifecycle",
+  "browser session",
+  "TypeScript",
+  "JavaScript",
+  "page visibility API",
+  "idle detection",
+  "cross-tab",
+  "BroadcastChannel",
+  "npm package",
+  "framework agnostic",
+  "SSR safe",
+  "web app lifecycle",
+].join(", ");
+
+export function resolvePublicAssetUrl(base: string, assetPath: string): string {
+  const normalizedBase = base.endsWith("/") ? base : `${base}/`;
+  const normalizedAsset = assetPath.replace(/^\//, "");
+  return `${docsSiteUrl}${normalizedBase}${normalizedAsset}`;
+}
+
+export function buildOrganizationJsonLd(siteUrl: string): string {
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "JayOnCode",
+    alternateName: "JOC",
+    url: siteUrl,
+    sameAs: ["https://github.com/itsjayoncode", "https://www.npmjs.com/~jayoncode"],
+  });
+}
+
+export function buildSoftwarePackageJsonLd(siteUrl: string): string {
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "@jayoncode/browser-lifecycle",
+    applicationCategory: "DeveloperApplication",
+    operatingSystem: "Web",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+    url: `${siteUrl}/packages/browser-lifecycle/`,
+    downloadUrl: "https://www.npmjs.com/package/@jayoncode/browser-lifecycle",
+    programmingLanguage: "TypeScript",
+  });
+}

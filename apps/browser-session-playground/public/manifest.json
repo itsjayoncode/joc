@@ -1,7 +1,7 @@
 {
-  "name": "Browser Lifecycle Playground",
+  "name": "Browser Lifecycle Playground | JayOnCode",
   "short_name": "BL Playground",
-  "description": "Official Browser Lifecycle playground for development, manual QA, and interactive documentation.",
+  "description": "Interactive playground for @jayoncode/browser-lifecycle — visibility, focus, idle, connectivity, cross-tab, plugins, and diagnostics.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#111827",

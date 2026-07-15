@@ -4,6 +4,17 @@ import { fileURLToPath } from "node:url";
 
 import { defineConfig } from "vitepress";
 
+import {
+  buildOrganizationJsonLd,
+  buildSoftwarePackageJsonLd,
+  defaultKeywords,
+  docsPlaygroundUrl,
+  docsSiteUrl,
+  resolvePublicAssetUrl,
+  siteName,
+  siteTagline,
+} from "./seo.js";
+
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../..");
 const browserLifecycleVersion = (
   JSON.parse(
@@ -13,7 +24,8 @@ const browserLifecycleVersion = (
 const browserLifecycleVersionLabel = `v${browserLifecycleVersion}`;
 
 const docsBase = process.env.VITE_DOCS_BASE ?? "/";
-const PLAYGROUND_URL = process.env.VITE_DOCS_PLAYGROUND_URL ?? "http://127.0.0.1:4273";
+const PLAYGROUND_URL = docsPlaygroundUrl;
+const ogImageUrl = resolvePublicAssetUrl(docsBase, "logo.png");
 
 const packageItems = [
   { text: "Browser Lifecycle", link: "/packages/browser-lifecycle/" },
@@ -129,39 +141,37 @@ const faqItems = [
 
 export default defineConfig({
   base: docsBase,
-  title: "JOC",
-  description:
-    "Documentation and developer portal for the JayOnCode ecosystem and Browser Lifecycle.",
+  title: siteName,
+  titleTemplate: ":title | JOC",
+  description: siteTagline,
   lang: "en-US",
   srcDir: ".",
   cleanUrls: true,
   lastUpdated: true,
+  sitemap: {
+    hostname: docsSiteUrl,
+  },
   head: [
     ["link", { rel: "icon", href: "/favicon.png", type: "image/png" }],
+    ["link", { rel: "canonical", href: docsSiteUrl }],
     ["meta", { name: "theme-color", content: "#111827" }],
-    [
-      "meta",
-      {
-        name: "keywords",
-        content:
-          "JOC, JayOnCode, Browser Lifecycle, browser session, TypeScript, documentation, playground",
-      },
-    ],
-    [
-      "meta",
-      {
-        property: "og:title",
-        content: "JOC Developer Portal",
-      },
-    ],
-    [
-      "meta",
-      {
-        property: "og:description",
-        content:
-          "Learn Browser Lifecycle, browse generated API reference, follow guides, and explore the interactive playground.",
-      },
-    ],
+    ["meta", { name: "author", content: "JayOnCode" }],
+    ["meta", { name: "robots", content: "index, follow" }],
+    ["meta", { name: "keywords", content: defaultKeywords }],
+    ["meta", { name: "application-name", content: "JOC" }],
+    ["meta", { property: "og:type", content: "website" }],
+    ["meta", { property: "og:site_name", content: siteName }],
+    ["meta", { property: "og:title", content: siteName }],
+    ["meta", { property: "og:description", content: siteTagline }],
+    ["meta", { property: "og:url", content: docsSiteUrl }],
+    ["meta", { property: "og:image", content: ogImageUrl }],
+    ["meta", { property: "og:locale", content: "en_US" }],
+    ["meta", { name: "twitter:card", content: "summary_large_image" }],
+    ["meta", { name: "twitter:title", content: siteName }],
+    ["meta", { name: "twitter:description", content: siteTagline }],
+    ["meta", { name: "twitter:image", content: ogImageUrl }],
+    ["script", { type: "application/ld+json" }, buildOrganizationJsonLd(docsSiteUrl)],
+    ["script", { type: "application/ld+json" }, buildSoftwarePackageJsonLd(docsSiteUrl)],
   ],
   themeConfig: {
     logo: {

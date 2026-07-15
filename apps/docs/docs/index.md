@@ -1,124 +1,31 @@
 ---
 layout: home
-
-hero:
-  name: "JOC"
-  text: "Documentation for a growing library ecosystem"
-  tagline: "JayOnCode is building a professional TypeScript ecosystem one deliberate phase at a time, starting with architecture, tooling, automation, and developer experience."
-  image:
-    src: /logo.png
-    alt: JOC logo
-  actions:
-    - theme: brand
-      text: Get Started
-      link: /getting-started/introduction
-    - theme: alt
-      text: Open Playground
-      link: http://127.0.0.1:4273
-
-features:
-  - title: Foundation First
-    details: JOC documents its architecture, contributor model, and package boundaries before public package release.
-  - title: Monorepo by Design
-    details: Packages, docs, examples, templates, and tooling live in one system with clear responsibilities.
-  - title: Contributor Ready
-    details: The repository is meant to be understandable to new contributors in minutes, not days.
+title: JOC | TypeScript Browser Libraries by JayOnCode
+description: Official docs for JOC and @jayoncode/browser-lifecycle — typed session lifecycle, page visibility, idle detection, cross-tab sync, plugins, guides, API reference, and playground.
 ---
 
-<div class="joc-home-section">
-  <span class="joc-kicker">Mission</span>
-  <div class="joc-two-column">
-    <div class="joc-card">
-      <h2 class="joc-section-title">What JOC is building</h2>
-      <p class="joc-muted">
-        JOC is the home of a future ecosystem of focused JavaScript and TypeScript packages that
-        stay modular, installable, and maintainable as the system grows.
-      </p>
-    </div>
-    <div class="joc-card">
-      <h2 class="joc-section-title">What exists today</h2>
-      <p class="joc-muted">
-        The repository includes Browser Lifecycle, the Browser Session Playground, generated API
-        reference, framework examples, and this documentation portal.
-      </p>
-    </div>
-  </div>
-</div>
+hero:
+name: "JOC"
+text: "TypeScript browser libraries for real-world web apps"
+tagline: "Install @jayoncode/browser-lifecycle to manage visibility, focus, connectivity, idle state, and cross-tab session behavior with a typed, framework-agnostic API."
+image:
+src: /logo.png
+alt: JOC by JayOnCode logo
+actions: - theme: brand
+text: Install Browser Lifecycle
+link: /packages/browser-lifecycle/installation - theme: alt
+text: Read Quick Start
+link: /guides/browser-lifecycle/quick-start - theme: alt
+text: Open Playground
+link: /playground/playground
 
-<div class="joc-home-section">
-  <span class="joc-kicker">Why JOC</span>
-  <div class="joc-grid">
-    <div class="joc-card">
-      <h3>Clarity over accumulation</h3>
-      <p class="joc-muted">Each future package should earn its place with a clear responsibility.</p>
-    </div>
-    <div class="joc-card">
-      <h3>Internal reuse without coupling</h3>
-      <p class="joc-muted">Shared workspace code stays internal so public packages remain independent.</p>
-    </div>
-    <div class="joc-card">
-      <h3>Open source from the first commit</h3>
-      <p class="joc-muted">Documentation, quality gates, and collaboration assets are part of the product.</p>
-    </div>
-  </div>
-</div>
+features:
 
-<div class="joc-home-section">
-  <span class="joc-kicker">Package Categories</span>
-  <div class="joc-grid">
-    <div class="joc-card">
-      <h3>Interaction</h3>
-      <p class="joc-muted">Browser session, scroll, keyboard, responsive, layers.</p>
-    </div>
-    <div class="joc-card">
-      <h3>Application Infrastructure</h3>
-      <p class="joc-muted">Request, workflow, queue, cache, config, logger.</p>
-    </div>
-    <div class="joc-card">
-      <h3>Developer and Product Systems</h3>
-      <p class="joc-muted">Forms, theme, audit, permissions, object diff, doctor.</p>
-    </div>
-  </div>
-</div>
+- title: Published on npm
+  details: "@jayoncode/browser-lifecycle is available on npm with TypeScript types, SSR-safe helpers, and framework-agnostic session APIs."
+- title: Documentation-first
+  details: Guides, API reference, patterns, FAQs, and migration notes are generated and synced from the monorepo source of truth.
+- title: Interactive playground
+  details: Explore visibility, focus, idle, connectivity, plugins, events, and diagnostics in the Browser Session Playground.
 
-<div class="joc-home-section">
-  <span class="joc-kicker">Current Focus</span>
-  <div class="joc-two-column">
-    <div class="joc-card">
-      <h3>Developer experience platform</h3>
-      <p class="joc-muted">
-        Phase 1.4 introduces the docs architecture, navigation model, example placeholders, and a
-        local Vite playground for future manual validation.
-      </p>
-    </div>
-    <div class="joc-card">
-      <h3>What comes next</h3>
-      <p class="joc-muted">
-        The next phases move into release engineering and package engineering standards before the
-        first public package implementation.
-      </p>
-    </div>
-  </div>
-</div>
-
-<div class="joc-home-section">
-  <span class="joc-kicker">Start Here</span>
-  <div class="joc-grid">
-    <div class="joc-card">
-      <h3><a href="/getting-started/introduction">New to JOC?</a></h3>
-      <p class="joc-muted">Read the introduction and installation guides first.</p>
-    </div>
-    <div class="joc-card">
-      <h3><a href="/guides/architecture">Want the engineering model?</a></h3>
-      <p class="joc-muted">Jump into architecture, monorepo, and contribution guides.</p>
-    </div>
-    <div class="joc-card">
-      <h3><a href="/packages/browser-lifecycle/">Browser Lifecycle</a></h3>
-      <p class="joc-muted">Read the package overview, guides, and generated API reference.</p>
-    </div>
-    <div class="joc-card">
-      <h3><a href="http://127.0.0.1:4273">Need a working surface?</a></h3>
-      <p class="joc-muted">Use the Browser Session Playground to inspect modules, events, and diagnostics.</p>
-    </div>
-  </div>
-</div>
+---

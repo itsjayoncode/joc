@@ -41,6 +41,7 @@ jobs:
         run: pnpm docs:build
         env:
           VITE_DOCS_BASE: /joc/
+          VITE_DOCS_SITE_URL: https://itsjayoncode.github.io/joc
           VITE_DOCS_PLAYGROUND_URL: https://itsjayoncode.github.io/joc/playground/
 
       - name: Upload Pages artifact

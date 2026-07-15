@@ -69,15 +69,20 @@ describe("developer experience platform", () => {
 
   it("points the docs site playground link at the browser session playground", () => {
     const config = readText("apps/docs/docs/.vitepress/config.ts");
-    expect(config).toContain("VITE_DOCS_PLAYGROUND_URL");
-    expect(config).toContain("http://127.0.0.1:4273");
+    const seo = readText("apps/docs/docs/.vitepress/seo.ts");
+    expect(config).toContain("docsPlaygroundUrl");
+    expect(seo).toContain("VITE_DOCS_PLAYGROUND_URL");
+    expect(readText("apps/docs/package.json")).toContain("http://127.0.0.1:4273");
     expect(config).not.toContain("http://127.0.0.1:4173");
   });
 
   it("configures GitHub Pages base path support for the docs site", () => {
     const config = readText("apps/docs/docs/.vitepress/config.ts");
     expect(config).toContain("VITE_DOCS_BASE");
+    expect(config).toContain("sitemap");
+    expect(config).toContain("application/ld+json");
     expect(existsSync(path.join(rootDir, ".github/workflows/deploy-docs.yml"))).toBe(true);
+    expect(existsSync(path.join(rootDir, "apps/docs/docs/public/robots.txt"))).toBe(true);
   });
 
   it("documents browser lifecycle instead of a placeholder package page", () => {

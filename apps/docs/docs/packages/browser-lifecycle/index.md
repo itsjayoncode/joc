@@ -1,3 +1,8 @@
+---
+title: "@jayoncode/browser-lifecycle | TypeScript Browser Session API"
+description: Install and use @jayoncode/browser-lifecycle for typed page visibility, focus, connectivity, idle detection, cross-tab sync, plugins, and SSR-safe browser session lifecycle management.
+---
+
 # Browser Lifecycle
 
 `@jayoncode/browser-lifecycle` is the official browser lifecycle manager for the JOC ecosystem.
