@@ -20,7 +20,7 @@
     "directory": "apps/docs"
   },
   "devDependencies": {
-    "typedoc": "0.28.7",
+    "typedoc": "0.28.20",
     "typedoc-plugin-markdown": "4.7.0",
     "vitepress": "^1.6.4"
   }
