@@ -124,4 +124,3 @@ The root package currently exports:
 ## Interactive Playground
 
 Explore this topic live in the [Core Infrastructure](http://127.0.0.1:4273/configuration-playground).
-

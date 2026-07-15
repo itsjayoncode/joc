@@ -42,7 +42,10 @@ function stageArchives() {
   cleanStagedArchives();
 
   for (const archive of archives) {
-    const sourceDir = path.join(BROWSER_LIFECYCLE_ARCHIVES_ROOT, archiveDirectoryName(archive.version));
+    const sourceDir = path.join(
+      BROWSER_LIFECYCLE_ARCHIVES_ROOT,
+      archiveDirectoryName(archive.version),
+    );
     const targetDir = path.join(BROWSER_LIFECYCLE_DOCS_ROOT, archiveDirectoryName(archive.version));
 
     if (!existsSync(sourceDir)) {

@@ -122,6 +122,18 @@ function upsertManifestArchive(version, { dryRun }) {
   return true;
 }
 
+function formatArchivedDocs(archiveDir) {
+  const prettierBin = path.join(rootDir, "node_modules/prettier/bin/prettier.cjs");
+  const result = spawnSync(process.execPath, [prettierBin, "--write", archiveDir], {
+    cwd: rootDir,
+    stdio: "inherit",
+  });
+
+  if (result.status !== 0) {
+    throw new Error("Prettier failed while formatting archived documentation.");
+  }
+}
+
 function main() {
   const options = parseArgs(process.argv.slice(2));
   const currentVersion = readBrowserLifecyclePackageVersion();
@@ -161,6 +173,7 @@ function main() {
   const manifestUpdated = upsertManifestArchive(currentVersion, options);
 
   if (!options.dryRun) {
+    formatArchivedDocs(archiveDir);
     syncBrowserLifecycleVersionsMeta();
   }
 

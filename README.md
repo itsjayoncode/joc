@@ -25,23 +25,23 @@ lifecycle.on("visibility:change", (event) => {
 
 ## Links
 
-| Resource | URL |
-| --- | --- |
-| Documentation | https://itsjayoncode.github.io/joc/ |
+| Resource               | URL                                                            |
+| ---------------------- | -------------------------------------------------------------- |
+| Documentation          | https://itsjayoncode.github.io/joc/                            |
 | Browser Lifecycle docs | https://itsjayoncode.github.io/joc/packages/browser-lifecycle/ |
-| Interactive playground | https://itsjayoncode.github.io/joc/playground/ |
-| npm scope | https://www.npmjs.com/~jayoncode |
-| Repository | https://github.com/itsjayoncode/joc |
+| Interactive playground | https://itsjayoncode.github.io/joc/playground/                 |
+| npm scope              | https://www.npmjs.com/~jayoncode                               |
+| Repository             | https://github.com/itsjayoncode/joc                            |
 
 ## What ships today
 
-| Area | Status |
-| --- | --- |
-| `@jayoncode/browser-lifecycle` | Published on npm (v0.1.2) |
-| Documentation site | VitePress on GitHub Pages — guides, API reference, patterns, FAQs |
-| Browser Session Playground | Interactive module explorers and deployment guides |
-| Monorepo tooling | pnpm workspaces, TypeScript project references, Vitest, ESLint, Prettier |
-| CI & release engineering | Quality gates, Changesets, independent package versioning |
+| Area                           | Status                                                                   |
+| ------------------------------ | ------------------------------------------------------------------------ |
+| `@jayoncode/browser-lifecycle` | Published on npm (v0.1.2)                                                |
+| Documentation site             | VitePress on GitHub Pages — guides, API reference, patterns, FAQs        |
+| Browser Session Playground     | Interactive module explorers and deployment guides                       |
+| Monorepo tooling               | pnpm workspaces, TypeScript project references, Vitest, ESLint, Prettier |
+| CI & release engineering       | Quality gates, Changesets, independent package versioning                |
 
 Additional packages (`request`, `scroll`, `theme`, and others) are scaffolded in the monorepo and documented as planned work. Only `@jayoncode/browser-lifecycle` is published to npm today.
 
@@ -49,10 +49,10 @@ Additional packages (`request`, `scroll`, `theme`, and others) are scaffolded in
 
 Package docs support **latest** and **archived** URLs so users can reference older releases after breaking changes.
 
-| Route | Meaning |
-| --- | --- |
-| `/packages/browser-lifecycle/` | Latest documentation (current npm version) |
-| `/packages/browser-lifecycle/v0.1.2/` | Frozen snapshot for that release |
+| Route                                 | Meaning                                    |
+| ------------------------------------- | ------------------------------------------ |
+| `/packages/browser-lifecycle/`        | Latest documentation (current npm version) |
+| `/packages/browser-lifecycle/v0.1.2/` | Frozen snapshot for that release           |
 
 Archives are stored under `apps/docs/archives/` and staged into the site at build time. A version switcher appears on Browser Lifecycle pages.
 
@@ -77,13 +77,13 @@ joc/
 └── .github/               # CI workflows and repository automation
 ```
 
-| Path | Role |
-| --- | --- |
-| `apps/docs/` | VitePress documentation platform |
-| `apps/browser-session-playground/` | Long-lived Browser Lifecycle engineering shell |
-| `packages/browser-lifecycle/` | Published session lifecycle library |
-| `templates/package-template/` | Standard structure for future packages |
-| `engineering/` | Monorepo architecture, versioning, and release policy |
+| Path                               | Role                                                  |
+| ---------------------------------- | ----------------------------------------------------- |
+| `apps/docs/`                       | VitePress documentation platform                      |
+| `apps/browser-session-playground/` | Long-lived Browser Lifecycle engineering shell        |
+| `packages/browser-lifecycle/`      | Published session lifecycle library                   |
+| `templates/package-template/`      | Standard structure for future packages                |
+| `engineering/`                     | Monorepo architecture, versioning, and release policy |
 
 ## Development
 
@@ -96,13 +96,13 @@ pnpm docs:dev          # Documentation site (port 4175)
 pnpm browser-session-playground:dev
 ```
 
-| Command | Purpose |
-| --- | --- |
-| `pnpm validate` | Full CI quality pipeline locally |
-| `pnpm docs:prepare` | Generate API docs, sync content, stage archives |
-| `pnpm docs:build` | Production documentation build |
-| `pnpm test` | Run Vitest suite |
-| `pnpm typecheck` | TypeScript project references |
+| Command                  | Purpose                                         |
+| ------------------------ | ----------------------------------------------- |
+| `pnpm validate`          | Full CI quality pipeline locally                |
+| `pnpm docs:prepare`      | Generate API docs, sync content, stage archives |
+| `pnpm docs:build`        | Production documentation build                  |
+| `pnpm test`              | Run Vitest suite                                |
+| `pnpm typecheck`         | TypeScript project references                   |
 | `pnpm package:integrity` | Validate package manifests and workspace policy |
 
 ## Releasing

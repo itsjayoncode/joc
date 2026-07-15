@@ -27,7 +27,9 @@ const showBanner = computed(
       <strong>{{ `v${archivedVersion}` }}</strong> of
       <code>{{ browserLifecycleDocVersions.packageName }}</code
       >.
-      <a :href="`${pkgBase}/`">Switch to latest ({{ browserLifecycleDocVersions.currentVersionLabel }})</a>
+      <a :href="`${pkgBase}/`"
+        >Switch to latest ({{ browserLifecycleDocVersions.currentVersionLabel }})</a
+      >
       or read the <a href="/changelog/">changelog</a>.
     </p>
   </div>

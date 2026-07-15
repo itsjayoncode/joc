@@ -59,4 +59,3 @@ Records ordered `page:visible` and `page:hidden` events with timestamps and meta
 ## Interactive Playground
 
 Explore this topic live in the [Visibility Playground](http://127.0.0.1:4273/visibility).
-
