@@ -98,11 +98,20 @@ describe("developer experience platform", () => {
     expect(docsPackage).toContain('"docs:sync"');
     expect(docsPackage).toContain('"docs:prepare"');
   });
+
+  it("formats and lints generated documentation output during sync", () => {
+    const syncScript = readText("scripts/sync-documentation.mjs");
+    expect(syncScript).toContain("formatGeneratedFiles");
+    expect(syncScript).toContain("lintGeneratedMetaFiles");
+  });
 });
 
 describe("documentation integration output", () => {
   it("can generate synced documentation pages when the sync script has run", () => {
-    const syncedExamples = path.join(rootDir, "apps/docs/docs/packages/browser-lifecycle/examples/index.md");
+    const syncedExamples = path.join(
+      rootDir,
+      "apps/docs/docs/packages/browser-lifecycle/examples/index.md",
+    );
     const syncedModulesDir = path.join(
       rootDir,
       "apps/docs/docs/packages/browser-lifecycle/modules",

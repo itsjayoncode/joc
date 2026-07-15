@@ -16,6 +16,7 @@ import {
   writeFileSync,
 } from "node:fs";
 import path from "node:path";
+import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -121,7 +122,11 @@ function syncPackageModules() {
       const playgroundDoc = MODULE_PLAYGROUND_LINKS[file];
       const rewritten = rewritePackageDocLinks(body);
       const enriched = playgroundDoc
-        ? appendPlaygroundLink(rewritten, playgroundDoc.replace("/packages/browser-lifecycle/playground/", "/"), toTitle(file))
+        ? appendPlaygroundLink(
+            rewritten,
+            playgroundDoc.replace("/packages/browser-lifecycle/playground/", "/"),
+            toTitle(file),
+          )
         : rewritten;
 
       return withFrontmatter(file, enriched, {
@@ -241,11 +246,51 @@ export const docsMeta = {
   return pkg.version;
 }
 
+function formatGeneratedFiles() {
+  const prettierBin = path.join(rootDir, "node_modules/prettier/bin/prettier.cjs");
+  const generatedPaths = [
+    path.join(docsRoot, "packages/browser-lifecycle/modules"),
+    path.join(docsRoot, "packages/browser-lifecycle/playground"),
+    path.join(docsRoot, "packages/browser-lifecycle/examples"),
+    path.join(docsRoot, ".vitepress/browser-lifecycle-meta.ts"),
+    path.join(docsRoot, ".vitepress/docs-meta.ts"),
+  ];
+
+  const result = spawnSync(process.execPath, [prettierBin, "--write", ...generatedPaths], {
+    cwd: rootDir,
+    stdio: "inherit",
+  });
+
+  if (result.status !== 0) {
+    throw new Error("Prettier failed while formatting generated documentation files.");
+  }
+}
+
+function lintGeneratedMetaFiles() {
+  const eslintBin = path.join(rootDir, "node_modules/eslint/bin/eslint.js");
+  const generatedMetaFiles = [
+    path.join(docsRoot, ".vitepress/browser-lifecycle-meta.ts"),
+    path.join(docsRoot, ".vitepress/docs-meta.ts"),
+  ];
+
+  const result = spawnSync(process.execPath, [eslintBin, ...generatedMetaFiles], {
+    cwd: rootDir,
+    stdio: "inherit",
+  });
+
+  if (result.status !== 0) {
+    throw new Error("ESLint failed while checking generated documentation metadata files.");
+  }
+}
+
 const moduleCount = syncPackageModules();
 const playgroundCount = syncPlaygroundDocs();
 const exampleCount = syncFrameworkExamplesIndex();
 const browserLifecycleVersion = syncBrowserLifecycleMeta();
 const docsVersion = syncDocsMeta();
+
+formatGeneratedFiles();
+lintGeneratedMetaFiles();
 
 console.log(
   `Synced documentation: ${moduleCount} module pages, ${playgroundCount} playground pages, ${exampleCount} framework examples, browser-lifecycle@${browserLifecycleVersion}, docs@${docsVersion}.`,

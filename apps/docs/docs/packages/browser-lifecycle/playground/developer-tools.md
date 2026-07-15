@@ -13,4 +13,3 @@ Engineering console for browser API inspection, module metadata, runtime diagnos
 ## Interactive Playground
 
 Explore this topic live in the [Developer Tools](http://127.0.0.1:4273/developer-tools).
-

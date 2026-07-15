@@ -2,8 +2,8 @@
 
 Production-ready patterns built on Browser Lifecycle.
 
-| Pattern                                                  | Use case                             |
-| -------------------------------------------------------- | ------------------------------------ |
+| Pattern                                                                             | Use case                             |
+| ----------------------------------------------------------------------------------- | ------------------------------------ |
 | [Auto Save](/packages/browser-lifecycle/patterns/auto-save)                         | Persist drafts when the user pauses  |
 | [Analytics](/packages/browser-lifecycle/patterns/analytics)                         | Emit presence-aware analytics events |
 | [Presence Detection](/packages/browser-lifecycle/patterns/presence-detection)       | Track active vs idle users           |

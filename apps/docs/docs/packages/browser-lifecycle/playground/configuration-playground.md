@@ -28,4 +28,3 @@ Configuration is validated with `validateBrowserLifecycleConfig()` and applied b
 ## Interactive Playground
 
 Explore this topic live in the [Configuration Playground](http://127.0.0.1:4273/configuration).
-

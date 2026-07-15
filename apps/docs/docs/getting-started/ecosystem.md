@@ -4,14 +4,14 @@ JOC is one repository, but it is not one library. It is a **monorepo of `@jayonc
 
 ## Repository areas
 
-| Area | Purpose |
-| --- | --- |
-| `packages/` | Public libraries (`@jayoncode/*`) and internal shared workspace code |
-| `apps/` | First-party applications — docs site and browser session playground |
-| `examples/` | Framework integration examples (starting with browser-lifecycle) |
-| `templates/` | Reusable scaffolds such as the standard JOC package template |
-| `engineering/` | Architectural and operational model |
-| `.github/` | Collaboration and automation |
+| Area           | Purpose                                                              |
+| -------------- | -------------------------------------------------------------------- |
+| `packages/`    | Public libraries (`@jayoncode/*`) and internal shared workspace code |
+| `apps/`        | First-party applications — docs site and browser session playground  |
+| `examples/`    | Framework integration examples (starting with browser-lifecycle)     |
+| `templates/`   | Reusable scaffolds such as the standard JOC package template         |
+| `engineering/` | Architectural and operational model                                  |
+| `.github/`     | Collaboration and automation                                         |
 
 ## Documentation model
 
