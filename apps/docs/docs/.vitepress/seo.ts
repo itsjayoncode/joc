@@ -39,6 +39,12 @@ export function resolveDocsBasePath(assetPath: string): string {
   return normalizedBase === "/" ? `/${normalizedAsset}` : `${normalizedBase}${normalizedAsset}`;
 }
 
+/** Site-relative live playground URL (opens as a separate SPA, not a VitePress route). */
+export function resolvePlaygroundPath(playgroundName: string): string {
+  const slug = playgroundName.replace(/^\/|\/$/g, "");
+  return resolveDocsBasePath(`playground/${slug}/`);
+}
+
 export function buildOrganizationJsonLd(siteUrl: string): string {
   return JSON.stringify({
     "@context": "https://schema.org",
