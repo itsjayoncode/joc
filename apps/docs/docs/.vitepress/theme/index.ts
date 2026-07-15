@@ -1,6 +1,8 @@
 import DefaultTheme from "vitepress/theme";
 
+import ArchivedDocsBanner from "./components/ArchivedDocsBanner.vue";
 import BrowserLifecycleVersion from "./components/BrowserLifecycleVersion.vue";
+import DocsVersionSwitcher from "./components/DocsVersionSwitcher.vue";
 import HomeBelowFold from "./components/HomeBelowFold.vue";
 import HomeFx from "./components/HomeFx.vue";
 import HomePackageCatalog from "./components/HomePackageCatalog.vue";
@@ -15,6 +17,8 @@ const theme: Theme = {
   Layout,
   enhanceApp({ app }) {
     app.component("BrowserLifecycleVersion", BrowserLifecycleVersion);
+    app.component("DocsVersionSwitcher", DocsVersionSwitcher);
+    app.component("ArchivedDocsBanner", ArchivedDocsBanner);
     app.component("HomeBelowFold", HomeBelowFold);
     app.component("HomeFx", HomeFx);
     app.component("HomePackageCatalog", HomePackageCatalog);

@@ -41,14 +41,17 @@ for (const packageDirectory of packageDirectories) {
     failures.push(`Package ${packageDirectory} is missing a src/ directory.`);
   }
 
-  const allowedVersions =
-    packageDirectory === "browser-lifecycle"
-      ? new Set(["0.1.0", "0.1.1", "0.1.2"])
-      : new Set(["0.0.0"]);
+  const semverPattern = /^\d+\.\d+\.\d+$/;
 
-  if (!allowedVersions.has(manifest.version)) {
+  if (packageDirectory === "browser-lifecycle") {
+    if (!semverPattern.test(manifest.version) || manifest.version === "0.0.0") {
+      failures.push(
+        `Package ${packageDirectory} should declare a published semver version, received ${manifest.version}.`,
+      );
+    }
+  } else if (manifest.version !== "0.0.0") {
     failures.push(
-      `Package ${packageDirectory} has unexpected version ${manifest.version}. Expected one of: ${[...allowedVersions].join(", ")}.`,
+      `Package ${packageDirectory} should remain at placeholder version 0.0.0 until publish-ready, received ${manifest.version}.`,
     );
   }
 

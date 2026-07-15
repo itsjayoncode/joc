@@ -3,6 +3,8 @@ node_modules
 dist
 build
 lib
+!scripts/lib/
+!scripts/lib/**
 !apps/browser-session-playground/src/lib/
 !apps/browser-session-playground/src/lib/**
 coverage/*
@@ -20,8 +22,10 @@ apps/docs/docs/packages/browser-lifecycle/modules/
 apps/docs/docs/packages/browser-lifecycle/playground/
 apps/docs/docs/packages/browser-lifecycle/examples/index.md
 apps/docs/docs/packages/browser-lifecycle/api/
+apps/docs/docs/packages/browser-lifecycle/v*/
 apps/docs/docs/.vitepress/browser-lifecycle-meta.ts
 apps/docs/docs/.vitepress/docs-meta.ts
+apps/docs/docs/.vitepress/browser-lifecycle-versions.ts
 apps/docs/docs/playground/
 apps/docs/docs/examples/index.md
 _construction

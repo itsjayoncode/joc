@@ -1,10 +1,10 @@
-# @jayoncode/browser-lifecycle
+# Browser Lifecycle — Typed, framework-agnostic browser session lifecycle for modern web apps.
 
 [![npm version](https://img.shields.io/npm/v/@jayoncode/browser-lifecycle.svg)](https://www.npmjs.com/package/@jayoncode/browser-lifecycle)
 [![license](https://img.shields.io/npm/l/@jayoncode/browser-lifecycle.svg)](https://github.com/itsjayoncode/joc/blob/master/packages/browser-lifecycle/package.json)
 [![docs](https://img.shields.io/badge/docs-jayoncode.github.io-2563eb)](https://itsjayoncode.github.io/joc/packages/browser-lifecycle/)
 
-**Typed, framework-agnostic browser session lifecycle for modern web apps.**
+Published as [`@jayoncode/browser-lifecycle`](https://www.npmjs.com/package/@jayoncode/browser-lifecycle) on npm.
 
 Track page visibility, window focus, online/offline connectivity, user idle state, page lifecycle, and cross-tab coordination through one composable TypeScript API — with SSR-safe feature detection and a plugin system. Works with React, Vue, Angular, Svelte, Next.js, and vanilla JavaScript.
 

@@ -1,8 +1,8 @@
 {
   "name": "@jayoncode/browser-lifecycle",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "private": false,
-  "description": "TypeScript browser session lifecycle library for page visibility, focus, idle detection, connectivity, cross-tab sync, and plugins. Framework-agnostic and SSR-safe.",
+  "description": "Browser Lifecycle — Typed, framework-agnostic browser session API for page visibility, focus, idle detection, connectivity, cross-tab sync, and plugins. SSR-safe.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
   "type": "module",
