@@ -19,6 +19,8 @@ import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
+import { syncBrowserLifecycleVersionsMeta } from "./lib/doc-versioning.mjs";
+
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const docsRoot = path.join(rootDir, "apps/docs/docs");
 
@@ -290,6 +292,7 @@ const playgroundCount = syncPlaygroundDocs();
 const exampleCount = syncFrameworkExamplesIndex();
 const browserLifecycleVersion = syncBrowserLifecycleMeta();
 const docsVersion = syncDocsMeta();
+syncBrowserLifecycleVersionsMeta();
 
 if (process.env.DOCS_SYNC_SKIP_QUALITY !== "1") {
   formatGeneratedFiles();
