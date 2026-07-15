@@ -4,7 +4,7 @@ import {
   archiveBasePath,
   archiveDirectoryName,
   shouldArchiveForBumpType,
-} from "../scripts/lib/doc-versioning.mjs";
+} from "../scripts/doc-versioning-policy.js";
 
 describe("documentation versioning", () => {
   it("maps archive paths under the browser-lifecycle package route", () => {

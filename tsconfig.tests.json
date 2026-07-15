@@ -21,6 +21,7 @@
     "apps/browser-session-playground/src/**/*.spec.tsx",
     "tests/**/*.ts",
     "tests/**/*.tsx",
+    "scripts/doc-versioning-policy.ts",
     "test-utils/**/*.ts",
     "test-utils/**/*.tsx"
   ],
