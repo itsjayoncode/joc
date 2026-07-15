@@ -1,3 +1,4 @@
+import { spawnSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -107,7 +108,22 @@ describe("developer experience platform", () => {
 });
 
 describe("documentation integration output", () => {
-  it("can generate synced documentation pages when the sync script has run", () => {
+  it("generates synced documentation pages from source docs", () => {
+    const sourceModulesDir = path.join(rootDir, "packages/browser-lifecycle/docs");
+    const sourcePlaygroundDir = path.join(rootDir, "apps/browser-session-playground/docs");
+
+    if (!existsSync(sourceModulesDir) || !existsSync(sourcePlaygroundDir)) {
+      return;
+    }
+
+    const syncScript = path.join(rootDir, "scripts/sync-documentation.mjs");
+    const result = spawnSync(process.execPath, [syncScript], {
+      cwd: rootDir,
+      encoding: "utf8",
+    });
+
+    expect(result.status, result.stderr || result.stdout).toBe(0);
+
     const syncedExamples = path.join(
       rootDir,
       "apps/docs/docs/packages/browser-lifecycle/examples/index.md",
@@ -121,10 +137,7 @@ describe("documentation integration output", () => {
       "apps/docs/docs/packages/browser-lifecycle/playground",
     );
 
-    if (!existsSync(syncedExamples)) {
-      return;
-    }
-
+    expect(existsSync(syncedExamples)).toBe(true);
     expect(existsSync(syncedModulesDir)).toBe(true);
     expect(existsSync(syncedPlaygroundDir)).toBe(true);
     expect(readdirSync(syncedModulesDir).length).toBeGreaterThan(0);
