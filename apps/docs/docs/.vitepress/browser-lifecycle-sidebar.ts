@@ -1,3 +1,5 @@
+import { resolvePlaygroundPath } from "./seo.js";
+
 import type { DefaultTheme } from "vitepress";
 
 const browserLifecycleGuides = (pkgBase: string) => [
@@ -152,7 +154,14 @@ export function createBrowserLifecycleSidebar(
     {
       text: "Interactive",
       collapsed: false,
-      items: [{ text: "Open playground ↗", link: "/playground/browser-lifecycle/" }],
+      items: [
+        {
+          text: "Open playground ↗",
+          link: resolvePlaygroundPath("browser-lifecycle"),
+          target: "_blank",
+          rel: "noreferrer",
+        },
+      ],
     },
     {
       text: "Support",

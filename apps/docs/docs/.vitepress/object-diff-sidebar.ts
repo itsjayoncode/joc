@@ -1,3 +1,5 @@
+import { resolvePlaygroundPath } from "./seo.js";
+
 import type { DefaultTheme } from "vitepress";
 
 export function createObjectDiffSidebarMap(
@@ -32,7 +34,14 @@ export function createObjectDiffSidebarMap(
       {
         text: "Interactive",
         collapsed: false,
-        items: [{ text: "Open playground ↗", link: "/playground/object-diff/" }],
+        items: [
+          {
+            text: "Open playground ↗",
+            link: resolvePlaygroundPath("object-diff"),
+            target: "_blank",
+            rel: "noreferrer",
+          },
+        ],
       },
     ],
   };

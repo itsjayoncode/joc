@@ -1,3 +1,5 @@
+import { resolvePlaygroundPath } from "./seo.js";
+
 import type { DefaultTheme } from "vitepress";
 
 export function createFormIntelligentSidebarMap(
@@ -40,7 +42,14 @@ export function createFormIntelligentSidebarMap(
       {
         text: "Interactive",
         collapsed: false,
-        items: [{ text: "Open playground ↗", link: "/playground/form-intelligent/" }],
+        items: [
+          {
+            text: "Open playground ↗",
+            link: resolvePlaygroundPath("form-intelligent"),
+            target: "_blank",
+            rel: "noreferrer",
+          },
+        ],
       },
     ],
   };

@@ -1,6 +1,12 @@
-# @jayoncode/form-intelligent
+# Form Intelligent
 
-**A headless form workflow engine.**
+A headless form workflow engine for validation, submission, state, and multi-step orchestration.
+
+[![npm version](https://img.shields.io/npm/v/@jayoncode/form-intelligent.svg)](https://www.npmjs.com/package/@jayoncode/form-intelligent)
+[![license](https://img.shields.io/npm/l/@jayoncode/form-intelligent.svg)](https://github.com/itsjayoncode/joc/blob/master/packages/form-intelligent/package.json)
+[![docs](https://img.shields.io/badge/docs-jayoncode.github.io-2563eb)](https://itsjayoncode.github.io/joc/packages/form-intelligent/)
+
+Published as [`@jayoncode/form-intelligent`](https://www.npmjs.com/package/@jayoncode/form-intelligent) on npm.
 
 `@jayoncode/form-intelligent` orchestrates validation, submission, state, formatting, and multi-step workflows without rendering UI. Use it with native HTML or any framework.
 
