@@ -4,13 +4,17 @@ Configuration, capability detection, and SSR-safe utilities.
 
 **Previous:** [Session core](/packages/browser-lifecycle/modules/session-core) · **Back to:** [Overview](/packages/browser-lifecycle/)
 
-::: tip Try it first
+::: tip Playground
 [Open Configuration playground →](/playground/browser-lifecycle/configuration) — tweak options and inspect capabilities.
 :::
 
-## In plain English
+## Problem → approach
 
-Before modules run, the package validates your **configuration** and detects **browser capabilities** (visibility API, BroadcastChannel, etc.). Use these helpers to write SSR-safe code that degrades gracefully.
+| Typical pain                          | Core infrastructure                                         |
+| ------------------------------------- | ----------------------------------------------------------- |
+| `document is not defined` during SSR  | Capability probes run before modules attach                 |
+| Silent failures when APIs are missing | `supportsVisibility()` and friends gate optional behavior   |
+| Invalid config discovered at runtime  | `createBrowserLifecycleConfig()` validates options up front |
 
 ```ts
 import { createBrowserLifecycleConfig, supportsVisibility } from "@jayoncode/browser-lifecycle";

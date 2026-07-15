@@ -5,57 +5,70 @@ description: Object Diff package overview.
 
 # Object Diff
 
-**Compare structured data, report changes, and apply JSON Patch** — built for state snapshots, undo stacks, and change tracking.
+Typed deep comparison, change records, and JSON Patch generation for structured snapshots.
 
-::: info What does it do?
-Give it two objects (before & after). It tells you **what changed**, and can produce **JSON Patch** operations to apply those changes elsewhere.
-:::
+## Example: detect changes and apply a patch
 
-## Start here — 5-minute picture
+```ts
+import { diff, hasChanges, patch, applyPatch } from "@jayoncode/object-diff";
 
-```mermaid
-flowchart LR
-  A[Two snapshots] --> B[diff]
-  B --> C[Change records]
-  C --> D[patch]
-  D --> E[Apply / revert]
+const before = { user: { name: "John", role: "viewer" }, active: true };
+const after = { user: { name: "Jane", role: "admin" }, active: true };
+
+if (hasChanges(before, after)) {
+  const result = diff(before, after);
+  const operations = patch(result);
+  const synced = applyPatch(before, operations);
+  // synced matches `after` for tracked paths
+}
 ```
 
-| Step | What you get                        | Time        |
-| ---- | ----------------------------------- | ----------- |
-| 1    | See what changed between objects    | ~2 min      |
-| 2    | Quick dirty-check without full diff | ~3 min      |
-| 3    | Generate & apply JSON Patch         | ~5 min      |
-| 4    | Export as JSON or Markdown          | when needed |
+Use `diff()` for audit trails and inspectors; `hasChanges()` for dirty checks; `patch()` / `applyPatch()` to propagate updates between stores or clients.
 
-**New to the package?** Follow the [step-by-step tutorial](/packages/object-diff/modules/getting-started).
+[Inspect changes interactively →](/playground/object-diff/diff)
 
-**Want the mental model first?** Read [core concepts](/packages/object-diff/modules/concepts) (3-minute read).
+## Problem → approach
 
-## Learning path
+| Typical pain                                                                    | Object Diff                                                                |
+| ------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `JSON.stringify(a) !== JSON.stringify(b)` — no paths, no types, order-sensitive | `diff()` returns typed change records with paths (`user.name`, `items[2]`) |
+| Hand-rolled deep equality and patch logic for optimistic UI                     | `patch()` / `applyPatch()` emit and apply RFC 6902 operations              |
+| Explaining what changed in PRs or logs requires custom formatting               | `serialize()` exports JSON, Markdown, or table views from the same diff    |
 
-Work through these in order. Each guide links to a live playground demo.
+## Overview
 
-### Beginner — compare two objects
+Object Diff compares plain objects and arrays, emits structured **change records**, and can serialize results or produce [RFC 6902](https://datatracker.ietf.org/doc/html/rfc6902)-style patch operations.
 
-| #   | Guide                                                     | You will learn                | Try it live                                     |
-| --- | --------------------------------------------------------- | ----------------------------- | ----------------------------------------------- |
-| 1   | [Tutorial](/packages/object-diff/modules/getting-started) | Install, run your first diff  | [Playground →](/playground/object-diff/)        |
-| 2   | [Core concepts](/packages/object-diff/modules/concepts)   | Snapshots, changes, patch ops | [Diff explorer →](/playground/object-diff/diff) |
+| API                       | Purpose                                    |
+| ------------------------- | ------------------------------------------ |
+| `diff(a, b)`              | Full change list with paths and types      |
+| `hasChanges(a, b)`        | Boolean dirty check without full diff cost |
+| `patch(diffResult)`       | Generate patch operations                  |
+| `applyPatch(target, ops)` | Immutable apply                            |
+| `serialize(diff, format)` | JSON, Markdown, or table export            |
 
-### Intermediate — production workflows
+## Documentation path
 
-| #   | Guide                                           | You will learn                             | Try it live                                       |
-| --- | ----------------------------------------------- | ------------------------------------------ | ------------------------------------------------- |
-| 3   | [Diffing](/packages/object-diff/modules/diff)   | `diff()`, `hasChanges()`, options          | [Diff explorer →](/playground/object-diff/diff)   |
-| 4   | [Patching](/packages/object-diff/modules/patch) | `patch()`, `applyPatch()`, `revertPatch()` | [Patch explorer →](/playground/object-diff/patch) |
+### Foundation
 
-### Advanced — output & tooling
+| #   | Guide                                                     | Topics                      | Playground                            |
+| --- | --------------------------------------------------------- | --------------------------- | ------------------------------------- |
+| 1   | [Tutorial](/packages/object-diff/modules/getting-started) | Install, first diff         | [Dashboard](/playground/object-diff/) |
+| 2   | [Core concepts](/packages/object-diff/modules/concepts)   | Snapshots, changes, patches | [Diff](/playground/object-diff/diff)  |
 
-| #   | Guide                                                    | You will learn               | Try it live                                         |
-| --- | -------------------------------------------------------- | ---------------------------- | --------------------------------------------------- |
-| 5   | [Serialization](/packages/object-diff/modules/serialize) | JSON, Markdown, table export | [JSON viewer →](/playground/object-diff/json)       |
-| 6   | Performance                                              | Large object benchmarks      | [Benchmarks →](/playground/object-diff/performance) |
+### Core APIs
+
+| #   | Guide                                           | Topics                      | Playground                             |
+| --- | ----------------------------------------------- | --------------------------- | -------------------------------------- |
+| 3   | [Diffing](/packages/object-diff/modules/diff)   | Options, filtering, helpers | [Diff](/playground/object-diff/diff)   |
+| 4   | [Patching](/packages/object-diff/modules/patch) | Apply, revert, edge cases   | [Patch](/playground/object-diff/patch) |
+
+### Output and performance
+
+| #   | Guide                                                    | Topics                  | Playground                                        |
+| --- | -------------------------------------------------------- | ----------------------- | ------------------------------------------------- |
+| 5   | [Serialization](/packages/object-diff/modules/serialize) | Export formats          | [JSON](/playground/object-diff/json)              |
+| 6   | Performance                                              | Large-object benchmarks | [Benchmarks](/playground/object-diff/performance) |
 
 ## Install
 
@@ -63,34 +76,18 @@ Work through these in order. Each guide links to a live playground demo.
 npm install @jayoncode/object-diff
 ```
 
-Copy-paste starter:
+## Package fit
 
-```ts
-import { diff } from "@jayoncode/object-diff";
-
-const before = { name: "John", active: true };
-const after = { name: "Jane", active: true };
-
-const result = diff(before, after);
-console.log(result.changes); // typed change records
-```
-
-## Is this the right package for you?
-
-| You need…                 | Object Diff helps         |
-| ------------------------- | ------------------------- |
-| Form/state dirty checking | `hasChanges(a, b)`        |
-| Audit trail of edits      | `diff()` change records   |
-| Sync partial updates      | JSON Patch via `patch()`  |
-| Human-readable changelogs | `serialize()` to Markdown |
-
-::: tip Not sure yet?
-Open the [interactive playground](/playground/object-diff/) and try the Diff explorer with sample objects.
-:::
+| Requirement                  | API                          |
+| ---------------------------- | ---------------------------- |
+| Form/state dirty detection   | `hasChanges(a, b)`           |
+| Structured audit log         | `diff()` change records      |
+| Partial sync between clients | `patch()` + `applyPatch()`   |
+| Human-readable changelogs    | `serialize(..., "markdown")` |
 
 ## Reference
 
-- [API Reference](/packages/object-diff/api/) — generated TypeDoc
-- [Playground guide](/packages/object-diff/playground/playground) — local setup & routes
-- [Examples](/playground/object-diff/examples) — copy-paste snippets
+- [API (TypeDoc)](/packages/object-diff/api/)
+- [Playground guide](/packages/object-diff/playground/playground)
+- [Examples](/playground/object-diff/examples)
 

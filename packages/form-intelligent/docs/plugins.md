@@ -4,13 +4,13 @@ Add cross-cutting behavior — analytics, logging, or integrations — without c
 
 **Previous:** [Formatters](/packages/form-intelligent/modules/formatters) · **Next:** [Adapters](/packages/form-intelligent/modules/adapters)
 
-::: tip Try it first
-[Open Plugins playground →](/playground/form-intelligent/plugins) — type in the note field and watch the event log.
+::: tip Playground
+[Plugins explorer →](/playground/form-intelligent/plugins) — register hooks and inspect the event log.
 :::
 
-## In plain English
+## Overview
 
-A **plugin** subscribes to form events (change, submit, autosave, etc.) and can return a **cleanup** function when removed.
+Plugins subscribe to form lifecycle events (`change`, `submit`, `autosave`, etc.) and may return cleanup on unregister.
 
 ---
 

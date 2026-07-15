@@ -4,17 +4,19 @@ Export diff results for humans, logs, or downstream tools.
 
 **Previous:** [Patching](/packages/object-diff/modules/patch) · **Back to:** [Overview](/packages/object-diff/)
 
-::: tip Try it first
+::: tip Playground
 [Open JSON viewer →](/playground/object-diff/json) — inspect serialized output formats.
 :::
 
-## In plain English
+## Problem → approach
 
-After `diff()`, use `serialize()` to turn change records into readable JSON, Markdown tables, or other formats — useful for PR descriptions, audit logs, and debugging.
+| Typical pain                                        | `serialize()`                                                      |
+| --------------------------------------------------- | ------------------------------------------------------------------ |
+| `console.log(diffResult)` is noisy and not PR-ready | `serialize(result, "markdown")` for changelogs and review comments |
+| APIs need structured payloads; humans need tables   | Same `diff()` output, multiple export formats                      |
+| Custom formatters duplicated across tools           | One serializer with `json`, `markdown`, and `table` targets        |
 
----
-
-## Level 1 — JSON export
+## JSON export
 
 ```ts
 import { diff, serialize } from "@jayoncode/object-diff";
@@ -23,25 +25,19 @@ const result = diff(before, after);
 const json = serialize(result, "json");
 ```
 
----
-
-## Level 2 — Markdown for changelogs
+## Markdown for changelogs
 
 ```ts
 const markdown = serialize(result, "markdown");
 // paste into PR body or release notes
 ```
 
----
-
-## Level 3 — Table format
+## Table format
 
 ```ts
 const table = serialize(result, "table");
 // compact tabular view for terminals or docs
 ```
-
----
 
 ## When to use each format
 

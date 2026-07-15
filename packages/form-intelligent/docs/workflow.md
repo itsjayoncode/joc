@@ -4,23 +4,23 @@ Go beyond basic forms — autosave drafts, restore on reload, and multi-step wiz
 
 **Previous:** [Submission](/packages/form-intelligent/modules/submission) · **Next:** [Formatters](/packages/form-intelligent/modules/formatters)
 
-::: tip Try it first
-[Open Workflow playground →](/playground/form-intelligent/workflow) — edit fields, reload the page, and step through a wizard.
+::: tip Playground
+[Workflow explorer →](/playground/form-intelligent/workflow) — autosave debounce, draft restore, wizard steps.
 :::
 
-## In plain English
+## Overview
 
-Workflow features answer: _what should happen to form data over time?_
+Workflow options extend the form instance with time-based and multi-step behavior:
 
-| Feature      | Problem it solves                                           |
-| ------------ | ----------------------------------------------------------- |
-| **Autosave** | User types → debounced save without `useEffect` boilerplate |
-| **Draft**    | User closes tab → data restored on return                   |
-| **Wizard**   | Long form split into steps with validation between each     |
+| Feature    | Use case                                  |
+| ---------- | ----------------------------------------- |
+| `autosave` | Debounced persistence on value change     |
+| `draft`    | Restore values after navigation or reload |
+| `wizard`   | Step index with per-step validation       |
 
 ---
 
-## Level 1 — Autosave
+## Autosave
 
 ```ts
 createForm({
@@ -41,7 +41,7 @@ Check status: `getFormState().workflow.isAutosaving`
 
 ---
 
-## Level 2 — Draft restore
+## Draft restore
 
 Persists to `localStorage` and merges on next visit:
 
@@ -61,7 +61,7 @@ Fill fields in the [Workflow playground](/playground/form-intelligent/workflow),
 
 ---
 
-## Level 3 — Multi-step wizard
+## Multi-step wizard
 
 ```ts
 workflow: {
@@ -86,7 +86,7 @@ Progress UI: `getFormState().workflow.progress` (0–100)
 
 ---
 
-## Level 4 — Conditional fields
+## Conditional fields
 
 Show/hide fields in **your UI** based on `form.values()`. Skip validation when a field does not apply:
 

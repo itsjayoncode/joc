@@ -1,12 +1,14 @@
 # Tutorial — your first diff
 
-Compare two objects in four steps.
+Install, compare snapshots, check dirty state, and apply a patch.
 
 **Previous:** [Core concepts](/packages/object-diff/modules/concepts) · **Next:** [Diffing](/packages/object-diff/modules/diff)
 
-::: tip Learn by doing
-Keep the [Diff playground](/playground/object-diff/diff) open — try the same steps with interactive JSON editors.
+::: info Playground
+[Diff explorer](/playground/object-diff/diff) — same workflow with interactive JSON editors.
 :::
+
+**Prerequisites:** Node 20+, ESM or TypeScript project.
 
 ---
 
@@ -16,7 +18,7 @@ Keep the [Diff playground](/playground/object-diff/diff) open — try the same s
 npm install @jayoncode/object-diff
 ```
 
-✅ **You now have** the package ready to import.
+**Outcome:** Package available for import.
 
 ---
 
@@ -32,63 +34,53 @@ const result = diff(before, after);
 console.log(result.changes);
 ```
 
-Each item in `changes` describes one edit — path, type, and values.
-
-✅ **You now have** a list of structured changes between snapshots.
+**Outcome:** Structured change list with path, type, and values per mutation.
 
 ---
 
-## Step 3 — Quick dirty check
-
-When you only need yes/no (not the full list):
+## Step 3 — Dirty check
 
 ```ts
 import { hasChanges } from "@jayoncode/object-diff";
 
 if (hasChanges(before, after)) {
-  console.log("State is dirty — save or diff");
+  // skip render, trigger autosave, etc.
 }
 ```
 
-✅ **You now have** a fast guard for autosave and re-render logic.
+**Outcome:** Boolean guard without building full change records.
 
 ---
 
-## Step 4 — Generate a patch
-
-Turn changes into JSON Patch operations:
+## Step 4 — Patch round-trip
 
 ```ts
 import { diff, patch, applyPatch } from "@jayoncode/object-diff";
 
 const result = diff(before, after);
 const operations = patch(result);
-
 const updated = applyPatch({ ...before }, operations);
-// updated matches `after`
 ```
 
-✅ **You now have** a round-trip: diff → patch → apply.
+**Outcome:** `updated` reflects `after` for tracked paths.
 
 ---
 
 ## Recap
 
-| Step | API                        | Purpose             |
-| ---- | -------------------------- | ------------------- |
-| 1    | `npm install`              | Add package         |
-| 2    | `diff(a, b)`               | Full change list    |
-| 3    | `hasChanges(a, b)`         | Boolean dirty check |
-| 4    | `patch()` + `applyPatch()` | Minimal update ops  |
+| Step | API                    | Result               |
+| ---- | ---------------------- | -------------------- |
+| 1    | `npm install`          | Dependency installed |
+| 2    | `diff(a, b)`           | Change records       |
+| 3    | `hasChanges(a, b)`     | Dirty flag           |
+| 4    | `patch` + `applyPatch` | Minimal update ops   |
 
-## What to learn next
+## Continue
 
-| Goal                      | Guide                                                    | Playground                             |
-| ------------------------- | -------------------------------------------------------- | -------------------------------------- |
-| Diff options & filtering  | [Diffing](/packages/object-diff/modules/diff)            | [Try →](/playground/object-diff/diff)  |
-| Revert & patch edge cases | [Patching](/packages/object-diff/modules/patch)          | [Try →](/playground/object-diff/patch) |
-| Export for humans         | [Serialization](/packages/object-diff/modules/serialize) | [Try →](/playground/object-diff/json)  |
+| Topic               | Guide                                                    | Playground                             |
+| ------------------- | -------------------------------------------------------- | -------------------------------------- |
+| Options & filtering | [Diffing](/packages/object-diff/modules/diff)            | [Diff](/playground/object-diff/diff)   |
+| Revert & edge cases | [Patching](/packages/object-diff/modules/patch)          | [Patch](/playground/object-diff/patch) |
+| Export formats      | [Serialization](/packages/object-diff/modules/serialize) | [JSON](/playground/object-diff/json)   |
 
-::: info Stuck?
-Browse [examples](/playground/object-diff/examples) or run [benchmarks](/playground/object-diff/performance) to see large-object behavior.
-:::
+[Examples](/playground/object-diff/examples) · [Benchmarks](/playground/object-diff/performance)

@@ -1,12 +1,14 @@
 # Tutorial — your first session
 
-Get Browser Lifecycle running in five steps.
+Install, start a session, subscribe to events, read snapshot state, dispose.
 
 **Previous:** [Core concepts](/packages/browser-lifecycle/modules/concepts) · **Next:** [Visibility](/packages/browser-lifecycle/modules/visibility)
 
-::: tip Learn by doing
-Keep the [Visibility playground](/playground/browser-lifecycle/visibility) open — switch tabs and watch events fire.
+::: info Playground
+[Visibility explorer](/playground/browser-lifecycle/visibility) — switch tabs and observe event order.
 :::
+
+**Prerequisites:** Node 20+, browser or SSR-aware bootstrap.
 
 ---
 
@@ -16,7 +18,7 @@ Keep the [Visibility playground](/playground/browser-lifecycle/visibility) open 
 npm install @jayoncode/browser-lifecycle
 ```
 
-✅ **You now have** the package ready to import.
+**Outcome:** Package available for import.
 
 ---
 
@@ -28,9 +30,7 @@ import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
 const lifecycle = createBrowserLifecycle({ autoStart: true });
 ```
 
-`autoStart: true` begins listening immediately. The session enters the `running` phase.
-
-✅ **You now have** an active lifecycle session.
+**Outcome:** Session in `running` phase with modules attached per configuration.
 
 ---
 
@@ -38,71 +38,63 @@ const lifecycle = createBrowserLifecycle({ autoStart: true });
 
 ```ts
 lifecycle.on("page:visible", () => {
-  console.log("Tab is visible — resume work");
+  resumePolling();
 });
 
 lifecycle.on("page:hidden", () => {
-  console.log("Tab is hidden — pause timers");
+  pausePolling();
 });
 ```
 
-Switch browser tabs to trigger events. Each subscription returns an unsubscribe function.
-
-✅ **You now have** reactive handlers for browser signals.
+**Outcome:** Handlers run on normalized visibility transitions. Unsubscribe via returned function.
 
 ---
 
-## Step 4 — Read the snapshot
+## Step 4 — Read snapshot
 
 ```ts
 const snapshot = lifecycle.getSnapshot();
 console.log(snapshot.page.visibility); // "visible" | "hidden"
 ```
 
-The snapshot is **readonly** — always current, no manual bookkeeping.
-
-✅ **You now have** programmatic access to browser state.
+**Outcome:** Readonly view of current session state without manual listener bookkeeping.
 
 ---
 
-## Step 5 — Clean up
+## Step 5 — Dispose
 
 ```ts
 await lifecycle.dispose();
 ```
 
-Call `dispose()` when your app unmounts or the tab navigates away. This removes listeners and frees resources.
-
-✅ **You now have** a complete create → subscribe → dispose flow.
+**Outcome:** Listeners removed; instance must not be reused.
 
 ---
 
 ## Recap
 
-| Step | API                            | Purpose            |
-| ---- | ------------------------------ | ------------------ |
-| 1    | `npm install`                  | Add package        |
-| 2    | `createBrowserLifecycle()`     | Start session      |
-| 3    | `lifecycle.on(event, handler)` | React to signals   |
-| 4    | `getSnapshot()`                | Read current state |
-| 5    | `dispose()`                    | Tear down          |
+| Step | API                        | Result               |
+| ---- | -------------------------- | -------------------- |
+| 1    | `npm install`              | Dependency installed |
+| 2    | `createBrowserLifecycle()` | Active session       |
+| 3    | `on(event, handler)`       | Typed subscriptions  |
+| 4    | `getSnapshot()`            | Current state        |
+| 5    | `dispose()`                | Clean teardown       |
 
-## Common mistakes
+## Pitfalls
 
-| Mistake                   | Fix                                        |
-| ------------------------- | ------------------------------------------ |
-| Multiple sessions per tab | Use one instance, share via context        |
-| Forgetting `dispose()`    | Always dispose in cleanup / `onUnmount`    |
-| Initializing in SSR       | Guard with `typeof window !== "undefined"` |
+| Issue                     | Mitigation                            |
+| ------------------------- | ------------------------------------- |
+| Multiple sessions per tab | Single shared instance                |
+| Missing teardown          | Call `dispose()` on unmount           |
+| SSR access                | Guard `typeof window !== "undefined"` |
 
-## What to learn next
+## Continue
 
-| Goal                        | Guide                                                                          | Playground                                           |
-| --------------------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------- |
-| Visibility module deep dive | [Visibility](/packages/browser-lifecycle/modules/visibility)                   | [Try →](/playground/browser-lifecycle/visibility)    |
-| Event subscription patterns | [Events](/packages/browser-lifecycle/modules/events)                           | [Try →](/playground/browser-lifecycle/events)        |
-| Configuration & SSR         | [Core infrastructure](/packages/browser-lifecycle/modules/core-infrastructure) | [Try →](/playground/browser-lifecycle/configuration) |
+| Topic             | Guide                                                                          | Playground                                                   |
+| ----------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------ |
+| Visibility module | [Visibility](/packages/browser-lifecycle/modules/visibility)                   | [Visibility](/playground/browser-lifecycle/visibility)       |
+| Event patterns    | [Events](/packages/browser-lifecycle/modules/events)                           | [Events](/playground/browser-lifecycle/events)               |
+| Config & SSR      | [Core infrastructure](/packages/browser-lifecycle/modules/core-infrastructure) | [Configuration](/playground/browser-lifecycle/configuration) |
 
-::: info Stuck?
-See the [Quick start guide](/packages/browser-lifecycle/guides/quick-start), [FAQ](/packages/browser-lifecycle/faq/), or [beginner tutorial](/packages/browser-lifecycle/tutorials/beginner).
-:::
+[Quick start](/packages/browser-lifecycle/guides/quick-start) · [FAQ](/packages/browser-lifecycle/faq/)

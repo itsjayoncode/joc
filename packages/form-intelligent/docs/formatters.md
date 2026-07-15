@@ -4,13 +4,13 @@ Clean up input as the user types — phone masks, currency decimals, URL slugs.
 
 **Previous:** [Workflow](/packages/form-intelligent/modules/workflow) · **Next:** [Plugins](/packages/form-intelligent/modules/plugins)
 
-::: tip Try it first
-[Open Formatters playground →](/playground/form-intelligent/formatters) — type in each field and see the stored value update.
+::: tip Playground
+[Formatters explorer →](/playground/form-intelligent/formatters) — compare display value vs stored value.
 :::
 
-## In plain English
+## Overview
 
-A **formatter** runs when a value is saved via `setValue`. It normalizes what you store — separate from validation (which checks if data is _valid_).
+Formatters run on `setValue` and normalize stored values. They are separate from validators (validity checks).
 
 ```ts
 import { phone, currency, slug } from "@jayoncode/form-intelligent";

@@ -2,57 +2,81 @@
 
 <BrowserLifecycleVersion />
 
-**Typed browser session lifecycle** — visibility, focus, connectivity, idle detection, cross-tab sync, plugins, and diagnostics in one headless API.
+Typed browser session lifecycle — visibility, focus, connectivity, idle detection, cross-tab sync, and plugins in one headless API.
 
-::: info What is it?
-One `createBrowserLifecycle()` instance per tab orchestrates browser signals. You subscribe to **typed events** and read a **readonly snapshot** — no scattered `document.addEventListener` calls across your app.
-:::
+## Example: pause work when the tab is hidden
 
-## Start here — 5-minute picture
+```ts
+import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
 
-```mermaid
-flowchart LR
-  A[createBrowserLifecycle] --> B[Subscribe to events]
-  B --> C[Read snapshot]
-  C --> D[React / pause / sync]
-  D --> E[dispose on teardown]
+const lifecycle = createBrowserLifecycle({ autoStart: true });
+
+lifecycle.on("page:hidden", () => {
+  pauseMedia();
+  flushTelemetry();
+});
+
+lifecycle.on("page:visible", () => {
+  resumeMedia();
+});
+
+// Read consolidated state at any time
+const { visibility, focus, connectivity } = lifecycle.getSnapshot();
+
+// Teardown on route unmount or app shutdown
+await lifecycle.dispose();
 ```
 
-| Step | What you get                      | Time        |
-| ---- | --------------------------------- | ----------- |
-| 1    | Running session with typed events | ~2 min      |
-| 2    | Visibility & focus signals        | ~5 min      |
-| 3    | Full snapshot & modules           | ~10 min     |
-| 4    | Plugins, cross-tab, idle          | when needed |
+One instance per tab replaces scattered `document` / `window` listeners with typed events and a readonly snapshot.
 
-**New to the package?** Follow the [step-by-step tutorial](/packages/browser-lifecycle/modules/getting-started).
+[Verify event ordering →](/playground/browser-lifecycle/visibility)
 
-**Want the mental model first?** Read [core concepts](/packages/browser-lifecycle/modules/concepts) (3-minute read).
+## Problem → approach
 
-## Learning path
+| Typical pain                                                              | Browser Lifecycle                                                     |
+| ------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| `document`, `window`, and `navigator` listeners scattered across features | One `createBrowserLifecycle()` session with typed `on()` handlers     |
+| Tab visibility, focus, and connectivity each wired differently            | Modules normalize signals; `getSnapshot()` exposes consolidated state |
+| SSR crashes or silent no-ops when APIs are missing                        | Capability detection and SSR-safe defaults before modules attach      |
 
-### Beginner — your first session
+## Overview
 
-| #   | Guide                                                           | You will learn                              | Try it live                                             |
-| --- | --------------------------------------------------------------- | ------------------------------------------- | ------------------------------------------------------- |
-| 1   | [Tutorial](/packages/browser-lifecycle/modules/getting-started) | Install, create session, subscribe, dispose | [Playground →](/playground/browser-lifecycle/)          |
-| 2   | [Core concepts](/packages/browser-lifecycle/modules/concepts)   | Session, snapshot, events, modules          | [State explorer →](/playground/browser-lifecycle/state) |
+`createBrowserLifecycle()` orchestrates browser signals through a module pipeline. Consumers subscribe to events or poll `getSnapshot()`; modules (visibility, focus, connectivity, idle, cross-tab) compose behind a single session boundary.
 
-### Intermediate — browser signals
+| Concern     | API surface                               |
+| ----------- | ----------------------------------------- |
+| Lifecycle   | `start()`, `dispose()`, phase events      |
+| Signals     | `on(event, handler)`, `onEvent(handler)`  |
+| State       | `getSnapshot()` — readonly session state  |
+| Extension   | Plugin hooks, module configuration        |
+| Diagnostics | `getRuntimeDiagnostics()` for development |
 
-| #   | Guide                                                            | You will learn                     | Try it live                                              |
-| --- | ---------------------------------------------------------------- | ---------------------------------- | -------------------------------------------------------- |
-| 3   | [Visibility](/packages/browser-lifecycle/modules/visibility)     | Page hidden/visible events         | [Visibility →](/playground/browser-lifecycle/visibility) |
-| 4   | [Events](/packages/browser-lifecycle/modules/events)             | Subscribe, unsubscribe, event feed | [Events →](/playground/browser-lifecycle/events)         |
-| 5   | [Session core](/packages/browser-lifecycle/modules/session-core) | Lifecycle phases, startup ordering | [Lifecycle →](/playground/browser-lifecycle/lifecycle)   |
+Designed for SSR-safe capability detection and framework-agnostic integration (React, Vue, vanilla, etc.).
 
-### Advanced — configuration & extension
+## Documentation path
 
-| #   | Guide                                                                          | You will learn                   | Try it live                                                        |
-| --- | ------------------------------------------------------------------------------ | -------------------------------- | ------------------------------------------------------------------ |
-| 6   | [Core infrastructure](/packages/browser-lifecycle/modules/core-infrastructure) | Config, capabilities, SSR safety | [Configuration →](/playground/browser-lifecycle/configuration)     |
-| 7   | [Usage guide](/packages/browser-lifecycle/guides/usage)                        | Production patterns              | [Developer tools →](/playground/browser-lifecycle/developer-tools) |
-| 8   | [Plugins](/packages/browser-lifecycle/playground/plugin-playground)            | Custom module registration       | [Plugins →](/playground/browser-lifecycle/plugins)                 |
+### Foundation
+
+| #   | Guide                                                           | Topics                               | Playground                                   |
+| --- | --------------------------------------------------------------- | ------------------------------------ | -------------------------------------------- |
+| 1   | [Tutorial](/packages/browser-lifecycle/modules/getting-started) | Install, session, subscribe, dispose | [Dashboard](/playground/browser-lifecycle/)  |
+| 2   | [Core concepts](/packages/browser-lifecycle/modules/concepts)   | Session, snapshot, events, modules   | [State](/playground/browser-lifecycle/state) |
+
+### Core modules
+
+| #   | Guide                                                            | Topics                | Playground                                             |
+| --- | ---------------------------------------------------------------- | --------------------- | ------------------------------------------------------ |
+| 3   | [Visibility](/packages/browser-lifecycle/modules/visibility)     | Page Visibility API   | [Visibility](/playground/browser-lifecycle/visibility) |
+| 4   | [Events](/packages/browser-lifecycle/modules/events)             | Subscription model    | [Events](/playground/browser-lifecycle/events)         |
+| 5   | [Session core](/packages/browser-lifecycle/modules/session-core) | Phases, startup order | [Lifecycle](/playground/browser-lifecycle/lifecycle)   |
+
+### Configuration and extension
+
+| #   | Guide                                                                          | Topics                    | Playground                                                       |
+| --- | ------------------------------------------------------------------------------ | ------------------------- | ---------------------------------------------------------------- |
+| 6   | [Core infrastructure](/packages/browser-lifecycle/modules/core-infrastructure) | Config, capabilities, SSR | [Configuration](/playground/browser-lifecycle/configuration)     |
+| 7   | [Usage guide](/packages/browser-lifecycle/guides/usage)                        | Production patterns       | [Developer tools](/playground/browser-lifecycle/developer-tools) |
+| 8   | Plugins                                                                        | Module registration       | [Plugins](/playground/browser-lifecycle/plugins)                 |
 
 ## Install
 
@@ -60,44 +84,27 @@ flowchart LR
 npm install @jayoncode/browser-lifecycle
 ```
 
-Copy-paste starter:
+## Package fit
 
-```ts
-import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
+| Requirement                       | Module / event                 |
+| --------------------------------- | ------------------------------ |
+| Pause background work on tab hide | `page:hidden` / `page:visible` |
+| React to window focus             | `window:focus` / `window:blur` |
+| Offline-aware UI                  | `connectivity:*`               |
+| Idle timeout / autosave triggers  | Idle module                    |
+| Cross-tab coordination            | Cross-tab sync                 |
+| SSR / capability guards           | Core infrastructure            |
 
-const lifecycle = createBrowserLifecycle({ autoStart: true });
+## Reference
 
-lifecycle.on("page:visible", () => console.log("visible"));
-lifecycle.on("page:hidden", () => console.log("hidden"));
-
-// later: await lifecycle.dispose();
-```
-
-## Is this the right package for you?
-
-| You need…                   | Browser Lifecycle helps        |
-| --------------------------- | ------------------------------ |
-| Pause video when tab hidden | `page:hidden` / `page:visible` |
-| Resume work on focus        | `window:focus` events          |
-| Offline-aware UI            | `connectivity:offline`         |
-| Idle timeout                | Built-in idle module           |
-| Cross-tab leader election   | Cross-tab sync module          |
-| SSR-safe initialization     | Capability detection utilities |
-
-::: tip Not sure yet?
-Open the [interactive playground](/playground/browser-lifecycle/) and switch tabs on the Visibility page.
-:::
-
-## More resources
-
-| Resource           | Link                                                                  |
-| ------------------ | --------------------------------------------------------------------- |
-| API Reference      | [TypeDoc](/packages/browser-lifecycle/api/)                           |
-| Framework examples | [Examples](/packages/browser-lifecycle/examples/)                     |
-| Best practices     | [Guide](/packages/browser-lifecycle/best-practices/)                  |
-| Common patterns    | [Patterns](/packages/browser-lifecycle/patterns/)                     |
-| FAQ                | [FAQ](/packages/browser-lifecycle/faq/)                               |
-| Playground setup   | [Playground guide](/packages/browser-lifecycle/playground/playground) |
+| Resource           | Link                                                                                                   |
+| ------------------ | ------------------------------------------------------------------------------------------------------ |
+| API (TypeDoc)      | [/packages/browser-lifecycle/api/](/packages/browser-lifecycle/api/)                                   |
+| Framework examples | [/packages/browser-lifecycle/examples/](/packages/browser-lifecycle/examples/)                         |
+| Best practices     | [/packages/browser-lifecycle/best-practices/](/packages/browser-lifecycle/best-practices/)             |
+| Patterns           | [/packages/browser-lifecycle/patterns/](/packages/browser-lifecycle/patterns/)                         |
+| FAQ                | [/packages/browser-lifecycle/faq/](/packages/browser-lifecycle/faq/)                                   |
+| Playground guide   | [/packages/browser-lifecycle/playground/playground](/packages/browser-lifecycle/playground/playground) |
 
 ## Version
 

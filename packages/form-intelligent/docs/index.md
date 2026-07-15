@@ -1,60 +1,94 @@
 # Form Intelligent
 
-**A headless form workflow engine** — validate fields, submit safely, autosave drafts, and run wizards without locking into a UI framework.
+Headless form workflow engine — validation, submission, state, and multi-step orchestration without UI coupling.
 
-::: info What is "headless"?
-You bring the inputs (HTML, React, Vue, anything). Form Intelligent owns the **logic**: values, errors, submit flow, and workflows. No bundled `<Input>` components.
-:::
+## Example: validated signup with async submit
 
-## Start here — 5-minute picture
+Typical integration: define values and validators, bind inputs, subscribe to state, submit when valid.
 
-Most apps need the same four things:
+```ts
+import { createForm, email, required } from "@jayoncode/form-intelligent";
 
-```mermaid
-flowchart LR
-  A[Create form] --> B[Validate fields]
-  B --> C[Submit safely]
-  C --> D[Optional workflows]
-  D --> E[Autosave / Wizard / Drafts]
+const form = createForm({
+  initialValues: { email: "", name: "" },
+  validators: {
+    email: [required, email],
+    name: [required],
+  },
+  validateOn: "onBlur",
+  onSubmit: async (values) => {
+    const res = await fetch("/api/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    });
+    if (!res.ok) throw new Error("Signup failed");
+  },
+});
+
+// Headless binding — pass to any input implementation
+const emailField = form.field("email").bind();
+
+form.subscribe(() => {
+  const { values, errors, isSubmitting, isValid } = form.getFormState();
+  renderForm({ values, errors, isSubmitting, canSubmit: isValid && !isSubmitting });
+});
+
+await form.submit();
 ```
 
-| Step | What you get                 | Time               |
-| ---- | ---------------------------- | ------------------ |
-| 1    | A form instance with values  | ~2 min             |
-| 2    | Errors when input is wrong   | ~5 min             |
-| 3    | Async submit + loading state | ~5 min             |
-| 4    | Autosave, drafts, or wizards | when you need them |
+The instance owns values, per-field errors, touched/dirty flags, and submit lifecycle (`isSubmitting`, duplicate-submit guard). UI layers read state and call `bind()` handlers — the package does not render components.
 
-**New to the package?** Follow the [step-by-step tutorial](/packages/form-intelligent/modules/getting-started) — no prior knowledge required.
+[Run this flow in the playground →](/playground/form-intelligent/validation)
 
-**Want the big picture first?** Read [core concepts](/packages/form-intelligent/modules/concepts) (3-minute read).
+## Problem → approach
 
-## Learning path
+| Typical pain                                                                    | Form Intelligent                                                                     |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Validation, touched state, and submit guards duplicated in every form component | One `createForm()` instance owns values, errors, dirty/touched, and submit lifecycle |
+| `onSubmit` handlers mix fetch, error mapping, and UI flags                      | `onSubmit` is async-first; `isSubmitting` and duplicate-submit guard are built in    |
+| Framework form libs own too much UI or too little workflow                      | Headless `bind()` + `subscribe()` — any input implementation, shared orchestration   |
 
-Work through these in order. Each guide links to a live playground demo.
+## Overview
 
-### Beginner — your first working form
+`createForm()` returns a **form instance**: a single orchestration boundary for field state, validation timing, submission, and optional workflow (autosave, drafts, wizards).
 
-| #   | Guide                                                          | You will learn                               | Try it live                                            |
-| --- | -------------------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------ |
-| 1   | [Tutorial](/packages/form-intelligent/modules/getting-started) | Install, create a form, bind a field, submit | [Playground →](/playground/form-intelligent/)          |
-| 2   | [Core concepts](/packages/form-intelligent/modules/concepts)   | Form instance, fields, state flags           | [State explorer →](/playground/form-intelligent/state) |
+| Layer      | Responsibility                                        |
+| ---------- | ----------------------------------------------------- |
+| Field API  | Path-based accessors, `bind()` for headless wiring    |
+| Validation | Sync/async validators, per-field or form-level timing |
+| Submission | `onSubmit`, in-flight guard, error surfacing          |
+| Workflow   | Autosave debounce, draft persistence, wizard steps    |
+| Extension  | Plugins and adapter interfaces for framework bridges  |
 
-### Intermediate — production-ready forms
+Form Intelligent complements field-registration libraries (React Hook Form, etc.): it focuses on **workflow orchestration**, not component libraries.
 
-| #   | Guide                                                       | You will learn                       | Try it live                                             |
-| --- | ----------------------------------------------------------- | ------------------------------------ | ------------------------------------------------------- |
-| 3   | [Validation](/packages/form-intelligent/modules/validation) | Built-in rules, timing, async checks | [Validation →](/playground/form-intelligent/validation) |
-| 4   | [Submission](/packages/form-intelligent/modules/submission) | Loading, errors, double-submit guard | [Submission →](/playground/form-intelligent/submission) |
+## Documentation path
 
-### Advanced — workflows & extension
+Work through in order. Each guide links to a playground route for inspection.
 
-| #   | Guide                                                       | You will learn                       | Try it live                                             |
-| --- | ----------------------------------------------------------- | ------------------------------------ | ------------------------------------------------------- |
-| 5   | [Workflow](/packages/form-intelligent/modules/workflow)     | Autosave, drafts, multi-step wizards | [Workflow →](/playground/form-intelligent/workflow)     |
-| 6   | [Formatters](/packages/form-intelligent/modules/formatters) | Phone, currency, slug formatting     | [Formatters →](/playground/form-intelligent/formatters) |
-| 7   | [Plugins](/packages/form-intelligent/modules/plugins)       | Lifecycle hooks & cleanup            | [Plugins →](/playground/form-intelligent/plugins)       |
-| 8   | [Adapters](/packages/form-intelligent/modules/adapters)     | React, Zod, and framework bridges    | [Adapters →](/playground/form-intelligent/adapters)     |
+### Foundation
+
+| #   | Guide                                                          | Topics                                  | Playground                                  |
+| --- | -------------------------------------------------------------- | --------------------------------------- | ------------------------------------------- |
+| 1   | [Tutorial](/packages/form-intelligent/modules/getting-started) | Install, `createForm`, `bind`, `submit` | [Dashboard](/playground/form-intelligent/)  |
+| 2   | [Core concepts](/packages/form-intelligent/modules/concepts)   | Instance model, flags, architecture     | [State](/playground/form-intelligent/state) |
+
+### Core APIs
+
+| #   | Guide                                                       | Topics                         | Playground                                            |
+| --- | ----------------------------------------------------------- | ------------------------------ | ----------------------------------------------------- |
+| 3   | [Validation](/packages/form-intelligent/modules/validation) | Built-in rules, timing, async  | [Validation](/playground/form-intelligent/validation) |
+| 4   | [Submission](/packages/form-intelligent/modules/submission) | Loading state, retries, guards | [Submission](/playground/form-intelligent/submission) |
+
+### Workflow and extension
+
+| #   | Guide                                                       | Topics                   | Playground                                            |
+| --- | ----------------------------------------------------------- | ------------------------ | ----------------------------------------------------- |
+| 5   | [Workflow](/packages/form-intelligent/modules/workflow)     | Autosave, drafts, wizard | [Workflow](/playground/form-intelligent/workflow)     |
+| 6   | [Formatters](/packages/form-intelligent/modules/formatters) | Parse/format pipelines   | [Formatters](/playground/form-intelligent/formatters) |
+| 7   | [Plugins](/packages/form-intelligent/modules/plugins)       | Lifecycle hooks          | [Plugins](/playground/form-intelligent/plugins)       |
+| 8   | [Adapters](/packages/form-intelligent/modules/adapters)     | Framework integration    | [Adapters](/playground/form-intelligent/adapters)     |
 
 ## Install
 
@@ -62,38 +96,18 @@ Work through these in order. Each guide links to a live playground demo.
 npm install @jayoncode/form-intelligent
 ```
 
-Copy-paste starter:
+## Package fit
 
-```ts
-import { createForm, email, required } from "@jayoncode/form-intelligent";
-
-const form = createForm({
-  initialValues: { email: "" },
-  validators: { email: [required, email] },
-  onSubmit: async (values) => console.log("submitted", values),
-});
-
-// Wire any input — see tutorial for details
-form.field("email").bind();
-await form.submit();
-```
-
-## Is this the right package for you?
-
-| You need…                   | Form Intelligent helps                                                  |
-| --------------------------- | ----------------------------------------------------------------------- |
-| Debounced autosave          | `workflow.autosave` — no manual `useEffect`                             |
-| Multi-step signup           | `workflow.wizard` with per-step validation                              |
-| Safe async submit           | `isSubmitting` + duplicate-submit guard                                 |
-| Plain HTML or any UI        | `field().bind()` — adapters optional                                    |
-| Field registration like RHF | Use an **adapter** — Form Intelligent handles workflow, not field lists |
-
-::: tip Not sure yet?
-Open the [interactive playground](/playground/form-intelligent/) and click through Validation → Submission → Workflow. Each page explains what you are looking at.
-:::
+| Requirement                               | Approach                                                                   |
+| ----------------------------------------- | -------------------------------------------------------------------------- |
+| Debounced autosave / draft restore        | `workflow.autosave`, `workflow.draft`                                      |
+| Multi-step flows with per-step validation | `workflow.wizard`                                                          |
+| Safe async submit with in-flight guard    | `submit()` + `isSubmitting`                                                |
+| Framework-agnostic or custom UI           | `field().bind()`                                                           |
+| Declarative field lists only              | Consider an adapter or a field-registration library alongside this package |
 
 ## Reference
 
-- [API Reference](/packages/form-intelligent/api/) — generated TypeDoc
-- [Playground guide](/packages/form-intelligent/playground/playground) — local setup & route map
-- [Examples in playground](/playground/form-intelligent/examples) — copy-paste snippets
+- [API (TypeDoc)](/packages/form-intelligent/api/)
+- [Playground guide](/packages/form-intelligent/playground/playground)
+- [Examples](/playground/form-intelligent/examples)

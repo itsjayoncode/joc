@@ -1,52 +1,63 @@
 # Package documentation — learning path standard
 
-Standard doc flow for all `@jayoncode/*` packages. Form Intelligent, Object Diff, and Browser Lifecycle follow this pattern.
+Doc flow for all `@jayoncode/*` packages. Optimized for developers: lead with a working example, then structured depth from fundamentals to advanced topics.
+
+## Voice and tone
+
+- **Developer-first** — assume TypeScript familiarity; define package-specific terms once.
+- **Example or contrast first** — overview opens with a realistic code example **or** a **Problem → approach** table (pain vs package solution). No “5-minute picture” flowcharts or “Start here” tours.
+- **Precise, not casual** — avoid “plain English”, “Try it first”, “Level N”, or “no prior knowledge” framing.
+- **Balanced** — short prose between code blocks; tables for API mapping and learning paths.
+- **Action-oriented** — section outcomes (“After this step…”) instead of emoji checklists.
 
 ## Source layout
 
 ```
 packages/<name>/docs/
-  index.md           # Overview + learning path tables
-  concepts.md        # 3-minute mental model + diagram
-  getting-started.md # Step-by-step tutorial (numbered steps)
-  <topic>.md         # Progressive guides (Level 1 → 4)
+  index.md           # Use-case example → overview → documentation path
+  concepts.md        # Architecture and terminology
+  getting-started.md # Install → integrate → verify (tutorial)
+  <topic>.md         # Progressive depth (basics → advanced)
 ```
 
-Playground docs live in `apps/<name>-playground/docs/playground.md`.
+Playground docs: `apps/<name>-playground/docs/playground.md`
 
 ## Page structure
 
 ### Overview (`index.md`)
 
-- One-line value proposition
-- `::: info` callout explaining the package in plain language
-- Mermaid flowchart (5-minute picture)
-- **Learning path** tables: Beginner → Intermediate → Advanced
-- Each row: guide link + "Try it live" playground link
-- Install + copy-paste starter
-- "Is this the right package?" decision table
-- Reference links (API, playground guide)
+1. **Title + one-line scope** — what the package does in one sentence.
+2. **Example** — complete, copy-paste use case (the first thing readers see).
+3. **Problem → approach** — short table contrasting typical pain without the package vs what the API provides.
+4. **Overview** — 2–3 sentences on design intent and boundaries.
+5. **Documentation path** — ordered table: Guide | Topics covered | Playground.
+6. **Install** — `npm install` + minimal import.
+7. **Package fit** — when to use / when to use something else.
+8. **Reference** — API, playground guide, examples.
+
+Optional: mermaid diagram after Overview if the flow benefits from visualization.
 
 ### Core concepts (`concepts.md`)
 
-- **Previous / Next** navigation
-- Mermaid architecture diagram
-- Plain-English table mapping concepts to APIs
-- Forward links to tutorial and first topic guide
+- Previous / Next navigation
+- Architecture diagram (mermaid)
+- Terminology table: Concept | Responsibility | API
+- Links forward to tutorial and first topic guide
 
 ### Tutorial (`getting-started.md`)
 
-- Numbered steps with `---` separators
-- Each step ends with `✅ You now have…`
+- Prerequisites (runtime, package manager)
+- Numbered integration steps with `---` separators
+- Each step: code → **Outcome** (what is true after the step)
 - Recap table
-- "What to learn next" with playground links
+- Next topics with links
 
 ### Topic guides
 
-- **Previous / Next** at top
-- `::: tip Try it first` with playground link
-- **In plain English** section before code
-- **Level 1 → 4** progression (basics first)
+- Previous / Next at top
+- Playground link (`::: tip Playground`, not “Try it first”)
+- **Problem → approach** — contrast table before API sections
+- **Basics → Advanced** sections (named by behavior, not “Level 1–4”)
 - Cheat sheet + link to next guide
 
 ## Sidebar structure (VitePress)
@@ -55,33 +66,22 @@ Playground docs live in `apps/<name>-playground/docs/playground.md`.
 2. **Build your …** — numbered core guides
 3. **Go further** — optional advanced topics
 4. **Reference** — API, playground guide
-5. **Interactive** — Open playground ↗
+5. **Interactive** — Open playground ↗ (`target: "_blank"`)
 
-Legacy content (FAQ, patterns, best practices) stays collapsed under separate groups.
+## Playground links
 
-## Playground URLs
-
-Use site-relative paths so they work with `VITE_DOCS_BASE`:
-
-- `/playground/<package-slug>/`
-- `/playground/<package-slug>/<route>`
-
-Not `http://127.0.0.1:…` in user-facing docs.
+Use `resolvePlaygroundPath()` in sidebars. In markdown, link with `/playground/<name>/` (no `VITE_DOCS_BASE` prefix — VitePress prepends base automatically).
 
 ## Sync script
 
-`scripts/sync-documentation.mjs`:
-
-- `index.md` → `apps/docs/docs/packages/<name>/index.md`
-- Other docs → `apps/docs/docs/packages/<name>/modules/`
-- `rewrite*DocLinks()` transforms `./foo.md` → `/packages/<name>/modules/foo`
+`scripts/sync-documentation.mjs` — see existing `rewrite*DocLinks()` and index sync functions.
 
 ## Checklist for new packages
 
-- [ ] `packages/<name>/docs/index.md` with learning path
-- [ ] `concepts.md` + `getting-started.md`
-- [ ] Topic guides with Previous/Next + Try it first
+- [ ] `index.md` opens with a realistic code example
+- [ ] `concepts.md` + `getting-started.md` with developer tone
+- [ ] Topic guides with progressive depth
 - [ ] Sidebar in `apps/docs/docs/.vitepress/<name>-sidebar.ts`
-- [ ] Playground `docs/playground.md` with docs ↔ route map
+- [ ] Playground `docs/playground.md` with route map
 - [ ] Entry in `apps/docs/docs/packages/index.md`
-- [ ] Sync + format wired in `sync-documentation.mjs`
+- [ ] Wired in `sync-documentation.mjs`

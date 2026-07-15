@@ -4,19 +4,19 @@ Generate RFC 6902 JSON Patch operations and apply them to targets.
 
 **Previous:** [Diffing](/packages/object-diff/modules/diff) · **Next:** [Serialization](/packages/object-diff/modules/serialize)
 
-::: tip Try it first
+::: tip Playground
 [Open Patch explorer →](/playground/object-diff/patch) — generate ops from a diff and apply them interactively.
 :::
 
-## In plain English
+## Problem → approach
 
-1. `diff(a, b)` → change records
-2. `patch(diffResult)` → JSON Patch operations (`add`, `remove`, `replace`, …)
-3. `applyPatch(target, ops)` → new object matching the "after" snapshot
+| Typical pain                                              | Patch pipeline                                                                   |
+| --------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Sending full object snapshots over the wire on every edit | `patch(diffResult)` → compact `add` / `remove` / `replace` ops                   |
+| Mutating shared state when applying updates               | `applyPatch()` returns a new object; clone the target when you need the original |
+| Undo/redo requires storing full before/after copies       | `revertPatch(operations)` generates inverse ops for a stack                      |
 
----
-
-## Level 1 — Generate patch
+## Generate patch
 
 ```ts
 import { diff, patch } from "@jayoncode/object-diff";
@@ -26,9 +26,7 @@ const operations = patch(result);
 // [{ op: "replace", path: "/name", value: "Jane" }, ...]
 ```
 
----
-
-## Level 2 — Apply patch
+## Apply patch
 
 ```ts
 import { applyPatch } from "@jayoncode/object-diff";
@@ -38,9 +36,7 @@ const updated = applyPatch(structuredClone(before), operations);
 
 Always clone the target if you need to preserve the original.
 
----
-
-## Level 3 — Revert changes
+## Revert changes
 
 ```ts
 import { revertPatch } from "@jayoncode/object-diff";
@@ -49,8 +45,6 @@ const undoOps = revertPatch(operations);
 const restored = applyPatch(structuredClone(after), undoOps);
 ```
 
----
-
 ## Common patterns
 
 | Scenario           | Approach                                       |
@@ -58,8 +52,6 @@ const restored = applyPatch(structuredClone(after), undoOps);
 | Optimistic UI      | Apply patch locally; revert on server error    |
 | Collaborative edit | Send patch ops over the wire, not full objects |
 | Undo stack         | Store patches; `revertPatch` for undo          |
-
----
 
 ## Cheat sheet
 

@@ -4,17 +4,19 @@ Get structured change records from two object snapshots.
 
 **Previous:** [Tutorial](/packages/object-diff/modules/getting-started) · **Next:** [Patching](/packages/object-diff/modules/patch)
 
-::: tip Try it first
+::: tip Playground
 [Open Diff explorer →](/playground/object-diff/diff) — edit before/after JSON and inspect change records live.
 :::
 
-## In plain English
+## Problem → approach
 
-`diff(before, after)` walks both objects and returns every difference as a typed **change record** with path, type, and values.
+| Without structured diff                             | With `diff()`                                               |
+| --------------------------------------------------- | ----------------------------------------------------------- |
+| String compare or shallow `===` misses nested edits | Deep walk with path-addressable change records              |
+| Building a change list by hand for every form/store | `result.changes` with `type`, `path`, `before`, `after`     |
+| Full diff cost when you only need a dirty flag      | `hasChanges()` short-circuits without materializing changes |
 
----
-
-## Level 1 — Basic diff
+## Basics
 
 ```ts
 import { diff } from "@jayoncode/object-diff";
@@ -25,9 +27,7 @@ console.log(result.changes);
 console.log(result.metadata.changeCount);
 ```
 
----
-
-## Level 2 — Dirty check only
+## Dirty check only
 
 Skip building the full change list when you only need a boolean:
 
@@ -39,9 +39,7 @@ if (!hasChanges(savedState, currentState)) {
 }
 ```
 
----
-
-## Level 3 — Filtered helpers
+## Filtered helpers
 
 Extract subsets of changes:
 
@@ -54,9 +52,7 @@ const deleted = removed(result);
 const modified = updated(result);
 ```
 
----
-
-## Level 4 — Compare & options
+## Compare and options
 
 ```ts
 import { compare } from "@jayoncode/object-diff";
@@ -65,8 +61,6 @@ const equal = compare(objA, objB); // deep equality check
 ```
 
 Useful `diff()` options include `maxDepth`, `includeUnchanged`, and custom comparators — see [API Reference](/packages/object-diff/api/).
-
----
 
 ## Cheat sheet
 
