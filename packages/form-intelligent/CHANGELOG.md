@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1
+
+### Patch Changes
+
+- 1745931: Improve npm README title formatting and docs playground sidebar links (open in new tab).
+
 ## 0.1.0
 
 Initial public release of the headless form workflow engine for the JOC ecosystem.
