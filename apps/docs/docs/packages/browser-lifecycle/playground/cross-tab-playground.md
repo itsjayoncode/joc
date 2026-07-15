@@ -18,4 +18,3 @@ Demonstrates cross-tab coordination via `src/lib/playground-cross-tab.ts`.
 ## Interactive Playground
 
 Explore this topic live in the [Cross Tab Playground](http://127.0.0.1:4273/cross-tab).
-
