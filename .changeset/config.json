@@ -12,5 +12,26 @@
   "access": "public",
   "baseBranch": "master",
   "updateInternalDependencies": "patch",
-  "ignore": ["@jayoncode/docs", "@jayoncode/playground", "@jayoncode/shared"]
+  "ignore": [
+    "@jayoncode/docs",
+    "@jayoncode/playground",
+    "@jayoncode/browser-session-playground",
+    "@jayoncode/shared",
+    "@jayoncode/audit",
+    "@jayoncode/cache",
+    "@jayoncode/config",
+    "@jayoncode/doctor",
+    "@jayoncode/forms",
+    "@jayoncode/keyboard",
+    "@jayoncode/layers",
+    "@jayoncode/logger",
+    "@jayoncode/object-diff",
+    "@jayoncode/permissions",
+    "@jayoncode/queue",
+    "@jayoncode/request",
+    "@jayoncode/responsive",
+    "@jayoncode/scroll",
+    "@jayoncode/theme",
+    "@jayoncode/workflow"
+  ]
 }
