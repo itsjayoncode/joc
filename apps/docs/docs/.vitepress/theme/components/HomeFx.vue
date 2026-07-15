@@ -3,6 +3,7 @@ import { onMounted, onUnmounted, ref } from "vue";
 
 const enabled = ref(false);
 const hovering = ref(false);
+const lightCursor = ref(false);
 const cursorX = ref(-100);
 const cursorY = ref(-100);
 const ringX = ref(-100);
@@ -22,16 +23,10 @@ function isFinePointer(): boolean {
   return window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 }
 
-function onPointerMove(event: PointerEvent): void {
-  targetX = event.clientX;
-  targetY = event.clientY;
-  cursorX.value = targetX;
-  cursorY.value = targetY;
-}
-
-function onPointerOver(event: PointerEvent): void {
-  const target = event.target;
-  if (!(target instanceof Element)) {
+function updateCursorState(target: Element | null): void {
+  if (!target) {
+    hovering.value = false;
+    lightCursor.value = false;
     return;
   }
 
@@ -40,6 +35,23 @@ function onPointerOver(event: PointerEvent): void {
       "a, button, .VPFeature .box, .joc-scenario-card, .joc-package-card, .joc-cta-primary, .joc-cta-secondary, .VPButton",
     ),
   );
+
+  lightCursor.value = Boolean(target.closest(".joc-dark-band, .joc-cta-band"));
+}
+
+function onPointerMove(event: PointerEvent): void {
+  targetX = event.clientX;
+  targetY = event.clientY;
+  cursorX.value = targetX;
+  cursorY.value = targetY;
+
+  const target = event.target;
+  updateCursorState(target instanceof Element ? target : null);
+}
+
+function onPointerOver(event: PointerEvent): void {
+  const target = event.target;
+  updateCursorState(target instanceof Element ? target : null);
 }
 
 function tick(): void {
@@ -76,17 +88,20 @@ onUnmounted(() => {
     <div class="joc-home-fx__grid" />
     <div class="joc-home-fx__scanlines" />
     <div class="joc-home-fx__noise" />
+  </div>
 
+  <Teleport to="body">
     <template v-if="enabled">
       <div
         class="joc-home-fx__cursor"
+        :class="{ 'is-light': lightCursor }"
         :style="{ transform: `translate3d(${cursorX}px, ${cursorY}px, 0)` }"
       />
       <div
         class="joc-home-fx__cursor-ring"
-        :class="{ 'is-hover': hovering }"
+        :class="{ 'is-hover': hovering, 'is-light': lightCursor }"
         :style="{ transform: `translate3d(${ringX}px, ${ringY}px, 0)` }"
       />
     </template>
-  </div>
+  </Teleport>
 </template>
