@@ -63,14 +63,14 @@ lifecycle.dispose();
 ## Documentation
 
 - [Package overview](https://itsjayoncode.github.io/joc/packages/browser-lifecycle/)
-- [Quick start guide](https://itsjayoncode.github.io/joc/guides/browser-lifecycle/quick-start)
-- [Configuration](https://itsjayoncode.github.io/joc/guides/browser-lifecycle/configuration)
-- [Interactive playground](https://itsjayoncode.github.io/joc/playground/playground)
+- [Quick start guide](https://itsjayoncode.github.io/joc/packages/browser-lifecycle/guides/quick-start)
+- [Configuration](https://itsjayoncode.github.io/joc/packages/browser-lifecycle/guides/configuration)
+- [Interactive playground](https://itsjayoncode.github.io/joc/packages/browser-lifecycle/playground/playground)
 
 ## Requirements
 
 - **Node.js** 20+ (for tooling)
-- **Browsers**: modern evergreen browsers; see [browser support](https://itsjayoncode.github.io/joc/guides/browser-lifecycle/browser-support)
+- **Browsers**: modern evergreen browsers; see [browser support](https://itsjayoncode.github.io/joc/packages/browser-lifecycle/guides/browser-support)
 
 ## Repository
 

@@ -29,3 +29,4 @@ That sequence matters. It keeps the ecosystem coherent as more packages are adde
 1. Read [Installation](/getting-started/installation) to understand the workspace setup.
 2. Read [Philosophy](/getting-started/philosophy) to understand JOC's package rules.
 3. Read [Ecosystem](/getting-started/ecosystem) to understand how the repository is organized.
+4. Browse the [package catalog](/packages/) and start with [Browser Lifecycle](/packages/browser-lifecycle/).

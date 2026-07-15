@@ -3,7 +3,7 @@
   "name": "@jayoncode/browser-lifecycle API",
   "entryPoints": ["./src/index.ts"],
   "tsconfig": "./tsconfig.json",
-  "out": "../../apps/docs/docs/api/browser-lifecycle",
+  "out": "../../apps/docs/docs/packages/browser-lifecycle/api",
   "plugin": ["typedoc-plugin-markdown"],
   "readme": "none",
   "excludePrivate": true,

@@ -1,20 +1,43 @@
 # Ecosystem
 
-JOC is one repository, but it is not one library.
+JOC is one repository, but it is not one library. It is a **monorepo of `@jayoncode/*` packages** — each focused, independently installable, and documented under its own section on this site.
 
 ## Repository areas
 
-- `apps/` contains first-party applications such as this docs site and the playground.
-- `packages/` contains future public libraries and internal shared workspace code.
-- `examples/` contains future example references.
-- `templates/` contains reusable scaffolds such as the standard JOC package template.
-- `engineering/` documents the architectural and operational model.
-- `.github/` contains the collaboration and automation layer.
-
-## Growth model
-
-JOC is expected to grow into many packages over time. The repository is structured so new packages can be added without redesigning the docs, tooling, or automation around them.
+| Area | Purpose |
+| --- | --- |
+| `packages/` | Public libraries (`@jayoncode/*`) and internal shared workspace code |
+| `apps/` | First-party applications — docs site and browser session playground |
+| `examples/` | Framework integration examples (starting with browser-lifecycle) |
+| `templates/` | Reusable scaffolds such as the standard JOC package template |
+| `engineering/` | Architectural and operational model |
+| `.github/` | Collaboration and automation |
 
 ## Documentation model
 
-Each planned package gets a stable placeholder page early. That keeps navigation and information architecture consistent even before implementation begins.
+Docs are organized in two layers:
+
+### Monorepo (JayOnCode / JOC)
+
+- [Introduction](/getting-started/introduction)
+- [Philosophy](/getting-started/philosophy)
+- [Package catalog](/packages/)
+- [Contributor guides](/guides/contribution)
+- [Roadmap](/roadmap/) and [changelog](/changelog/)
+
+### Per package
+
+Each package owns its documentation namespace under `/packages/<name>/`:
+
+- Overview and installation
+- Guides, API reference, examples, FAQ
+- Patterns, tutorials, best practices (where applicable)
+- Playground docs (where applicable)
+
+**Live today:** [Browser Lifecycle](/packages/browser-lifecycle/) — guides, API, examples, FAQ, patterns, and playground docs are all under that package path.
+
+**Coming soon:** placeholder pages exist for Request, Scroll, Keyboard, Theme, Forms, and other planned packages so navigation stays consistent as they ship.
+
+## Growth model
+
+New packages follow the same blueprint: source docs in the package repo path, sync scripts into VitePress, and a dedicated sidebar under `/packages/<name>/`. That keeps the monorepo coherent as the collection grows.
