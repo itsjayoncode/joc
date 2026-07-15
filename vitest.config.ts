@@ -11,10 +11,9 @@ export default defineConfig({
   resolve: {
     alias: [
       {
-        find: "@jayoncode/browser-lifecycle",
-        replacement: path.join(rootDir, "packages/browser-lifecycle/src/index.ts"),
+        find: /^@jayoncode\/(.+)$/,
+        replacement: path.join(rootDir, "packages/$1/src/index.ts"),
       },
-      { find: /^@joc\/(.+)$/, replacement: path.join(rootDir, "packages/$1/src/index.ts") },
     ],
   },
   test: {
@@ -33,6 +32,8 @@ export default defineConfig({
           include: [
             "packages/**/*.{test,spec}.ts",
             "packages/**/*.{test,spec}.tsx",
+            "apps/browser-session-playground/src/**/*.{test,spec}.ts",
+            "apps/browser-session-playground/src/**/*.{test,spec}.tsx",
             "tests/**/*.{test,spec}.ts",
             "tests/**/*.{test,spec}.tsx",
           ],
@@ -44,7 +45,7 @@ export default defineConfig({
             "**/dist/**",
             "**/build/**",
             "**/coverage/**",
-            "**/lib/**",
+            "packages/**/lib/**",
             "**/node_modules/**",
           ],
           environment: "node",
@@ -68,7 +69,7 @@ export default defineConfig({
             "**/dist/**",
             "**/build/**",
             "**/coverage/**",
-            "**/lib/**",
+            "packages/**/lib/**",
             "**/node_modules/**",
           ],
           environment: "jsdom",

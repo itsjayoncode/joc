@@ -1,5 +1,5 @@
 {
-  "name": "@joc/logger",
+  "name": "@jayoncode/logger",
   "version": "0.0.0",
   "private": false,
   "description": "Future logger package for the JOC ecosystem.",

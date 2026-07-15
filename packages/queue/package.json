@@ -1,5 +1,5 @@
 {
-  "name": "@joc/queue",
+  "name": "@jayoncode/queue",
   "version": "0.0.0",
   "private": false,
   "description": "Future queue package for the JOC ecosystem.",

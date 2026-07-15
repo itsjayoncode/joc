@@ -36,7 +36,10 @@ try {
     failures.push('Changesets baseBranch should be "main".');
   }
 
-  if (!Array.isArray(changesetConfig.ignore) || !changesetConfig.ignore.includes("@joc/shared")) {
+  if (
+    !Array.isArray(changesetConfig.ignore) ||
+    !changesetConfig.ignore.includes("@jayoncode/shared")
+  ) {
     failures.push("Changesets ignore list should exclude the internal shared package.");
   }
 } catch {

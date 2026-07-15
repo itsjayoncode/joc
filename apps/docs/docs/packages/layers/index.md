@@ -4,7 +4,7 @@
 
 ## Introduction
 
-`@joc/layers` is reserved for future layering, overlay, and stacking utilities.
+`@jayoncode/layers` is reserved for future layering, overlay, and stacking utilities.
 
 ## Installation
 

@@ -1,4 +1,4 @@
-# @joc/cache
+# @jayoncode/cache
 
 This package is reserved for future cache management utilities within the JOC ecosystem.
 

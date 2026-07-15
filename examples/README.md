@@ -1,13 +1,21 @@
-# Examples
+# Browser Lifecycle Framework Examples
 
-This directory contains placeholder example areas that will eventually demonstrate how JOC packages work in real projects.
+Official reference implementations for integrating `@jayoncode/browser-lifecycle` across common web stacks.
 
-The current example structure prepares focused areas for:
+| Example            | Path                | Highlights                           |
+| ------------------ | ------------------- | ------------------------------------ |
+| Vanilla TypeScript | `examples/vanilla`  | Direct session ownership and cleanup |
+| React              | `examples/react`    | Provider + hooks                     |
+| Vue 3              | `examples/vue`      | Composables                          |
+| Angular            | `examples/angular`  | Injectable service + `DestroyRef`    |
+| Svelte             | `examples/svelte`   | Store-backed session                 |
+| Next.js            | `examples/nextjs`   | Client-only App Router component     |
+| Electron           | `examples/electron` | Renderer process lifecycle           |
+| PWA                | `examples/pwa`      | Offline and reconnect patterns       |
 
-- `browser-lifecycle`
-- `request`
-- `theme`
-- `scroll`
-- `forms`
+Construction documents may refer to `createBrowserSession()` and `@jayoncode/browser-session`. The canonical package and factory are `@jayoncode/browser-lifecycle` and `createBrowserLifecycle()`.
 
-No feature implementation is included yet.
+See also:
+
+- `docs/examples.md`
+- `packages/browser-lifecycle/examples/`

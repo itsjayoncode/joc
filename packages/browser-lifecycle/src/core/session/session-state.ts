@@ -2,14 +2,8 @@
 import { LifecycleError } from "../../errors/index.js";
 import { deepFreeze } from "../../utils/index.js";
 
-import type {
-  BrowserLifecyclePhase,
-  BrowserLifecycleSnapshot,
-} from "./types.js";
-import type {
-  BrowserLifecycleCapabilities,
-  DeepReadonly,
-} from "../../types/index.js";
+import type { BrowserLifecyclePhase, BrowserLifecycleSnapshot } from "./types.js";
+import type { BrowserLifecycleCapabilities, DeepReadonly } from "../../types/index.js";
 
 const ALLOWED_PHASE_TRANSITIONS: Record<BrowserLifecyclePhase, readonly BrowserLifecyclePhase[]> = {
   created: ["disposed", "running"],

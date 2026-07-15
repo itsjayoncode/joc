@@ -282,14 +282,14 @@ Lessons learned:
 
 ## Competitive Analysis
 
-| Approach | Developer Experience | API Consistency | Framework Support | Browser Support Strategy | Bundle Size | Maintenance | Extensibility | Testing Surface | Documentation Depth |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Native Browser APIs | low to medium | low | universal | depends on each team | minimal | high app burden | high raw flexibility | app-owned | fragmented |
-| PageLifecycle.js style approach | medium | medium | framework neutral | focused on lifecycle APIs | small | moderate | limited | narrower | strong in its area |
-| Framework hooks | medium to high in-framework | low across ecosystems | narrow | varies by package | small to medium | repeated per framework | medium | package-specific | uneven |
-| Idle timer libraries | medium for idle use cases | narrow | varies | usually broad enough for idle inputs | small to medium | moderate | narrow | focused | moderate |
-| Custom internal lifecycle layer | medium locally | low across teams | app-specific | app-specific | unknown | high long-term | high locally | inconsistent | usually weak |
-| Browser Lifecycle Manager target | high | high | framework neutral core | capability-driven with fallbacks | small | centralized package maintenance | high through disciplined extension | package-owned | intentionally deep |
+| Approach                         | Developer Experience        | API Consistency       | Framework Support      | Browser Support Strategy             | Bundle Size     | Maintenance                     | Extensibility                      | Testing Surface  | Documentation Depth |
+| -------------------------------- | --------------------------- | --------------------- | ---------------------- | ------------------------------------ | --------------- | ------------------------------- | ---------------------------------- | ---------------- | ------------------- |
+| Native Browser APIs              | low to medium               | low                   | universal              | depends on each team                 | minimal         | high app burden                 | high raw flexibility               | app-owned        | fragmented          |
+| PageLifecycle.js style approach  | medium                      | medium                | framework neutral      | focused on lifecycle APIs            | small           | moderate                        | limited                            | narrower         | strong in its area  |
+| Framework hooks                  | medium to high in-framework | low across ecosystems | narrow                 | varies by package                    | small to medium | repeated per framework          | medium                             | package-specific | uneven              |
+| Idle timer libraries             | medium for idle use cases   | narrow                | varies                 | usually broad enough for idle inputs | small to medium | moderate                        | narrow                             | focused          | moderate            |
+| Custom internal lifecycle layer  | medium locally              | low across teams      | app-specific           | app-specific                         | unknown         | high long-term                  | high locally                       | inconsistent     | usually weak        |
+| Browser Lifecycle Manager target | high                        | high                  | framework neutral core | capability-driven with fallbacks     | small           | centralized package maintenance | high through disciplined extension | package-owned    | intentionally deep  |
 
 Opportunities for differentiation:
 

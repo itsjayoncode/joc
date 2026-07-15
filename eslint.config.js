@@ -17,9 +17,12 @@ export default tseslint.config(
       "**/dist/**",
       "**/build/**",
       "**/coverage/**",
+      "**/.vitepress/cache/**",
+      "**/.vitepress/.temp/**",
       "**/lib/**",
       "**/node_modules/**",
       ".turbo/**",
+      "examples/**",
       "eslint.config.js",
       "prettier.config.js",
       "vitest.config.ts",
@@ -81,7 +84,7 @@ export default tseslint.config(
           groups: ["builtin", "external", "internal", ["parent", "sibling", "index"], "type"],
           pathGroups: [
             {
-              pattern: "@joc/**",
+              pattern: "@jayoncode/**",
               group: "internal",
               position: "after",
             },
@@ -109,9 +112,10 @@ export default tseslint.config(
       "packages/**/*.{test,spec}.tsx",
       "apps/playground/src/**/*.{test,spec}.ts",
       "apps/playground/src/**/*.{test,spec}.tsx",
+      "apps/browser-session-playground/src/**/*.{test,spec}.ts",
+      "apps/browser-session-playground/src/**/*.{test,spec}.tsx",
       "tests/**/*.{ts,tsx}",
       "test-utils/**/*.{ts,tsx}",
-      "examples/**/*.{ts,tsx}",
     ],
     languageOptions: {
       parserOptions: {
@@ -130,6 +134,8 @@ export default tseslint.config(
       "apps/docs/docs/.vitepress/config.ts",
       "apps/docs/docs/.vitepress/theme/index.ts",
       "apps/playground/vite.config.ts",
+      "apps/browser-session-playground/vite.config.ts",
+      "apps/browser-session-playground/vitest.config.ts",
     ],
     rules: {
       "import/no-default-export": "off",

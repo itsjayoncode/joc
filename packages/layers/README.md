@@ -1,4 +1,4 @@
-# @joc/layers
+# @jayoncode/layers
 
 This package is reserved for future layering, overlay, and stacking utilities within the JOC ecosystem.
 

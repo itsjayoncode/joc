@@ -1,4 +1,4 @@
-# @joc/permissions
+# @jayoncode/permissions
 
 This package is reserved for future permission and authorization modeling utilities within the JOC ecosystem.
 

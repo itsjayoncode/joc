@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `@joc/package-name` will be documented in this file.
+All notable changes to `@jayoncode/package-name` will be documented in this file.
 
 ## Unreleased
 

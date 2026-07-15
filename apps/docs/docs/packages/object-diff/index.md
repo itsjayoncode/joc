@@ -4,7 +4,7 @@
 
 ## Introduction
 
-`@joc/object-diff` is reserved for future object comparison and diffing utilities.
+`@jayoncode/object-diff` is reserved for future object comparison and diffing utilities.
 
 ## Installation
 

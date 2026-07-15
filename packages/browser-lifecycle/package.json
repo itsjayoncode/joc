@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/browser-lifecycle",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": false,
   "description": "Browser lifecycle manager infrastructure for the JOC ecosystem.",
   "license": "MIT",

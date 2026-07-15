@@ -4,7 +4,7 @@
 
 ## Introduction
 
-`@joc/permissions` is reserved for future permission and authorization modeling.
+`@jayoncode/permissions` is reserved for future permission and authorization modeling.
 
 ## Installation
 

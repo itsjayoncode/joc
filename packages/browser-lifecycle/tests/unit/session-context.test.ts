@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { createSessionContext, createSessionLogger } from "../../src/core/session/session-context.js";
+import {
+  createSessionContext,
+  createSessionLogger,
+} from "../../src/core/session/session-context.js";
 import { SessionStateStore } from "../../src/core/session/session-state.js";
 import { TypedEventEmitter } from "../../src/events/index.js";
 
@@ -25,6 +28,9 @@ describe("session context", () => {
       {
         abortController: true,
         broadcastChannel: false,
+        connectivity: false,
+        idle: false,
+        focus: false,
         pageLifecycle: false,
         requestIdleCallback: false,
         visibility: true,

@@ -4,7 +4,7 @@
 
 ## Introduction
 
-`@joc/audit` is reserved for future audit and observability helpers.
+`@jayoncode/audit` is reserved for future audit and observability helpers.
 
 ## Installation
 

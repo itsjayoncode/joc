@@ -1,4 +1,4 @@
-# @joc/scroll
+# @jayoncode/scroll
 
 This package is reserved for future scrolling utilities and interaction primitives within the JOC ecosystem.
 

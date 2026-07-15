@@ -1,5 +1,10 @@
 /* v8 ignore file */
+import type { BrowserLifecycleRuntimeDiagnostics } from "../../diagnostics/types.js";
 import type { TypedEventEmitter } from "../../events/index.js";
+import type {
+  BrowserLifecyclePluginDiagnostic,
+  BrowserLifecyclePluginHookLogEntry,
+} from "../../plugins/types.js";
 import type {
   BrowserLifecycleCapabilities,
   BrowserLifecyclePlugin,
@@ -37,13 +42,7 @@ export type BrowserLifecycleConnectivityState = "offline" | "online" | "unknown"
  * Normalized lifecycle state placeholder for current and future modules.
  */
 export type BrowserLifecyclePageState =
-  | "active"
-  | "discarded"
-  | "frozen"
-  | "hidden"
-  | "passive"
-  | "terminated"
-  | "unknown";
+  "active" | "discarded" | "frozen" | "hidden" | "passive" | "terminated" | "unknown";
 
 /**
  * Normalized tab role placeholder for current and future modules.
@@ -62,6 +61,20 @@ export type BrowserLifecycleEventSource =
   | "plugin"
   | "transport"
   | "visibility";
+
+/**
+ * Metadata carried by page:visible events.
+ */
+export interface PageVisibleEventMetadata extends PlainObject {
+  readonly reason: "initial" | "visibilitychange";
+}
+
+/**
+ * Metadata carried by page:hidden events.
+ */
+export interface PageHiddenEventMetadata extends PageVisibleEventMetadata {
+  readonly likelyLastSignal: boolean;
+}
 
 /**
  * Timestamp metadata exposed in snapshot reads.
@@ -94,8 +107,11 @@ export interface BrowserLifecycleSnapshot {
  * Public event names reserved by Browser Lifecycle Manager.
  */
 export type BrowserLifecycleEventName =
+  | "activity:detected"
+  | "activity:reset"
   | "connection:offline"
   | "connection:online"
+  | "connection:reconnect"
   | "page:hidden"
   | "page:resume"
   | "page:suspend"
@@ -110,6 +126,7 @@ export type BrowserLifecycleEventName =
   | "session:stopped"
   | "tab:primary"
   | "tab:secondary"
+  | "tab:message"
   | "window:blur"
   | "window:focus";
 
@@ -135,28 +152,43 @@ export interface BrowserLifecycleEvent<
  * Public event payload map used by the Session Core event API.
  */
 export interface BrowserLifecycleEventMap {
+  readonly "activity:detected": BrowserLifecycleEvent<
+    "activity:detected",
+    "active",
+    BrowserLifecycleActivityState,
+    { readonly activitySource: string } | undefined
+  >;
+  readonly "activity:reset": BrowserLifecycleEvent<
+    "activity:reset",
+    "active",
+    BrowserLifecycleActivityState,
+    { readonly activitySource: string } | undefined
+  >;
   readonly "connection:offline": BrowserLifecycleEvent<
     "connection:offline",
     "offline",
     BrowserLifecycleConnectivityState,
-    { readonly advisory: true } | undefined
+    { readonly advisory: true; readonly reason?: "initial" | "offline" } | undefined
   >;
   readonly "connection:online": BrowserLifecycleEvent<
     "connection:online",
     "online",
     BrowserLifecycleConnectivityState,
-    { readonly advisory: true } | undefined
+    { readonly advisory: true; readonly reason?: "initial" | "online" } | undefined
+  >;
+  readonly "connection:reconnect": BrowserLifecycleEvent<
+    "connection:reconnect",
+    "online",
+    "offline",
+    { readonly advisory: true; readonly offlineDuration: number } | undefined
   >;
   readonly "page:hidden": BrowserLifecycleEvent<
     "page:hidden",
     "hidden",
-    BrowserLifecycleVisibilityState
+    BrowserLifecycleVisibilityState,
+    PageHiddenEventMetadata
   >;
-  readonly "page:resume": BrowserLifecycleEvent<
-    "page:resume",
-    "active",
-    BrowserLifecyclePageState
-  >;
+  readonly "page:resume": BrowserLifecycleEvent<"page:resume", "active", BrowserLifecyclePageState>;
   readonly "page:suspend": BrowserLifecycleEvent<
     "page:suspend",
     "hidden" | "frozen" | "terminated",
@@ -165,7 +197,8 @@ export interface BrowserLifecycleEventMap {
   readonly "page:visible": BrowserLifecycleEvent<
     "page:visible",
     "visible",
-    BrowserLifecycleVisibilityState
+    BrowserLifecycleVisibilityState,
+    PageVisibleEventMetadata
   >;
   readonly "plugin:error": BrowserLifecycleEvent<
     "plugin:error",
@@ -188,12 +221,22 @@ export interface BrowserLifecycleEventMap {
   readonly "session:active": BrowserLifecycleEvent<
     "session:active",
     "active",
-    BrowserLifecycleActivityState
+    BrowserLifecycleActivityState,
+    | {
+        readonly activitySource: string;
+        readonly idleDuration?: number;
+      }
+    | undefined
   >;
   readonly "session:idle": BrowserLifecycleEvent<
     "session:idle",
     "idle",
-    BrowserLifecycleActivityState
+    BrowserLifecycleActivityState,
+    | {
+        readonly idleTimeout: number;
+        readonly lastActivityAt: number;
+      }
+    | undefined
   >;
   readonly "session:restored": BrowserLifecycleEvent<
     "session:restored",
@@ -215,12 +258,25 @@ export interface BrowserLifecycleEventMap {
   readonly "tab:primary": BrowserLifecycleEvent<
     "tab:primary",
     "primary",
-    BrowserLifecycleTabState
+    BrowserLifecycleTabState,
+    { readonly reason?: string; readonly tabId?: string; readonly transport?: string } | undefined
   >;
   readonly "tab:secondary": BrowserLifecycleEvent<
     "tab:secondary",
     "secondary",
-    BrowserLifecycleTabState
+    BrowserLifecycleTabState,
+    { readonly reason?: string; readonly tabId?: string; readonly transport?: string } | undefined
+  >;
+  readonly "tab:message": BrowserLifecycleEvent<
+    "tab:message",
+    "message",
+    undefined,
+    | {
+        readonly messageType: string;
+        readonly senderId: string;
+        readonly value?: string;
+      }
+    | undefined
   >;
   readonly "window:blur": BrowserLifecycleEvent<
     "window:blur",
@@ -255,6 +311,9 @@ export type BrowserLifecycleSubscriber = (
 export interface BrowserLifecycle {
   dispose(): void;
   getCapabilities(): Readonly<BrowserLifecycleCapabilities>;
+  getPluginHookLog(): readonly BrowserLifecyclePluginHookLogEntry[];
+  getPlugins(): readonly BrowserLifecyclePluginDiagnostic[];
+  getRuntimeDiagnostics(): BrowserLifecycleRuntimeDiagnostics;
   getSnapshot(): Readonly<BrowserLifecycleSnapshot>;
   isRunning(): boolean;
   off<TEventName extends BrowserLifecycleEventName>(
@@ -269,6 +328,7 @@ export interface BrowserLifecycle {
     event: TEventName,
     listener: BrowserLifecycleEventListener<TEventName>,
   ): () => void;
+  setPluginEnabled(pluginId: string, enabled: boolean): void;
   start(): void;
   stop(): void;
   subscribe(listener: BrowserLifecycleSubscriber): () => void;
@@ -288,6 +348,141 @@ export interface SessionLogger {
  * Internal session events reserved for Session Core orchestration.
  */
 export interface InternalSessionEventMap {
+  readonly "internal:activity-changed":
+    | {
+        readonly current: "active";
+        readonly metadata: {
+          readonly activitySource: string;
+          readonly idleDuration?: number;
+        };
+        readonly previous: BrowserLifecycleActivityState;
+        readonly timestamp: number;
+        readonly type: "session:active";
+      }
+    | {
+        readonly current: "idle";
+        readonly metadata: {
+          readonly idleTimeout: number;
+          readonly lastActivityAt: number;
+        };
+        readonly previous: BrowserLifecycleActivityState;
+        readonly timestamp: number;
+        readonly type: "session:idle";
+      };
+  readonly "internal:activity-detected": {
+    readonly metadata: {
+      readonly activitySource: string;
+    };
+    readonly timestamp: number;
+    readonly type: "activity:detected";
+  };
+  readonly "internal:activity-reset": {
+    readonly metadata: {
+      readonly activitySource: string;
+    };
+    readonly timestamp: number;
+    readonly type: "activity:reset";
+  };
+  readonly "internal:connectivity-changed":
+    | {
+        readonly current: "offline";
+        readonly metadata: {
+          readonly advisory: true;
+          readonly reason: "initial" | "offline";
+        };
+        readonly previous: BrowserLifecycleConnectivityState;
+        readonly timestamp: number;
+        readonly type: "connection:offline";
+      }
+    | {
+        readonly current: "online";
+        readonly metadata: {
+          readonly advisory: true;
+          readonly reason: "initial" | "online";
+        };
+        readonly previous: BrowserLifecycleConnectivityState;
+        readonly timestamp: number;
+        readonly type: "connection:online";
+      };
+  readonly "internal:cross-tab-changed":
+    | {
+        readonly current: "primary";
+        readonly metadata: {
+          readonly reason: string;
+          readonly tabId: string;
+          readonly transport: string;
+        };
+        readonly previous: BrowserLifecycleTabState;
+        readonly timestamp: number;
+        readonly type: "tab:primary";
+      }
+    | {
+        readonly current: "secondary";
+        readonly metadata: {
+          readonly reason: string;
+          readonly tabId: string;
+          readonly transport: string;
+        };
+        readonly previous: BrowserLifecycleTabState;
+        readonly timestamp: number;
+        readonly type: "tab:secondary";
+      };
+  readonly "internal:cross-tab-message": {
+    readonly message: {
+      readonly senderId: string;
+      readonly timestamp: number;
+      readonly type: string;
+      readonly value?: string;
+    };
+    readonly tabId: string;
+    readonly timestamp: number;
+  };
+  readonly "internal:focus-changed":
+    | {
+        readonly current: "focused";
+        readonly metadata: { readonly reason: "focus" | "initial" };
+        readonly previous: BrowserLifecycleAttentionState;
+        readonly timestamp: number;
+        readonly type: "window:focus";
+      }
+    | {
+        readonly current: "unfocused";
+        readonly metadata: { readonly reason: "blur" | "initial" };
+        readonly previous: BrowserLifecycleAttentionState;
+        readonly timestamp: number;
+        readonly type: "window:blur";
+      };
+  readonly "internal:lifecycle-changed":
+    | {
+        readonly current: "active";
+        readonly metadata: {
+          readonly reason: string;
+          readonly resumeSource: string;
+        };
+        readonly previous: BrowserLifecyclePageState;
+        readonly timestamp: number;
+        readonly type: "page:resume";
+      }
+    | {
+        readonly current: "frozen" | "hidden";
+        readonly metadata: {
+          readonly lifecycleSignal: string;
+          readonly reason: string;
+        };
+        readonly previous: BrowserLifecyclePageState;
+        readonly timestamp: number;
+        readonly type: "page:suspend";
+      }
+    | {
+        readonly current: "running";
+        readonly metadata: {
+          readonly persisted: boolean;
+          readonly restoreSource: string;
+        };
+        readonly previous: BrowserLifecyclePageState | BrowserLifecyclePhase;
+        readonly timestamp: number;
+        readonly type: "session:restored";
+      };
   readonly "internal:lifecycle-transition": {
     readonly nextPhase: BrowserLifecyclePhase;
     readonly previousPhase: BrowserLifecyclePhase;
@@ -299,6 +494,21 @@ export interface InternalSessionEventMap {
   readonly "internal:module-unregistered": {
     readonly moduleId: string;
   };
+  readonly "internal:visibility-changed":
+    | {
+        readonly current: "hidden";
+        readonly metadata: PageHiddenEventMetadata;
+        readonly previous: BrowserLifecycleVisibilityState;
+        readonly timestamp: number;
+        readonly type: "page:hidden";
+      }
+    | {
+        readonly current: "visible";
+        readonly metadata: PageVisibleEventMetadata;
+        readonly previous: BrowserLifecycleVisibilityState;
+        readonly timestamp: number;
+        readonly type: "page:visible";
+      };
 }
 
 /**

@@ -1,5 +1,5 @@
 import * as browserLifecycleModule from "@jayoncode/browser-lifecycle";
-import * as sharedModule from "@joc/shared";
+import * as sharedModule from "@jayoncode/shared";
 
 export type PlaygroundExample = {
   id: string;
@@ -21,7 +21,8 @@ export const playgroundExamples: PlaygroundExample[] = [
   {
     id: "browser-lifecycle",
     name: "Browser Lifecycle Sandbox",
-    summary: "Reserved for future browser lifecycle manager experiments and browser-driven debugging.",
+    summary:
+      "Reserved for future browser lifecycle manager experiments and browser-driven debugging.",
     packageName: "@jayoncode/browser-lifecycle",
     status: "ready-for-wiring",
     details: [
@@ -35,7 +36,7 @@ export const playgroundExamples: PlaygroundExample[] = [
     name: "Shared Workspace Probe",
     summary:
       "Confirms the internal shared workspace package can be consumed locally by the playground.",
-    packageName: "@joc/shared",
+    packageName: "@jayoncode/shared",
     status: "ready-for-wiring",
     details: [
       "Internal workspace code should remain private while still being usable across the repo.",

@@ -1,0 +1,6 @@
+{
+  "buildCommand": "pnpm browser-session-playground:build",
+  "outputDirectory": "apps/browser-session-playground/dist",
+  "framework": "vite",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}

@@ -3,7 +3,20 @@ node_modules
 dist
 build
 lib
+!apps/browser-session-playground/src/lib/
+!apps/browser-session-playground/src/lib/**
 coverage/*
 !coverage/README.md
 *.tsbuildinfo
 .DS_Store
+
+# VitePress generated output
+**/.vitepress/cache/
+**/.vitepress/.temp/
+
+# Generated documentation (produced by pnpm docs:prepare)
+apps/docs/docs/api/browser-lifecycle/
+apps/docs/docs/packages/browser-lifecycle/modules/
+apps/docs/docs/playground/
+apps/docs/docs/examples/index.md
+_construction

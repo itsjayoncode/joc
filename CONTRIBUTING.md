@@ -4,13 +4,13 @@ Thank you for considering a contribution to JOC.
 
 ## Current Stage
 
-JOC is in its repository foundation phase. The focus right now is architecture, repository clarity, and future package standards rather than feature delivery.
+JOC has completed Phase 1 and Phase 3 playground release (v1.0.0). `@jayoncode/browser-lifecycle` is at v0.1.0 and ready for npm publication. Contributions should align with the current milestone described in [ROADMAP.md](./ROADMAP.md).
 
 ## How to Contribute Right Now
 
-- Improve documentation clarity.
-- Propose structural or architectural refinements.
-- Help identify package boundaries and naming issues early.
+- Improve documentation clarity and keep status docs aligned with implementation progress.
+- Help implement and test Browser Lifecycle modules and playground pages.
+- Propose structural or architectural refinements with clear package-boundary rationale.
 - Review engineering guidance for contributor usability.
 
 ## Before Opening Significant Changes
@@ -52,7 +52,9 @@ Write release notes from the package consumer's perspective. Call out breaking c
 
 ## Package Standards
 
-When package implementation begins, use the reusable blueprint in `templates/package-template/` and the standards documents in `engineering/008-package-architecture.md` through `engineering/016-package-checklist.md`.
+Use the reusable blueprint in `templates/package-template/` and the standards documents in `engineering/008-package-architecture.md` through `engineering/016-package-checklist.md`. Production packages with real implementation are also validated by `pnpm package:blueprint`.
+
+For Browser Lifecycle work, read the package-local engineering docs in `packages/browser-lifecycle/engineering/` before changing public APIs.
 
 ## Code of Conduct
 

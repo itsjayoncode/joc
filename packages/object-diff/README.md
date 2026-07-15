@@ -1,4 +1,4 @@
-# @joc/object-diff
+# @jayoncode/object-diff
 
 This package is reserved for future object comparison and diffing utilities within the JOC ecosystem.
 

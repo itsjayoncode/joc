@@ -1,43 +1,69 @@
-# Browser Lifecycle Manager
+# Browser Lifecycle
 
-> Status: Planned package. No public implementation exists yet.
+`@jayoncode/browser-lifecycle` is the official browser lifecycle manager for the JOC ecosystem.
 
-## Introduction
+Construction docs refer to this package as **Browser Session**. The canonical public API is `createBrowserLifecycle()` and the published package name is `@jayoncode/browser-lifecycle`.
 
-`@jayoncode/browser-lifecycle` is reserved for a future browser lifecycle manager and lifecycle orchestration primitives.
+## What it provides
 
-## Installation
+- Session lifecycle orchestration (`created`, `running`, `stopped`, `disposed`)
+- Readonly runtime snapshots and capability detection
+- Typed public events and full event feed subscriptions
+- Visibility, focus, connectivity, idle, lifecycle, and cross-tab modules
+- Plugin registration, lifecycle hooks, and runtime diagnostics
+- Configuration helpers and infrastructure error types
+- SSR-safe feature detection utilities
 
-Installation instructions will be added when the package is ready for release.
+## Quick start
 
-## Quick Start
+```ts
+import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
 
-Quick start examples will be added after the first implementation milestone.
+const lifecycle = createBrowserLifecycle({ autoStart: true });
 
-## API
+lifecycle.on("page:visible", () => {
+  console.log("Page became visible");
+});
 
-API reference is not available yet.
+lifecycle.on("page:hidden", () => {
+  console.log("Page became hidden");
+});
+```
 
-## Events
+## Documentation map
 
-Event documentation will be added if the package exposes an event model.
+| Topic              | Page                                                                   |
+| ------------------ | ---------------------------------------------------------------------- |
+| Installation       | [Installation](/packages/browser-lifecycle/installation)               |
+| Usage              | [Usage Guide](/guides/browser-lifecycle/usage)                         |
+| Configuration      | [Configuration](/guides/browser-lifecycle/configuration)               |
+| Modules            | [Module docs](/packages/browser-lifecycle/modules/core-infrastructure) |
+| API Reference      | [Generated API](/api/browser-lifecycle/)                               |
+| Playground         | [Interactive docs](http://127.0.0.1:4273)                              |
+| Framework examples | [Examples](/examples/)                                                 |
+| Best practices     | [Best Practices](/best-practices/)                                     |
+| Patterns           | [Common Patterns](/patterns/)                                          |
+| FAQ                | [FAQ](/faq/)                                                           |
 
-## Examples
+## Interactive playground
 
-Examples will be linked from the docs site and the playground once real behavior exists.
+Every major module has a matching playground page:
 
-## Configuration
+- [Visibility](http://127.0.0.1:4273/visibility)
+- [Focus](http://127.0.0.1:4273/focus)
+- [Connectivity](http://127.0.0.1:4273/connectivity)
+- [Idle](http://127.0.0.1:4273/idle)
+- [Lifecycle](http://127.0.0.1:4273/lifecycle)
+- [Cross Tab](http://127.0.0.1:4273/cross-tab)
+- [Plugins](http://127.0.0.1:4273/plugins)
+- [Events](http://127.0.0.1:4273/events)
+- [State](http://127.0.0.1:4273/state)
+- [Configuration](http://127.0.0.1:4273/configuration)
+- [Performance](http://127.0.0.1:4273/performance)
+- [Developer Tools](http://127.0.0.1:4273/developer-tools)
 
-Configuration guidance will be added during implementation.
+## Version
 
-## Browser Support
+Current documentation version: **v0.1.0** (initial pre-release).
 
-Browser support guidance will be published with the first release candidate.
-
-## FAQ
-
-This section will answer adoption and behavior questions once the package exists.
-
-## Migration
-
-No migration notes exist yet.
+See [Migration](/migration/) and [Changelog](/changelog/) for release history.

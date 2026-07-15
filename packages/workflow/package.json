@@ -1,5 +1,5 @@
 {
-  "name": "@joc/workflow",
+  "name": "@jayoncode/workflow",
   "version": "0.0.0",
   "private": false,
   "description": "Future workflow package for the JOC ecosystem.",

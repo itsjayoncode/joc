@@ -1,4 +1,4 @@
-# @joc/theme
+# @jayoncode/theme
 
 This package is reserved for future theming and design system support within the JOC ecosystem.
 

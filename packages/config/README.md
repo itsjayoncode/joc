@@ -1,4 +1,4 @@
-# @joc/config
+# @jayoncode/config
 
 This package is reserved for future configuration loading and environment support within the JOC ecosystem.
 

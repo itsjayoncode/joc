@@ -1,3 +1,5 @@
+import { describe, expect, it } from "vitest";
+
 import {
   BrowserLifecycleError,
   ConfigurationError,
@@ -5,7 +7,6 @@ import {
   PluginError,
   UnsupportedFeatureError,
 } from "@jayoncode/browser-lifecycle";
-import { describe, expect, it } from "vitest";
 
 describe("error hierarchy", () => {
   it("creates the base error with code, details, and cause", () => {

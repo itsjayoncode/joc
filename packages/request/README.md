@@ -1,4 +1,4 @@
-# @joc/request
+# @jayoncode/request
 
 This package is reserved for future request orchestration and networking abstractions within the JOC ecosystem.
 

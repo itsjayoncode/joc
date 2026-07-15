@@ -1,11 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { BrowserLifecycleSession } from "../../src/core/session/index.js";
-import {
-  createBrowserLifecycle,
-  LifecycleError,
-  PluginError,
-} from "../../src/index.js";
+import { createBrowserLifecycle, LifecycleError, PluginError } from "../../src/index.js";
 
 import type {
   BrowserLifecycleEventListener,
@@ -69,10 +65,7 @@ describe("BrowserLifecycleSession", () => {
       "session:started:running:created",
       "session:stopped:stopped:running",
     ]);
-    expect(feedEvents).toEqual([
-      "session:started:running",
-      "session:stopped:stopped",
-    ]);
+    expect(feedEvents).toEqual(["session:started:running", "session:stopped:stopped"]);
     expect(session.getSnapshot().phase).toBe("disposed");
   });
 
@@ -132,6 +125,9 @@ describe("BrowserLifecycleSession", () => {
         capabilities: {
           abortController: true,
           broadcastChannel: false,
+          connectivity: false,
+          idle: false,
+          focus: false,
           pageLifecycle: false,
           requestIdleCallback: false,
           visibility: true,
@@ -148,7 +144,7 @@ describe("BrowserLifecycleSession", () => {
     const calls: string[] = [];
 
     session.registerModule({
-      id: "visibility",
+      id: "custom-visibility",
       order: 5,
       destroy: () => {
         calls.push("visibility:destroy");
@@ -190,7 +186,7 @@ describe("BrowserLifecycleSession", () => {
 
     session.start();
     expect(session.getSnapshot().visibility).toBe("visible");
-    expect(session.moduleCount()).toBe(2);
+    expect(session.moduleCount()).toBe(8);
 
     expect(session.unregisterModule("attention")).toBe(true);
     expect(session.unregisterModule("attention")).toBe(false);
@@ -214,9 +210,11 @@ describe("BrowserLifecycleSession", () => {
     const session = new BrowserLifecycleSession({
       autoStart: false,
     });
+    const registeredEvents: string[] = [];
 
     session.use({
       id: "analytics",
+      onRegister: () => undefined,
     });
 
     expect(session.getPluginIds()).toEqual(["analytics"]);
@@ -226,7 +224,13 @@ describe("BrowserLifecycleSession", () => {
       });
     }).toThrow(PluginError);
 
+    session.on("plugin:registered", (event) => {
+      registeredEvents.push(event.metadata?.pluginId ?? "unknown");
+    });
     session.start();
+
+    expect(registeredEvents).toEqual(["analytics"]);
+    expect(session.getPlugins()[0]?.lifecycle).toBe("running");
 
     expect(() => {
       session.use({
@@ -277,14 +281,16 @@ describe("BrowserLifecycleSession", () => {
     expect(callCount).toBe(0);
 
     const invalidEvent = "session:unknown" as unknown as BrowserLifecycleEventName;
-    const invalidListener =
-      (() => undefined) as unknown as BrowserLifecycleEventListener<BrowserLifecycleEventName>;
+    const invalidListener = (() =>
+      undefined) as unknown as BrowserLifecycleEventListener<BrowserLifecycleEventName>;
 
     expect(() => {
       session.on(invalidEvent, invalidListener);
     }).toThrow(LifecycleError);
 
-    const disposedListener = (_event: Readonly<BrowserLifecycleEventMap["session:started"]>): void => {
+    const disposedListener = (
+      _event: Readonly<BrowserLifecycleEventMap["session:started"]>,
+    ): void => {
       callCount += 1;
     };
 
@@ -357,8 +363,9 @@ describe("BrowserLifecycleSession", () => {
     const session = createBrowserLifecycle({
       autoStart: false,
     });
-    const reasons: Array<NonNullable<BrowserLifecycleEventMap["session:stopped"]["metadata"]>["reason"]> =
-      [];
+    const reasons: Array<
+      NonNullable<BrowserLifecycleEventMap["session:stopped"]["metadata"]>["reason"]
+    > = [];
 
     session.on("session:stopped", (event) => {
       if (event.metadata) {
@@ -371,5 +378,21 @@ describe("BrowserLifecycleSession", () => {
 
     expect(reasons).toEqual(["dispose"]);
     expect(session.getSnapshot().phase).toBe("disposed");
+  });
+
+  it("exposes runtime diagnostics for tooling", () => {
+    const session = createBrowserLifecycle({
+      autoStart: false,
+    });
+
+    session.start();
+    const diagnostics = session.getRuntimeDiagnostics();
+
+    expect(diagnostics.isRunning).toBe(true);
+    expect(diagnostics.moduleCount).toBeGreaterThan(0);
+    expect(diagnostics.eventStats.length).toBeGreaterThan(0);
+    expect(diagnostics.totalEmissionCount).toBeGreaterThanOrEqual(1);
+
+    session.dispose();
   });
 });

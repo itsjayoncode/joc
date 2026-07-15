@@ -1,0 +1,8 @@
+[build]
+  command = "pnpm browser-session-playground:build"
+  publish = "apps/browser-session-playground/dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

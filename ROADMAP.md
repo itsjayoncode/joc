@@ -43,9 +43,21 @@ This roadmap describes the intended progression of the JOC ecosystem. It is inte
 
 ## Phase 2: Browser Lifecycle Manager v1
 
-- Ship the first public JOC package.
-- Use it to validate package conventions, release practices, and docs standards.
-- Refine the ecosystem model before additional packages enter active release.
+- Implement the first public JOC package as `@jayoncode/browser-lifecycle`.
+- Validate package conventions, release practices, and docs standards through real code.
+- Current progress: core infrastructure, typed events, session core, and visibility module are implemented with tests.
+- Remaining work: additional modules, public API hardening, playground module pages, and first npm release.
+
+## Phase 3: Browser Session Playground
+
+- Build the long-lived engineering application in `apps/browser-session-playground`.
+- Provide manual QA, integration testing, and interactive documentation for Browser Lifecycle modules.
+- **Complete (v1.0.0):** all module playgrounds (3.4–3.15), framework examples (3.16), documentation integration (3.17), and release validation (3.18).
+- Playground serves as development environment, interactive documentation, integration test platform, QA console, and product showcase.
+
+## Naming Note
+
+Phase 2 and Phase 3 construction documents sometimes refer to the product as "Browser Session" or `@jayoncode/browser-session`. The canonical package name in the monorepo is `@jayoncode/browser-lifecycle` in `packages/browser-lifecycle`. See `engineering/017-ecosystem-remediation.md`.
 
 ## Future Package Tracks
 

@@ -4,7 +4,7 @@
 
 ## Introduction
 
-`@joc/scroll` is reserved for future scroll and interaction utilities.
+`@jayoncode/scroll` is reserved for future scroll and interaction utilities.
 
 ## Installation
 

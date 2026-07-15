@@ -1,4 +1,4 @@
-# @joc/doctor
+# @jayoncode/doctor
 
 This package is reserved for future diagnostics and environment health tooling within the JOC ecosystem.
 

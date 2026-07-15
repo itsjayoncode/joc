@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -11,16 +11,42 @@ const requiredDocsPages = [
   "apps/docs/docs/getting-started/introduction.md",
   "apps/docs/docs/guides/architecture.md",
   "apps/docs/docs/packages/browser-lifecycle/index.md",
+  "apps/docs/docs/packages/browser-lifecycle/installation.md",
+  "apps/docs/docs/guides/browser-lifecycle/usage.md",
+  "apps/docs/docs/guides/browser-lifecycle/quick-start.md",
+  "apps/docs/docs/api/index.md",
+  "apps/docs/docs/tutorials/beginner.md",
+  "apps/docs/docs/best-practices/index.md",
+  "apps/docs/docs/patterns/index.md",
+  "apps/docs/docs/faq/index.md",
+  "apps/docs/docs/troubleshooting/index.md",
+  "apps/docs/docs/migration/index.md",
   "apps/docs/docs/roadmap/index.md",
+  "scripts/sync-documentation.mjs",
+  "packages/browser-lifecycle/typedoc.json",
+  "apps/browser-session-playground/engineering/022-documentation-integration.md",
 ];
 
 const requiredExamplePlaceholders = [
-  "examples/browser-lifecycle/README.md",
-  "examples/request/README.md",
-  "examples/theme/README.md",
-  "examples/scroll/README.md",
-  "examples/forms/README.md",
+  "examples/vanilla/README.md",
+  "examples/react/README.md",
+  "examples/vue/README.md",
+  "examples/angular/README.md",
+  "examples/svelte/README.md",
+  "examples/nextjs/README.md",
+  "examples/electron/README.md",
+  "examples/pwa/README.md",
 ];
+
+const requiredPlaygroundDocs = [
+  "apps/browser-session-playground/docs/visibility-playground.md",
+  "apps/browser-session-playground/docs/focus-playground.md",
+  "apps/browser-session-playground/docs/plugin-playground.md",
+];
+
+function readText(relativePath: string): string {
+  return readFileSync(path.join(rootDir, relativePath), "utf8");
+}
 
 describe("developer experience platform", () => {
   it("includes the key documentation pages", () => {
@@ -29,9 +55,54 @@ describe("developer experience platform", () => {
     }
   });
 
-  it("includes placeholder example directories for future packages", () => {
+  it("includes framework example directories", () => {
     for (const relativePath of requiredExamplePlaceholders) {
       expect(existsSync(path.join(rootDir, relativePath))).toBe(true);
     }
+  });
+
+  it("includes playground documentation sources for module integration", () => {
+    for (const relativePath of requiredPlaygroundDocs) {
+      expect(existsSync(path.join(rootDir, relativePath))).toBe(true);
+    }
+  });
+
+  it("points the docs site playground link at the browser session playground", () => {
+    const config = readText("apps/docs/docs/.vitepress/config.ts");
+    expect(config).toContain("http://127.0.0.1:4273");
+    expect(config).not.toContain("http://127.0.0.1:4173");
+  });
+
+  it("documents browser lifecycle instead of a placeholder package page", () => {
+    const overview = readText("apps/docs/docs/packages/browser-lifecycle/index.md");
+    expect(overview).toContain("createBrowserLifecycle()");
+    expect(overview).not.toContain("No public implementation exists yet");
+  });
+
+  it("wires documentation build scripts for api generation and sync", () => {
+    const docsPackage = readText("apps/docs/package.json");
+    expect(docsPackage).toContain('"docs:api"');
+    expect(docsPackage).toContain('"docs:sync"');
+    expect(docsPackage).toContain('"docs:prepare"');
+  });
+});
+
+describe("documentation integration output", () => {
+  it("can generate synced documentation pages when the sync script has run", () => {
+    const syncedExamples = path.join(rootDir, "apps/docs/docs/examples/index.md");
+    const syncedModulesDir = path.join(
+      rootDir,
+      "apps/docs/docs/packages/browser-lifecycle/modules",
+    );
+    const syncedPlaygroundDir = path.join(rootDir, "apps/docs/docs/playground");
+
+    if (!existsSync(syncedExamples)) {
+      return;
+    }
+
+    expect(existsSync(syncedModulesDir)).toBe(true);
+    expect(existsSync(syncedPlaygroundDir)).toBe(true);
+    expect(readdirSync(syncedModulesDir).length).toBeGreaterThan(0);
+    expect(readdirSync(syncedPlaygroundDir).length).toBeGreaterThan(0);
   });
 });

@@ -4,7 +4,7 @@
 
 ## Introduction
 
-`@joc/request` is reserved for future request orchestration and networking abstractions.
+`@jayoncode/request` is reserved for future request orchestration and networking abstractions.
 
 ## Installation
 

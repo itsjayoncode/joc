@@ -39,9 +39,12 @@ for (const packageDirectory of packageDirectories) {
     failures.push(`Package ${packageDirectory} is missing a src/ directory.`);
   }
 
-  if (manifest.version !== "0.0.0") {
+  const allowedVersions =
+    packageDirectory === "browser-lifecycle" ? new Set(["0.1.0"]) : new Set(["0.0.0"]);
+
+  if (!allowedVersions.has(manifest.version)) {
     failures.push(
-      `Package ${packageDirectory} should stay at version 0.0.0 during pre-release setup.`,
+      `Package ${packageDirectory} has unexpected version ${manifest.version}. Expected one of: ${[...allowedVersions].join(", ")}.`,
     );
   }
 

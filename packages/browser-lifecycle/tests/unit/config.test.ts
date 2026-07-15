@@ -1,3 +1,5 @@
+import { describe, expect, it } from "vitest";
+
 import {
   ConfigurationError,
   createBrowserLifecycleConfig,
@@ -6,7 +8,6 @@ import {
   mergeBrowserLifecycleConfig,
   validateBrowserLifecycleConfig,
 } from "@jayoncode/browser-lifecycle";
-import { describe, expect, it } from "vitest";
 
 describe("configuration system", () => {
   it("creates an immutable default configuration", () => {

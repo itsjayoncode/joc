@@ -90,17 +90,17 @@ createBrowserLifecycle({
 
 ### Default Option Table
 
-| Option | Purpose | Default | Why This Default Exists | Expected Behavior | When to Override |
-| --- | --- | --- | --- | --- | --- |
-| `autoStart` | start observation immediately | `true` | lowest-friction default | instance starts observing on creation | when host lifecycle must control start timing |
-| `emitInitialState` | emit startup state as events | `false` | avoids noisy startup events | initial state is available through snapshot only | when explicit startup transition replay is desired |
-| `idleTimeout` | enable idle detection | `false` | idle is heuristic and should be opt-in | no idle events by default | when inactivity behavior matters |
-| `activityEvents` | choose activity inputs | `"default"` | sensible baseline for common input patterns | default user activity set is used if idle is enabled | when app wants narrower or broader activity rules |
-| `activityDebounce` | smooth noisy activity signals | `250` | balances responsiveness and event noise | repeated activity is coalesced modestly | when input behavior is unusually noisy or latency-sensitive |
-| `crossTab` | enable cross-tab coordination | `false` | optional feature with transport caveats | no leadership or tab-role events by default | when primary-tab semantics matter |
-| `debug` | enable richer diagnostics | `false` | keeps public behavior minimal and lightweight | no extra diagnostic surface by default | when testing or integrating deeply |
-| `eventBufferSize` | retain event history for diagnostics | `0` | no memory overhead unless explicitly requested | no retained debug event history | when debug inspection is needed |
-| `plugins` | register startup plugins | `[]` | additive extension should be explicit | no plugins unless supplied | when lifecycle behavior needs extension |
+| Option             | Purpose                              | Default     | Why This Default Exists                        | Expected Behavior                                    | When to Override                                            |
+| ------------------ | ------------------------------------ | ----------- | ---------------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------------- |
+| `autoStart`        | start observation immediately        | `true`      | lowest-friction default                        | instance starts observing on creation                | when host lifecycle must control start timing               |
+| `emitInitialState` | emit startup state as events         | `false`     | avoids noisy startup events                    | initial state is available through snapshot only     | when explicit startup transition replay is desired          |
+| `idleTimeout`      | enable idle detection                | `false`     | idle is heuristic and should be opt-in         | no idle events by default                            | when inactivity behavior matters                            |
+| `activityEvents`   | choose activity inputs               | `"default"` | sensible baseline for common input patterns    | default user activity set is used if idle is enabled | when app wants narrower or broader activity rules           |
+| `activityDebounce` | smooth noisy activity signals        | `250`       | balances responsiveness and event noise        | repeated activity is coalesced modestly              | when input behavior is unusually noisy or latency-sensitive |
+| `crossTab`         | enable cross-tab coordination        | `false`     | optional feature with transport caveats        | no leadership or tab-role events by default          | when primary-tab semantics matter                           |
+| `debug`            | enable richer diagnostics            | `false`     | keeps public behavior minimal and lightweight  | no extra diagnostic surface by default               | when testing or integrating deeply                          |
+| `eventBufferSize`  | retain event history for diagnostics | `0`         | no memory overhead unless explicitly requested | no retained debug event history                      | when debug inspection is needed                             |
+| `plugins`          | register startup plugins             | `[]`        | additive extension should be explicit          | no plugins unless supplied                           | when lifecycle behavior needs extension                     |
 
 ### Developer Expectations
 
@@ -177,17 +177,17 @@ All top-level options should remain optional when possible.
 
 ### Allowed and Invalid Values
 
-| Option | Allowed Values | Invalid Values |
-| --- | --- | --- |
-| `autoStart` | boolean | non-boolean |
-| `emitInitialState` | boolean | non-boolean |
-| `idleTimeout` | `false` or positive finite integer | negative numbers, `0`, `Infinity`, `NaN`, non-numeric truthy values |
-| `activityEvents` | `"default"` or non-empty allowlisted array | empty arrays, unknown event names, duplicate-only arrays |
-| `activityDebounce` | integer `>= 0` | negative, `Infinity`, `NaN`, non-integer |
-| `crossTab` | boolean or valid config object | malformed object, invalid numeric fields, empty `channelName` |
-| `debug` | boolean | non-boolean |
-| `eventBufferSize` | integer `>= 0` | negative, `Infinity`, `NaN`, non-integer |
-| `plugins` | array of valid plugin objects | duplicate ids, malformed plugin metadata, non-array values |
+| Option             | Allowed Values                             | Invalid Values                                                      |
+| ------------------ | ------------------------------------------ | ------------------------------------------------------------------- |
+| `autoStart`        | boolean                                    | non-boolean                                                         |
+| `emitInitialState` | boolean                                    | non-boolean                                                         |
+| `idleTimeout`      | `false` or positive finite integer         | negative numbers, `0`, `Infinity`, `NaN`, non-numeric truthy values |
+| `activityEvents`   | `"default"` or non-empty allowlisted array | empty arrays, unknown event names, duplicate-only arrays            |
+| `activityDebounce` | integer `>= 0`                             | negative, `Infinity`, `NaN`, non-integer                            |
+| `crossTab`         | boolean or valid config object             | malformed object, invalid numeric fields, empty `channelName`       |
+| `debug`            | boolean                                    | non-boolean                                                         |
+| `eventBufferSize`  | integer `>= 0`                             | negative, `Infinity`, `NaN`, non-integer                            |
+| `plugins`          | array of valid plugin objects              | duplicate ids, malformed plugin metadata, non-array values          |
 
 ### Range Validation
 
@@ -231,15 +231,15 @@ Browser Lifecycle Manager should keep configuration largely immutable after inst
 
 ### Runtime Configuration Table
 
-| Area | Mutable After Start? | Notes |
-| --- | --- | --- |
-| `autoStart` | no | creation-time policy only |
-| `emitInitialState` | no | startup policy only |
-| `idleTimeout` | no in v1 | changing later would affect timer semantics and event meaning |
-| module enablement | no in v1 | enabling visibility, idle, or cross-tab later complicates lifecycle guarantees |
-| plugin registration | no after start | aligns with public API design |
-| `debug` | no in v1 | keep debug model predictable |
-| effective capabilities | read-only | computed from runtime environment |
+| Area                   | Mutable After Start? | Notes                                                                          |
+| ---------------------- | -------------------- | ------------------------------------------------------------------------------ |
+| `autoStart`            | no                   | creation-time policy only                                                      |
+| `emitInitialState`     | no                   | startup policy only                                                            |
+| `idleTimeout`          | no in v1             | changing later would affect timer semantics and event meaning                  |
+| module enablement      | no in v1             | enabling visibility, idle, or cross-tab later complicates lifecycle guarantees |
+| plugin registration    | no after start       | aligns with public API design                                                  |
+| `debug`                | no in v1             | keep debug model predictable                                                   |
+| effective capabilities | read-only            | computed from runtime environment                                              |
 
 ### Restart Required Behavior
 
@@ -257,57 +257,57 @@ Feature configuration should stay policy-oriented. The package should avoid expo
 
 ### Visibility
 
-| Mode | Meaning | Interaction with Session Core |
-| --- | --- | --- |
-| automatic | enabled whenever supported | core visibility model remains active |
-| disabled | not recommended for v1 public config | would undermine core purpose |
-| custom behavior | not exposed as public v1 config | belongs in future advanced design only |
+| Mode            | Meaning                              | Interaction with Session Core          |
+| --------------- | ------------------------------------ | -------------------------------------- |
+| automatic       | enabled whenever supported           | core visibility model remains active   |
+| disabled        | not recommended for v1 public config | would undermine core purpose           |
+| custom behavior | not exposed as public v1 config      | belongs in future advanced design only |
 
 ### Focus
 
-| Mode | Meaning | Interaction with Session Core |
-| --- | --- | --- |
-| automatic | attention tracking enabled when supported | secondary layer to visibility |
-| disabled | not recommended as public v1 option | weakens default lifecycle readability |
-| custom behavior | not exposed in v1 | not enough value yet |
+| Mode            | Meaning                                   | Interaction with Session Core         |
+| --------------- | ----------------------------------------- | ------------------------------------- |
+| automatic       | attention tracking enabled when supported | secondary layer to visibility         |
+| disabled        | not recommended as public v1 option       | weakens default lifecycle readability |
+| custom behavior | not exposed in v1                         | not enough value yet                  |
 
 ### Connectivity
 
-| Mode | Meaning | Interaction with Session Core |
-| --- | --- | --- |
-| automatic | advisory connectivity enabled when supported | enriches snapshot and connectivity events |
-| disabled | plausible future option, but not needed in v1 | omit advisory context |
-| custom behavior | not exposed in v1 | real reachability belongs outside core package |
+| Mode            | Meaning                                       | Interaction with Session Core                  |
+| --------------- | --------------------------------------------- | ---------------------------------------------- |
+| automatic       | advisory connectivity enabled when supported  | enriches snapshot and connectivity events      |
+| disabled        | plausible future option, but not needed in v1 | omit advisory context                          |
+| custom behavior | not exposed in v1                             | real reachability belongs outside core package |
 
 ### Idle
 
-| Mode | Meaning | Interaction with Session Core |
-| --- | --- | --- |
-| disabled | default | no idle-derived transitions |
-| enabled | `idleTimeout` positive | enables activity observer and idle transitions |
-| custom behavior | activity source and debounce tuning | affects derived activity heuristics only |
+| Mode            | Meaning                             | Interaction with Session Core                  |
+| --------------- | ----------------------------------- | ---------------------------------------------- |
+| disabled        | default                             | no idle-derived transitions                    |
+| enabled         | `idleTimeout` positive              | enables activity observer and idle transitions |
+| custom behavior | activity source and debounce tuning | affects derived activity heuristics only       |
 
 ### Lifecycle
 
-| Mode | Meaning | Interaction with Session Core |
-| --- | --- | --- |
-| automatic | baseline lifecycle and restoration semantics enabled when supported | core lifecycle refinement |
-| disabled | not recommended as public v1 option | would obscure real lifecycle value |
-| custom behavior | not public in v1 | should remain internal and capability-driven |
+| Mode            | Meaning                                                             | Interaction with Session Core                |
+| --------------- | ------------------------------------------------------------------- | -------------------------------------------- |
+| automatic       | baseline lifecycle and restoration semantics enabled when supported | core lifecycle refinement                    |
+| disabled        | not recommended as public v1 option                                 | would obscure real lifecycle value           |
+| custom behavior | not public in v1                                                    | should remain internal and capability-driven |
 
 ### Cross Tab
 
-| Mode | Meaning | Interaction with Session Core |
-| --- | --- | --- |
-| disabled | default | no primary/secondary role modeling |
-| enabled | boolean `true` | uses default transport preference |
-| custom behavior | object config | tunes channel name and timing |
+| Mode            | Meaning        | Interaction with Session Core      |
+| --------------- | -------------- | ---------------------------------- |
+| disabled        | default        | no primary/secondary role modeling |
+| enabled         | boolean `true` | uses default transport preference  |
+| custom behavior | object config  | tunes channel name and timing      |
 
 ### Plugins
 
-| Mode | Meaning | Interaction with Session Core |
-| --- | --- | --- |
-| none | default | no extension behavior |
+| Mode       | Meaning          | Interaction with Session Core |
+| ---------- | ---------------- | ----------------------------- |
+| none       | default          | no extension behavior         |
 | configured | array of plugins | plugins register before start |
 
 ## 7. Plugin Configuration
@@ -386,13 +386,13 @@ Conflicts should either:
 
 ### Warnings vs Errors
 
-| Situation | Warning | Error |
-| --- | --- | --- |
-| typo or unknown config key | no | yes |
-| invalid numeric range | no | yes |
-| missing optional capability | yes in debug mode | no |
-| deprecated property | yes | no initially |
-| duplicate plugin id | no | yes |
+| Situation                   | Warning           | Error        |
+| --------------------------- | ----------------- | ------------ |
+| typo or unknown config key  | no                | yes          |
+| invalid numeric range       | no                | yes          |
+| missing optional capability | yes in debug mode | no           |
+| deprecated property         | yes               | no initially |
+| duplicate plugin id         | no                | yes          |
 
 ### Recovery Strategy
 
@@ -519,59 +519,59 @@ createBrowserLifecycle({
 
 ### ADR-001: Small Root Configuration
 
-| Field | Record |
-| --- | --- |
-| Decision | keep the root config object intentionally small |
-| Reason | first-use readability and long-term maintainability |
-| Alternatives | deep nested module trees |
-| Tradeoffs | fewer fine-grained tuning knobs in v1 |
-| Future Impact | easier stable evolution |
-| Rejected Alternatives | per-module deep configuration by default |
+| Field                 | Record                                              |
+| --------------------- | --------------------------------------------------- |
+| Decision              | keep the root config object intentionally small     |
+| Reason                | first-use readability and long-term maintainability |
+| Alternatives          | deep nested module trees                            |
+| Tradeoffs             | fewer fine-grained tuning knobs in v1               |
+| Future Impact         | easier stable evolution                             |
+| Rejected Alternatives | per-module deep configuration by default            |
 
 ### ADR-002: Defaults Over Options
 
-| Field | Record |
-| --- | --- |
-| Decision | prefer strong defaults over extensive toggles |
-| Reason | cleaner developer experience |
-| Alternatives | expose most internal policies as options |
-| Tradeoffs | some advanced consumers may want more control later |
-| Future Impact | lower configuration entropy |
-| Rejected Alternatives | highly tunable v1 surface |
+| Field                 | Record                                              |
+| --------------------- | --------------------------------------------------- |
+| Decision              | prefer strong defaults over extensive toggles       |
+| Reason                | cleaner developer experience                        |
+| Alternatives          | expose most internal policies as options            |
+| Tradeoffs             | some advanced consumers may want more control later |
+| Future Impact         | lower configuration entropy                         |
+| Rejected Alternatives | highly tunable v1 surface                           |
 
 ### ADR-003: Mostly Immutable Runtime Configuration
 
-| Field | Record |
-| --- | --- |
-| Decision | keep configuration effectively immutable after creation |
-| Reason | avoids unstable hot-reconfiguration semantics |
-| Alternatives | mutable live config |
-| Tradeoffs | instance recreation may be needed for major changes |
-| Future Impact | clearer lifecycle guarantees |
-| Rejected Alternatives | broad runtime mutability |
+| Field                 | Record                                                  |
+| --------------------- | ------------------------------------------------------- |
+| Decision              | keep configuration effectively immutable after creation |
+| Reason                | avoids unstable hot-reconfiguration semantics           |
+| Alternatives          | mutable live config                                     |
+| Tradeoffs             | instance recreation may be needed for major changes     |
+| Future Impact         | clearer lifecycle guarantees                            |
+| Rejected Alternatives | broad runtime mutability                                |
 
 ### ADR-004: Reject Unknown Keys
 
-| Field | Record |
-| --- | --- |
-| Decision | reject unknown configuration keys |
-| Reason | fail fast on mistakes |
-| Alternatives | silent ignore, warning-only behavior |
-| Tradeoffs | slightly stricter upgrades |
-| Future Impact | stronger API trust |
-| Rejected Alternatives | silent tolerance for typos |
+| Field                 | Record                               |
+| --------------------- | ------------------------------------ |
+| Decision              | reject unknown configuration keys    |
+| Reason                | fail fast on mistakes                |
+| Alternatives          | silent ignore, warning-only behavior |
+| Tradeoffs             | slightly stricter upgrades           |
+| Future Impact         | stronger API trust                   |
+| Rejected Alternatives | silent tolerance for typos           |
 
 ## 13. Configuration Checklist
 
-| Requirement | Status | Notes |
-| --- | --- | --- |
-| Optional whenever possible | pass | no required top-level options |
-| Has a sensible default | pass | every top-level option has a documented default |
-| Strongly typed | pass in design intent | top-level and nested options remain narrow |
-| Easy to understand | pass | root shape stays small |
-| Backward compatible | pass with caution | default changes must be conservative |
-| Future extensible | pass | additive growth remains possible |
-| Framework agnostic | pass | no framework-specific config model |
+| Requirement                | Status                | Notes                                           |
+| -------------------------- | --------------------- | ----------------------------------------------- |
+| Optional whenever possible | pass                  | no required top-level options                   |
+| Has a sensible default     | pass                  | every top-level option has a documented default |
+| Strongly typed             | pass in design intent | top-level and nested options remain narrow      |
+| Easy to understand         | pass                  | root shape stays small                          |
+| Backward compatible        | pass with caution     | default changes must be conservative            |
+| Future extensible          | pass                  | additive growth remains possible                |
+| Framework agnostic         | pass                  | no framework-specific config model              |
 
 If a future option fails this checklist, it should be redesigned or omitted.
 

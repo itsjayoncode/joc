@@ -4,7 +4,7 @@
 
 ## Introduction
 
-`@joc/forms` is reserved for future form architecture and helper utilities.
+`@jayoncode/forms` is reserved for future form architecture and helper utilities.
 
 ## Installation
 

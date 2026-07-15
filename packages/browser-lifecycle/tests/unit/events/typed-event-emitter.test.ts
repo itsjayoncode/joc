@@ -1,6 +1,6 @@
-import { TypedEventEmitter } from "@jayoncode/browser-lifecycle";
 import { describe, expect, it, vi } from "vitest";
 
+import { TypedEventEmitter } from "@jayoncode/browser-lifecycle";
 import type { EventDefinition } from "@jayoncode/browser-lifecycle";
 
 interface TestEventMap {
