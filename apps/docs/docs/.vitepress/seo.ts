@@ -1,5 +1,5 @@
 const DEFAULT_SITE_URL = "https://itsjayoncode.github.io/joc";
-const DEFAULT_PLAYGROUND_URL = "https://itsjayoncode.github.io/joc/playground/";
+const DEFAULT_PLAYGROUND_URL = "https://itsjayoncode.github.io/joc/playground/browser-lifecycle/";
 
 export const docsSiteUrl = (process.env.VITE_DOCS_SITE_URL ?? DEFAULT_SITE_URL).replace(/\/$/, "");
 export const docsPlaygroundUrl = process.env.VITE_DOCS_PLAYGROUND_URL ?? DEFAULT_PLAYGROUND_URL;
