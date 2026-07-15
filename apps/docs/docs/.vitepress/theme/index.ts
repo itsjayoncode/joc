@@ -1,12 +1,12 @@
 import DefaultTheme from "vitepress/theme";
 
-import type { Theme } from "vitepress";
-
 import BrowserLifecycleVersion from "./components/BrowserLifecycleVersion.vue";
 import HomeBelowFold from "./components/HomeBelowFold.vue";
 import HomeFx from "./components/HomeFx.vue";
 import HomePackageCatalog from "./components/HomePackageCatalog.vue";
 import Layout from "./Layout.vue";
+
+import type { Theme } from "vitepress";
 import "./brand.css";
 import "./custom.css";
 
