@@ -4,14 +4,14 @@ Repository workflows, templates, and policies for the JOC monorepo.
 
 ## Workflows
 
-| Workflow                    | Trigger                                       | Purpose                                                                |
-| --------------------------- | --------------------------------------------- | ---------------------------------------------------------------------- |
-| **CI**                      | Push to `main` / `master` / `develop`, manual | Quality gates; on default branch also deploys docs and runs Changesets |
-| **Pull Request Validation** | Pull requests                                 | Quality gates only (no deploy)                                         |
-| **CodeQL**                  | Push, pull requests, weekly schedule          | Security analysis for JavaScript and TypeScript                        |
-| **Release**                 | Manual                                        | Draft a GitHub release for an existing tag                             |
-| **Deploy Docs**             | Manual                                        | Rebuild and redeploy documentation without a full CI run               |
-| **Deploy Playground**       | Manual                                        | Build and publish the browser session playground artifact              |
+| Workflow                    | Trigger                                       | Purpose                                                                            |
+| --------------------------- | --------------------------------------------- | ---------------------------------------------------------------------------------- |
+| **CI**                      | Push to `main` / `master` / `develop`, manual | Quality gates; on default branch also deploys docs and runs Changesets             |
+| **Pull Request Validation** | Pull requests                                 | Quality gates only (no deploy)                                                     |
+| **CodeQL**                  | Push, pull requests, weekly schedule          | Security analysis for JavaScript and TypeScript                                    |
+| **Release**                 | Manual                                        | Draft a GitHub release for an existing tag                                         |
+| **Deploy Docs**             | Manual                                        | Rebuild and redeploy documentation without a full CI run                           |
+| **Deploy Playground**       | Manual                                        | Validate a standalone playground build (production deploy is bundled into docs CI) |
 
 On push to `master` or `main`, expect **two** workflow runs: **CI** and **CodeQL**.
 
@@ -20,7 +20,7 @@ On push to `master` or `main`, expect **two** workflow runs: **CI** and **CodeQL
 When CI runs on `main` or `master`, jobs execute in this order:
 
 1. **Quality** — workspace health, `docs:prepare`, typecheck, lint, format, tests, build, integrity checks
-2. **Deploy docs** — production VitePress build with `VITE_DOCS_BASE=/joc/`, including staged documentation archives
+2. **Deploy docs** — production VitePress build with `VITE_DOCS_BASE=/joc/`, bundles the Browser Lifecycle playground at `/joc/playground/browser-lifecycle/`, and stages documentation archives
 3. **Deploy Pages** — publish the docs artifact to GitHub Pages
 4. **Version PR** — Changesets opens or updates a versioning pull request (npm publish when configured)
 

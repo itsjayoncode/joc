@@ -65,7 +65,7 @@ lifecycle.dispose();
 - [Package overview](https://itsjayoncode.github.io/joc/packages/browser-lifecycle/)
 - [Quick start guide](https://itsjayoncode.github.io/joc/packages/browser-lifecycle/guides/quick-start)
 - [Configuration](https://itsjayoncode.github.io/joc/packages/browser-lifecycle/guides/configuration)
-- [Interactive playground](https://itsjayoncode.github.io/joc/packages/browser-lifecycle/playground/playground)
+- [Interactive playground](https://itsjayoncode.github.io/joc/playground/browser-lifecycle/)
 
 ## Requirements
 

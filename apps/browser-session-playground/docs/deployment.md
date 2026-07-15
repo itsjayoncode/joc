@@ -51,17 +51,28 @@ Use build command `pnpm browser-session-playground:build` and output `apps/brows
 
 ### GitHub Pages
 
-Set `VITE_PLAYGROUND_BASE=/joc/` (or your repo name) before build:
+The playground ships with the docs site at:
+
+`https://itsjayoncode.github.io/joc/playground/browser-lifecycle/`
+
+`pnpm docs:build` runs `scripts/bundle-playground-into-docs.mjs`, which builds the playground with the production base path and copies it into the VitePress Pages artifact.
+
+Manual standalone build:
 
 ```bash
-VITE_PLAYGROUND_BASE=/joc/ pnpm browser-session-playground:build
+VITE_PLAYGROUND_BASE=/joc/playground/browser-lifecycle/ pnpm browser-session-playground:build
 ```
 
-Deploy `dist/` to GitHub Pages.
+For local subdirectory preview:
+
+```bash
+VITE_PLAYGROUND_BASE=/joc/playground/browser-lifecycle/ pnpm browser-session-playground:build
+pnpm browser-session-playground:preview
+```
 
 ## SPA routing
 
-All hosts must rewrite unknown paths to `index.html`. Config files are provided for Netlify, Vercel, and Cloudflare.
+All hosts must rewrite unknown paths to `index.html`. Config files are provided for Netlify, Vercel, and Cloudflare. GitHub Pages uses a copied `404.html` fallback generated during `docs:build`.
 
 ## Rollback
 

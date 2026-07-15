@@ -5,9 +5,11 @@ import { ThemeProvider } from "../providers/ThemeProvider.js";
 
 import type { PropsWithChildren } from "react";
 
+const routerBasename = import.meta.env.BASE_URL.replace(/\/$/, "") || undefined;
+
 export function AppProviders({ children }: PropsWithChildren) {
   return (
-    <BrowserRouter>
+    <BrowserRouter {...(routerBasename ? { basename: routerBasename } : {})}>
       <ThemeProvider>
         <PlaygroundUiProvider>{children}</PlaygroundUiProvider>
       </ThemeProvider>
