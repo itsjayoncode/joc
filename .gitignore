@@ -3,6 +3,8 @@ node_modules
 dist
 build
 lib
+!scripts/lib/
+!scripts/lib/**
 !apps/browser-session-playground/src/lib/
 !apps/browser-session-playground/src/lib/**
 coverage/*
