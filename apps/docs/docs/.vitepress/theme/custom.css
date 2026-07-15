@@ -155,23 +155,10 @@
 /* ── Nav ─────────────────────────────────────────────── */
 
 .VPNavBarTitle .logo {
-  height: 2.25rem;
-  width: 2.25rem;
+  height: 2.5rem;
+  width: 2.5rem;
   border-radius: 0.5rem;
   object-fit: contain;
-  box-shadow: 0 0 0 1px var(--joc-border);
-}
-
-.dark .VPNavBarTitle .logo {
-  box-shadow:
-    0 0 0 1px rgba(var(--joc-primary-rgb), 0.28),
-    0 0 18px rgba(var(--joc-primary-rgb), 0.14);
-}
-
-.VPHome .VPNavBarTitle .logo {
-  box-shadow:
-    0 0 0 1px rgba(var(--joc-primary-rgb), 0.28),
-    0 0 18px rgba(var(--joc-primary-rgb), 0.14);
 }
 
 .VPHome .VPNavBar {
@@ -188,21 +175,28 @@
   font-weight: 700;
 }
 
+/* Hide default site title text; brand is logo + version badge only */
+.VPNavBarTitle .title > span:not(.joc-nav-doc-version) {
+  display: none !important;
+}
+
 .VPNavBarTitle:has(.joc-nav-doc-version) {
-  position: relative;
   align-self: center;
-  min-height: 2.5rem;
-  padding-bottom: 0.55rem;
 }
 
 .VPNavBarTitle:has(.joc-nav-doc-version) .title {
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  gap: 0.2rem;
+  line-height: 1;
+}
+
+.VPNavBarTitle:has(.joc-nav-doc-version) .logo {
+  margin-right: 0;
 }
 
 .joc-nav-doc-version {
-  position: absolute;
-  left: 2.7rem;
-  bottom: 15px;
   display: inline-block;
   border-radius: 999px;
   border: 1px solid rgba(var(--joc-primary-rgb), 0.28);
@@ -223,13 +217,7 @@
 }
 
 @media (max-width: 768px) {
-  .VPNavBarTitle:has(.joc-nav-doc-version) {
-    min-height: 2.35rem;
-    padding-bottom: 0.5rem;
-  }
-
   .joc-nav-doc-version {
-    left: 2.55rem;
     font-size: 0.62rem;
   }
 }
@@ -558,8 +546,8 @@ html.joc-home-cursor-active .VPHome button {
 
 .VPHomeHero .image-src {
   position: relative;
-  width: 6.5rem;
-  max-width: 128px;
+  width: 300px;
+  max-width: 100%;
   height: auto;
   border: none;
   border-radius: 0;
@@ -1539,8 +1527,8 @@ html.joc-home-cursor-active .VPHome button {
   }
 
   .VPHomeHero .image-src {
-    width: 5.5rem;
-    max-width: 128px;
+    width: 300px;
+    max-width: 100%;
   }
 
   .VPHomeHero .text {
