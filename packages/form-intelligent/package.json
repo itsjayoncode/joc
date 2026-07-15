@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/form-intelligent",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "description": "Form Intelligent — A headless form workflow engine for validation, submission, state, and multi-step orchestration.",
   "license": "MIT",
