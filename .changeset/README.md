@@ -35,6 +35,6 @@ npx pnpm@10.13.1 release:publish
 ## Important Notes
 
 - `@jayoncode/docs`, `@jayoncode/playground`, and `@jayoncode/shared` are excluded from publishable release planning
-- publishing is intentionally future-safe in this phase and does not push packages to npm
+- publishing runs through `pnpm release:publish` after the release versioning pull request merges
 - GitHub draft releases should be reviewed before any future publication step
 - detailed `changeset:status` output depends on a git repository with a `main` branch reference

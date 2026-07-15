@@ -12,7 +12,8 @@ const browserLifecycleVersion = (
 ).version;
 const browserLifecycleVersionLabel = `v${browserLifecycleVersion}`;
 
-const PLAYGROUND_URL = "http://127.0.0.1:4273";
+const docsBase = process.env.VITE_DOCS_BASE ?? "/";
+const PLAYGROUND_URL = process.env.VITE_DOCS_PLAYGROUND_URL ?? "http://127.0.0.1:4273";
 
 const packageItems = [
   { text: "Browser Lifecycle", link: "/packages/browser-lifecycle/" },
@@ -127,6 +128,7 @@ const faqItems = [
 ];
 
 export default defineConfig({
+  base: docsBase,
   title: "JOC",
   description:
     "Documentation and developer portal for the JayOnCode ecosystem and Browser Lifecycle.",
@@ -339,7 +341,7 @@ export default defineConfig({
     },
     socialLinks: [{ icon: "github", link: "https://github.com/JayOnCode/joc" }],
     editLink: {
-      pattern: "https://github.com/JayOnCode/joc/edit/main/apps/docs/docs/:path",
+      pattern: "https://github.com/JayOnCode/joc/edit/master/apps/docs/docs/:path",
       text: "Edit this page on GitHub",
     },
     footer: {

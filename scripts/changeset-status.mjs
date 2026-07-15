@@ -17,18 +17,31 @@ const gitDirExists = existsSync(path.join(rootDir, ".git"));
 const gitRepoCheck = gitDirExists ? run("git", ["rev-parse", "--is-inside-work-tree"]) : null;
 const hasGitRepo = gitRepoCheck?.status === 0 && gitRepoCheck.stdout.includes("true");
 
-let hasMainRef = false;
+let hasDefaultBranchRef = false;
 
 if (hasGitRepo) {
   const localMain = run("git", ["show-ref", "--verify", "--quiet", "refs/heads/main"]);
   const remoteMain = run("git", ["show-ref", "--verify", "--quiet", "refs/remotes/origin/main"]);
+  const localMaster = run("git", ["show-ref", "--verify", "--quiet", "refs/heads/master"]);
+  const remoteMaster = run("git", [
+    "show-ref",
+    "--verify",
+    "--quiet",
+    "refs/remotes/origin/master",
+  ]);
 
-  hasMainRef = localMain.status === 0 || remoteMain.status === 0;
+  hasDefaultBranchRef =
+    localMain.status === 0 ||
+    remoteMain.status === 0 ||
+    localMaster.status === 0 ||
+    remoteMaster.status === 0;
 }
 
-if (!hasGitRepo || !hasMainRef) {
+if (!hasGitRepo || !hasDefaultBranchRef) {
   console.log("Changesets configuration is installed and ready.");
-  console.log("Detailed changeset status requires a git repository with a main branch reference.");
+  console.log(
+    "Detailed changeset status requires a git repository with a main or master branch reference.",
+  );
   console.log("Run `pnpm release:readiness` for structural validation in non-git environments.");
   process.exit(0);
 }

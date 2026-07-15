@@ -104,13 +104,13 @@ Draft GitHub Release
 ↓  
 Future npm Publish
 
-## npm Publishing Preparation
+## npm Publishing
 
-This phase prepares npm publication without turning it on.
+Publication is enabled through Changesets and the release workflow.
 
 ### Required Repository Secrets
 
-- `NPM_TOKEN` for future package publication
+- `NPM_TOKEN` for package publication
 - default `GITHUB_TOKEN` for release workflow operations
 
 ### Required npm Settings
@@ -119,9 +119,9 @@ This phase prepares npm publication without turning it on.
 - ensure public packages use the correct access level
 - confirm package ownership and organization membership before the first publish
 
-### Current Safety Rule
+### Publish Command
 
-The root `release:publish` script is intentionally future-safe and does not publish anything yet.
+The root `release:publish` script builds typed packages and runs `changeset publish`.
 
 ## Package Metadata Strategy
 

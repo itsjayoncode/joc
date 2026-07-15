@@ -54,18 +54,21 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
+          registry-url: https://registry.npmjs.org
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Create or update release PR
+      - name: Create release pull request or publish packages
         uses: changesets/action@v1
         with:
           version: pnpm release:version
+          publish: pnpm release:publish
           commit: "chore(release): version packages"
           title: "chore(release): version packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   draft-release:
     name: Draft GitHub Release

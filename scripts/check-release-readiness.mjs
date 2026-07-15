@@ -32,8 +32,10 @@ try {
     failures.push("Changesets access should be set to public for future npm publication.");
   }
 
-  if (changesetConfig.baseBranch !== "main") {
-    failures.push('Changesets baseBranch should be "main".');
+  const allowedBaseBranches = new Set(["main", "master"]);
+
+  if (!allowedBaseBranches.has(changesetConfig.baseBranch)) {
+    failures.push('Changesets baseBranch should be "main" or "master".');
   }
 
   if (
@@ -51,6 +53,14 @@ try {
 
   if (!workflowContent.includes("changesets/action")) {
     failures.push("Release workflow should use changesets/action for version PR preparation.");
+  }
+
+  if (!workflowContent.includes("publish:")) {
+    failures.push("Release workflow should publish packages through changesets/action.");
+  }
+
+  if (!workflowContent.includes("NPM_TOKEN")) {
+    failures.push("Release workflow should pass NPM_TOKEN for npm publication.");
   }
 
   if (!workflowContent.includes("draft")) {
