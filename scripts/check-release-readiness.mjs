@@ -105,6 +105,12 @@ try {
         `Non-publishable package ${manifest.name} must be listed in the changesets ignore list.`,
       );
     }
+
+    if (manifest.name !== "@jayoncode/browser-lifecycle" && manifest.private !== true) {
+      failures.push(
+        `Non-publishable package ${manifest.name} must be marked private until it is ready for npm publication.`,
+      );
+    }
   }
 } catch {
   failures.push("Changesets configuration is unreadable.");

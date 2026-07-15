@@ -32,4 +32,16 @@ describe("release engineering foundation", () => {
     expect(config.ignore).toContain("@jayoncode/forms");
     expect(config.ignore).toContain("@jayoncode/browser-session-playground");
   });
+
+  it("keeps placeholder packages private until they are ready for npm", () => {
+    const logger = JSON.parse(
+      readFileSync(path.join(rootDir, "packages/logger/package.json"), "utf8"),
+    ) as { private?: boolean };
+    const browserLifecycle = JSON.parse(
+      readFileSync(path.join(rootDir, "packages/browser-lifecycle/package.json"), "utf8"),
+    ) as { private?: boolean };
+
+    expect(logger.private).toBe(true);
+    expect(browserLifecycle.private).not.toBe(true);
+  });
 });
