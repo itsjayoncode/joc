@@ -1,0 +1,16 @@
+{
+  "name": "Object Diff Playground | JayOnCode",
+  "short_name": "BL Playground",
+  "description": "Interactive playground for @jayoncode/object-diff — visibility, focus, idle, connectivity, cross-tab, plugins, and diagnostics.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#111827",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

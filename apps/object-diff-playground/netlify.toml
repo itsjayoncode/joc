@@ -1,0 +1,8 @@
+[build]
+  command = "pnpm object-diff-playground:build"
+  publish = "apps/object-diff-playground/dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

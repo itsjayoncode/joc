@@ -1,0 +1,164 @@
+.heroGrid,
+.cardGrid,
+.stack,
+.preferenceList,
+.recentList {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.heroGrid {
+  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.9fr);
+}
+
+.cardGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.sectionHeading,
+.listLabel {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.metricValue {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.08em;
+}
+
+.inlineList,
+.recentList {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.inlineList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 500;
+  background: var(--surface-strong);
+  border: 1px solid var(--border-subtle);
+}
+
+.preferenceField {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.fieldLabel {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.fieldHint {
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+.toggleGroup {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.choiceButton {
+  padding: 0.72rem 1rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  color: var(--text-secondary);
+  background: var(--surface-strong);
+}
+
+.choiceButtonActive {
+  color: var(--text-primary);
+  border-color: var(--accent-primary);
+  background: var(--accent-soft);
+}
+
+.recentRoute {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.recentRoute:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.routeLabel {
+  font-weight: 600;
+}
+
+.routePath {
+  color: var(--text-muted);
+  font-family: "IBM Plex Mono", "SFMono-Regular", "SF Mono", Consolas, monospace;
+  font-size: 0.84rem;
+}
+
+.splitGrid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.jsonEditor {
+  width: 100%;
+  min-height: 240px;
+  padding: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-strong);
+  color: var(--text-primary);
+  font-family: "IBM Plex Mono", "SFMono-Regular", "SF Mono", Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.codeBlock {
+  margin: 0;
+  padding: var(--space-3);
+  overflow: auto;
+  border-radius: var(--radius-md);
+  background: var(--surface-strong);
+  border: 1px solid var(--border-subtle);
+  font-family: "IBM Plex Mono", "SFMono-Regular", "SF Mono", Consolas, monospace;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.errorText {
+  color: var(--danger, #dc2626);
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .heroGrid,
+  .cardGrid,
+  .splitGrid {
+    grid-template-columns: 1fr;
+  }
+}

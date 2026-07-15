@@ -25,6 +25,8 @@ const requiredDocsPages = [
   "apps/docs/docs/roadmap/index.md",
   "scripts/sync-documentation.mjs",
   "packages/browser-lifecycle/typedoc.json",
+  "packages/object-diff/typedoc.json",
+  "apps/object-diff-playground/docs/playground.md",
   "apps/browser-session-playground/engineering/022-documentation-integration.md",
 ];
 
@@ -88,6 +90,20 @@ describe("developer experience platform", () => {
     expect(existsSync(path.join(rootDir, "apps/docs/docs/public/playground/index.html"))).toBe(
       true,
     );
+    const hub = readText("apps/docs/docs/public/playground/index.html");
+    expect(hub).toContain("object-diff/");
+  });
+
+  it("includes object-diff documentation integration wiring", () => {
+    const config = readText("apps/docs/docs/.vitepress/config.ts");
+    const syncScript = readText("scripts/sync-documentation.mjs");
+    const bundleScript = readText("scripts/bundle-playground-into-docs.mjs");
+    expect(config).toContain("createObjectDiffSidebarMap");
+    expect(config).toContain("objectDiffMeta");
+    expect(syncScript).toContain("syncObjectDiffModules");
+    expect(syncScript).toContain("syncObjectDiffMeta");
+    expect(bundleScript).toContain("object-diff-playground");
+    expect(bundleScript).toContain("/joc/playground/object-diff/");
   });
 
   it("configures GitHub Pages base path support for the docs site", () => {
@@ -194,5 +210,22 @@ describe("documentation integration output", () => {
     expect(existsSync(stagedArchiveIndex)).toBe(true);
     expect(readdirSync(syncedModulesDir).length).toBeGreaterThan(0);
     expect(readdirSync(syncedPlaygroundDir).length).toBeGreaterThan(0);
+
+    const objectDiffModulesDir = path.join(rootDir, "apps/docs/docs/packages/object-diff/modules");
+    const objectDiffPlaygroundDir = path.join(
+      rootDir,
+      "apps/docs/docs/packages/object-diff/playground",
+    );
+    const objectDiffApiIndex = path.join(
+      rootDir,
+      "apps/docs/docs/packages/object-diff/api/index.md",
+    );
+    const objectDiffIndex = path.join(rootDir, "apps/docs/docs/packages/object-diff/index.md");
+
+    expect(existsSync(objectDiffModulesDir)).toBe(true);
+    expect(existsSync(objectDiffPlaygroundDir)).toBe(true);
+    expect(existsSync(objectDiffApiIndex)).toBe(true);
+    expect(existsSync(objectDiffIndex)).toBe(true);
+    expect(readdirSync(objectDiffModulesDir).length).toBeGreaterThan(0);
   }, 30_000);
 });
