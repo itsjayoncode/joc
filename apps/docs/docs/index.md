@@ -1,29 +1,44 @@
 ---
 layout: home
-title: JOC | TypeScript Browser Libraries by JayOnCode
-description: Official docs for JOC and @jayoncode/browser-lifecycle — typed session lifecycle, page visibility, idle detection, cross-tab sync, plugins, guides, API reference, and playground.
+title: JOC | JayOnCode TypeScript Libraries for Developers
+description: Official docs for the JayOnCode (JOC) monorepo — a growing collection of @jayoncode/* TypeScript packages for browser lifecycle, forms, scroll, themes, requests, and more.
 hero:
-  name: JOC
-  text: TypeScript browser libraries for real-world web apps
-  tagline: Install @jayoncode/browser-lifecycle to manage visibility, focus, connectivity, idle state, and cross-tab session behavior with a typed, framework-agnostic API.
+  text: TypeScript libraries that help developers ship
+  tagline: JayOnCode (JOC) is an open source monorepo of focused, independently installable packages — starting with browser lifecycle on npm, with more developer tools shipping soon.
   image:
     src: /logo.png
     alt: JOC by JayOnCode logo
   actions:
     - theme: brand
-      text: Install Browser Lifecycle
-      link: /packages/browser-lifecycle/installation
+      text: Start with Browser Lifecycle
+      link: /packages/browser-lifecycle/
     - theme: alt
-      text: Read Quick Start
+      text: 5-minute Quick Start
       link: /guides/browser-lifecycle/quick-start
     - theme: alt
-      text: Open Playground
-      link: /playground/playground
+      text: View roadmap
+      link: /roadmap/
 features:
-  - title: Published on npm
-    details: "@jayoncode/browser-lifecycle is available on npm with TypeScript types, SSR-safe helpers, and framework-agnostic session APIs."
-  - title: Documentation-first
-    details: Guides, API reference, patterns, FAQs, and migration notes are generated and synced from the monorepo source of truth.
-  - title: Interactive playground
-    details: Explore visibility, focus, idle, connectivity, plugins, events, and diagnostics in the Browser Session Playground.
+  - icon: 📦
+    title: Independently installable
+    details: Pick only the @jayoncode/* packages you need. No monolithic SDK — each library solves one problem well and stays optional.
+  - icon: 🧩
+    title: Framework-agnostic
+    details: React, Vue, Angular, Svelte, Next.js, or vanilla TypeScript. JOC packages integrate at the library layer, not the UI framework layer.
+  - icon: 🛡️
+    title: SSR-safe patterns
+    details: Feature detection and guards that behave in Node, test runners, and the browser without throwing on import.
+  - icon: 📐
+    title: Shared engineering standards
+    details: One monorepo blueprint for testing, docs, API design, versioning, and release quality across every package.
+  - icon: 🔌
+    title: Composable by design
+    details: Small focused APIs with plugins, events, and diagnostics where they matter — built for production apps, not demos.
+  - icon: 🧪
+    title: Docs + playgrounds
+    details: Guides, API reference, patterns, and interactive playgrounds synced from the repository as packages land.
 ---
+
+<HomeFx />
+
+<HomeBelowFold />

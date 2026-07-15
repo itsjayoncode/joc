@@ -1,0 +1,28 @@
+/* JayOnCode brand tokens — single source of truth */
+:root {
+  --joc-primary: #2da8ff;
+  --joc-secondary: #1b6dff;
+  --joc-accent: #0e4ed8;
+  --joc-dark: #081426;
+  --joc-dark-alt: #0a1f44;
+  --joc-light: #ffffff;
+  --joc-surface: #f5f8fc;
+  --joc-border: #d7e5f5;
+  --joc-text: #0a1f44;
+  --joc-muted: #5f738f;
+
+  --joc-primary-rgb: 45, 168, 255;
+  --joc-secondary-rgb: 27, 109, 255;
+  --joc-accent-rgb: 14, 78, 216;
+  --joc-dark-rgb: 8, 20, 38;
+  --joc-dark-alt-rgb: 10, 31, 68;
+
+  --joc-gradient-brand: linear-gradient(135deg, var(--joc-primary), var(--joc-secondary));
+  --joc-gradient-brand-deep: linear-gradient(135deg, var(--joc-secondary), var(--joc-accent));
+  --joc-gradient-hero: linear-gradient(135deg, var(--joc-secondary) 0%, var(--joc-accent) 100%);
+  --joc-glow-primary: rgba(var(--joc-primary-rgb), 0.28);
+  --joc-glow-secondary: rgba(var(--joc-secondary-rgb), 0.2);
+  --joc-grid-line: rgba(var(--joc-secondary-rgb), 0.07);
+  --joc-shadow-soft: 0 12px 40px rgba(var(--joc-dark-alt-rgb), 0.08);
+  --joc-shadow-card: 0 4px 24px rgba(var(--joc-dark-alt-rgb), 0.06);
+}
