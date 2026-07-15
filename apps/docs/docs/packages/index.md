@@ -31,6 +31,16 @@ Start with the live package today, then explore planned libraries as they land.
 - [FAQ](/packages/browser-lifecycle/faq/)
 - [Playground docs](/packages/browser-lifecycle/playground/playground)
 
+### [Object Diff](/packages/object-diff/)
+
+`@jayoncode/object-diff` — deep object comparison, structured change reporting, and JSON Patch generation for state snapshots and change tracking.
+
+**Start here:**
+
+- [Getting Started](/packages/object-diff/modules/getting-started)
+- [API Reference](/packages/object-diff/api/)
+- [Playground docs](/packages/object-diff/playground/playground)
+
 ## Coming soon
 
 These packages are tracked in the monorepo and documented as stubs until they publish:
@@ -47,7 +57,6 @@ These packages are tracked in the monorepo and documented as stubs until they pu
 | Audit       | `@jayoncode/audit`       | [Overview](/packages/audit/)       |
 | Permissions | `@jayoncode/permissions` | [Overview](/packages/permissions/) |
 | Workflow    | `@jayoncode/workflow`    | [Overview](/packages/workflow/)    |
-| Object Diff | `@jayoncode/object-diff` | [Overview](/packages/object-diff/) |
 
 ## New to JOC?
 

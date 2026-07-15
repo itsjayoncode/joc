@@ -3,6 +3,8 @@ import { defineConfig } from "vitepress";
 import { browserLifecycleMeta } from "./browser-lifecycle-meta.js";
 import { createBrowserLifecycleSidebarMap } from "./browser-lifecycle-sidebar.js";
 import { browserLifecycleDocVersions } from "./browser-lifecycle-versions.js";
+import { objectDiffMeta } from "./object-diff-meta.js";
+import { createObjectDiffSidebarMap } from "./object-diff-sidebar.js";
 import {
   buildOrganizationJsonLd,
   buildSoftwarePackageJsonLd,
@@ -23,21 +25,13 @@ const sitemapHostname = docsSiteUrl.endsWith("/") ? docsSiteUrl : `${docsSiteUrl
 const PKG = browserLifecycleDocVersions.basePath;
 const browserLifecycleVersionLabel = browserLifecycleMeta.versionLabel;
 const browserLifecycleMenuLabel = `Browser Lifecycle · ${browserLifecycleVersionLabel}`;
+const objectDiffVersionLabel = objectDiffMeta.versionLabel;
+const objectDiffMenuLabel = `Object Diff · ${objectDiffVersionLabel}`;
 
 const packageItems = [
   { text: "All Packages", link: "/packages/" },
   { text: browserLifecycleMenuLabel, link: `${PKG}/` },
-  { text: "Request", link: "/packages/request/" },
-  { text: "Scroll", link: "/packages/scroll/" },
-  { text: "Keyboard", link: "/packages/keyboard/" },
-  { text: "Responsive", link: "/packages/responsive/" },
-  { text: "Theme", link: "/packages/theme/" },
-  { text: "Forms", link: "/packages/forms/" },
-  { text: "Layers", link: "/packages/layers/" },
-  { text: "Audit", link: "/packages/audit/" },
-  { text: "Permissions", link: "/packages/permissions/" },
-  { text: "Workflow", link: "/packages/workflow/" },
-  { text: "Object Diff", link: "/packages/object-diff/" },
+  { text: objectDiffMenuLabel, link: "/packages/object-diff/" },
 ];
 
 const browserLifecycleSidebar = createBrowserLifecycleSidebarMap(
@@ -45,6 +39,9 @@ const browserLifecycleSidebar = createBrowserLifecycleSidebarMap(
   browserLifecycleVersionLabel,
   browserLifecycleDocVersions.archives,
 );
+
+const OBJECT_DIFF_PKG = "/packages/object-diff/";
+const objectDiffSidebar = createObjectDiffSidebarMap(OBJECT_DIFF_PKG, objectDiffVersionLabel);
 
 export default defineConfig({
   base: docsBase,
@@ -137,6 +134,7 @@ export default defineConfig({
         },
       ],
       ...browserLifecycleSidebar,
+      ...objectDiffSidebar,
       "/guides/": [
         {
           text: "Contributor Guides",
