@@ -1,12 +1,49 @@
 {
   "name": "@jayoncode/object-diff",
-  "version": "0.0.0",
-  "private": true,
-  "description": "Future object-diff package for the JOC ecosystem.",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Object Diff — Typed, framework-agnostic deep comparison, change reporting, and patch generation for structured data.",
   "license": "MIT",
+  "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/JayOnCode/joc.git",
+    "url": "git+https://github.com/itsjayoncode/joc.git",
     "directory": "packages/object-diff"
+  },
+  "homepage": "https://itsjayoncode.github.io/joc/packages/object-diff/",
+  "bugs": {
+    "url": "https://github.com/itsjayoncode/joc/issues"
+  },
+  "keywords": [
+    "object-diff",
+    "deep-diff",
+    "diff",
+    "compare",
+    "patch",
+    "json-patch",
+    "deep-equal",
+    "change-detection",
+    "typescript",
+    "jayoncode",
+    "joc",
+    "framework-agnostic"
+  ],
+  "publishConfig": {
+    "access": "public"
   }
 }
