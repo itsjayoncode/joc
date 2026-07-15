@@ -1,0 +1,12 @@
+{
+  "package": "@jayoncode/browser-lifecycle",
+  "basePath": "/packages/browser-lifecycle",
+  "archivePolicy": "minor",
+  "archives": [
+    {
+      "version": "0.1.2",
+      "label": "v0.1.2",
+      "archivedAt": "2026-07-15"
+    }
+  ]
+}

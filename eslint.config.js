@@ -117,6 +117,7 @@ export default tseslint.config(
       "apps/browser-session-playground/src/**/*.{test,spec}.tsx",
       "tests/**/*.{ts,tsx}",
       "test-utils/**/*.{ts,tsx}",
+      "scripts/doc-versioning-policy.ts",
     ],
     languageOptions: {
       parserOptions: {

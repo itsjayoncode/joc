@@ -47,6 +47,25 @@ pnpm docs:sync
 pnpm docs:prepare
 ```
 
-Generated output is gitignored under `apps/docs/docs/packages/browser-lifecycle/` (`api/`, `modules/`, `playground/`, `examples/index.md`) and `.vitepress/*-meta.ts`. CI and local validation always run `docs:prepare` before typecheck and formatting checks.
+`docs:prepare` runs API generation, content sync, and archive staging for versioned package docs.
+
+### Archived package documentation
+
+Browser Lifecycle docs can be frozen per release under:
+
+- latest: `/packages/browser-lifecycle/`
+- archived: `/packages/browser-lifecycle/v{version}/`
+
+Archives are stored in `apps/docs/archives/browser-lifecycle/` and staged into the VitePress tree during `docs:prepare`.
+
+```bash
+# Snapshot the current browser-lifecycle docs (manual or release hook)
+pnpm docs:archive
+
+# Release versioning archives automatically when a minor/major bump is pending
+pnpm release:version
+```
+
+Generated output is gitignored under `apps/docs/docs/packages/browser-lifecycle/` (`api/`, `modules/`, `playground/`, `examples/index.md`, `v*/`) and `.vitepress/*-meta.ts`, `.vitepress/browser-lifecycle-versions.ts`. CI and local validation always run `docs:prepare` before typecheck and formatting checks.
 
 Set `DOCS_SYNC_SKIP_QUALITY=1` only for fast integration tests that verify generation output without running format/lint.

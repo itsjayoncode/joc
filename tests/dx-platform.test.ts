@@ -96,7 +96,22 @@ describe("developer experience platform", () => {
     const docsPackage = readText("apps/docs/package.json");
     expect(docsPackage).toContain('"docs:api"');
     expect(docsPackage).toContain('"docs:sync"');
+    expect(docsPackage).toContain('"docs:stage-archives"');
     expect(docsPackage).toContain('"docs:prepare"');
+  });
+
+  it("supports versioned browser-lifecycle documentation archives", () => {
+    const manifestPath = path.join(rootDir, "apps/docs/doc-versions/browser-lifecycle.json");
+    const config = readText("apps/docs/docs/.vitepress/config.ts");
+    const rootPackage = readText("package.json");
+    const versioningLib = path.join(rootDir, "scripts/lib/doc-versioning.mjs");
+
+    expect(existsSync(manifestPath)).toBe(true);
+    expect(existsSync(versioningLib)).toBe(true);
+    expect(config).toContain("browser-lifecycle-versions");
+    expect(config).toContain("createBrowserLifecycleSidebarMap");
+    expect(rootPackage).toContain('"docs:archive"');
+    expect(rootPackage).toContain("archive-package-docs.mjs --before-release");
   });
 
   it("formats and lints generated documentation output during sync", () => {
@@ -149,11 +164,21 @@ describe("documentation integration output", () => {
       rootDir,
       "apps/docs/docs/packages/browser-lifecycle/api/index.md",
     );
+    const versionsMeta = path.join(
+      rootDir,
+      "apps/docs/docs/.vitepress/browser-lifecycle-versions.ts",
+    );
+    const stagedArchiveIndex = path.join(
+      rootDir,
+      "apps/docs/docs/packages/browser-lifecycle/v0.1.2/index.md",
+    );
 
     expect(existsSync(generatedApiIndex)).toBe(true);
     expect(existsSync(syncedExamples)).toBe(true);
     expect(existsSync(syncedModulesDir)).toBe(true);
     expect(existsSync(syncedPlaygroundDir)).toBe(true);
+    expect(existsSync(versionsMeta)).toBe(true);
+    expect(existsSync(stagedArchiveIndex)).toBe(true);
     expect(readdirSync(syncedModulesDir).length).toBeGreaterThan(0);
     expect(readdirSync(syncedPlaygroundDir).length).toBeGreaterThan(0);
   }, 30_000);
