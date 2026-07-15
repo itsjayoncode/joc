@@ -1,3 +1,45 @@
+# Browser Lifecycle Playground
+
+Learn the API by **doing** — every module has a live demo with explanations and inspectors.
+
+[Open playground →](/playground/browser-lifecycle/)
+
+## Match docs to playground
+
+Follow the [learning path](/packages/browser-lifecycle/) in docs, then try each topic live:
+
+| Docs guide                                                                     | Playground route                                              | What to try                    |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------- | ------------------------------ |
+| [Tutorial](/packages/browser-lifecycle/modules/getting-started)                | [/](/playground/browser-lifecycle/)                           | Create session, quick validate |
+| [Concepts](/packages/browser-lifecycle/modules/concepts)                       | [/state](/playground/browser-lifecycle/state)                 | Live snapshot JSON             |
+| [Visibility](/packages/browser-lifecycle/modules/visibility)                   | [/visibility](/playground/browser-lifecycle/visibility)       | Switch tabs                    |
+| [Events](/packages/browser-lifecycle/modules/events)                           | [/events](/playground/browser-lifecycle/events)               | Event feed                     |
+| [Session core](/packages/browser-lifecycle/modules/session-core)               | [/lifecycle](/playground/browser-lifecycle/lifecycle)         | Lifecycle phases               |
+| [Core infrastructure](/packages/browser-lifecycle/modules/core-infrastructure) | [/configuration](/playground/browser-lifecycle/configuration) | Config options                 |
+| Plugins                                                                        | [/plugins](/playground/browser-lifecycle/plugins)             | Plugin hooks                   |
+| Cross-tab                                                                      | [/cross-tab](/playground/browser-lifecycle/cross-tab)         | Multi-tab sync                 |
+| Performance                                                                    | [/performance](/playground/browser-lifecycle/performance)     | Benchmarks                     |
+
+## How each page works
+
+1. **Read** the explanation panel at the top
+2. **Interact** with the demo controls
+3. **Inspect** state, events, or diagnostics in the side panel
+
+## Run locally
+
+```bash
+pnpm browser-session-playground:dev
+```
+
+Open [http://127.0.0.1:4273](http://127.0.0.1:4273).
+
+## Foundation architecture
+
+The playground separates shell UI from Browser Lifecycle runtime state. See the original foundation notes below for folder layout and technology choices.
+
+---
+
 # Playground Foundation
 
 ## Purpose
@@ -31,84 +73,4 @@ This keeps application UI concerns separate from Browser Lifecycle runtime conce
 - Vitest
 - CSS Modules
 
-CSS Modules were chosen over Tailwind to keep the foundation lightweight, avoid extra styling dependencies, and preserve a clear component-to-style ownership model.
-
-## Routing
-
-Foundation routes:
-
-- `/`
-- `/visibility`
-- `/focus`
-- `/connectivity`
-- `/idle`
-- `/lifecycle`
-- `/cross-tab`
-- `/about`
-- `/settings`
-- `/not-found`
-
-The visibility route is the first live Browser Lifecycle module page. It creates a session through `src/lib/browser-lifecycle.ts`, reads snapshot visibility state, and records ordered `page:visible` / `page:hidden` events without using `document` APIs in UI components.
-
-The focus route demonstrates normalized attention state, blur history, and `window:focus` / `window:blur` events through the same integration boundary.
-
-The connectivity route demonstrates advisory online/offline state, reconnect cycles, and `connection:*` events through the same integration boundary.
-
-The cross-tab route demonstrates leader election, tab messages, and `tab:*` events through the same integration boundary.
-
-The plugins route demonstrates real plugin registration, lifecycle hooks, plugin diagnostics, and `plugin:*` events through `getPlugins()` and `getPluginHookLog()`.
-
-The events route subscribes to the full Browser Lifecycle public feed through `lifecycle.subscribe()` for live debugging, filtering, and export.
-
-The state route inspects live snapshots through `getSnapshot()` and `subscribe()` with history, module cards, and diff tooling.
-
-The configuration route validates and applies Browser Lifecycle configuration through `validateBrowserLifecycleConfig()` and session restart.
-
-The navigation model still reserves future routes for:
-
-- `configuration`
-
-## Theme System
-
-The app supports:
-
-- `light`
-- `dark`
-- `system`
-
-Theme preference is persisted and applied through `data-theme` on the document root.
-
-## Layout
-
-The shell includes:
-
-- Header
-- Sidebar
-- Content area
-- Status bar
-- Footer
-- Page container primitive
-
-It is responsive by default and supports a compact sidebar mode for dense engineering workflows.
-
-## Component Standards
-
-Shared components in this phase stay:
-
-- small
-- typed
-- composable
-- accessible
-- single-purpose
-
-The shell uses reusable primitives such as `Card` and `PageContainer` so future module pages can inherit the same structure without duplicating layout logic.
-
-## Development Workflow
-
-Recommended commands:
-
-```bash
-npx pnpm@10.13.1 --filter @jayoncode/browser-session-playground dev
-npx pnpm@10.13.1 --filter @jayoncode/browser-session-playground build
-npx pnpm@10.13.1 --filter @jayoncode/browser-session-playground test
-```
+[Back to package overview →](/packages/browser-lifecycle/)

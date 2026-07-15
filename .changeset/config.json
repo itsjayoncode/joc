@@ -17,6 +17,7 @@
     "@jayoncode/playground",
     "@jayoncode/browser-session-playground",
     "@jayoncode/object-diff-playground",
+    "@jayoncode/form-intelligent-playground",
     "@jayoncode/shared",
     "@jayoncode/audit",
     "@jayoncode/cache",

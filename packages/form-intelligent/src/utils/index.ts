@@ -1,0 +1,123 @@
+import type { FieldPath } from "../types/index.js";
+
+export function isPlainObject(value: unknown): value is Record<string, unknown> {
+  if (value === null || typeof value !== "object") {
+    return false;
+  }
+
+  const prototype: object | null = Object.getPrototypeOf(value) as object | null;
+  return prototype === Object.prototype || prototype === null;
+}
+
+export function cloneValue<T>(value: T): T {
+  if (value === null || typeof value !== "object") {
+    return value;
+  }
+
+  if (typeof structuredClone === "function") {
+    return structuredClone(value);
+  }
+
+  return JSON.parse(JSON.stringify(value)) as T;
+}
+
+export function parsePath(path: FieldPath): string[] {
+  return path
+    .replace(/\[(\d+)\]/g, ".$1")
+    .split(".")
+    .filter(Boolean);
+}
+
+export function getIn(values: Record<string, unknown>, path: FieldPath): unknown {
+  const segments = parsePath(path);
+  let current: unknown = values;
+
+  for (const segment of segments) {
+    if (current === null || typeof current !== "object") {
+      return undefined;
+    }
+
+    current = (current as Record<string, unknown>)[segment];
+  }
+
+  return current;
+}
+
+const UNSAFE_PATH_KEYS = new Set(["__proto__", "constructor", "prototype"]);
+
+export function setIn(
+  values: Record<string, unknown>,
+  path: FieldPath,
+  value: unknown,
+): Record<string, unknown> {
+  const segments = parsePath(path);
+  if (segments.length === 0) {
+    return values;
+  }
+
+  const next = cloneValue(values);
+  let current: Record<string, unknown> = next;
+
+  for (let index = 0; index < segments.length - 1; index += 1) {
+    const segment = segments[index];
+    if (segment === undefined || UNSAFE_PATH_KEYS.has(segment)) {
+      return values;
+    }
+
+    const existing = current[segment];
+    if (!isPlainObject(existing) && !Array.isArray(existing)) {
+      current[segment] = {};
+    }
+
+    current = current[segment] as Record<string, unknown>;
+  }
+
+  const last = segments[segments.length - 1];
+  if (last === undefined || UNSAFE_PATH_KEYS.has(last)) {
+    return values;
+  }
+
+  current[last] = value;
+  return next;
+}
+
+export function shallowEqualRecord(
+  left: Readonly<Record<string, unknown>>,
+  right: Readonly<Record<string, unknown>>,
+): boolean {
+  const leftKeys = Object.keys(left);
+  const rightKeys = Object.keys(right);
+
+  if (leftKeys.length !== rightKeys.length) {
+    return false;
+  }
+
+  for (const key of leftKeys) {
+    if (left[key] !== right[key]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+export function createId(prefix: string): string {
+  return `${prefix}_${Math.random().toString(36).slice(2, 10)}`;
+}
+
+export function debounce<TArgs extends unknown[]>(
+  fn: (...args: TArgs) => void,
+  waitMs: number,
+): (...args: TArgs) => void {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+
+  return (...args: TArgs) => {
+    if (timer !== undefined) {
+      clearTimeout(timer);
+    }
+
+    timer = setTimeout(() => {
+      fn(...args);
+    }, waitMs);
+  };
+}

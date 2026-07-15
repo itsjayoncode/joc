@@ -9,6 +9,8 @@ lib
 !apps/browser-session-playground/src/lib/**
 !apps/object-diff-playground/src/lib/
 !apps/object-diff-playground/src/lib/**
+!apps/form-intelligent-playground/src/lib/
+!apps/form-intelligent-playground/src/lib/**
 coverage/*
 !coverage/README.md
 *.tsbuildinfo
@@ -33,5 +35,10 @@ apps/docs/docs/packages/object-diff/playground/
 apps/docs/docs/packages/object-diff/api/
 apps/docs/docs/packages/object-diff/index.md
 apps/docs/docs/.vitepress/object-diff-meta.ts
+apps/docs/docs/packages/form-intelligent/modules/
+apps/docs/docs/packages/form-intelligent/playground/
+apps/docs/docs/packages/form-intelligent/api/
+apps/docs/docs/packages/form-intelligent/index.md
+apps/docs/docs/.vitepress/form-intelligent-meta.ts
 apps/docs/docs/examples/index.md
 _construction

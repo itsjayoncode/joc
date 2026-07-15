@@ -1,5 +1,30 @@
 # Core Infrastructure
 
+Configuration, capability detection, and SSR-safe utilities.
+
+**Previous:** [Session core](/packages/browser-lifecycle/modules/session-core) · **Back to:** [Overview](/packages/browser-lifecycle/)
+
+::: tip Try it first
+[Open Configuration playground →](/playground/browser-lifecycle/configuration) — tweak options and inspect capabilities.
+:::
+
+## In plain English
+
+Before modules run, the package validates your **configuration** and detects **browser capabilities** (visibility API, BroadcastChannel, etc.). Use these helpers to write SSR-safe code that degrades gracefully.
+
+```ts
+import { createBrowserLifecycleConfig, supportsVisibility } from "@jayoncode/browser-lifecycle";
+
+const config = createBrowserLifecycleConfig({ autoStart: true });
+if (supportsVisibility()) {
+  /* safe to rely on visibility events */
+}
+```
+
+---
+
+## Technical reference
+
 This document covers the public exports introduced in Phase `2.2.0`.
 
 ## Configuration
