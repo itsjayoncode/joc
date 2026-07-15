@@ -1,7 +1,7 @@
 {
   "name": "@jayoncode/forms",
   "version": "0.0.0",
-  "private": false,
+  "private": true,
   "description": "Future forms package for the JOC ecosystem.",
   "license": "MIT",
   "repository": {
