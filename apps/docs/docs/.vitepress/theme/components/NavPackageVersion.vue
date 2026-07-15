@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { browserLifecycleMeta } from "../../browser-lifecycle-meta.js";
+import { docsMeta } from "../../docs-meta.js";
 </script>
 
 <template>
   <span class="joc-nav-doc-version" aria-label="Documentation version">
-    {{ browserLifecycleMeta.versionLabel }}
+    {{ docsMeta.versionLabel }}
   </span>
 </template>
