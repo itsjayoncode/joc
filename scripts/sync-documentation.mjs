@@ -289,8 +289,10 @@ const exampleCount = syncFrameworkExamplesIndex();
 const browserLifecycleVersion = syncBrowserLifecycleMeta();
 const docsVersion = syncDocsMeta();
 
-formatGeneratedFiles();
-lintGeneratedMetaFiles();
+if (process.env.DOCS_SYNC_SKIP_QUALITY !== "1") {
+  formatGeneratedFiles();
+  lintGeneratedMetaFiles();
+}
 
 console.log(
   `Synced documentation: ${moduleCount} module pages, ${playgroundCount} playground pages, ${exampleCount} framework examples, browser-lifecycle@${browserLifecycleVersion}, docs@${docsVersion}.`,

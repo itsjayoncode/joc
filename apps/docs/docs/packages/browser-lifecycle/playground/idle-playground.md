@@ -18,3 +18,4 @@ Demonstrates the Idle module via `createBrowserLifecycle({ idleTimeout })` throu
 ## Interactive Playground
 
 Explore this topic live in the [Idle Playground](http://127.0.0.1:4273/idle).
+

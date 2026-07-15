@@ -30,3 +30,4 @@ Plugins are registered through `createBrowserLifecycle()` and `lifecycle.use()` 
 ## Interactive Playground
 
 Explore this topic live in the [Plugin Playground](http://127.0.0.1:4273/plugins).
+
