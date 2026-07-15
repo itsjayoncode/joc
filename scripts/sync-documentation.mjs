@@ -1,0 +1,216 @@
+#!/usr/bin/env node
+/**
+ * Syncs source-of-truth documentation into the VitePress site.
+ *
+ * - packages/browser-lifecycle/docs → apps/docs/docs/packages/browser-lifecycle/modules
+ * - apps/browser-session-playground/docs → apps/docs/docs/playground
+ */
+
+import {
+  cpSync,
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const docsRoot = path.join(rootDir, "apps/docs/docs");
+
+const PLAYGROUND_ROUTES = {
+  "connectivity-playground.md": { route: "/connectivity", label: "Connectivity Playground" },
+  "configuration-playground.md": { route: "/configuration", label: "Configuration Playground" },
+  "cross-tab-playground.md": { route: "/cross-tab", label: "Cross Tab Playground" },
+  "developer-tools.md": { route: "/developer-tools", label: "Developer Tools" },
+  "event-explorer.md": { route: "/events", label: "Event Explorer" },
+  "focus-playground.md": { route: "/focus", label: "Focus Playground" },
+  "idle-playground.md": { route: "/idle", label: "Idle Playground" },
+  "lifecycle-playground.md": { route: "/lifecycle", label: "Lifecycle Playground" },
+  "performance-playground.md": { route: "/performance", label: "Performance Playground" },
+  "playground.md": { route: "/", label: "Playground Dashboard" },
+  "plugin-playground.md": { route: "/plugins", label: "Plugin Playground" },
+  "state-explorer.md": { route: "/state", label: "State Explorer" },
+  "visibility-playground.md": { route: "/visibility", label: "Visibility Playground" },
+};
+
+const MODULE_PLAYGROUND_LINKS = {
+  "visibility.md": "/playground/visibility-playground",
+  "events.md": "/playground/event-explorer",
+  "session-core.md": "/playground/lifecycle-playground",
+  "core-infrastructure.md": "/playground/configuration-playground",
+};
+
+const PLAYGROUND_BASE_URL = "http://127.0.0.1:4273";
+
+function toTitle(fileName) {
+  return fileName
+    .replace(/\.md$/, "")
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function withFrontmatter(fileName, body, extra = {}) {
+  const title = extra.title ?? toTitle(fileName);
+  const lines = ["---", `title: ${title}`];
+
+  if (extra.description) {
+    lines.push(`description: ${extra.description}`);
+  }
+
+  if (extra.playgroundRoute) {
+    lines.push(`playground: ${PLAYGROUND_BASE_URL}${extra.playgroundRoute}`);
+  }
+
+  lines.push("---", "", body.trim(), "");
+  return `${lines.join("\n")}\n`;
+}
+
+function appendPlaygroundLink(body, link, label) {
+  if (body.includes("Open Playground") || body.includes(PLAYGROUND_BASE_URL)) {
+    return body;
+  }
+
+  return `${body.trim()}\n\n## Interactive Playground\n\nExplore this topic live in the [${label}](${PLAYGROUND_BASE_URL}${link}).\n`;
+}
+
+function rewritePackageDocLinks(body) {
+  return body
+    .replace(
+      /\]\(\.\.\/examples\/([^)]+)\)/g,
+      "](https://github.com/JayOnCode/joc/tree/main/packages/browser-lifecycle/examples/$1)",
+    )
+    .replace(
+      /\]\(\.\/engineering\/([^)]+)\)/g,
+      "](https://github.com/JayOnCode/joc/tree/main/packages/browser-lifecycle/engineering/$1)",
+    )
+    .replace(/\]\(\.\/docs\/([^)]+)\)/g, "](/packages/browser-lifecycle/modules/$1)");
+}
+
+function syncDirectory({ sourceDir, targetDir, transform }) {
+  if (!existsSync(sourceDir)) {
+    console.warn(`Skipping missing source directory: ${sourceDir}`);
+    return 0;
+  }
+
+  rmSync(targetDir, { recursive: true, force: true });
+  mkdirSync(targetDir, { recursive: true });
+
+  const files = readdirSync(sourceDir).filter((file) => file.endsWith(".md"));
+  for (const file of files) {
+    const body = readFileSync(path.join(sourceDir, file), "utf8");
+    const output = transform(file, body);
+    writeFileSync(path.join(targetDir, file), output, "utf8");
+  }
+
+  return files.length;
+}
+
+function syncPackageModules() {
+  const sourceDir = path.join(rootDir, "packages/browser-lifecycle/docs");
+  const targetDir = path.join(docsRoot, "packages/browser-lifecycle/modules");
+
+  return syncDirectory({
+    sourceDir,
+    targetDir,
+    transform: (file, body) => {
+      const playgroundDoc = MODULE_PLAYGROUND_LINKS[file];
+      const rewritten = rewritePackageDocLinks(body);
+      const enriched = playgroundDoc
+        ? appendPlaygroundLink(rewritten, playgroundDoc.replace("/playground/", "/"), toTitle(file))
+        : rewritten;
+
+      return withFrontmatter(file, enriched, {
+        title: toTitle(file),
+        description: `Browser Lifecycle module documentation for ${toTitle(file)}.`,
+        playgroundRoute: playgroundDoc
+          ? playgroundDoc
+              .replace("/playground/", "/")
+              .replace(/-playground$/, "")
+              .replace(/-explorer$/, "")
+          : undefined,
+      });
+    },
+  });
+}
+
+function syncPlaygroundDocs() {
+  const sourceDir = path.join(rootDir, "apps/browser-session-playground/docs");
+  const targetDir = path.join(docsRoot, "playground");
+
+  return syncDirectory({
+    sourceDir,
+    targetDir,
+    transform: (file, body) => {
+      const route = PLAYGROUND_ROUTES[file];
+      const enriched = route ? appendPlaygroundLink(body, route.route, route.label) : body;
+
+      return withFrontmatter(file, enriched, {
+        title: route?.label ?? toTitle(file),
+        description: `Interactive playground documentation for ${route?.label ?? toTitle(file)}.`,
+        playgroundRoute: route?.route,
+      });
+    },
+  });
+}
+
+function syncFrameworkExamplesIndex() {
+  const examplesDir = path.join(rootDir, "examples");
+  const targetFile = path.join(docsRoot, "examples/index.md");
+
+  const frameworks = readdirSync(examplesDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .sort();
+
+  const rows = frameworks
+    .map((name) => {
+      const readmePath = path.join(examplesDir, name, "README.md");
+      const hasReadme = existsSync(readmePath);
+      const label = name.charAt(0).toUpperCase() + name.slice(1);
+      const repoLink = `https://github.com/JayOnCode/joc/tree/main/examples/${name}`;
+      const status = hasReadme ? "Available" : "Planned";
+      return `| [${label}](${repoLink}) | \`examples/${name}/\` | ${status} |`;
+    })
+    .join("\n");
+
+  const body = `# Framework Examples
+
+Official Browser Lifecycle framework examples live in the monorepo under \`examples/\`.
+
+Each example demonstrates installation, initialization, configuration, event subscriptions, and cleanup using \`createBrowserLifecycle()\` from \`@jayoncode/browser-lifecycle\`.
+
+## Examples
+
+| Framework | Location | Status |
+| --- | --- | --- |
+${rows}
+
+## Related Documentation
+
+- [Usage Guide](/guides/browser-lifecycle/usage)
+- [Best Practices](/best-practices/)
+- [Common Patterns](/patterns/)
+- [Playground](${PLAYGROUND_BASE_URL})
+`;
+
+  mkdirSync(path.dirname(targetFile), { recursive: true });
+  writeFileSync(
+    targetFile,
+    withFrontmatter("index.md", body, { title: "Framework Examples" }),
+    "utf8",
+  );
+  return frameworks.length;
+}
+
+const moduleCount = syncPackageModules();
+const playgroundCount = syncPlaygroundDocs();
+const exampleCount = syncFrameworkExamplesIndex();
+
+console.log(
+  `Synced documentation: ${moduleCount} module pages, ${playgroundCount} playground pages, ${exampleCount} framework examples.`,
+);

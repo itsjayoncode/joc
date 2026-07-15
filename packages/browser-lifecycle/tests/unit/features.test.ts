@@ -1,13 +1,16 @@
+import { describe, expect, it } from "vitest";
+
 import {
   detectBrowserLifecycleCapabilities,
   supportsAbortController,
   supportsBroadcastChannel,
+  supportsConnectivity,
+  supportsFocus,
   supportsPageLifecycle,
   supportsRequestIdleCallback,
   supportsVisibility,
   type BrowserFeatureEnvironment,
 } from "@jayoncode/browser-lifecycle";
-import { describe, expect, it } from "vitest";
 
 describe("feature detection", () => {
   it("returns false for missing capabilities", () => {
@@ -21,6 +24,9 @@ describe("feature detection", () => {
     expect(detectBrowserLifecycleCapabilities(environment)).toEqual({
       abortController: false,
       broadcastChannel: false,
+      connectivity: false,
+      idle: false,
+      focus: false,
       pageLifecycle: false,
       requestIdleCallback: false,
       visibility: false,
@@ -32,16 +38,24 @@ describe("feature detection", () => {
       AbortController: function AbortControllerMock() {},
       BroadcastChannel: function BroadcastChannelMock() {},
       document: {
+        hasFocus: () => true,
         hidden: false,
         visibilityState: "visible",
       },
+      navigator: {
+        onLine: true,
+      },
       requestIdleCallback: () => 1,
       window: {
+        addEventListener: () => undefined,
         onpagehide: null,
         onpageshow: null,
+        removeEventListener: () => undefined,
       },
     };
 
+    expect(supportsConnectivity(environment)).toBe(true);
+    expect(supportsFocus(environment)).toBe(true);
     expect(supportsVisibility(environment)).toBe(true);
     expect(supportsBroadcastChannel(environment)).toBe(true);
     expect(supportsPageLifecycle(environment)).toBe(true);
@@ -50,6 +64,9 @@ describe("feature detection", () => {
     expect(detectBrowserLifecycleCapabilities(environment)).toEqual({
       abortController: true,
       broadcastChannel: true,
+      connectivity: true,
+      idle: true,
+      focus: true,
       pageLifecycle: true,
       requestIdleCallback: true,
       visibility: true,

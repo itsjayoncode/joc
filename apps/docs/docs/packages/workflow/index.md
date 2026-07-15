@@ -4,7 +4,7 @@
 
 ## Introduction
 
-`@joc/workflow` is reserved for future workflow orchestration utilities.
+`@jayoncode/workflow` is reserved for future workflow orchestration utilities.
 
 ## Installation
 

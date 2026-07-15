@@ -1,5 +1,5 @@
 {
-  "name": "@joc/cache",
+  "name": "@jayoncode/cache",
   "version": "0.0.0",
   "private": false,
   "description": "Future cache package for the JOC ecosystem.",

@@ -60,20 +60,20 @@ To keep this document usable long term:
 
 ## API Summary
 
-| Capability | Primary Role | Reliability | Fallback Need | V1 Recommendation |
-| --- | --- | --- | --- | --- |
-| Page Visibility API | visible and hidden state | high | low | required |
-| Page Lifecycle related events | suspend, restore, termination refinement | medium | medium | optional enhancement |
-| focus and blur | attention state | medium | low | required as secondary layer |
-| pagehide and pageshow | navigation and bfcache refinement | medium | medium | required as secondary layer |
-| beforeunload | user warning escape hatch only | low | n/a | avoid for core |
-| unload | legacy termination event | low | n/a | do not use |
-| navigator.onLine | connectivity hint | low to medium | low | optional advisory signal |
-| BroadcastChannel | preferred cross-tab transport | high when available | medium | optional but strongly recommended |
-| storage event | cross-tab fallback transport | medium | medium | optional fallback |
-| requestAnimationFrame | visible-state scheduling | medium | medium | optional internal tool |
-| requestIdleCallback | low-priority background work | low | high | future or optional only |
-| AbortController | cleanup and cancellation | high | low | required internal primitive |
+| Capability                    | Primary Role                             | Reliability         | Fallback Need | V1 Recommendation                 |
+| ----------------------------- | ---------------------------------------- | ------------------- | ------------- | --------------------------------- |
+| Page Visibility API           | visible and hidden state                 | high                | low           | required                          |
+| Page Lifecycle related events | suspend, restore, termination refinement | medium              | medium        | optional enhancement              |
+| focus and blur                | attention state                          | medium              | low           | required as secondary layer       |
+| pagehide and pageshow         | navigation and bfcache refinement        | medium              | medium        | required as secondary layer       |
+| beforeunload                  | user warning escape hatch only           | low                 | n/a           | avoid for core                    |
+| unload                        | legacy termination event                 | low                 | n/a           | do not use                        |
+| navigator.onLine              | connectivity hint                        | low to medium       | low           | optional advisory signal          |
+| BroadcastChannel              | preferred cross-tab transport            | high when available | medium        | optional but strongly recommended |
+| storage event                 | cross-tab fallback transport             | medium              | medium        | optional fallback                 |
+| requestAnimationFrame         | visible-state scheduling                 | medium              | medium        | optional internal tool            |
+| requestIdleCallback           | low-priority background work             | low                 | high          | future or optional only           |
+| AbortController               | cleanup and cancellation                 | high                | low           | required internal primitive       |
 
 ## Practical Examples
 
@@ -1151,18 +1151,18 @@ This is one of the strongest platform primitives for maintaining cleanup discipl
 
 ### Decision Table
 
-| Capability | Reliability | Browser Support | Performance | Ease of Use | Complexity | Fallback Availability | Recommended for V1 | Recommended for Future |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Page Visibility API | high | high | high | high | low | medium | yes | yes |
-| Page Lifecycle advanced signals | medium | medium | medium | medium | medium to high | medium | partial | yes |
-| focus and blur | medium | high | high | high | low | medium | yes | yes |
-| pagehide and pageshow | medium | high | high | medium | medium | medium | yes | yes |
-| navigator.onLine | low to medium | high | high | high | low | high | optional | yes |
-| BroadcastChannel | high when supported | medium to high | medium to high | medium | medium | medium | optional | yes |
-| storage event | medium | high | medium | medium | medium | high | optional | yes |
-| requestAnimationFrame | medium | high | high for visible work | high | low | high | optional | yes |
-| requestIdleCallback | low | medium | medium | medium | low | high | no | yes |
-| AbortController | high | high | high | high | low | medium | yes | yes |
+| Capability                      | Reliability         | Browser Support | Performance           | Ease of Use | Complexity     | Fallback Availability | Recommended for V1 | Recommended for Future |
+| ------------------------------- | ------------------- | --------------- | --------------------- | ----------- | -------------- | --------------------- | ------------------ | ---------------------- |
+| Page Visibility API             | high                | high            | high                  | high        | low            | medium                | yes                | yes                    |
+| Page Lifecycle advanced signals | medium              | medium          | medium                | medium      | medium to high | medium                | partial            | yes                    |
+| focus and blur                  | medium              | high            | high                  | high        | low            | medium                | yes                | yes                    |
+| pagehide and pageshow           | medium              | high            | high                  | medium      | medium         | medium                | yes                | yes                    |
+| navigator.onLine                | low to medium       | high            | high                  | high        | low            | high                  | optional           | yes                    |
+| BroadcastChannel                | high when supported | medium to high  | medium to high        | medium      | medium         | medium                | optional           | yes                    |
+| storage event                   | medium              | high            | medium                | medium      | medium         | high                  | optional           | yes                    |
+| requestAnimationFrame           | medium              | high            | high for visible work | high        | low            | high                  | optional           | yes                    |
+| requestIdleCallback             | low                 | medium          | medium                | medium      | low            | high                  | no                 | yes                    |
+| AbortController                 | high                | high            | high                  | high        | low            | medium                | yes                | yes                    |
 
 ### Comparison Conclusions
 
@@ -1235,18 +1235,18 @@ Legend:
 - `Experimental`: not strong enough for default reliance
 - `Unsupported`: should not be expected
 
-| Capability | Chrome | Edge | Firefox | Safari | Safari iOS | Android Chrome | Electron | PWA Context | Known Issues |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Page Visibility API | Supported | Supported | Supported | Supported | Supported | Supported | Supported | Supported | hidden may be the last reliable signal before discard |
-| focus and blur | Supported | Supported | Supported | Supported | Partial | Supported | Supported | Partial | attention is not equal to visibility |
-| pagehide and pageshow | Supported | Supported | Supported | Supported | Supported | Supported | Supported | Supported | restore semantics still vary by environment |
-| advanced lifecycle signals | Partial | Partial | Partial | Partial | Partial | Partial | Partial | Partial | support and nuance are engine-dependent |
-| navigator.onLine | Supported | Supported | Supported | Supported | Supported | Supported | Supported | Supported | false positives and false negatives are common |
-| BroadcastChannel | Supported | Supported | Supported | Partial | Partial | Supported | Supported | Partial | webviews and constrained environments may lag |
-| storage event | Supported | Supported | Supported | Supported | Partial | Supported | Supported | Partial | storage availability may be limited in private or embedded contexts |
-| requestAnimationFrame | Supported | Supported | Supported | Supported | Supported | Supported | Supported | Supported | hidden tabs throttle or pause frame cadence |
-| requestIdleCallback | Supported | Supported | Partial | Partial | Partial | Supported | Supported | Partial | timing is too soft for correctness work |
-| AbortController | Supported | Supported | Supported | Supported | Supported | Supported | Supported | Supported | fallback may still be needed for legacy policy targets |
+| Capability                 | Chrome    | Edge      | Firefox   | Safari    | Safari iOS | Android Chrome | Electron  | PWA Context | Known Issues                                                        |
+| -------------------------- | --------- | --------- | --------- | --------- | ---------- | -------------- | --------- | ----------- | ------------------------------------------------------------------- |
+| Page Visibility API        | Supported | Supported | Supported | Supported | Supported  | Supported      | Supported | Supported   | hidden may be the last reliable signal before discard               |
+| focus and blur             | Supported | Supported | Supported | Supported | Partial    | Supported      | Supported | Partial     | attention is not equal to visibility                                |
+| pagehide and pageshow      | Supported | Supported | Supported | Supported | Supported  | Supported      | Supported | Supported   | restore semantics still vary by environment                         |
+| advanced lifecycle signals | Partial   | Partial   | Partial   | Partial   | Partial    | Partial        | Partial   | Partial     | support and nuance are engine-dependent                             |
+| navigator.onLine           | Supported | Supported | Supported | Supported | Supported  | Supported      | Supported | Supported   | false positives and false negatives are common                      |
+| BroadcastChannel           | Supported | Supported | Supported | Partial   | Partial    | Supported      | Supported | Partial     | webviews and constrained environments may lag                       |
+| storage event              | Supported | Supported | Supported | Supported | Partial    | Supported      | Supported | Partial     | storage availability may be limited in private or embedded contexts |
+| requestAnimationFrame      | Supported | Supported | Supported | Supported | Supported  | Supported      | Supported | Supported   | hidden tabs throttle or pause frame cadence                         |
+| requestIdleCallback        | Supported | Supported | Partial   | Partial   | Partial    | Supported      | Supported | Partial     | timing is too soft for correctness work                             |
+| AbortController            | Supported | Supported | Supported | Supported | Supported  | Supported      | Supported | Supported   | fallback may still be needed for legacy policy targets              |
 
 Notes:
 
@@ -1256,32 +1256,32 @@ Notes:
 
 ## 12. Known Browser Quirks
 
-| Environment | Issue | Impact | Mitigation | Recommended Browser Lifecycle Manager Behavior |
-| --- | --- | --- | --- | --- |
-| Safari | restoration and lifecycle nuance are less uniform than Chromium guidance suggests | overconfident lifecycle states become brittle | capability-gate advanced lifecycle semantics | keep Safari behavior conservative |
-| Firefox | some lifecycle refinements differ from Chromium-oriented examples | borrowed assumptions may not port cleanly | rely on broadly supported events first | prioritize visibility plus pagehide and pageshow |
-| Mobile browsers | app switching and task killing can truncate event chains | missing "final" events | treat hidden as likely last reliable signal | never promise clean termination |
-| Background tabs | timers and frames are throttled or paused | idle logic and heartbeats drift | use explicit caveat-aware heuristics | avoid precision claims |
-| Battery saving mode | scheduling slows further | delayed transitions or stale heartbeats | allow degraded behavior | keep coordination tolerant of delay |
-| Private browsing | storage availability may be constrained | fallback transport may fail | probe writability before enabling storage transport | disable storage fallback if unavailable |
-| Embedded browsers and webviews | browser support may diverge from full browsers | compatibility assumptions weaken | capability-detect everything | keep feature set minimal by default |
+| Environment                    | Issue                                                                             | Impact                                        | Mitigation                                          | Recommended Browser Lifecycle Manager Behavior   |
+| ------------------------------ | --------------------------------------------------------------------------------- | --------------------------------------------- | --------------------------------------------------- | ------------------------------------------------ |
+| Safari                         | restoration and lifecycle nuance are less uniform than Chromium guidance suggests | overconfident lifecycle states become brittle | capability-gate advanced lifecycle semantics        | keep Safari behavior conservative                |
+| Firefox                        | some lifecycle refinements differ from Chromium-oriented examples                 | borrowed assumptions may not port cleanly     | rely on broadly supported events first              | prioritize visibility plus pagehide and pageshow |
+| Mobile browsers                | app switching and task killing can truncate event chains                          | missing "final" events                        | treat hidden as likely last reliable signal         | never promise clean termination                  |
+| Background tabs                | timers and frames are throttled or paused                                         | idle logic and heartbeats drift               | use explicit caveat-aware heuristics                | avoid precision claims                           |
+| Battery saving mode            | scheduling slows further                                                          | delayed transitions or stale heartbeats       | allow degraded behavior                             | keep coordination tolerant of delay              |
+| Private browsing               | storage availability may be constrained                                           | fallback transport may fail                   | probe writability before enabling storage transport | disable storage fallback if unavailable          |
+| Embedded browsers and webviews | browser support may diverge from full browsers                                    | compatibility assumptions weaken              | capability-detect everything                        | keep feature set minimal by default              |
 
 ## 13. Engineering Recommendations
 
-| Capability | Use | Avoid | Wrap | Treat as Optional | Replace with Another Approach | Why |
-| --- | --- | --- | --- | --- | --- | --- |
-| Page Visibility API | yes | no | yes | no | no | strongest baseline visibility signal |
-| focus and blur | yes | no | yes | no | no | useful attention layer when kept distinct from visibility |
-| pagehide and pageshow | yes | no | yes | no | no | needed for restoration and navigation refinement |
-| advanced lifecycle signals | yes selectively | no | yes | yes | no | valuable but uneven |
-| navigator.onLine | yes selectively | no | yes | yes | yes when hard network truth is required | only valid as advisory connectivity context |
-| BroadcastChannel | yes selectively | no | yes | yes | storage fallback when unavailable | best optional transport for cross-tab coordination |
-| storage event | yes as fallback | no | yes | yes | BroadcastChannel when supported | broad but weaker fallback transport |
-| requestAnimationFrame | yes selectively | no | yes | yes | timers or no-op optimization path in hidden contexts | optimization tool, not core truth |
-| requestIdleCallback | no for core | yes for correctness | yes if added later | yes | timeout-based low-priority scheduling | too weak for required behavior |
-| AbortController | yes | no | yes | no | explicit cleanup collections for legacy targets | strong cleanup and cancellation primitive |
-| unload | no | yes | no | no | pagehide and visibility-based reasoning | harmful legacy assumption and poor modern fit |
-| beforeunload | no for core | yes for core | maybe for future consumer escape hatches | yes | explicit consumer-owned unsaved-work handling | user-warning escape hatch only |
+| Capability                 | Use             | Avoid               | Wrap                                     | Treat as Optional | Replace with Another Approach                        | Why                                                       |
+| -------------------------- | --------------- | ------------------- | ---------------------------------------- | ----------------- | ---------------------------------------------------- | --------------------------------------------------------- |
+| Page Visibility API        | yes             | no                  | yes                                      | no                | no                                                   | strongest baseline visibility signal                      |
+| focus and blur             | yes             | no                  | yes                                      | no                | no                                                   | useful attention layer when kept distinct from visibility |
+| pagehide and pageshow      | yes             | no                  | yes                                      | no                | no                                                   | needed for restoration and navigation refinement          |
+| advanced lifecycle signals | yes selectively | no                  | yes                                      | yes               | no                                                   | valuable but uneven                                       |
+| navigator.onLine           | yes selectively | no                  | yes                                      | yes               | yes when hard network truth is required              | only valid as advisory connectivity context               |
+| BroadcastChannel           | yes selectively | no                  | yes                                      | yes               | storage fallback when unavailable                    | best optional transport for cross-tab coordination        |
+| storage event              | yes as fallback | no                  | yes                                      | yes               | BroadcastChannel when supported                      | broad but weaker fallback transport                       |
+| requestAnimationFrame      | yes selectively | no                  | yes                                      | yes               | timers or no-op optimization path in hidden contexts | optimization tool, not core truth                         |
+| requestIdleCallback        | no for core     | yes for correctness | yes if added later                       | yes               | timeout-based low-priority scheduling                | too weak for required behavior                            |
+| AbortController            | yes             | no                  | yes                                      | no                | explicit cleanup collections for legacy targets      | strong cleanup and cancellation primitive                 |
+| unload                     | no              | yes                 | no                                       | no                | pagehide and visibility-based reasoning              | harmful legacy assumption and poor modern fit             |
+| beforeunload               | no for core     | yes for core        | maybe for future consumer escape hatches | yes               | explicit consumer-owned unsaved-work handling        | user-warning escape hatch only                            |
 
 ### Recommendation Summary
 
@@ -1308,22 +1308,22 @@ Version 1 should avoid relying on:
 
 ## 14. Version 1 Decisions
 
-| Capability | Classification | Justification |
-| --- | --- | --- |
-| Page Visibility API | Required | strongest and most portable visibility baseline |
-| focus and blur | Required | necessary secondary attention layer when kept distinct from visibility |
-| pagehide and pageshow | Required | needed for restoration and navigation refinement in modern browsers |
-| AbortController | Required | strongest cleanup and cancellation primitive for disciplined internal ownership |
-| advanced lifecycle signals | Optional | useful where supported, but too uneven for required correctness |
-| navigator.onLine | Optional | useful advisory context, but too weak for guarantees |
-| BroadcastChannel | Optional | best cross-tab transport, but not universal enough to make core |
-| storage event | Optional | valuable fallback for coordination, but lower fidelity than BroadcastChannel |
-| requestAnimationFrame | Optional | internal optimization tool, not a lifecycle truth source |
-| requestIdleCallback | Future | appropriate only for non-essential deferred work |
-| Idle Detection API | Experimental | support and permission posture make it unsuitable for V1 reliance |
-| Navigation API | Experimental | promising but still too emerging for core lifecycle dependence |
-| unload | Rejected | discouraged, unreliable, and harmful to modern browser behavior |
-| beforeunload as lifecycle detector | Rejected | inappropriate for lifecycle truth and heavily restricted by browsers |
+| Capability                         | Classification | Justification                                                                   |
+| ---------------------------------- | -------------- | ------------------------------------------------------------------------------- |
+| Page Visibility API                | Required       | strongest and most portable visibility baseline                                 |
+| focus and blur                     | Required       | necessary secondary attention layer when kept distinct from visibility          |
+| pagehide and pageshow              | Required       | needed for restoration and navigation refinement in modern browsers             |
+| AbortController                    | Required       | strongest cleanup and cancellation primitive for disciplined internal ownership |
+| advanced lifecycle signals         | Optional       | useful where supported, but too uneven for required correctness                 |
+| navigator.onLine                   | Optional       | useful advisory context, but too weak for guarantees                            |
+| BroadcastChannel                   | Optional       | best cross-tab transport, but not universal enough to make core                 |
+| storage event                      | Optional       | valuable fallback for coordination, but lower fidelity than BroadcastChannel    |
+| requestAnimationFrame              | Optional       | internal optimization tool, not a lifecycle truth source                        |
+| requestIdleCallback                | Future         | appropriate only for non-essential deferred work                                |
+| Idle Detection API                 | Experimental   | support and permission posture make it unsuitable for V1 reliance               |
+| Navigation API                     | Experimental   | promising but still too emerging for core lifecycle dependence                  |
+| unload                             | Rejected       | discouraged, unreliable, and harmful to modern browser behavior                 |
+| beforeunload as lifecycle detector | Rejected       | inappropriate for lifecycle truth and heavily restricted by browsers            |
 
 ### Decision Records
 
@@ -1334,14 +1334,14 @@ Version 1 should avoid relying on:
 
 ## Future Browser APIs
 
-| API | Purpose | Current Support Posture | Why It Should or Should Not Be Considered | Potential Roadmap Version |
-| --- | --- | --- | --- | --- |
-| Idle Detection API | stronger device and user idle awareness | partial and permission-sensitive | too heavy and too support-sensitive for Version 1 core, but valuable for future enhancement | 2.x experimental |
-| Navigation API | richer navigation lifecycle modeling | emerging | promising for future navigation-aware lifecycle refinement, but not mature enough for core reliance | 2.x or later |
-| Scheduler API | more advanced task prioritization | emerging | useful for internal optimization, not for V1 correctness | 2.x experimental |
-| Screen Wake Lock API | keep device awake intentionally | partial | adjacent to lifecycle use cases but not part of lifecycle observation | out of scope unless plugin-based |
-| Network Information API | richer connectivity hints | uneven | too inconsistent for core connectivity semantics | future optional research only |
-| View Transition API | visual transition coordination | growing but not lifecycle-centric | useful for UX, not lifecycle truth | out of scope |
+| API                     | Purpose                                 | Current Support Posture           | Why It Should or Should Not Be Considered                                                           | Potential Roadmap Version        |
+| ----------------------- | --------------------------------------- | --------------------------------- | --------------------------------------------------------------------------------------------------- | -------------------------------- |
+| Idle Detection API      | stronger device and user idle awareness | partial and permission-sensitive  | too heavy and too support-sensitive for Version 1 core, but valuable for future enhancement         | 2.x experimental                 |
+| Navigation API          | richer navigation lifecycle modeling    | emerging                          | promising for future navigation-aware lifecycle refinement, but not mature enough for core reliance | 2.x or later                     |
+| Scheduler API           | more advanced task prioritization       | emerging                          | useful for internal optimization, not for V1 correctness                                            | 2.x experimental                 |
+| Screen Wake Lock API    | keep device awake intentionally         | partial                           | adjacent to lifecycle use cases but not part of lifecycle observation                               | out of scope unless plugin-based |
+| Network Information API | richer connectivity hints               | uneven                            | too inconsistent for core connectivity semantics                                                    | future optional research only    |
+| View Transition API     | visual transition coordination          | growing but not lifecycle-centric | useful for UX, not lifecycle truth                                                                  | out of scope                     |
 
 ### Future Ideas
 

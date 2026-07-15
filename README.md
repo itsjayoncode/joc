@@ -23,7 +23,12 @@ Build a professional open source ecosystem of independently installable packages
 
 ## Current Status
 
-JOC is currently in Phase 1.6: Package Engineering Standards. The repository now includes the monorepo scaffold, shared developer tooling, engineering automation, the developer experience platform, release engineering preparation, and the package blueprint that future libraries must inherit. No public library implementations have been released yet.
+JOC has completed **Phase 1** (repository foundation through package engineering standards) and is actively building:
+
+- **Phase 2:** `@jayoncode/browser-lifecycle` — modules through cross-tab, plugins, and diagnostics are implemented with tests.
+- **Phase 3:** `apps/browser-session-playground` — **v1.0.0 release candidate** with all module playgrounds, explorer tools, documentation integration, and deployment guides.
+
+No public npm releases have been published yet. The monorepo, CI quality gates, docs platform, and release tooling are operational.
 
 ## Package Engineering Standards
 
@@ -34,7 +39,7 @@ JOC now includes:
 - testing, documentation, naming, export, and versioning standards for every future package
 - a package blueprint validation step in the repository quality pipeline
 
-This phase establishes one engineering model for all future JOC packages before the first production package is implemented.
+This phase established one engineering model for all JOC packages. The first production package, `@jayoncode/browser-lifecycle`, is now implementing that model with documented folder-layout deviations in `packages/browser-lifecycle/engineering/`.
 
 ## Engineering Automation
 
@@ -71,7 +76,8 @@ The initial milestones are:
 4. Phase 1.4: Developer Experience Platform
 5. Phase 1.5: Release Engineering
 6. Phase 1.6: Package Engineering Standards
-7. Phase 2: Browser Lifecycle Manager v1
+7. Phase 2: Browser Lifecycle Manager v1 (in progress)
+8. Phase 3: Browser Session Playground (in progress)
 
 See [ROADMAP.md](file:///Users/denmarkjaymago/Projects/@jay/joc/ROADMAP.md) for the expanded milestone plan.
 
@@ -90,9 +96,10 @@ joc/
 └── package.json
 ```
 
-- `apps/` holds future first-party applications such as docs, website, and playground.
+- `apps/` holds first-party applications such as docs, playground, browser-session-playground, and the future website.
 - `apps/docs/` contains the VitePress documentation platform.
-- `apps/playground/` contains the local package exploration workbench.
+- `apps/playground/` contains the generic local package exploration workbench.
+- `apps/browser-session-playground/` contains the long-lived Browser Lifecycle engineering shell for manual QA and module integration.
 - `packages/` holds independently installable JOC libraries plus internal shared workspace code.
 - `examples/` will contain practical usage references once packages exist.
 - `examples/` now includes structured placeholders for future usage examples.
@@ -136,6 +143,9 @@ npx pnpm@10.13.1 docs:dev
 npx pnpm@10.13.1 docs:build
 npx pnpm@10.13.1 playground:dev
 npx pnpm@10.13.1 playground:build
+npx pnpm@10.13.1 browser-session-playground:dev
+npx pnpm@10.13.1 browser-session-playground:build
+npx pnpm@10.13.1 browser-session-playground:test
 ```
 
 ## Release Commands

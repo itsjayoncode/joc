@@ -14,6 +14,8 @@ export type {
   BrowserLifecycleSessionOptions,
   BrowserLifecycleSnapshot,
   BrowserLifecycleSubscriber,
+  PageHiddenEventMetadata,
+  PageVisibleEventMetadata,
   BrowserLifecycleTabState,
   BrowserLifecycleTimestamps,
   InternalSessionEventMap,

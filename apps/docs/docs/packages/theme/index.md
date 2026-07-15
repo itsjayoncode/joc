@@ -4,7 +4,7 @@
 
 ## Introduction
 
-`@joc/theme` is reserved for future theming and design system support.
+`@jayoncode/theme` is reserved for future theming and design system support.
 
 ## Installation
 

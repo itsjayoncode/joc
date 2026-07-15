@@ -1,4 +1,4 @@
-# @joc/queue
+# @jayoncode/queue
 
 This package is reserved for future queueing and task orchestration utilities within the JOC ecosystem.
 

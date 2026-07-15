@@ -61,17 +61,17 @@ Browser Lifecycle Manager targets modern browsers because lifecycle correctness 
 
 ### Runtime Matrix
 
-| Runtime | Support Level | Reasoning | Notes |
-| --- | --- | --- | --- |
-| Chrome | Fully Supported | strongest modern lifecycle surface | primary validation target |
-| Firefox | Fully Supported | strong baseline support with some lifecycle nuance differences | validate background behavior carefully |
-| Safari Desktop | Partially Supported | supported core contract, reduced lifecycle nuance | conservative lifecycle semantics recommended |
-| Edge | Fully Supported | Chromium-based with enterprise relevance | treat close to Chrome with enterprise caution |
-| Electron Renderer | Partially Supported | browser-like renderer with host-specific window behavior | document caveats clearly |
-| Progressive Web Apps | Partially Supported | useful and supported, but OS lifecycle remains outside package control | mobile caveats remain important |
-| Server Side Rendering | Unsupported for live runtime | no browser globals or lifecycle surface | import-safe behavior required |
-| Hybrid Frameworks | Partially Supported | browser runtime support depends on client-only usage | hydration timing matters |
-| Embedded WebViews | Experimental | behavior varies heavily by host and version | capability validation required |
+| Runtime               | Support Level                | Reasoning                                                              | Notes                                         |
+| --------------------- | ---------------------------- | ---------------------------------------------------------------------- | --------------------------------------------- |
+| Chrome                | Fully Supported              | strongest modern lifecycle surface                                     | primary validation target                     |
+| Firefox               | Fully Supported              | strong baseline support with some lifecycle nuance differences         | validate background behavior carefully        |
+| Safari Desktop        | Partially Supported          | supported core contract, reduced lifecycle nuance                      | conservative lifecycle semantics recommended  |
+| Edge                  | Fully Supported              | Chromium-based with enterprise relevance                               | treat close to Chrome with enterprise caution |
+| Electron Renderer     | Partially Supported          | browser-like renderer with host-specific window behavior               | document caveats clearly                      |
+| Progressive Web Apps  | Partially Supported          | useful and supported, but OS lifecycle remains outside package control | mobile caveats remain important               |
+| Server Side Rendering | Unsupported for live runtime | no browser globals or lifecycle surface                                | import-safe behavior required                 |
+| Hybrid Frameworks     | Partially Supported          | browser runtime support depends on client-only usage                   | hydration timing matters                      |
+| Embedded WebViews     | Experimental                 | behavior varies heavily by host and version                            | capability validation required                |
 
 ## 3. Chrome
 
@@ -329,28 +329,28 @@ For the core useful runtime contract, the environment should provide:
 
 ### Intentionally Unsupported Environments
 
-| Environment | Why Unsupported | Expected Behavior | Developer Guidance |
-| --- | --- | --- | --- |
-| Legacy browsers | lifecycle guarantees become too weak or too costly to preserve | unsupported | use a more basic solution or accept lack of support |
-| Node-only runtime | no browser lifecycle surface | do not run live instance | create only in browser/client runtime |
-| Service Workers | no window/document lifecycle contract | unsupported | use specialized worker-oriented tooling |
-| Cloudflare Workers | same as service-worker-style runtime | unsupported | do not instantiate there |
-| Deno without DOM | no browser lifecycle surface | unsupported | browser-only usage |
-| Bun without DOM | no browser lifecycle surface | unsupported | browser-only usage |
+| Environment        | Why Unsupported                                                | Expected Behavior        | Developer Guidance                                  |
+| ------------------ | -------------------------------------------------------------- | ------------------------ | --------------------------------------------------- |
+| Legacy browsers    | lifecycle guarantees become too weak or too costly to preserve | unsupported              | use a more basic solution or accept lack of support |
+| Node-only runtime  | no browser lifecycle surface                                   | do not run live instance | create only in browser/client runtime               |
+| Service Workers    | no window/document lifecycle contract                          | unsupported              | use specialized worker-oriented tooling             |
+| Cloudflare Workers | same as service-worker-style runtime                           | unsupported              | do not instantiate there                            |
+| Deno without DOM   | no browser lifecycle surface                                   | unsupported              | browser-only usage                                  |
+| Bun without DOM    | no browser lifecycle surface                                   | unsupported              | browser-only usage                                  |
 
 ## 12. Fallback Strategy
 
 ### Capability Fallback Table
 
-| Capability | Preferred Implementation | Fallback Implementation | No-op Behavior | Graceful Degradation | Developer Notification | Throw? |
-| --- | --- | --- | --- | --- | --- | --- |
-| visibility | Page Visibility API | reduced focus/pagehide interpretation only if needed | unsupported core semantics if no meaningful visibility basis exists | weaker lifecycle confidence | capability reporting | only if core contract cannot be honest |
-| lifecycle refinement | pagehide/pageshow plus advanced lifecycle signals | pagehide/pageshow only | omit suspend/resume detail | keep baseline lifecycle | capability reporting | no |
-| focus | window focus/blur | none | omit attention detail | visibility-only model | capability reporting | no |
-| connectivity | navigator.onLine and related events | none | omit connectivity hint | no advisory events | debug warning optional | no |
-| cross-tab | BroadcastChannel | storage events | disable cross-tab features | no primary/secondary role events | capability reporting | no |
-| idle | configured activity observer | reduced activity set | disable idle events | no derived activity transitions | config clarity | no |
-| diagnostics | debug buffer and optional scheduling | minimal diagnostics | no retained debug features | core still works | none by default | no |
+| Capability           | Preferred Implementation                          | Fallback Implementation                              | No-op Behavior                                                      | Graceful Degradation             | Developer Notification | Throw?                                 |
+| -------------------- | ------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------- | -------------------------------- | ---------------------- | -------------------------------------- |
+| visibility           | Page Visibility API                               | reduced focus/pagehide interpretation only if needed | unsupported core semantics if no meaningful visibility basis exists | weaker lifecycle confidence      | capability reporting   | only if core contract cannot be honest |
+| lifecycle refinement | pagehide/pageshow plus advanced lifecycle signals | pagehide/pageshow only                               | omit suspend/resume detail                                          | keep baseline lifecycle          | capability reporting   | no                                     |
+| focus                | window focus/blur                                 | none                                                 | omit attention detail                                               | visibility-only model            | capability reporting   | no                                     |
+| connectivity         | navigator.onLine and related events               | none                                                 | omit connectivity hint                                              | no advisory events               | debug warning optional | no                                     |
+| cross-tab            | BroadcastChannel                                  | storage events                                       | disable cross-tab features                                          | no primary/secondary role events | capability reporting   | no                                     |
+| idle                 | configured activity observer                      | reduced activity set                                 | disable idle events                                                 | no derived activity transitions  | config clarity         | no                                     |
+| diagnostics          | debug buffer and optional scheduling              | minimal diagnostics                                  | no retained debug features                                          | core still works                 | none by default        | no                                     |
 
 ### When Browser Lifecycle Manager Should Silently Continue
 
@@ -365,17 +365,17 @@ For the core useful runtime contract, the environment should provide:
 
 ## 13. Compatibility Matrix
 
-| Platform | Visibility | Lifecycle | Focus | Connectivity | Cross Tab | Idle | Plugins | Status | Notes |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Chrome | strong | strong with optional enhancements | strong | advisory | strong with optional fallback | strong when configured | supported | stable | primary target |
-| Firefox | strong | good with caveats | strong | advisory | good | strong when configured | supported | stable | validate background differences |
-| Safari Desktop | strong | partial | good | advisory | partial | best-effort | supported | stable with caveats | conservative lifecycle modeling |
-| Safari iOS / Mobile Safari | strong but sometimes last signal | partial | partial | advisory | partial | best-effort | supported with caveats | stable with caveats | mobile suspension risk |
-| Edge | strong | strong with optional enhancements | strong | advisory | strong | strong when configured | supported | stable | enterprise note |
-| Electron Renderer | good | good with host caveats | good | advisory | environment-dependent | good when configured | plugin-friendly | stable with caveats | host lifecycle differs |
-| PWA | good | partial to good | good | advisory | environment-dependent | best-effort | supported | stable with caveats | OS lifecycle still applies |
-| SSR | unsupported live runtime | unsupported | unsupported | unsupported | unsupported | unsupported | config/import safe only | unsupported runtime | client-only init required |
-| Embedded WebViews | variable | variable | variable | advisory at best | variable | variable | experimental | experimental | capability validation required |
+| Platform                   | Visibility                       | Lifecycle                         | Focus       | Connectivity     | Cross Tab                     | Idle                   | Plugins                 | Status              | Notes                           |
+| -------------------------- | -------------------------------- | --------------------------------- | ----------- | ---------------- | ----------------------------- | ---------------------- | ----------------------- | ------------------- | ------------------------------- |
+| Chrome                     | strong                           | strong with optional enhancements | strong      | advisory         | strong with optional fallback | strong when configured | supported               | stable              | primary target                  |
+| Firefox                    | strong                           | good with caveats                 | strong      | advisory         | good                          | strong when configured | supported               | stable              | validate background differences |
+| Safari Desktop             | strong                           | partial                           | good        | advisory         | partial                       | best-effort            | supported               | stable with caveats | conservative lifecycle modeling |
+| Safari iOS / Mobile Safari | strong but sometimes last signal | partial                           | partial     | advisory         | partial                       | best-effort            | supported with caveats  | stable with caveats | mobile suspension risk          |
+| Edge                       | strong                           | strong with optional enhancements | strong      | advisory         | strong                        | strong when configured | supported               | stable              | enterprise note                 |
+| Electron Renderer          | good                             | good with host caveats            | good        | advisory         | environment-dependent         | good when configured   | plugin-friendly         | stable with caveats | host lifecycle differs          |
+| PWA                        | good                             | partial to good                   | good        | advisory         | environment-dependent         | best-effort            | supported               | stable with caveats | OS lifecycle still applies      |
+| SSR                        | unsupported live runtime         | unsupported                       | unsupported | unsupported      | unsupported                   | unsupported            | config/import safe only | unsupported runtime | client-only init required       |
+| Embedded WebViews          | variable                         | variable                          | variable    | advisory at best | variable                      | variable               | experimental            | experimental        | capability validation required  |
 
 ## 14. Version Support Policy
 
@@ -455,61 +455,61 @@ Compatibility regressions should be tracked by platform and capability, not just
 
 ### ADR-001: Modern Browsers First
 
-| Field | Record |
-| --- | --- |
-| Decision | target modern evergreen browsers instead of legacy breadth |
-| Reason | correctness over nominal coverage |
-| Alternatives | legacy-browser broad support |
-| Tradeoffs | smaller supported set |
-| Future Impact | more honest long-term maintenance |
-| Rejected Alternatives | legacy-first support strategy |
+| Field                 | Record                                                     |
+| --------------------- | ---------------------------------------------------------- |
+| Decision              | target modern evergreen browsers instead of legacy breadth |
+| Reason                | correctness over nominal coverage                          |
+| Alternatives          | legacy-browser broad support                               |
+| Tradeoffs             | smaller supported set                                      |
+| Future Impact         | more honest long-term maintenance                          |
+| Rejected Alternatives | legacy-first support strategy                              |
 
 ### ADR-002: Capability Detection Over Browser Sniffing
 
-| Field | Record |
-| --- | --- |
-| Decision | use capability detection exclusively in the compatibility model |
-| Reason | future-proofing and correctness |
-| Alternatives | user-agent branching |
-| Tradeoffs | more careful capability gating needed |
-| Future Impact | better resilience to browser evolution |
-| Rejected Alternatives | browser-name-based support matrix logic |
+| Field                 | Record                                                          |
+| --------------------- | --------------------------------------------------------------- |
+| Decision              | use capability detection exclusively in the compatibility model |
+| Reason                | future-proofing and correctness                                 |
+| Alternatives          | user-agent branching                                            |
+| Tradeoffs             | more careful capability gating needed                           |
+| Future Impact         | better resilience to browser evolution                          |
+| Rejected Alternatives | browser-name-based support matrix logic                         |
 
 ### ADR-003: Graceful Degradation for Optional Features
 
-| Field | Record |
-| --- | --- |
-| Decision | degrade optional behavior instead of throwing |
-| Reason | stable core experience across uneven capability surfaces |
-| Alternatives | fail-fast on optional gaps |
-| Tradeoffs | consumers must inspect capabilities for advanced paths |
-| Future Impact | easier adoption |
-| Rejected Alternatives | strict fail-fast optional support model |
+| Field                 | Record                                                   |
+| --------------------- | -------------------------------------------------------- |
+| Decision              | degrade optional behavior instead of throwing            |
+| Reason                | stable core experience across uneven capability surfaces |
+| Alternatives          | fail-fast on optional gaps                               |
+| Tradeoffs             | consumers must inspect capabilities for advanced paths   |
+| Future Impact         | easier adoption                                          |
+| Rejected Alternatives | strict fail-fast optional support model                  |
 
 ### ADR-004: Unsupported Means Documented Refusal
 
-| Field | Record |
-| --- | --- |
-| Decision | explicitly refuse unsupported runtime expectations |
-| Reason | avoid misleading support claims |
-| Alternatives | unofficial soft support everywhere |
-| Tradeoffs | fewer claimed runtimes |
-| Future Impact | stronger trust in docs |
-| Rejected Alternatives | ambiguous support posture |
+| Field                 | Record                                             |
+| --------------------- | -------------------------------------------------- |
+| Decision              | explicitly refuse unsupported runtime expectations |
+| Reason                | avoid misleading support claims                    |
+| Alternatives          | unofficial soft support everywhere                 |
+| Tradeoffs             | fewer claimed runtimes                             |
+| Future Impact         | stronger trust in docs                             |
+| Rejected Alternatives | ambiguous support posture                          |
 
 ## 17. Compatibility Checklist
 
-| Runtime | Stable | Well Tested | Predictable | Documented | Gracefully Degraded | Recommended Status |
-| --- | --- | --- | --- | --- | --- | --- |
-| Chrome | yes | yes | yes | yes | yes | fully supported |
-| Firefox | yes | yes | yes | yes | yes | fully supported |
-| Safari Desktop | mostly | should be strengthened | mostly | yes | yes | partially supported |
-| Safari Mobile | mixed | should be strengthened | mixed | yes | yes | partially supported |
-| Edge | yes | yes | yes | yes | yes | fully supported |
-| Electron Renderer | mixed | should be strengthened | mostly | yes | yes | partially supported |
-| PWA | mixed | should be strengthened | mostly | yes | yes | partially supported |
-| SSR | n/a for live runtime | yes for import safety | yes | yes | yes | unsupported live runtime |
-| Embedded WebViews | no | no | no | partial | partial | experimental |
+| Runtime           | Stable               | Well Tested            | Predictable | Documented | Gracefully Degraded | Recommended Status       |
+| ----------------- | -------------------- | ---------------------- | ----------- | ---------- | ------------------- | ------------------------ |
+| Chrome            | yes                  | yes                    | yes         | yes        | yes                 | fully supported          |
+| Firefox           | yes                  | yes                    | yes         | yes        | yes                 | fully supported          |
+| Safari Desktop    | mostly               | should be strengthened | mostly      | yes        | yes                 | partially supported      |
+| Safari Mobile     | mixed                | should be strengthened | mixed       | yes        | yes                 | partially supported      |
+| Edge              | yes                  | yes                    | yes         | yes        | yes                 | fully supported          |
+| Electron Renderer | mixed                | should be strengthened | mostly      | yes        | yes                 | partially supported      |
+| PWA               | mixed                | should be strengthened | mostly      | yes        | yes                 | partially supported      |
+| SSR               | n/a for live runtime | yes for import safety  | yes         | yes        | yes                 | unsupported live runtime |
+| Embedded WebViews | no                   | no                     | no          | partial    | partial             | experimental             |
 
 ## Final Review
 

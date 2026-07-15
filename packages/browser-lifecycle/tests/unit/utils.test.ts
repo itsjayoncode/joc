@@ -1,3 +1,5 @@
+import { describe, expect, it } from "vitest";
+
 import {
   assert,
   deepFreeze,
@@ -7,7 +9,6 @@ import {
   mergeObjects,
   noop,
 } from "@jayoncode/browser-lifecycle";
-import { describe, expect, it } from "vitest";
 
 describe("utilities", () => {
   it("asserts truthy values and throws for falsy ones", () => {

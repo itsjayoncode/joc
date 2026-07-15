@@ -9,6 +9,7 @@ describe("SessionStateStore", () => {
       {
         abortController: true,
         broadcastChannel: false,
+        focus: false,
         pageLifecycle: false,
         requestIdleCallback: false,
         visibility: true,
@@ -23,6 +24,7 @@ describe("SessionStateStore", () => {
       capabilities: {
         abortController: true,
         broadcastChannel: false,
+        focus: false,
         pageLifecycle: false,
         requestIdleCallback: false,
         visibility: true,
@@ -44,6 +46,7 @@ describe("SessionStateStore", () => {
       {
         abortController: true,
         broadcastChannel: true,
+        focus: false,
         pageLifecycle: true,
         requestIdleCallback: true,
         visibility: true,
@@ -71,6 +74,7 @@ describe("SessionStateStore", () => {
       {
         abortController: false,
         broadcastChannel: false,
+        focus: false,
         pageLifecycle: false,
         requestIdleCallback: false,
         visibility: false,
@@ -90,6 +94,7 @@ describe("SessionStateStore", () => {
       {
         abortController: false,
         broadcastChannel: false,
+        focus: false,
         pageLifecycle: false,
         requestIdleCallback: false,
         visibility: false,
@@ -107,6 +112,7 @@ describe("SessionStateStore", () => {
       {
         abortController: true,
         broadcastChannel: false,
+        focus: false,
         pageLifecycle: false,
         requestIdleCallback: false,
         visibility: true,

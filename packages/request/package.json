@@ -1,5 +1,5 @@
 {
-  "name": "@joc/request",
+  "name": "@jayoncode/request",
   "version": "0.0.0",
   "private": false,
   "description": "Future request package for the JOC ecosystem.",

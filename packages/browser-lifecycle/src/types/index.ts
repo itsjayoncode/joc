@@ -27,7 +27,14 @@ export type BrowserLifecycleErrorCode =
  * Common browser capability names exposed by the feature detection helpers.
  */
 export type BrowserLifecycleCapabilityName =
-  "abortController" | "broadcastChannel" | "pageLifecycle" | "requestIdleCallback" | "visibility";
+  | "abortController"
+  | "broadcastChannel"
+  | "connectivity"
+  | "focus"
+  | "idle"
+  | "pageLifecycle"
+  | "requestIdleCallback"
+  | "visibility";
 
 /**
  * Minimal feature-detection environment used to keep capability checks SSR-safe and testable.
@@ -37,12 +44,29 @@ export interface BrowserFeatureEnvironment {
   readonly BroadcastChannel?: unknown;
   readonly document?:
     | (Record<string, unknown> & {
+        readonly hasFocus?: () => boolean;
         readonly hidden?: boolean;
         readonly visibilityState?: string;
       })
     | undefined;
+  readonly navigator?:
+    | (Record<string, unknown> & {
+        readonly onLine?: boolean;
+      })
+    | undefined;
   readonly requestIdleCallback?: unknown;
-  readonly window?: Record<string, unknown> | undefined;
+  readonly window?:
+    | (Record<string, unknown> & {
+        addEventListener?(
+          type: "blur" | "focus" | "offline" | "online",
+          listener: () => void,
+        ): void;
+        removeEventListener?(
+          type: "blur" | "focus" | "offline" | "online",
+          listener: () => void,
+        ): void;
+      })
+    | undefined;
 }
 
 /**
@@ -51,18 +75,45 @@ export interface BrowserFeatureEnvironment {
 export interface BrowserLifecycleCapabilities {
   readonly abortController: boolean;
   readonly broadcastChannel: boolean;
+  readonly connectivity: boolean;
+  readonly focus: boolean;
+  readonly idle: boolean;
   readonly pageLifecycle: boolean;
   readonly requestIdleCallback: boolean;
   readonly visibility: boolean;
 }
 
 /**
- * Placeholder plugin contract for the core infrastructure phase.
+ * Plugin contract executed by the Session Core plugin runtime.
  */
 export interface BrowserLifecyclePlugin {
+  readonly author?: string;
+  readonly dependencies?: readonly string[];
+  readonly description?: string;
+  readonly enabled?: boolean;
   readonly id: string;
   readonly name?: string;
+  readonly onDestroy?: (context: BrowserLifecyclePluginRuntimeContext) => void;
+  readonly onEvent?: (
+    // eslint-disable-next-line @typescript-eslint/consistent-type-imports -- avoids circular import with session types
+    event: import("../core/session/types.js").BrowserLifecycleEventName,
+    payload: unknown,
+  ) => void;
+  readonly onRegister?: (context: BrowserLifecyclePluginRuntimeContext) => void;
+  readonly onStart?: (context: BrowserLifecyclePluginRuntimeContext) => void;
+  readonly onStop?: (context: BrowserLifecyclePluginRuntimeContext) => void;
+  readonly priority?: number;
   readonly version?: string;
+}
+
+/**
+ * Read-only context passed to plugin lifecycle hooks.
+ */
+export interface BrowserLifecyclePluginRuntimeContext {
+  readonly capabilities: BrowserLifecycleCapabilities;
+  readonly configuration: ResolvedBrowserLifecycleConfig;
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports -- avoids circular import with session types
+  readonly getSnapshot: () => Readonly<import("../core/session/types.js").BrowserLifecycleSnapshot>;
 }
 
 /**

@@ -1,12 +1,15 @@
 {
-  "name": "@joc/docs",
+  "name": "@jayoncode/docs",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "description": "VitePress documentation site for the JOC ecosystem.",
   "scripts": {
-    "docs:dev": "vitepress dev docs --host 127.0.0.1 --port 4175",
-    "docs:build": "vitepress build docs",
+    "docs:api": "typedoc --options ../../packages/browser-lifecycle/typedoc.json",
+    "docs:sync": "node ../../scripts/sync-documentation.mjs",
+    "docs:prepare": "pnpm docs:api && pnpm docs:sync",
+    "docs:dev": "pnpm docs:prepare && vitepress dev docs --host 127.0.0.1 --port 4175",
+    "docs:build": "pnpm docs:prepare && vitepress build docs",
     "docs:preview": "vitepress preview docs --host 127.0.0.1 --port 4176"
   },
   "license": "MIT",
@@ -16,6 +19,8 @@
     "directory": "apps/docs"
   },
   "devDependencies": {
+    "typedoc": "0.28.7",
+    "typedoc-plugin-markdown": "4.7.0",
     "vitepress": "^1.6.4"
   }
 }

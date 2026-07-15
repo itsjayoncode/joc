@@ -1,5 +1,5 @@
 {
-  "name": "@joc/permissions",
+  "name": "@jayoncode/permissions",
   "version": "0.0.0",
   "private": false,
   "description": "Future permissions package for the JOC ecosystem.",

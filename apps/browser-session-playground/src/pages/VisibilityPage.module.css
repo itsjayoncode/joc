@@ -1,0 +1,113 @@
+.heroGrid,
+.cardGrid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.heroGrid {
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+}
+
+.cardGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.statusRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.instructionList,
+.eventLog {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.instructionList {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.snapshotList {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.snapshotRow {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.8fr) minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: baseline;
+}
+
+.snapshotRow dt {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.snapshotRow dd {
+  margin: 0;
+  padding: 0.18rem 0.42rem;
+  border: 1px solid var(--code-border);
+  border-radius: 6px;
+  background: #ffffff;
+  color: var(--code-text);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+.emptyState {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.eventLog {
+  display: grid;
+  gap: var(--space-3);
+  padding-left: 0;
+  list-style: none;
+}
+
+.eventEntry {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  background: var(--surface-strong);
+}
+
+.eventTime {
+  color: var(--text-muted);
+  font-family: "IBM Plex Mono", "SFMono-Regular", "SF Mono", Consolas, monospace;
+  font-size: 0.8rem;
+}
+
+.eventType {
+  font-weight: 700;
+}
+
+.eventDetail {
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+  .heroGrid,
+  .cardGrid {
+    grid-template-columns: 1fr;
+  }
+}

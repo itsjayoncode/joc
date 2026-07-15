@@ -82,17 +82,17 @@ A builder adds ceremony without enough value for Version 1. The configuration su
 
 #### Tradeoff Summary
 
-| Approach | Strengths | Weaknesses | Decision |
-| --- | --- | --- | --- |
-| `createBrowserLifecycle()` | explicit, stable, testable, implementation-neutral | slightly more verbose than `new` | chosen |
-| `new BrowserLifecycle()` | familiar OO feel | exposes implementation style too early | rejected |
-| singleton | convenient in tiny demos | poor ownership and test ergonomics | rejected |
-| builder | configurable and staged | too heavy for current API size | rejected |
+| Approach                   | Strengths                                          | Weaknesses                             | Decision |
+| -------------------------- | -------------------------------------------------- | -------------------------------------- | -------- |
+| `createBrowserLifecycle()` | explicit, stable, testable, implementation-neutral | slightly more verbose than `new`       | chosen   |
+| `new BrowserLifecycle()`   | familiar OO feel                                   | exposes implementation style too early | rejected |
+| singleton                  | convenient in tiny demos                           | poor ownership and test ergonomics     | rejected |
+| builder                    | configurable and staged                            | too heavy for current API size         | rejected |
 
 ### Entry Point Table
 
-| API | Purpose | Parameters | Return Type | Throws |
-| --- | --- | --- | --- | --- |
+| API                               | Purpose                     | Parameters                        | Return Type        | Throws                                                              |
+| --------------------------------- | --------------------------- | --------------------------------- | ------------------ | ------------------------------------------------------------------- |
 | `createBrowserLifecycle(config?)` | create a lifecycle instance | `config?: BrowserLifecycleConfig` | `BrowserLifecycle` | invalid configuration, unsupported required environment assumptions |
 
 ### Example
@@ -165,40 +165,40 @@ BrowserLifecycle should be the orchestration surface above internal observers an
 
 ### Chosen Public Methods
 
-| Method | Keep? | Reason |
-| --- | --- | --- |
-| `start()` | yes | explicit observation control |
-| `stop()` | yes | reversible pause of observation |
-| `dispose()` | yes | terminal teardown |
-| `getSnapshot()` | yes | immediate state read |
-| `getCapabilities()` | yes | understand degraded behavior |
-| `on()` | yes | named event subscription |
-| `off()` | yes | targeted unsubscription |
-| `once()` | yes | one-shot subscription convenience |
-| `subscribe()` | yes | full normalized event feed |
-| `use()` | yes | plugin registration |
-| `isRunning()` | yes | clear host-friendly status check |
-| `pause()` | no | ambiguous versus `stop()` |
-| `resume()` | no | ambiguous versus `start()` |
-| `destroy()` | no | `dispose()` is more precise |
-| `status()` | no | prefer readonly property or snapshot |
-| `state()` | no | `getSnapshot()` is clearer |
-| `unsubscribe()` | no | return unsubscribe functions instead |
-| `plugin()` | no | `use()` is cleaner |
-| `register()` | no | too generic for v1 |
-| `listeners()` | no public API | increases emitter-style surface without enough value |
-| `removeAll()` | no public API | too broad and error-prone |
-| `emit()` | internal only | consumers should not emit package lifecycle events |
+| Method              | Keep?         | Reason                                               |
+| ------------------- | ------------- | ---------------------------------------------------- |
+| `start()`           | yes           | explicit observation control                         |
+| `stop()`            | yes           | reversible pause of observation                      |
+| `dispose()`         | yes           | terminal teardown                                    |
+| `getSnapshot()`     | yes           | immediate state read                                 |
+| `getCapabilities()` | yes           | understand degraded behavior                         |
+| `on()`              | yes           | named event subscription                             |
+| `off()`             | yes           | targeted unsubscription                              |
+| `once()`            | yes           | one-shot subscription convenience                    |
+| `subscribe()`       | yes           | full normalized event feed                           |
+| `use()`             | yes           | plugin registration                                  |
+| `isRunning()`       | yes           | clear host-friendly status check                     |
+| `pause()`           | no            | ambiguous versus `stop()`                            |
+| `resume()`          | no            | ambiguous versus `start()`                           |
+| `destroy()`         | no            | `dispose()` is more precise                          |
+| `status()`          | no            | prefer readonly property or snapshot                 |
+| `state()`           | no            | `getSnapshot()` is clearer                           |
+| `unsubscribe()`     | no            | return unsubscribe functions instead                 |
+| `plugin()`          | no            | `use()` is cleaner                                   |
+| `register()`        | no            | too generic for v1                                   |
+| `listeners()`       | no public API | increases emitter-style surface without enough value |
+| `removeAll()`       | no public API | too broad and error-prone                            |
+| `emit()`            | internal only | consumers should not emit package lifecycle events   |
 
 ### `start()`
 
-| Field | Design |
-| --- | --- |
-| Purpose | begin live observation |
-| Parameters | none |
-| Return Type | `void` |
-| Throws | disposed instance errors, startup invariant errors |
-| Side Effects | attaches observers and transports |
+| Field        | Design                                             |
+| ------------ | -------------------------------------------------- |
+| Purpose      | begin live observation                             |
+| Parameters   | none                                               |
+| Return Type  | `void`                                             |
+| Throws       | disposed instance errors, startup invariant errors |
+| Side Effects | attaches observers and transports                  |
 
 When to use it:
 
@@ -224,13 +224,13 @@ lifecycle.start();
 
 ### `stop()`
 
-| Field | Design |
-| --- | --- |
-| Purpose | stop live observation without destroying the instance |
-| Parameters | none |
-| Return Type | `void` |
-| Throws | disposed instance errors |
-| Side Effects | detaches observers, preserves last snapshot |
+| Field        | Design                                                |
+| ------------ | ----------------------------------------------------- |
+| Purpose      | stop live observation without destroying the instance |
+| Parameters   | none                                                  |
+| Return Type  | `void`                                                |
+| Throws       | disposed instance errors                              |
+| Side Effects | detaches observers, preserves last snapshot           |
 
 When to use it:
 
@@ -249,12 +249,12 @@ Backward compatibility considerations:
 
 ### `dispose()`
 
-| Field | Design |
-| --- | --- |
-| Purpose | terminal teardown |
-| Parameters | none |
-| Return Type | `void` |
-| Throws | should not throw on repeated calls |
+| Field        | Design                                           |
+| ------------ | ------------------------------------------------ |
+| Purpose      | terminal teardown                                |
+| Parameters   | none                                             |
+| Return Type  | `void`                                           |
+| Throws       | should not throw on repeated calls               |
 | Side Effects | clears listeners, plugins, observers, transports |
 
 When to use it:
@@ -273,13 +273,13 @@ Backward compatibility considerations:
 
 ### `getSnapshot()`
 
-| Field | Design |
-| --- | --- |
-| Purpose | read current normalized lifecycle state |
-| Parameters | none |
-| Return Type | `Readonly<BrowserLifecycleSnapshot>` |
-| Throws | disposed instance errors only if the package chooses to invalidate reads after dispose; recommended default is allow final snapshot reads |
-| Side Effects | none |
+| Field        | Design                                                                                                                                    |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Purpose      | read current normalized lifecycle state                                                                                                   |
+| Parameters   | none                                                                                                                                      |
+| Return Type  | `Readonly<BrowserLifecycleSnapshot>`                                                                                                      |
+| Throws       | disposed instance errors only if the package chooses to invalidate reads after dispose; recommended default is allow final snapshot reads |
+| Side Effects | none                                                                                                                                      |
 
 When to use it:
 
@@ -297,13 +297,13 @@ Backward compatibility considerations:
 
 ### `getCapabilities()`
 
-| Field | Design |
-| --- | --- |
-| Purpose | expose detected platform capability state |
-| Parameters | none |
-| Return Type | `Readonly<BrowserLifecycleCapabilities>` |
-| Throws | none in normal use |
-| Side Effects | none |
+| Field        | Design                                    |
+| ------------ | ----------------------------------------- |
+| Purpose      | expose detected platform capability state |
+| Parameters   | none                                      |
+| Return Type  | `Readonly<BrowserLifecycleCapabilities>`  |
+| Throws       | none in normal use                        |
+| Side Effects | none                                      |
 
 When to use it:
 
@@ -317,13 +317,13 @@ When not to use it:
 
 ### `isRunning()`
 
-| Field | Design |
-| --- | --- |
-| Purpose | report whether live observation is currently active |
-| Parameters | none |
-| Return Type | `boolean` |
-| Throws | none |
-| Side Effects | none |
+| Field        | Design                                              |
+| ------------ | --------------------------------------------------- |
+| Purpose      | report whether live observation is currently active |
+| Parameters   | none                                                |
+| Return Type  | `boolean`                                           |
+| Throws       | none                                                |
+| Side Effects | none                                                |
 
 When to use it:
 
@@ -336,13 +336,13 @@ When not to use it:
 
 ### `on(event, listener)`
 
-| Field | Design |
-| --- | --- |
-| Purpose | subscribe to one named event |
-| Parameters | event name and typed listener |
-| Return Type | unsubscribe function |
-| Throws | unknown event names, disposed instance errors |
-| Side Effects | registers a named listener |
+| Field        | Design                                        |
+| ------------ | --------------------------------------------- |
+| Purpose      | subscribe to one named event                  |
+| Parameters   | event name and typed listener                 |
+| Return Type  | unsubscribe function                          |
+| Throws       | unknown event names, disposed instance errors |
+| Side Effects | registers a named listener                    |
 
 When to use it:
 
@@ -358,13 +358,13 @@ Backward compatibility considerations:
 
 ### `off(event, listener)`
 
-| Field | Design |
-| --- | --- |
-| Purpose | remove a named listener |
-| Parameters | event name and listener |
-| Return Type | `void` |
-| Throws | disposed instance errors only if the package makes disposed interaction invalid |
-| Side Effects | unregisters listener |
+| Field        | Design                                                                          |
+| ------------ | ------------------------------------------------------------------------------- |
+| Purpose      | remove a named listener                                                         |
+| Parameters   | event name and listener                                                         |
+| Return Type  | `void`                                                                          |
+| Throws       | disposed instance errors only if the package makes disposed interaction invalid |
+| Side Effects | unregisters listener                                                            |
 
 When to use it:
 
@@ -376,23 +376,23 @@ When not to use it:
 
 ### `once(event, listener)`
 
-| Field | Design |
-| --- | --- |
-| Purpose | subscribe for one invocation |
-| Parameters | event name and listener |
-| Return Type | unsubscribe function |
-| Throws | same as `on()` |
+| Field        | Design                                  |
+| ------------ | --------------------------------------- |
+| Purpose      | subscribe for one invocation            |
+| Parameters   | event name and listener                 |
+| Return Type  | unsubscribe function                    |
+| Throws       | same as `on()`                          |
 | Side Effects | auto-removes listener after first match |
 
 ### `subscribe(listener)`
 
-| Field | Design |
-| --- | --- |
-| Purpose | subscribe to all normalized events |
-| Parameters | one subscriber callback |
-| Return Type | unsubscribe function |
-| Throws | disposed instance errors |
-| Side Effects | registers feed listener |
+| Field        | Design                             |
+| ------------ | ---------------------------------- |
+| Purpose      | subscribe to all normalized events |
+| Parameters   | one subscriber callback            |
+| Return Type  | unsubscribe function               |
+| Throws       | disposed instance errors           |
+| Side Effects | registers feed listener            |
 
 When to use it:
 
@@ -407,13 +407,13 @@ When not to use it:
 
 ### `use(plugin)`
 
-| Field | Design |
-| --- | --- |
-| Purpose | register a plugin before startup |
-| Parameters | `plugin: BrowserLifecyclePlugin` |
-| Return Type | `void` |
-| Throws | duplicate plugin id, disposed instance errors, registration after startup |
-| Side Effects | registers plugin hooks and metadata |
+| Field        | Design                                                                    |
+| ------------ | ------------------------------------------------------------------------- |
+| Purpose      | register a plugin before startup                                          |
+| Parameters   | `plugin: BrowserLifecyclePlugin`                                          |
+| Return Type  | `void`                                                                    |
+| Throws       | duplicate plugin id, disposed instance errors, registration after startup |
+| Side Effects | registers plugin hooks and metadata                                       |
 
 When to use it:
 
@@ -475,15 +475,15 @@ No. Public `emit()` should not exist. Browser lifecycle events should represent 
 
 ### Event Method Table
 
-| Method | Public? | Purpose | Notes |
-| --- | --- | --- | --- |
-| `on()` | yes | named subscription | default event API |
-| `off()` | yes | named unsubscribe | explicit removal |
-| `once()` | yes | one-shot subscription | convenience |
-| `subscribe()` | yes | full feed subscription | adapter and debug oriented |
-| `emit()` | no | internal only | preserve event integrity |
-| `listeners()` | no | omitted | unnecessary emitter-style surface |
-| `removeAll()` | no | omitted | too broad and easy to misuse |
+| Method        | Public? | Purpose                | Notes                             |
+| ------------- | ------- | ---------------------- | --------------------------------- |
+| `on()`        | yes     | named subscription     | default event API                 |
+| `off()`       | yes     | named unsubscribe      | explicit removal                  |
+| `once()`      | yes     | one-shot subscription  | convenience                       |
+| `subscribe()` | yes     | full feed subscription | adapter and debug oriented        |
+| `emit()`      | no      | internal only          | preserve event integrity          |
+| `listeners()` | no      | omitted                | unnecessary emitter-style surface |
+| `removeAll()` | no      | omitted                | too broad and easy to misuse      |
 
 ### Event Naming
 
@@ -544,17 +544,17 @@ No, not at the core package level. Reactivity belongs in adapters and framework 
 
 ### Recommended Snapshot Shape
 
-| Field | Meaning |
-| --- | --- |
-| `phase` | `created`, `running`, `stopped`, or `disposed` |
-| `visibility` | visible or hidden state |
-| `attention` | focused or unfocused attention model |
-| `activity` | active or idle heuristic |
-| `connectivity` | online, offline, or unknown advisory state |
-| `lifecycle` | normalized page lifecycle phase |
-| `tab` | primary, secondary, single, or unknown |
-| `timestamps` | important lifecycle timing metadata |
-| `capabilities` | effective capability state |
+| Field          | Meaning                                        |
+| -------------- | ---------------------------------------------- |
+| `phase`        | `created`, `running`, `stopped`, or `disposed` |
+| `visibility`   | visible or hidden state                        |
+| `attention`    | focused or unfocused attention model           |
+| `activity`     | active or idle heuristic                       |
+| `connectivity` | online, offline, or unknown advisory state     |
+| `lifecycle`    | normalized page lifecycle phase                |
+| `tab`          | primary, secondary, single, or unknown         |
+| `timestamps`   | important lifecycle timing metadata            |
+| `capabilities` | effective capability state                     |
 
 ## 7. Plugin API
 
@@ -618,17 +618,17 @@ Configuration should stay intentionally small. It should tune lifecycle behavior
 
 ### Proposed Configuration Object
 
-| Option | Purpose | Type | Default | Validation | Interaction Notes |
-| --- | --- | --- | --- | --- | --- |
-| `autoStart` | start observation immediately | `boolean` | `true` | boolean only | interacts with plugin registration timing |
-| `emitInitialState` | optionally emit startup transitions | `boolean` | `false` | boolean only | works with `autoStart` |
-| `idleTimeout` | enable idle detection | `number | false` | `false` | positive integer or `false` | requires activity observation |
-| `activityEvents` | choose activity sources | `"default" | string[]` | `"default"` | non-empty allowlisted array | meaningful only with `idleTimeout` |
-| `activityDebounce` | reduce noisy activity input | `number` | `250` | integer >= 0 | affects idle responsiveness |
-| `crossTab` | enable cross-tab coordination | `boolean | BrowserLifecycleCrossTabConfig` | `false` | object or boolean | enables BroadcastChannel or storage fallback |
-| `debug` | enable extra diagnostics | `boolean` | `false` | boolean only | may pair with event buffering |
-| `eventBufferSize` | keep recent event history | `number` | `0` | integer >= 0 | primarily useful with debug |
-| `plugins` | register startup plugins | `BrowserLifecyclePlugin[]` | `[]` | unique stable ids | preferred when `autoStart` is `true` |
+| Option             | Purpose                             | Type                       | Default                         | Validation        | Interaction Notes                         |
+| ------------------ | ----------------------------------- | -------------------------- | ------------------------------- | ----------------- | ----------------------------------------- |
+| `autoStart`        | start observation immediately       | `boolean`                  | `true`                          | boolean only      | interacts with plugin registration timing |
+| `emitInitialState` | optionally emit startup transitions | `boolean`                  | `false`                         | boolean only      | works with `autoStart`                    |
+| `idleTimeout`      | enable idle detection               | `number                    | false`                          | `false`           | positive integer or `false`               | requires activity observation                |
+| `activityEvents`   | choose activity sources             | `"default"                 | string[]`                       | `"default"`       | non-empty allowlisted array               | meaningful only with `idleTimeout`           |
+| `activityDebounce` | reduce noisy activity input         | `number`                   | `250`                           | integer >= 0      | affects idle responsiveness               |
+| `crossTab`         | enable cross-tab coordination       | `boolean                   | BrowserLifecycleCrossTabConfig` | `false`           | object or boolean                         | enables BroadcastChannel or storage fallback |
+| `debug`            | enable extra diagnostics            | `boolean`                  | `false`                         | boolean only      | may pair with event buffering             |
+| `eventBufferSize`  | keep recent event history           | `number`                   | `0`                             | integer >= 0      | primarily useful with debug               |
+| `plugins`          | register startup plugins            | `BrowserLifecyclePlugin[]` | `[]`                            | unique stable ids | preferred when `autoStart` is `true`      |
 
 ### Keep Configuration Small
 
@@ -647,13 +647,13 @@ The package should throw only for invalid consumer actions or broken invariants.
 
 ### Error Categories
 
-| Error Category | When to Throw | When to Warn | When to Ignore |
-| --- | --- | --- | --- |
-| configuration errors | invalid option values, conflicting options | never preferred over throw for invalid config | never |
-| unsupported browser conditions | only when a required environment assumption for core usage truly fails | when optional features degrade | when absence is expected and documented |
-| plugin errors | invalid plugin contract, duplicate ids | plugin capability degradation | plugin no-op optional hooks |
-| lifecycle errors | start after dispose, invalid terminal usage | idempotent repeated operations should not warn | no-op idempotent stop/dispose cases |
-| event subscription errors | unknown event names | none | none |
+| Error Category                 | When to Throw                                                          | When to Warn                                   | When to Ignore                          |
+| ------------------------------ | ---------------------------------------------------------------------- | ---------------------------------------------- | --------------------------------------- |
+| configuration errors           | invalid option values, conflicting options                             | never preferred over throw for invalid config  | never                                   |
+| unsupported browser conditions | only when a required environment assumption for core usage truly fails | when optional features degrade                 | when absence is expected and documented |
+| plugin errors                  | invalid plugin contract, duplicate ids                                 | plugin capability degradation                  | plugin no-op optional hooks             |
+| lifecycle errors               | start after dispose, invalid terminal usage                            | idempotent repeated operations should not warn | no-op idempotent stop/dispose cases     |
+| event subscription errors      | unknown event names                                                    | none                                           | none                                    |
 
 ### Public Errors
 
@@ -793,58 +793,58 @@ const lifecycle = createBrowserLifecycle({
 
 ### ADR-001: Factory-Based Entry Point
 
-| Field | Record |
-| --- | --- |
-| Decision | use `createBrowserLifecycle()` |
-| Reason | explicit ownership, stable abstraction, implementation neutrality |
-| Alternatives Considered | class constructor, singleton, builder |
-| Tradeoffs | slightly more verbose than `new` |
-| Future Impact | preserves implementation freedom |
-| Rejected Alternatives | `new BrowserLifecycle()`, singleton, builder |
+| Field                   | Record                                                            |
+| ----------------------- | ----------------------------------------------------------------- |
+| Decision                | use `createBrowserLifecycle()`                                    |
+| Reason                  | explicit ownership, stable abstraction, implementation neutrality |
+| Alternatives Considered | class constructor, singleton, builder                             |
+| Tradeoffs               | slightly more verbose than `new`                                  |
+| Future Impact           | preserves implementation freedom                                  |
+| Rejected Alternatives   | `new BrowserLifecycle()`, singleton, builder                      |
 
 ### ADR-002: Instance-Owned Lifecycle
 
-| Field | Record |
-| --- | --- |
-| Decision | each instance owns its own observers and lifecycle |
-| Reason | testability and explicit control |
-| Alternatives Considered | shared global coordinator |
-| Tradeoffs | multi-instance support must be explicit |
-| Future Impact | easier adapter layering |
-| Rejected Alternatives | hidden singleton ownership |
+| Field                   | Record                                             |
+| ----------------------- | -------------------------------------------------- |
+| Decision                | each instance owns its own observers and lifecycle |
+| Reason                  | testability and explicit control                   |
+| Alternatives Considered | shared global coordinator                          |
+| Tradeoffs               | multi-instance support must be explicit            |
+| Future Impact           | easier adapter layering                            |
+| Rejected Alternatives   | hidden singleton ownership                         |
 
 ### ADR-003: Event-First Plus Snapshot Access
 
-| Field | Record |
-| --- | --- |
-| Decision | combine named events with `getSnapshot()` |
-| Reason | supports both reactive and immediate-read workflows |
-| Alternatives Considered | event-only API, snapshot-only API |
-| Tradeoffs | slightly larger surface |
-| Future Impact | good fit for framework-neutral consumers |
-| Rejected Alternatives | event-only and snapshot-only designs |
+| Field                   | Record                                              |
+| ----------------------- | --------------------------------------------------- |
+| Decision                | combine named events with `getSnapshot()`           |
+| Reason                  | supports both reactive and immediate-read workflows |
+| Alternatives Considered | event-only API, snapshot-only API                   |
+| Tradeoffs               | slightly larger surface                             |
+| Future Impact           | good fit for framework-neutral consumers            |
+| Rejected Alternatives   | event-only and snapshot-only designs                |
 
 ### ADR-004: No Public Emit API
 
-| Field | Record |
-| --- | --- |
-| Decision | omit public `emit()` |
-| Reason | preserve lifecycle event integrity |
+| Field                   | Record                                |
+| ----------------------- | ------------------------------------- |
+| Decision                | omit public `emit()`                  |
+| Reason                  | preserve lifecycle event integrity    |
 | Alternatives Considered | consumer-defined custom event support |
-| Tradeoffs | package is less emitter-like |
-| Future Impact | stronger semantic guarantees |
-| Rejected Alternatives | public event emission |
+| Tradeoffs               | package is less emitter-like          |
+| Future Impact           | stronger semantic guarantees          |
+| Rejected Alternatives   | public event emission                 |
 
 ### ADR-005: `dispose()` Over `destroy()`
 
-| Field | Record |
-| --- | --- |
-| Decision | use `dispose()` as terminal teardown |
-| Reason | clearer lifecycle ownership semantics |
-| Alternatives Considered | `destroy()` |
-| Tradeoffs | slightly less familiar to some users |
-| Future Impact | aligns well with library-style resource cleanup |
-| Rejected Alternatives | `destroy()` |
+| Field                   | Record                                          |
+| ----------------------- | ----------------------------------------------- |
+| Decision                | use `dispose()` as terminal teardown            |
+| Reason                  | clearer lifecycle ownership semantics           |
+| Alternatives Considered | `destroy()`                                     |
+| Tradeoffs               | slightly less familiar to some users            |
+| Future Impact           | aligns well with library-style resource cleanup |
+| Rejected Alternatives   | `destroy()`                                     |
 
 ## 13. API Evolution Policy
 
@@ -877,29 +877,29 @@ Use SemVer with conservative interpretation of lifecycle semantics. Event name o
 
 ## 14. Public API Checklist
 
-| Checklist Item | Status | Notes |
-| --- | --- | --- |
-| Simple | pass | default path remains small |
-| Predictable | pass | methods have single responsibilities |
-| Discoverable | pass | clear factory and event methods |
-| Type Safe | pass | named types and event inference expected |
-| Tree Shakeable | pass | narrow entrypoint and minimal helpers |
-| Framework Agnostic | pass | no framework runtime assumptions |
-| Minimal | pass | unnecessary methods omitted |
+| Checklist Item      | Status            | Notes                                               |
+| ------------------- | ----------------- | --------------------------------------------------- |
+| Simple              | pass              | default path remains small                          |
+| Predictable         | pass              | methods have single responsibilities                |
+| Discoverable        | pass              | clear factory and event methods                     |
+| Type Safe           | pass              | named types and event inference expected            |
+| Tree Shakeable      | pass              | narrow entrypoint and minimal helpers               |
+| Framework Agnostic  | pass              | no framework runtime assumptions                    |
+| Minimal             | pass              | unnecessary methods omitted                         |
 | Backward Compatible | pass with caution | event and snapshot shape must evolve conservatively |
 
 If a future API fails this checklist, it should be redesigned before adoption.
 
 ## Comparison Table
 
-| Question | Chosen Direction | Rejected Direction |
-| --- | --- | --- |
-| entrypoint | factory | class constructor |
-| lifecycle stop | `stop()` | `pause()` / `resume()` pair |
-| teardown | `dispose()` | `destroy()` |
-| state read | `getSnapshot()` | mutable `state` property |
-| extensibility | `use(plugin)` | `plugin()` / `register()` surface |
-| events | package-owned named events | public `emit()` |
+| Question       | Chosen Direction           | Rejected Direction                |
+| -------------- | -------------------------- | --------------------------------- |
+| entrypoint     | factory                    | class constructor                 |
+| lifecycle stop | `stop()`                   | `pause()` / `resume()` pair       |
+| teardown       | `dispose()`                | `destroy()`                       |
+| state read     | `getSnapshot()`            | mutable `state` property          |
+| extensibility  | `use(plugin)`              | `plugin()` / `register()` surface |
+| events         | package-owned named events | public `emit()`                   |
 
 ## Final Review
 

@@ -1,6 +1,4 @@
-export {
-  createBrowserLifecycle,
-} from "./browser-lifecycle.js";
+export { createBrowserLifecycle } from "./browser-lifecycle.js";
 export {
   createBrowserLifecycleConfig,
   getDefaultBrowserLifecycleConfig,
@@ -23,6 +21,9 @@ export {
   supportsBroadcastChannel,
   supportsPageLifecycle,
   supportsRequestIdleCallback,
+  supportsIdle,
+  supportsConnectivity,
+  supportsFocus,
   supportsVisibility,
 } from "./browser/features/index.js";
 export { TypedEventEmitter } from "./events/index.js";
@@ -37,14 +38,29 @@ export {
 } from "./utils/index.js";
 export type {
   BrowserFeatureEnvironment,
+  BrowserLifecycleActivityEventName,
   BrowserLifecycleCapabilities,
   BrowserLifecycleConfig,
   BrowserLifecycleCrossTabConfig,
   BrowserLifecycleCrossTabConfigInput,
   BrowserLifecycleErrorCode,
   BrowserLifecyclePlugin,
+  BrowserLifecyclePluginRuntimeContext,
+  BrowserLifecycleValidationIssue,
   ResolvedBrowserLifecycleConfig,
 } from "./types/index.js";
+export type {
+  BrowserLifecyclePluginContext,
+  BrowserLifecyclePluginDiagnostic,
+  BrowserLifecyclePluginHookLogEntry,
+  BrowserLifecyclePluginHookName,
+  BrowserLifecyclePluginLifecycleTransition,
+  BrowserLifecyclePluginPhase,
+} from "./plugins/index.js";
+export type {
+  BrowserLifecycleEventStat,
+  BrowserLifecycleRuntimeDiagnostics,
+} from "./diagnostics/index.js";
 export type {
   BrowserLifecycle,
   BrowserLifecycleActivityState,
@@ -59,6 +75,8 @@ export type {
   BrowserLifecyclePhase,
   BrowserLifecycleSnapshot,
   BrowserLifecycleSubscriber,
+  PageHiddenEventMetadata,
+  PageVisibleEventMetadata,
   BrowserLifecycleTabState,
   BrowserLifecycleTimestamps,
 } from "./core/session/index.js";

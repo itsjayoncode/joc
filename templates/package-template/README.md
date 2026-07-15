@@ -1,4 +1,4 @@
-# `@joc/package-name`
+# `@jayoncode/package-name`
 
 This template is the standard starting point for every future public JOC package.
 

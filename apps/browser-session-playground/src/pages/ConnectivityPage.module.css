@@ -1,0 +1,237 @@
+.topGrid,
+.middleGrid,
+.bottomGrid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.topGrid {
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+}
+
+.middleGrid,
+.bottomGrid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.statusRow,
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.toolbar {
+  justify-content: space-between;
+}
+
+.toolbarActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.searchInput {
+  min-width: min(100%, 240px);
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  background: var(--surface-strong);
+  color: var(--text-primary);
+  font: inherit;
+}
+
+.snapshotList,
+.mappingList,
+.comparisonList {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.snapshotRow,
+.mappingRow {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.8fr) minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: baseline;
+}
+
+.snapshotRow dt,
+.mappingRow dt {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.snapshotRow dd,
+.mappingRow dd {
+  margin: 0;
+  padding: 0.18rem 0.42rem;
+  border: 1px solid var(--code-border);
+  border-radius: 6px;
+  background: #ffffff;
+  color: var(--code-text);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+.comparisonList {
+  padding-left: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.emptyState,
+.helperText {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.eventLog {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.eventEntry {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  background: var(--surface-strong);
+}
+
+.eventHeader {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.eventMeta {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.eventTime {
+  color: var(--text-muted);
+  font-family: "IBM Plex Mono", "SFMono-Regular", "SF Mono", Consolas, monospace;
+  font-size: 0.8rem;
+}
+
+.eventType {
+  font-weight: 700;
+}
+
+.eventDetail {
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.button {
+  padding: 0.45rem 0.8rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  background: var(--surface-strong);
+  color: var(--text-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.button:hover {
+  border-color: var(--border-strong);
+}
+
+.buttonPrimary {
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.examplesGrid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.exampleCard {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.exampleHeader {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.exampleTitle {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.exampleDescription {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+  .topGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.timeline {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timelineItem {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: start;
+}
+
+.timelineMarker {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  margin-top: 0.35rem;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.timelineItem:not(:last-child) .timelineMarker::after {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 5px;
+  width: 2px;
+  height: calc(100% + var(--space-3));
+  background: var(--border-subtle);
+}
+
+.statsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}

@@ -13,6 +13,9 @@ function createTestContext() {
     {
       abortController: true,
       broadcastChannel: false,
+      connectivity: false,
+      idle: false,
+      focus: false,
       pageLifecycle: false,
       requestIdleCallback: false,
       visibility: true,

@@ -1,0 +1,11 @@
+{
+  "name": "@jayoncode/example-vanilla",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node --experimental-strip-types src/main.ts"
+  },
+  "dependencies": {
+    "@jayoncode/browser-lifecycle": "workspace:*"
+  }
+}

@@ -1,4 +1,4 @@
-import { access } from "node:fs/promises";
+import { access, readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -24,6 +24,16 @@ const requiredPaths = [
   "engineering/016-package-checklist.md",
 ];
 
+const productionPackageRequirements = [
+  "README.md",
+  "CHANGELOG.md",
+  "package.json",
+  "src/index.ts",
+  "docs",
+  "tests",
+  "examples",
+];
+
 const failures = [];
 
 for (const relativePath of requiredPaths) {
@@ -31,6 +41,61 @@ for (const relativePath of requiredPaths) {
     await access(path.join(rootDir, relativePath));
   } catch {
     failures.push(`Missing required package blueprint artifact: ${relativePath}`);
+  }
+}
+
+const packagesDir = path.join(rootDir, "packages");
+const packageEntries = await readdir(packagesDir, { withFileTypes: true });
+
+for (const entry of packageEntries) {
+  if (!entry.isDirectory() || entry.name === "shared") {
+    continue;
+  }
+
+  const packageRoot = path.join(packagesDir, entry.name);
+  const srcDir = path.join(packageRoot, "src");
+  let sourceEntries = [];
+
+  try {
+    sourceEntries = await readdir(srcDir, { recursive: true });
+  } catch {
+    continue;
+  }
+
+  const hasImplementation = sourceEntries.some(
+    (fileName) =>
+      typeof fileName === "string" && fileName.endsWith(".ts") && fileName !== "index.ts",
+  );
+
+  if (!hasImplementation) {
+    continue;
+  }
+
+  for (const relativePath of productionPackageRequirements) {
+    try {
+      await access(path.join(packageRoot, relativePath));
+    } catch {
+      failures.push(
+        `Production package packages/${entry.name} is missing required blueprint file: ${relativePath}`,
+      );
+    }
+  }
+
+  const engineeringNotePath = path.join(packageRoot, "engineering", "008-folder-architecture.md");
+  const hasEngineeringNote = await access(engineeringNotePath)
+    .then(() => true)
+    .catch(() => false);
+
+  if (!hasEngineeringNote) {
+    failures.push(
+      `Production package packages/${entry.name} should document its folder layout in engineering/008-folder-architecture.md`,
+    );
+  }
+
+  const manifest = JSON.parse(await readFile(path.join(packageRoot, "package.json"), "utf8"));
+
+  if (!manifest.name?.startsWith("@jayoncode/")) {
+    failures.push(`Production package packages/${entry.name} should use the @jayoncode npm scope.`);
   }
 }
 

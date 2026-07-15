@@ -2,11 +2,21 @@
 
 This section mirrors the repository changelog in a documentation-friendly format.
 
-## Current state
+## Released packages
 
-No public packages have been released yet.
+### `@jayoncode/browser-lifecycle` v0.1.0 — 2026-07-15
 
-## Recent repository progress
+Initial pre-release with session core, typed events, visibility, focus, connectivity, idle, lifecycle, cross-tab, plugins, configuration helpers, diagnostics, tests, and examples.
+
+See `packages/browser-lifecycle/CHANGELOG.md` for full details.
+
+### Browser Session Playground v1.0.0 — 2026-07-15
+
+Interactive shell for manual QA and integration validation across all Browser Lifecycle modules.
+
+See `apps/browser-session-playground/CHANGELOG.md` for full details.
+
+## Repository foundation
 
 - Phase 1.1 established the monorepo foundation
 - Phase 1.2 established shared developer tooling

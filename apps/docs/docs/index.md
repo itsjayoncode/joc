@@ -6,7 +6,7 @@ hero:
   text: "Documentation for a growing library ecosystem"
   tagline: "JayOnCode is building a professional TypeScript ecosystem one deliberate phase at a time, starting with architecture, tooling, automation, and developer experience."
   image:
-    src: /logo.svg
+    src: /logo.png
     alt: JOC logo
   actions:
     - theme: brand
@@ -14,7 +14,7 @@ hero:
       link: /getting-started/introduction
     - theme: alt
       text: Open Playground
-      link: http://127.0.0.1:4173
+      link: http://127.0.0.1:4273
 
 features:
   - title: Foundation First
@@ -38,9 +38,8 @@ features:
     <div class="joc-card">
       <h2 class="joc-section-title">What exists today</h2>
       <p class="joc-muted">
-        The repository currently includes the monorepo foundation, shared developer tooling,
-        engineering automation, this documentation site, and the first interactive playground
-        shell. Public package features have not been released yet.
+        The repository includes Browser Lifecycle, the Browser Session Playground, generated API
+        reference, framework examples, and this documentation portal.
       </p>
     </div>
   </div>
@@ -114,8 +113,12 @@ features:
       <p class="joc-muted">Jump into architecture, monorepo, and contribution guides.</p>
     </div>
     <div class="joc-card">
-      <h3><a href="http://127.0.0.1:4173">Need a working surface?</a></h3>
-      <p class="joc-muted">Use the playground to inspect local package wiring and future examples.</p>
+      <h3><a href="/packages/browser-lifecycle/">Browser Lifecycle</a></h3>
+      <p class="joc-muted">Read the package overview, guides, and generated API reference.</p>
+    </div>
+    <div class="joc-card">
+      <h3><a href="http://127.0.0.1:4273">Need a working surface?</a></h3>
+      <p class="joc-muted">Use the Browser Session Playground to inspect modules, events, and diagnostics.</p>
     </div>
   </div>
 </div>

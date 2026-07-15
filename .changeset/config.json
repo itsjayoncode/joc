@@ -12,5 +12,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@joc/docs", "@joc/playground", "@joc/shared"]
+  "ignore": ["@jayoncode/docs", "@jayoncode/playground", "@jayoncode/shared"]
 }

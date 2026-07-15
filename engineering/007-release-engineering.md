@@ -58,8 +58,8 @@ Changesets is configured for independent versioning, which means packages are no
 Examples of the intended model:
 
 - `@jayoncode/browser-lifecycle` can become `1.0.0`
-- `@joc/request` can become `0.4.2`
-- `@joc/theme` can become `2.1.0`
+- `/request` can become `0.4.2`
+- `/theme` can become `2.1.0`
 
 Private workspace apps and internal packages are excluded from publishable release planning.
 

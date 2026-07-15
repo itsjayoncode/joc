@@ -1,0 +1,16 @@
+{
+  "name": "Browser Lifecycle Playground",
+  "short_name": "BL Playground",
+  "description": "Official Browser Lifecycle playground for development, manual QA, and interactive documentation.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#111827",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -4,7 +4,7 @@
 
 ## Introduction
 
-`@joc/keyboard` is reserved for future keyboard interactions and shortcut tooling.
+`@jayoncode/keyboard` is reserved for future keyboard interactions and shortcut tooling.
 
 ## Installation
 

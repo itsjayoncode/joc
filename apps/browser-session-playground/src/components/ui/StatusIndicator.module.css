@@ -1,0 +1,31 @@
+.indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--text-muted);
+  box-shadow: 0 0 0 0.2rem var(--border-soft);
+}
+
+.info .dot {
+  background: var(--info-text);
+  box-shadow: 0 0 0 0.2rem var(--info-soft);
+}
+
+.success .dot {
+  background: var(--success-text);
+  box-shadow: 0 0 0 0.2rem var(--success-soft);
+}
+
+.warning .dot {
+  background: var(--warning-text);
+  box-shadow: 0 0 0 0.2rem var(--warning-soft);
+}

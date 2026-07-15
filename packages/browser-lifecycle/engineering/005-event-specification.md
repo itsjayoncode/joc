@@ -131,26 +131,26 @@ New events should land in the narrowest honest namespace. If a future capability
 
 ### Version 1 Event Catalog
 
-| Name | Description | Category | Public | Internal | Experimental | Deprecated Future Risk |
-| --- | --- | --- | --- | --- | --- | --- |
-| `session:started` | instance begins live observation | session | yes | no | no | low |
-| `session:stopped` | instance stops live observation | session | yes | no | no | low |
-| `page:visible` | page becomes visible | page | yes | no | no | low |
-| `page:hidden` | page becomes hidden | page | yes | no | no | low |
-| `window:focus` | window gains attention while relevant | window | yes | no | no | low |
-| `window:blur` | window loses attention | window | yes | no | no | low |
-| `session:active` | session returns from idle to active | session | yes | no | no | low |
-| `session:idle` | session crosses idle threshold | session | yes | no | no | low |
-| `connection:online` | connectivity hint changes to online | connectivity | yes | no | no | medium |
-| `connection:offline` | connectivity hint changes to offline | connectivity | yes | no | no | medium |
-| `page:suspend` | page enters a suspend-like path | lifecycle | yes | no | yes, capability-dependent | medium |
-| `page:resume` | page resumes from a suspend-like path | lifecycle | yes | no | yes, capability-dependent | medium |
-| `session:restored` | page context is restored after navigation or discard-aware path | lifecycle | yes | no | yes, capability-dependent | medium |
-| `tab:primary` | current context becomes primary tab | cross-tab | yes | no | yes, optional feature | medium |
-| `tab:secondary` | current context loses primary tab role | cross-tab | yes | no | yes, optional feature | medium |
-| `plugin:registered` | plugin registration completed | plugin | yes | no | yes, optional surface | medium |
-| `plugin:removed` | plugin cleanup completed | plugin | yes | no | yes, optional surface | medium |
-| `plugin:error` | plugin hook failure was isolated | plugin | yes | no | yes, optional surface | medium |
+| Name                 | Description                                                     | Category     | Public | Internal | Experimental              | Deprecated Future Risk |
+| -------------------- | --------------------------------------------------------------- | ------------ | ------ | -------- | ------------------------- | ---------------------- |
+| `session:started`    | instance begins live observation                                | session      | yes    | no       | no                        | low                    |
+| `session:stopped`    | instance stops live observation                                 | session      | yes    | no       | no                        | low                    |
+| `page:visible`       | page becomes visible                                            | page         | yes    | no       | no                        | low                    |
+| `page:hidden`        | page becomes hidden                                             | page         | yes    | no       | no                        | low                    |
+| `window:focus`       | window gains attention while relevant                           | window       | yes    | no       | no                        | low                    |
+| `window:blur`        | window loses attention                                          | window       | yes    | no       | no                        | low                    |
+| `session:active`     | session returns from idle to active                             | session      | yes    | no       | no                        | low                    |
+| `session:idle`       | session crosses idle threshold                                  | session      | yes    | no       | no                        | low                    |
+| `connection:online`  | connectivity hint changes to online                             | connectivity | yes    | no       | no                        | medium                 |
+| `connection:offline` | connectivity hint changes to offline                            | connectivity | yes    | no       | no                        | medium                 |
+| `page:suspend`       | page enters a suspend-like path                                 | lifecycle    | yes    | no       | yes, capability-dependent | medium                 |
+| `page:resume`        | page resumes from a suspend-like path                           | lifecycle    | yes    | no       | yes, capability-dependent | medium                 |
+| `session:restored`   | page context is restored after navigation or discard-aware path | lifecycle    | yes    | no       | yes, capability-dependent | medium                 |
+| `tab:primary`        | current context becomes primary tab                             | cross-tab    | yes    | no       | yes, optional feature     | medium                 |
+| `tab:secondary`      | current context loses primary tab role                          | cross-tab    | yes    | no       | yes, optional feature     | medium                 |
+| `plugin:registered`  | plugin registration completed                                   | plugin       | yes    | no       | yes, optional surface     | medium                 |
+| `plugin:removed`     | plugin cleanup completed                                        | plugin       | yes    | no       | yes, optional surface     | medium                 |
+| `plugin:error`       | plugin hook failure was isolated                                | plugin       | yes    | no       | yes, optional surface     | medium                 |
 
 ### Internal Event Families
 
@@ -185,15 +185,15 @@ Payloads should be:
 
 Every public event should conceptually carry:
 
-| Field | Meaning | Required |
-| --- | --- | --- |
-| `type` | event name | yes |
-| `timestamp` | normalized event time | yes |
-| `source` | primary signal source category | yes |
-| `current` | current lifecycle-relevant value | yes |
-| `previous` | previous lifecycle-relevant value when meaningful | usually |
-| `snapshot` | current normalized snapshot | yes |
-| `metadata` | event-specific extras | optional |
+| Field       | Meaning                                           | Required |
+| ----------- | ------------------------------------------------- | -------- |
+| `type`      | event name                                        | yes      |
+| `timestamp` | normalized event time                             | yes      |
+| `source`    | primary signal source category                    | yes      |
+| `current`   | current lifecycle-relevant value                  | yes      |
+| `previous`  | previous lifecycle-relevant value when meaningful | usually  |
+| `snapshot`  | current normalized snapshot                       | yes      |
+| `metadata`  | event-specific extras                             | optional |
 
 ### Payload Source Values
 
@@ -210,51 +210,51 @@ Allowed source categories:
 
 ### Page Event Payloads
 
-| Event | Purpose | Required Properties | Optional Properties | Example Metadata |
-| --- | --- | --- | --- | --- |
-| `page:visible` | visible transition | `type`, `timestamp`, `source`, `current`, `previous`, `snapshot` | `metadata.reason` | `restored`, `focusKnown` |
-| `page:hidden` | hidden transition | same | `metadata.reason` | `visibilityState`, `likelyLastSignal` |
-| `page:suspend` | suspend/freeze-like transition | same | `metadata.persisted`, `metadata.lifecycleSignal` | `freeze`, `pagehide-persisted` |
-| `page:resume` | resume from suspend-like path | same | `metadata.resumeSource`, `metadata.persisted` | `pageshow`, `resume` |
+| Event          | Purpose                        | Required Properties                                              | Optional Properties                              | Example Metadata                      |
+| -------------- | ------------------------------ | ---------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------- |
+| `page:visible` | visible transition             | `type`, `timestamp`, `source`, `current`, `previous`, `snapshot` | `metadata.reason`                                | `restored`, `focusKnown`              |
+| `page:hidden`  | hidden transition              | same                                                             | `metadata.reason`                                | `visibilityState`, `likelyLastSignal` |
+| `page:suspend` | suspend/freeze-like transition | same                                                             | `metadata.persisted`, `metadata.lifecycleSignal` | `freeze`, `pagehide-persisted`        |
+| `page:resume`  | resume from suspend-like path  | same                                                             | `metadata.resumeSource`, `metadata.persisted`    | `pageshow`, `resume`                  |
 
 ### Window Event Payloads
 
-| Event | Purpose | Required Properties | Optional Properties | Example Metadata |
-| --- | --- | --- | --- | --- |
+| Event          | Purpose        | Required Properties                                              | Optional Properties        | Example Metadata  |
+| -------------- | -------------- | ---------------------------------------------------------------- | -------------------------- | ----------------- |
 | `window:focus` | attention gain | `type`, `timestamp`, `source`, `current`, `previous`, `snapshot` | `metadata.visibilityState` | `documentVisible` |
-| `window:blur` | attention loss | same | `metadata.visibilityState` | `stillVisible` |
+| `window:blur`  | attention loss | same                                                             | `metadata.visibilityState` | `stillVisible`    |
 
 ### Session Event Payloads
 
-| Event | Purpose | Required Properties | Optional Properties | Example Metadata |
-| --- | --- | --- | --- | --- |
-| `session:started` | observation begins | `type`, `timestamp`, `source`, `current`, `snapshot` | `metadata.autoStart` | `startupMode` |
-| `session:stopped` | observation ends | `type`, `timestamp`, `source`, `current`, `snapshot` | `metadata.reason` | `manual-stop` |
-| `session:active` | session exits idle | `type`, `timestamp`, `source`, `current`, `previous`, `snapshot` | `metadata.activitySource`, `metadata.idleDuration` | `pointerdown` |
-| `session:idle` | session enters idle | same | `metadata.idleTimeout`, `metadata.lastActivityAt` | configured timeout |
-| `session:restored` | restored lifecycle context | same | `metadata.persisted`, `metadata.wasDiscarded`, `metadata.restoreSource` | `pageshow`, `startup-detected` |
+| Event              | Purpose                    | Required Properties                                              | Optional Properties                                                     | Example Metadata               |
+| ------------------ | -------------------------- | ---------------------------------------------------------------- | ----------------------------------------------------------------------- | ------------------------------ |
+| `session:started`  | observation begins         | `type`, `timestamp`, `source`, `current`, `snapshot`             | `metadata.autoStart`                                                    | `startupMode`                  |
+| `session:stopped`  | observation ends           | `type`, `timestamp`, `source`, `current`, `snapshot`             | `metadata.reason`                                                       | `manual-stop`                  |
+| `session:active`   | session exits idle         | `type`, `timestamp`, `source`, `current`, `previous`, `snapshot` | `metadata.activitySource`, `metadata.idleDuration`                      | `pointerdown`                  |
+| `session:idle`     | session enters idle        | same                                                             | `metadata.idleTimeout`, `metadata.lastActivityAt`                       | configured timeout             |
+| `session:restored` | restored lifecycle context | same                                                             | `metadata.persisted`, `metadata.wasDiscarded`, `metadata.restoreSource` | `pageshow`, `startup-detected` |
 
 ### Connectivity Event Payloads
 
-| Event | Purpose | Required Properties | Optional Properties | Example Metadata |
-| --- | --- | --- | --- | --- |
-| `connection:online` | advisory online transition | `type`, `timestamp`, `source`, `current`, `previous`, `snapshot` | `metadata.advisory` | `navigator.onLine` |
-| `connection:offline` | advisory offline transition | same | `metadata.advisory` | `platform-offline` |
+| Event                | Purpose                     | Required Properties                                              | Optional Properties | Example Metadata   |
+| -------------------- | --------------------------- | ---------------------------------------------------------------- | ------------------- | ------------------ |
+| `connection:online`  | advisory online transition  | `type`, `timestamp`, `source`, `current`, `previous`, `snapshot` | `metadata.advisory` | `navigator.onLine` |
+| `connection:offline` | advisory offline transition | same                                                             | `metadata.advisory` | `platform-offline` |
 
 ### Cross-Tab Event Payloads
 
-| Event | Purpose | Required Properties | Optional Properties | Example Metadata |
-| --- | --- | --- | --- | --- |
-| `tab:primary` | tab becomes leader | `type`, `timestamp`, `source`, `current`, `previous`, `snapshot` | `metadata.transport`, `metadata.term` | `broadcast-channel` |
-| `tab:secondary` | tab loses leader role | same | `metadata.transport`, `metadata.reason` | `timeout-loss` |
+| Event           | Purpose               | Required Properties                                              | Optional Properties                     | Example Metadata    |
+| --------------- | --------------------- | ---------------------------------------------------------------- | --------------------------------------- | ------------------- |
+| `tab:primary`   | tab becomes leader    | `type`, `timestamp`, `source`, `current`, `previous`, `snapshot` | `metadata.transport`, `metadata.term`   | `broadcast-channel` |
+| `tab:secondary` | tab loses leader role | same                                                             | `metadata.transport`, `metadata.reason` | `timeout-loss`      |
 
 ### Plugin Event Payloads
 
-| Event | Purpose | Required Properties | Optional Properties | Example Metadata |
-| --- | --- | --- | --- | --- |
-| `plugin:registered` | plugin accepted | `type`, `timestamp`, `source`, `current`, `snapshot` | `metadata.pluginId` | plugin metadata |
-| `plugin:removed` | plugin cleanup completed | same | `metadata.pluginId`, `metadata.reason` | stop/dispose |
-| `plugin:error` | plugin failure isolated | same | `metadata.pluginId`, `metadata.hook`, `metadata.severity` | isolated error |
+| Event               | Purpose                  | Required Properties                                  | Optional Properties                                       | Example Metadata |
+| ------------------- | ------------------------ | ---------------------------------------------------- | --------------------------------------------------------- | ---------------- |
+| `plugin:registered` | plugin accepted          | `type`, `timestamp`, `source`, `current`, `snapshot` | `metadata.pluginId`                                       | plugin metadata  |
+| `plugin:removed`    | plugin cleanup completed | same                                                 | `metadata.pluginId`, `metadata.reason`                    | stop/dispose     |
+| `plugin:error`      | plugin failure isolated  | same                                                 | `metadata.pluginId`, `metadata.hook`, `metadata.severity` | isolated error   |
 
 ### Error Cases
 
@@ -345,16 +345,16 @@ The package must resolve collisions between browser signals and derived events. 
 
 ### Priority Levels
 
-| Priority | Meaning | Examples |
-| --- | --- | --- |
-| Critical | package lifecycle and invariant control | `session:started`, `session:stopped` |
-| Lifecycle | visibility and suspend/resume truth | `page:hidden`, `page:visible`, `page:suspend`, `page:resume`, `session:restored` |
-| Connectivity | advisory network changes | `connection:online`, `connection:offline` |
-| Visibility | explicit page visibility | `page:hidden`, `page:visible` |
-| Focus | attention-only transitions | `window:focus`, `window:blur` |
-| Idle | derived activity heuristics | `session:idle`, `session:active` |
-| Plugin | plugin lifecycle notifications | `plugin:registered`, `plugin:removed`, `plugin:error` |
-| Informational | future diagnostics | debug or diagnostic families |
+| Priority      | Meaning                                 | Examples                                                                         |
+| ------------- | --------------------------------------- | -------------------------------------------------------------------------------- |
+| Critical      | package lifecycle and invariant control | `session:started`, `session:stopped`                                             |
+| Lifecycle     | visibility and suspend/resume truth     | `page:hidden`, `page:visible`, `page:suspend`, `page:resume`, `session:restored` |
+| Connectivity  | advisory network changes                | `connection:online`, `connection:offline`                                        |
+| Visibility    | explicit page visibility                | `page:hidden`, `page:visible`                                                    |
+| Focus         | attention-only transitions              | `window:focus`, `window:blur`                                                    |
+| Idle          | derived activity heuristics             | `session:idle`, `session:active`                                                 |
+| Plugin        | plugin lifecycle notifications          | `plugin:registered`, `plugin:removed`, `plugin:error`                            |
+| Informational | future diagnostics                      | debug or diagnostic families                                                     |
 
 ### When Events Can Interrupt Others
 
@@ -443,20 +443,20 @@ unknown
 
 ## 8. Edge Cases
 
-| Edge Case | Expected Behavior | Priority | Fallback | Developer Expectation |
-| --- | --- | --- | --- | --- |
-| Rapid tab switching | visibility remains primary; duplicate churn suppressed | high | snapshot correction | stable visible/hidden semantics |
-| Offline while hidden | connectivity changes remain advisory and independent | medium | keep hidden state unchanged | no false session-end claims |
-| Focus without visibility | focus should not imply visible | medium | ignore impossible attention promotion | attention stays conservative |
-| Multiple tabs | leadership events only emit when optional cross-tab mode is enabled | medium | single-tab semantics | no hidden global coordination |
-| Sleep during idle | idle timing may drift; lifecycle truth remains conservative | high | best-effort restore logic | no precision promises |
-| Resume after freeze | `page:resume` and possibly `session:restored` emit if justified | high | visible transition only | restoration stays capability-driven |
-| Browser crash | no synthetic terminal event promised | high | rely on next startup evidence | package does not fake crash detection |
-| Back/Forward Cache | use persisted restoration semantics when available | high | pagehide/pageshow refinement | restoration may be explicit |
-| Private browsing | storage fallback may be unavailable | medium | disable storage transport | cross-tab features may degrade |
-| Battery saver | timers and frames slow further | medium | degrade idle precision | no false precision |
-| Mobile browser suspension | hidden may be the last strong signal | high | hidden-only lifecycle path | termination remains uncertain |
-| Iframe embedding | focus and visibility semantics may differ from standalone page expectations | medium | capability-gated, conservative handling | avoid overclaiming attention state |
+| Edge Case                 | Expected Behavior                                                           | Priority | Fallback                                | Developer Expectation                 |
+| ------------------------- | --------------------------------------------------------------------------- | -------- | --------------------------------------- | ------------------------------------- |
+| Rapid tab switching       | visibility remains primary; duplicate churn suppressed                      | high     | snapshot correction                     | stable visible/hidden semantics       |
+| Offline while hidden      | connectivity changes remain advisory and independent                        | medium   | keep hidden state unchanged             | no false session-end claims           |
+| Focus without visibility  | focus should not imply visible                                              | medium   | ignore impossible attention promotion   | attention stays conservative          |
+| Multiple tabs             | leadership events only emit when optional cross-tab mode is enabled         | medium   | single-tab semantics                    | no hidden global coordination         |
+| Sleep during idle         | idle timing may drift; lifecycle truth remains conservative                 | high     | best-effort restore logic               | no precision promises                 |
+| Resume after freeze       | `page:resume` and possibly `session:restored` emit if justified             | high     | visible transition only                 | restoration stays capability-driven   |
+| Browser crash             | no synthetic terminal event promised                                        | high     | rely on next startup evidence           | package does not fake crash detection |
+| Back/Forward Cache        | use persisted restoration semantics when available                          | high     | pagehide/pageshow refinement            | restoration may be explicit           |
+| Private browsing          | storage fallback may be unavailable                                         | medium   | disable storage transport               | cross-tab features may degrade        |
+| Battery saver             | timers and frames slow further                                              | medium   | degrade idle precision                  | no false precision                    |
+| Mobile browser suspension | hidden may be the last strong signal                                        | high     | hidden-only lifecycle path              | termination remains uncertain         |
+| Iframe embedding          | focus and visibility semantics may differ from standalone page expectations | medium   | capability-gated, conservative handling | avoid overclaiming attention state    |
 
 ## 9. Event Relationships
 
@@ -519,11 +519,11 @@ Plugins may observe normalized lifecycle behavior, record diagnostics, add side 
 
 ### Plugin Lifecycle Events
 
-| Event | Purpose | Public | Notes |
-| --- | --- | --- | --- |
-| `plugin:registered` | plugin accepted by instance | yes | optional surface |
-| `plugin:removed` | plugin cleanup completed | yes | stop or dispose path |
-| `plugin:error` | plugin hook failure isolated | yes | should not crash core unless configured otherwise |
+| Event               | Purpose                      | Public | Notes                                             |
+| ------------------- | ---------------------------- | ------ | ------------------------------------------------- |
+| `plugin:registered` | plugin accepted by instance  | yes    | optional surface                                  |
+| `plugin:removed`    | plugin cleanup completed     | yes    | stop or dispose path                              |
+| `plugin:error`      | plugin hook failure isolated | yes    | should not crash core unless configured otherwise |
 
 ### Plugin Event Order
 
@@ -611,81 +611,81 @@ session core -> cleanup
 
 ## 13. Future Events
 
-| Event | Reason Excluded from V1 | Potential Future Version | Requirements |
-| --- | --- | --- | --- |
-| `network:slow` | connectivity hint quality is too weak for reliable semantics | 2.x | stronger network strategy and support validation |
-| `battery:low` | not core lifecycle truth | 2.x or plugin | capability research and privacy review |
-| `memory:pressure` | weak cross-browser portability | future experimental | browser support and semantics study |
-| `navigation:change` | navigation modeling belongs in later design work | 2.x | clearer navigation strategy |
-| `screen:lock` | web platform does not expose a strong universal signal | future experimental | reliable capability basis |
-| `screen:unlock` | same reason as lock | future experimental | reliable capability basis |
-| `idle:extended` | v1 idle should stay simple | 2.x | proven consumer demand |
-| `diagnostic:*` | debug surface should remain opt-in | 2.x | dedicated diagnostics design |
+| Event               | Reason Excluded from V1                                      | Potential Future Version | Requirements                                     |
+| ------------------- | ------------------------------------------------------------ | ------------------------ | ------------------------------------------------ |
+| `network:slow`      | connectivity hint quality is too weak for reliable semantics | 2.x                      | stronger network strategy and support validation |
+| `battery:low`       | not core lifecycle truth                                     | 2.x or plugin            | capability research and privacy review           |
+| `memory:pressure`   | weak cross-browser portability                               | future experimental      | browser support and semantics study              |
+| `navigation:change` | navigation modeling belongs in later design work             | 2.x                      | clearer navigation strategy                      |
+| `screen:lock`       | web platform does not expose a strong universal signal       | future experimental      | reliable capability basis                        |
+| `screen:unlock`     | same reason as lock                                          | future experimental      | reliable capability basis                        |
+| `idle:extended`     | v1 idle should stay simple                                   | 2.x                      | proven consumer demand                           |
+| `diagnostic:*`      | debug surface should remain opt-in                           | 2.x                      | dedicated diagnostics design                     |
 
 ## 14. Design Decisions
 
 ### ADR-001: Namespace-Based Event Names
 
-| Field | Record |
-| --- | --- |
-| Decision | use `namespace:event` public naming |
-| Reason | predictable grouping and discoverability |
-| Alternatives | flat names, browser-native callback names |
-| Tradeoffs | slightly longer strings |
-| Future Impact | easy additive growth |
+| Field         | Record                                    |
+| ------------- | ----------------------------------------- |
+| Decision      | use `namespace:event` public naming       |
+| Reason        | predictable grouping and discoverability  |
+| Alternatives  | flat names, browser-native callback names |
+| Tradeoffs     | slightly longer strings                   |
+| Future Impact | easy additive growth                      |
 
 ### ADR-002: No Public `emit()`
 
-| Field | Record |
-| --- | --- |
-| Decision | package owns event emission |
-| Reason | preserve event integrity |
-| Alternatives | public custom event emission |
-| Tradeoffs | package is less emitter-like |
-| Future Impact | stronger semantic stability |
+| Field         | Record                       |
+| ------------- | ---------------------------- |
+| Decision      | package owns event emission  |
+| Reason        | preserve event integrity     |
+| Alternatives  | public custom event emission |
+| Tradeoffs     | package is less emitter-like |
+| Future Impact | stronger semantic stability  |
 
 ### ADR-003: Visibility Over Focus
 
-| Field | Record |
-| --- | --- |
-| Decision | visibility transitions outrank focus transitions |
-| Reason | visibility is the stronger platform truth |
-| Alternatives | treat focus as equal to visibility |
-| Tradeoffs | focus-driven apps must reason through separate attention semantics |
-| Future Impact | prevents misleading lifecycle claims |
+| Field         | Record                                                             |
+| ------------- | ------------------------------------------------------------------ |
+| Decision      | visibility transitions outrank focus transitions                   |
+| Reason        | visibility is the stronger platform truth                          |
+| Alternatives  | treat focus as equal to visibility                                 |
+| Tradeoffs     | focus-driven apps must reason through separate attention semantics |
+| Future Impact | prevents misleading lifecycle claims                               |
 
 ### ADR-004: Plugin Errors Stay Isolated
 
-| Field | Record |
-| --- | --- |
-| Decision | plugin failures produce isolated plugin error signaling rather than collapse the core lifecycle engine |
-| Reason | core lifecycle truth must remain stable |
-| Alternatives | fail-fast plugin model |
-| Tradeoffs | some plugin failures become softer than thrown errors |
-| Future Impact | safer extension ecosystem |
+| Field         | Record                                                                                                 |
+| ------------- | ------------------------------------------------------------------------------------------------------ |
+| Decision      | plugin failures produce isolated plugin error signaling rather than collapse the core lifecycle engine |
+| Reason        | core lifecycle truth must remain stable                                                                |
+| Alternatives  | fail-fast plugin model                                                                                 |
+| Tradeoffs     | some plugin failures become softer than thrown errors                                                  |
+| Future Impact | safer extension ecosystem                                                                              |
 
 ### ADR-005: Minimal Core Event Set
 
-| Field | Record |
-| --- | --- |
-| Decision | ship a compact Version 1 public event catalog |
-| Reason | reduces redundancy and semantic drift |
-| Alternatives | emit many fine-grained internal events publicly |
-| Tradeoffs | some advanced consumers may want more granularity later |
-| Future Impact | easier long-term compatibility |
+| Field         | Record                                                  |
+| ------------- | ------------------------------------------------------- |
+| Decision      | ship a compact Version 1 public event catalog           |
+| Reason        | reduces redundancy and semantic drift                   |
+| Alternatives  | emit many fine-grained internal events publicly         |
+| Tradeoffs     | some advanced consumers may want more granularity later |
+| Future Impact | easier long-term compatibility                          |
 
 ## 15. Event Checklist
 
-| Requirement | Status | Notes |
-| --- | --- | --- |
-| Consistent Naming | pass | namespace-based event system |
-| Predictable Ordering | pass | deterministic normalization rules |
-| Strongly Typed | pass in design intent | payload families map cleanly to named events |
-| Framework Agnostic | pass | no framework runtime assumptions |
-| Version Safe | pass with caution | payload growth must stay additive |
-| Backward Compatible | pass with caution | event names should stabilize early |
-| Minimal Payload | pass | payloads stay small and snapshot-oriented |
-| Easy to Understand | pass | catalog remains compact and namespaced |
+| Requirement          | Status                | Notes                                        |
+| -------------------- | --------------------- | -------------------------------------------- |
+| Consistent Naming    | pass                  | namespace-based event system                 |
+| Predictable Ordering | pass                  | deterministic normalization rules            |
+| Strongly Typed       | pass in design intent | payload families map cleanly to named events |
+| Framework Agnostic   | pass                  | no framework runtime assumptions             |
+| Version Safe         | pass with caution     | payload growth must stay additive            |
+| Backward Compatible  | pass with caution     | event names should stabilize early           |
+| Minimal Payload      | pass                  | payloads stay small and snapshot-oriented    |
+| Easy to Understand   | pass                  | catalog remains compact and namespaced       |
 
 If a future event fails any requirement, it should be redesigned or excluded.
 

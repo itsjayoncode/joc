@@ -11,7 +11,9 @@ const repoRoot = path.resolve(rootDir, "../..");
 export default defineConfig({
   plugins: [react(), tsconfigPaths({ root: repoRoot })],
   resolve: {
-    alias: [{ find: /^@joc\/(.+)$/, replacement: path.join(repoRoot, "packages/$1/src/index.ts") }],
+    alias: [
+      { find: /^@jayoncode\/(.+)$/, replacement: path.join(repoRoot, "packages/$1/src/index.ts") },
+    ],
   },
   server: {
     host: "127.0.0.1",

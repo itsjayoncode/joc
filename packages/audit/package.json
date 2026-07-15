@@ -1,5 +1,5 @@
 {
-  "name": "@joc/audit",
+  "name": "@jayoncode/audit",
   "version": "0.0.0",
   "private": false,
   "description": "Future audit package for the JOC ecosystem.",

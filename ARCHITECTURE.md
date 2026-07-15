@@ -41,12 +41,29 @@ This keeps the monorepo lightweight while still giving contributors clear, autom
 
 ## Developer Experience Layer
 
-The repository now includes two first-party applications that support ecosystem understanding without introducing package feature logic:
+The repository includes three first-party applications that support ecosystem understanding without introducing package feature logic into apps:
 
 - `apps/docs` for documentation, navigation, package templates, and contributor orientation
-- `apps/playground` for local workspace package exploration, manual validation, and future demos
+- `apps/playground` for quick local workspace package exploration and bootstrap validation
+- `apps/browser-session-playground` for long-lived Browser Lifecycle manual QA, module integration, and future interactive documentation
+
+`apps/website` remains reserved for the future public project presence.
 
 This layer is intentionally lightweight. It adds documentation and experimentation surfaces without changing the package boundaries established earlier.
+
+## Naming and Scopes
+
+JOC uses a single npm scope for all workspace packages and applications:
+
+- `@jayoncode/*` for public packages, private apps, and internal workspace packages (for example `@jayoncode/browser-lifecycle`, `@jayoncode/browser-session-playground`, and `@jayoncode/shared`)
+
+Private workspace members remain marked `"private": true` in `package.json` even when they use the `@jayoncode` scope.
+
+Construction documents under `_constuction/` may still refer to "Browser Session" as the product label from early Phase 2 planning. That label maps to the `browser-lifecycle` package unless an explicit rename is approved later.
+
+## Turborepo
+
+`turbo.json` defines the future task graph for builds, tests, and linting. Root scripts currently invoke pnpm and TypeScript directly for simplicity during early package development. Adopt `turbo run` when caching across many packages becomes worthwhile.
 
 ## Future Release Strategy
 
@@ -75,4 +92,4 @@ That blueprint defines:
 - one documentation shape
 - one versioning and API-evolution policy
 
-This is the bridge between repository setup and the first production package.
+This is the bridge between repository setup and production packages. `@jayoncode/browser-lifecycle` is the first package implementing that blueprint, with domain-specific folder layout documented in `packages/browser-lifecycle/engineering/008-folder-architecture.md`.

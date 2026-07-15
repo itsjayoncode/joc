@@ -4,7 +4,7 @@
 
 ## Introduction
 
-`@joc/responsive` is reserved for future responsive state and media-query helpers.
+`@jayoncode/responsive` is reserved for future responsive state and media-query helpers.
 
 ## Installation
 
