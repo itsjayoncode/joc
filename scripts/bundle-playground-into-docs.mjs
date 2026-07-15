@@ -67,13 +67,36 @@ function buildPlayground(buildScript, base) {
   }
 }
 
-function copySpaFallback(distDir) {
+function readAppRoutePaths(appDir) {
+  const routesFile = path.join(rootDir, appDir, "src/routes/app-routes.tsx");
+  const source = readFileSync(routesFile, "utf8");
+  const match = source.match(/export const APP_ROUTE_PATHS = \[([\s\S]*?)\] as const/);
+
+  if (!match) {
+    throw new Error(`APP_ROUTE_PATHS not found in ${routesFile}.`);
+  }
+
+  return [...match[1].matchAll(/"([^"]+)"/g)].map(([, routePath]) => routePath);
+}
+
+function copySpaRouteFallbacks(distDir, routePaths) {
   const indexFile = path.join(distDir, "index.html");
   if (!existsSync(indexFile)) {
     throw new Error(`Missing playground build output at ${indexFile}.`);
   }
 
   cpSync(indexFile, path.join(distDir, "404.html"));
+
+  for (const routePath of routePaths) {
+    if (routePath === "/") {
+      continue;
+    }
+
+    const segment = routePath.replace(/^\//, "");
+    const routeDir = path.join(distDir, segment);
+    mkdirSync(routeDir, { recursive: true });
+    cpSync(indexFile, path.join(routeDir, "index.html"));
+  }
 }
 
 function bundlePlayground({ name, appDir, buildScript, base }) {
@@ -82,7 +105,8 @@ function bundlePlayground({ name, appDir, buildScript, base }) {
   const normalizedBase = normalizeBase(base);
 
   buildPlayground(buildScript, normalizedBase);
-  copySpaFallback(playgroundDist);
+  const routePaths = readAppRoutePaths(appDir);
+  copySpaRouteFallbacks(playgroundDist, routePaths);
   patchManifestStartUrl(playgroundDist, normalizedBase);
 
   if (!existsSync(docsDist)) {
@@ -95,7 +119,7 @@ function bundlePlayground({ name, appDir, buildScript, base }) {
   mkdirSync(path.dirname(playgroundTarget), { recursive: true });
   cpSync(playgroundDist, playgroundTarget, { recursive: true });
   patchManifestStartUrl(playgroundTarget, normalizedBase);
-  copySpaFallback(playgroundTarget);
+  copySpaRouteFallbacks(playgroundTarget, routePaths);
 
   console.log(`Bundled ${appDir} into ${playgroundTarget} with base ${normalizedBase}.`);
 }

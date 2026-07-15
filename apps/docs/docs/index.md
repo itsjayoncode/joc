@@ -6,7 +6,7 @@ hero:
   text: TypeScript libraries that help developers ship
   tagline: JayOnCode (JOC) is an open source monorepo of focused, independently installable packages — starting with browser lifecycle on npm, with more developer tools shipping soon.
   image:
-    src: /logo.png
+    src: /jayoncode-logo-official.png
     alt: JOC by JayOnCode logo
   actions:
     - theme: brand

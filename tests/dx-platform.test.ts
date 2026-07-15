@@ -86,9 +86,12 @@ describe("developer experience platform", () => {
 
   it("routes the browser session playground for GitHub Pages hosting", () => {
     const appProviders = readText("apps/browser-session-playground/src/app/AppProviders.tsx");
+    const bundleScript = readText("scripts/bundle-playground-into-docs.mjs");
     expect(appProviders).toContain("...(routerBasename ? { basename: routerBasename } : {})");
     expect(appProviders).toContain("import.meta.env.BASE_URL");
     expect(existsSync(path.join(rootDir, "scripts/bundle-playground-into-docs.mjs"))).toBe(true);
+    expect(bundleScript).toContain("readAppRoutePaths");
+    expect(bundleScript).toContain("copySpaRouteFallbacks");
     expect(existsSync(path.join(rootDir, "apps/docs/docs/public/playground/index.html"))).toBe(
       true,
     );

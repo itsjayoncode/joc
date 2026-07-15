@@ -18,10 +18,11 @@ import {
   siteName,
   siteTagline,
 } from "./seo.js";
+import { createDocsVitePlugins, docsPublicAssetsDir } from "./vite-dev-fix.js";
 
 const docsBase = process.env.VITE_DOCS_BASE ?? "/";
 const PLAYGROUND_URL = docsPlaygroundUrl;
-const ogImageUrl = resolvePublicAssetUrl("logo.png");
+const ogImageUrl = resolvePublicAssetUrl("jayoncode-logo-512.png");
 const sitemapHostname = docsSiteUrl.endsWith("/") ? docsSiteUrl : `${docsSiteUrl}/`;
 
 const PKG = browserLifecycleDocVersions.basePath;
@@ -73,7 +74,8 @@ export default defineConfig({
     hostname: sitemapHostname,
   },
   head: [
-    ["link", { rel: "icon", href: resolveDocsBasePath("logo.png"), type: "image/png" }],
+    ["link", { rel: "icon", href: resolveDocsBasePath("favicon.png"), type: "image/png" }],
+    ["link", { rel: "apple-touch-icon", href: resolveDocsBasePath("apple-touch-icon.png") }],
     ["link", { rel: "canonical", href: docsSiteUrl }],
     ["meta", { name: "theme-color", content: "#111827" }],
     ["meta", { name: "author", content: "JayOnCode" }],
@@ -97,10 +99,10 @@ export default defineConfig({
   themeConfig: {
     logo: {
       alt: "JOC",
-      light: "/logo.png",
-      dark: "/logo.png",
+      light: "/jayoncode-logo-official.png",
+      dark: "/jayoncode-logo-official.png",
     },
-    siteTitle: "JOC",
+    siteTitle: false,
     search: {
       provider: "local",
     },
@@ -195,9 +197,14 @@ export default defineConfig({
     },
   },
   vite: {
+    plugins: createDocsVitePlugins(),
     server: {
       host: "127.0.0.1",
       port: 4175,
+      watch: {
+        // Logo/favicon regeneration in public/ should not trigger vue HMR (refresh manually).
+        ignored: [`${docsPublicAssetsDir}/**`],
+      },
     },
   },
 });

@@ -47,7 +47,11 @@ export function Sidebar({ classNames: classes }: SidebarProps) {
       ) : null}
       <aside className={classNamesForSidebar(classes, sidebarCollapsed, mobileSidebarOpen)}>
         <div className={classes.brand}>
-          <img alt="JOC" className={classes.brandMark} src={playgroundAssetUrl("logo.png")} />
+          <img
+            alt="JOC"
+            className={classes.brandMark}
+            src={playgroundAssetUrl("jayoncode-logo-official.png")}
+          />
           <div className={classes.brandLabel}>
             <p className={classes.brandTitle}>Lifecycle Lab</p>
             <p className={classes.brandCaption}>Browser Lifecycle playground</p>
