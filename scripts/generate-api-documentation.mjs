@@ -21,6 +21,11 @@ const packages = [
     typedocConfig: path.join(rootDir, "packages/object-diff/typedoc.json"),
     apiDir: path.join(rootDir, "apps/docs/docs/packages/object-diff/api"),
   },
+  {
+    name: "form-intelligent",
+    typedocConfig: path.join(rootDir, "packages/form-intelligent/typedoc.json"),
+    apiDir: path.join(rootDir, "apps/docs/docs/packages/form-intelligent/api"),
+  },
 ];
 
 function formatGeneratedApiDocs(apiDir) {

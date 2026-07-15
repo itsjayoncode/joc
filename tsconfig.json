@@ -5,6 +5,7 @@
   "references": [
     { "path": "./packages/browser-lifecycle" },
     { "path": "./packages/object-diff" },
+    { "path": "./packages/form-intelligent" },
     { "path": "./packages/shared" }
   ]
 }

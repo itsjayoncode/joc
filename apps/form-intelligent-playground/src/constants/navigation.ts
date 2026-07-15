@@ -1,0 +1,165 @@
+import {
+  CompassIcon,
+  DashboardIcon,
+  EventsIcon,
+  InfoIcon,
+  PerformanceIcon,
+  SettingsIcon,
+  ToolsIcon,
+} from "../icons/AppIcons.js";
+
+import type { NavigationGroup } from "../types/navigation.js";
+
+export const APP_NAVIGATION_GROUPS: readonly NavigationGroup[] = [
+  {
+    description: "Entry points and product overview.",
+    id: "overview",
+    label: "Overview",
+    order: 10,
+    items: [
+      {
+        description: "Package philosophy, versions, and quick links to every explorer.",
+        groupId: "overview",
+        icon: DashboardIcon,
+        id: "dashboard",
+        intent: "current",
+        keywords: ["overview", "home"],
+        label: "Dashboard",
+        path: "/",
+      },
+    ],
+  },
+  {
+    description: "Interactive form workflow workspaces with live inspectors.",
+    id: "modules",
+    label: "Explorers",
+    order: 20,
+    items: [
+      {
+        description: "Built-in validators, async checks, cross-field rules, and timing controls.",
+        groupId: "modules",
+        icon: CompassIcon,
+        id: "validation",
+        intent: "current",
+        keywords: ["validation", "errors", "email", "async"],
+        label: "Validation",
+        path: "/validation",
+      },
+      {
+        description: "Loading state, flaky API, offline queue, duplicate-submit guard, cancel.",
+        groupId: "modules",
+        icon: ToolsIcon,
+        id: "submission",
+        intent: "current",
+        keywords: ["submit", "retry", "loading", "offline"],
+        label: "Submission",
+        path: "/submission",
+      },
+      {
+        description: "Autosave debounce, draft restore, wizard steps, and conditional fields.",
+        groupId: "modules",
+        icon: PerformanceIcon,
+        id: "workflow",
+        intent: "current",
+        keywords: ["workflow", "wizard", "autosave", "draft"],
+        label: "Workflow",
+        path: "/workflow",
+      },
+      {
+        description: "Values tree, field flags, snapshot timeline, and object-diff view.",
+        groupId: "modules",
+        icon: EventsIcon,
+        id: "state",
+        intent: "current",
+        keywords: ["state", "json", "explorer", "diff"],
+        label: "State Explorer",
+        path: "/state",
+      },
+      {
+        description: "Phone, currency, slug, and custom format vs stored value preview.",
+        groupId: "modules",
+        icon: ToolsIcon,
+        id: "formatters",
+        intent: "current",
+        keywords: ["format", "phone", "currency", "parse"],
+        label: "Formatters",
+        path: "/formatters",
+      },
+      {
+        description: "Register plugins and inspect lifecycle hook events.",
+        groupId: "modules",
+        icon: EventsIcon,
+        id: "plugins",
+        intent: "current",
+        keywords: ["plugins", "hooks", "events"],
+        label: "Plugins",
+        path: "/plugins",
+      },
+      {
+        description: "Headless HTML today; React, Zod, and bridge adapters planned.",
+        groupId: "modules",
+        icon: InfoIcon,
+        id: "adapters",
+        intent: "current",
+        keywords: ["adapters", "react", "zod", "rhf"],
+        label: "Adapters",
+        path: "/adapters",
+      },
+      {
+        description: "Copy-paste integration snippets for common patterns.",
+        groupId: "modules",
+        icon: InfoIcon,
+        id: "examples",
+        intent: "current",
+        keywords: ["examples", "snippets"],
+        label: "Examples",
+        path: "/examples",
+      },
+    ],
+  },
+  {
+    description: "Shell controls and documentation.",
+    id: "workspace",
+    label: "Workspace",
+    order: 30,
+    items: [
+      {
+        description: "Theme and layout preferences.",
+        groupId: "workspace",
+        icon: SettingsIcon,
+        id: "settings",
+        intent: "current",
+        keywords: ["preferences", "theme"],
+        label: "Settings",
+        path: "/settings",
+      },
+      {
+        description: "Product positioning and playground architecture.",
+        groupId: "workspace",
+        icon: InfoIcon,
+        id: "about",
+        intent: "current",
+        keywords: ["about", "docs"],
+        label: "About",
+        path: "/about",
+      },
+    ],
+  },
+] as const;
+
+export const APP_NAVIGATION_ITEMS = APP_NAVIGATION_GROUPS.flatMap((group) => group.items);
+
+export const CURRENT_NAVIGATION_ITEMS = APP_NAVIGATION_ITEMS.filter(
+  (item) => item.intent === "current" && !item.disabled,
+);
+
+export const ROUTABLE_NAVIGATION_ITEMS = CURRENT_NAVIGATION_ITEMS.filter(
+  (item): item is (typeof CURRENT_NAVIGATION_ITEMS)[number] & { path: string } =>
+    item.path !== undefined,
+);
+
+export const APP_ROUTE_PATHS = ROUTABLE_NAVIGATION_ITEMS.map((item) => item.path);
+
+export function findNavigationItemByPath(pathname: string) {
+  return ROUTABLE_NAVIGATION_ITEMS.find((item) => item.path === pathname);
+}

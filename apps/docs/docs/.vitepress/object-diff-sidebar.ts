@@ -10,24 +10,29 @@ export function createObjectDiffSidebarMap(
         text: `Object Diff · ${versionLabel}`,
         items: [
           { text: "Overview", link: `${pkgBase}/` },
-          { text: "Getting Started", link: `${pkgBase}/modules/getting-started` },
+          { text: "Core concepts", link: `${pkgBase}/modules/concepts` },
+          { text: "Tutorial", link: `${pkgBase}/modules/getting-started` },
         ],
       },
       {
-        text: "API Modules",
+        text: "Build your workflow",
         items: [
-          { text: "diff()", link: `${pkgBase}/modules/diff` },
-          { text: "patch()", link: `${pkgBase}/modules/patch` },
-          { text: "serialize()", link: `${pkgBase}/modules/serialize` },
+          { text: "1. Diffing", link: `${pkgBase}/modules/diff` },
+          { text: "2. Patching", link: `${pkgBase}/modules/patch` },
+          { text: "3. Serialization", link: `${pkgBase}/modules/serialize` },
         ],
       },
       {
-        text: "API Reference",
-        items: [{ text: "TypeDoc", link: `${pkgBase}/api/` }],
+        text: "Reference",
+        items: [
+          { text: "API (TypeDoc)", link: `${pkgBase}/api/` },
+          { text: "Playground guide", link: `${pkgBase}/playground/playground` },
+        ],
       },
       {
-        text: "Playground",
-        items: [{ text: "Overview", link: `${pkgBase}/playground/playground` }],
+        text: "Interactive",
+        collapsed: false,
+        items: [{ text: "Open playground ↗", link: "/playground/object-diff/" }],
       },
     ],
   };
