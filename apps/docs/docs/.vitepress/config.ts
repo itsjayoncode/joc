@@ -1,9 +1,6 @@
-import { readFileSync } from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-
 import { defineConfig } from "vitepress";
 
+import { browserLifecycleMeta } from "./browser-lifecycle-meta.js";
 import {
   buildOrganizationJsonLd,
   buildSoftwarePackageJsonLd,
@@ -15,18 +12,13 @@ import {
   siteTagline,
 } from "./seo.js";
 
-const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../..");
-const browserLifecyclePkg = JSON.parse(
-  readFileSync(path.join(repoRoot, "packages/browser-lifecycle/package.json"), "utf8"),
-) as { version: string };
-
 const docsBase = process.env.VITE_DOCS_BASE ?? "/";
 const PLAYGROUND_URL = docsPlaygroundUrl;
 const ogImageUrl = resolvePublicAssetUrl("logo.png");
 const sitemapHostname = docsSiteUrl.endsWith("/") ? docsSiteUrl : `${docsSiteUrl}/`;
 
 const PKG = "/packages/browser-lifecycle";
-const browserLifecycleVersionLabel = `v${browserLifecyclePkg.version}`;
+const browserLifecycleVersionLabel = browserLifecycleMeta.versionLabel;
 const browserLifecycleMenuLabel = `Browser Lifecycle · ${browserLifecycleVersionLabel}`;
 
 const packageItems = [
@@ -228,11 +220,6 @@ export default defineConfig({
     ["script", { type: "application/ld+json" }, buildSoftwarePackageJsonLd(docsSiteUrl)],
   ],
   themeConfig: {
-    browserLifecycle: {
-      version: browserLifecyclePkg.version,
-      versionLabel: `v${browserLifecyclePkg.version}`,
-      npmName: "@jayoncode/browser-lifecycle",
-    },
     logo: {
       alt: "JOC",
       light: "/logo.png",
