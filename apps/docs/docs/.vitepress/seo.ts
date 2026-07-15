@@ -25,10 +25,9 @@ export const defaultKeywords = [
   "web app lifecycle",
 ].join(", ");
 
-export function resolvePublicAssetUrl(base: string, assetPath: string): string {
-  const normalizedBase = base.endsWith("/") ? base : `${base}/`;
+export function resolvePublicAssetUrl(assetPath: string): string {
   const normalizedAsset = assetPath.replace(/^\//, "");
-  return `${docsSiteUrl}${normalizedBase}${normalizedAsset}`;
+  return `${docsSiteUrl}/${normalizedAsset}`;
 }
 
 export function buildOrganizationJsonLd(siteUrl: string): string {

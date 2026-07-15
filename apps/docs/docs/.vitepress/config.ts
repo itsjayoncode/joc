@@ -25,7 +25,8 @@ const browserLifecycleVersionLabel = `v${browserLifecycleVersion}`;
 
 const docsBase = process.env.VITE_DOCS_BASE ?? "/";
 const PLAYGROUND_URL = docsPlaygroundUrl;
-const ogImageUrl = resolvePublicAssetUrl(docsBase, "logo.png");
+const ogImageUrl = resolvePublicAssetUrl("logo.png");
+const sitemapHostname = docsSiteUrl.endsWith("/") ? docsSiteUrl : `${docsSiteUrl}/`;
 
 const packageItems = [
   { text: "Browser Lifecycle", link: "/packages/browser-lifecycle/" },
@@ -149,7 +150,7 @@ export default defineConfig({
   cleanUrls: true,
   lastUpdated: true,
   sitemap: {
-    hostname: docsSiteUrl,
+    hostname: sitemapHostname,
   },
   head: [
     ["link", { rel: "icon", href: "/favicon.png", type: "image/png" }],
