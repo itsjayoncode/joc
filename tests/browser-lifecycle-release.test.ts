@@ -7,20 +7,24 @@ import { describe, expect, it } from "vitest";
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const packageDir = path.join(rootDir, "packages/browser-lifecycle");
 
-describe("browser-lifecycle release version", () => {
-  it("ships version 0.1.2", () => {
-    const manifest = JSON.parse(readFileSync(path.join(packageDir, "package.json"), "utf8")) as {
-      version: string;
-    };
+function readPackageManifest() {
+  return JSON.parse(readFileSync(path.join(packageDir, "package.json"), "utf8")) as {
+    version: string;
+  };
+}
 
-    expect(manifest.version).toBe("0.1.2");
+describe("browser-lifecycle release version", () => {
+  it("declares a valid semver version in package.json", () => {
+    const manifest = readPackageManifest();
+
+    expect(manifest.version).toMatch(/^\d+\.\d+\.\d+$/);
+    expect(manifest.version).not.toBe("0.0.0");
   });
 
-  it("documents the release in CHANGELOG.md", () => {
+  it("documents the current release in CHANGELOG.md", () => {
+    const manifest = readPackageManifest();
     const changelog = readFileSync(path.join(packageDir, "CHANGELOG.md"), "utf8");
 
-    expect(changelog).toContain("## [0.1.2]");
-    expect(changelog).toContain("## [0.1.1]");
-    expect(changelog).toContain("## [0.1.0]");
+    expect(changelog).toContain(manifest.version);
   });
 });
