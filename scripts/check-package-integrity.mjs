@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
 const packagesDir = path.join(rootDir, "packages");
-const PUBLISHABLE_PACKAGE = "browser-lifecycle";
+const PUBLISHABLE_PACKAGES = new Set(["browser-lifecycle", "object-diff"]);
 const INTERNAL_PRIVATE_PACKAGES = new Set(["shared"]);
 
 const failures = [];
@@ -43,7 +43,7 @@ for (const packageDirectory of packageDirectories) {
 
   const semverPattern = /^\d+\.\d+\.\d+$/;
 
-  if (packageDirectory === "browser-lifecycle") {
+  if (PUBLISHABLE_PACKAGES.has(packageDirectory)) {
     if (!semverPattern.test(manifest.version) || manifest.version === "0.0.0") {
       failures.push(
         `Package ${packageDirectory} should declare a published semver version, received ${manifest.version}.`,
@@ -65,9 +65,9 @@ for (const packageDirectory of packageDirectories) {
     );
   }
 
-  if (packageDirectory === PUBLISHABLE_PACKAGE) {
+  if (PUBLISHABLE_PACKAGES.has(packageDirectory)) {
     if (manifest.private === true) {
-      failures.push("packages/browser-lifecycle must remain public for npm publication.");
+      failures.push(`packages/${packageDirectory} must remain public for npm publication.`);
     }
   } else if (INTERNAL_PRIVATE_PACKAGES.has(packageDirectory)) {
     if (manifest.private !== true) {
