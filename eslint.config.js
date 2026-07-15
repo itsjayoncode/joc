@@ -19,6 +19,7 @@ export default tseslint.config(
       "**/coverage/**",
       "**/.vitepress/cache/**",
       "**/.vitepress/.temp/**",
+      "**/*.d.ts",
       "**/lib/**",
       "**/node_modules/**",
       ".turbo/**",
@@ -130,9 +131,23 @@ export default tseslint.config(
     },
   },
   {
+    files: ["apps/docs/docs/.vitepress/**/*.ts"],
+    languageOptions: {
+      parserOptions: {
+        projectService: false,
+        project: "./apps/docs/tsconfig.json",
+        tsconfigRootDir: __dirname,
+      },
+    },
+    rules: {
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-call": "off",
+      "@typescript-eslint/no-unsafe-member-access": "off",
+      "import/no-default-export": "off",
+    },
+  },
+  {
     files: [
-      "apps/docs/docs/.vitepress/config.ts",
-      "apps/docs/docs/.vitepress/theme/index.ts",
       "apps/playground/vite.config.ts",
       "apps/browser-session-playground/vite.config.ts",
       "apps/browser-session-playground/vitest.config.ts",

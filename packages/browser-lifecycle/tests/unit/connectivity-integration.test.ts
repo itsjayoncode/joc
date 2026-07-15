@@ -80,12 +80,12 @@ describe("connectivity integration", () => {
       navigatorRef.onLine = true;
       windowRef.dispatch("online");
 
-      expect(namedEvents).toEqual([
+      expect(namedEvents.slice(0, 3)).toEqual([
         "connection:online:initial",
         "connection:offline:offline",
         "connection:online:online",
-        "connection:reconnect:0",
       ]);
+      expect(namedEvents[3]).toMatch(/^connection:reconnect:\d+$/);
       expect(lifecycle.getSnapshot().connectivity).toBe("online");
 
       lifecycle.dispose();

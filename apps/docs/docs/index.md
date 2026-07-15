@@ -14,7 +14,7 @@ hero:
       link: /packages/browser-lifecycle/
     - theme: alt
       text: 5-minute Quick Start
-      link: /guides/browser-lifecycle/quick-start
+      link: /packages/browser-lifecycle/guides/quick-start
     - theme: alt
       text: View roadmap
       link: /roadmap/

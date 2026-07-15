@@ -21,9 +21,9 @@
             <p class="joc-home-links">
               <a href="/packages/browser-lifecycle/installation">Install guide</a>
               <span aria-hidden="true">·</span>
-              <a href="/guides/browser-lifecycle/quick-start">Quick start</a>
+              <a href="/packages/browser-lifecycle/guides/quick-start">Quick start</a>
               <span aria-hidden="true">·</span>
-              <a href="/playground/playground">Playground docs</a>
+              <a href="/packages/browser-lifecycle/playground/playground">Playground docs</a>
             </p>
           </div>
           <div class="joc-code-panel" aria-label="Browser Lifecycle quick start code example">

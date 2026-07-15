@@ -1,9 +1,6 @@
-import { readFileSync } from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-
 import { defineConfig } from "vitepress";
 
+import { browserLifecycleMeta } from "./browser-lifecycle-meta.js";
 import {
   buildOrganizationJsonLd,
   buildSoftwarePackageJsonLd,
@@ -15,21 +12,18 @@ import {
   siteTagline,
 } from "./seo.js";
 
-const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../..");
-const browserLifecycleVersion = (
-  JSON.parse(
-    readFileSync(path.join(repoRoot, "packages/browser-lifecycle/package.json"), "utf8"),
-  ) as { version: string }
-).version;
-const browserLifecycleVersionLabel = `v${browserLifecycleVersion}`;
-
 const docsBase = process.env.VITE_DOCS_BASE ?? "/";
 const PLAYGROUND_URL = docsPlaygroundUrl;
 const ogImageUrl = resolvePublicAssetUrl("logo.png");
 const sitemapHostname = docsSiteUrl.endsWith("/") ? docsSiteUrl : `${docsSiteUrl}/`;
 
+const PKG = "/packages/browser-lifecycle";
+const browserLifecycleVersionLabel = browserLifecycleMeta.versionLabel;
+const browserLifecycleMenuLabel = `Browser Lifecycle · ${browserLifecycleVersionLabel}`;
+
 const packageItems = [
-  { text: "Browser Lifecycle", link: "/packages/browser-lifecycle/" },
+  { text: "All Packages", link: "/packages/" },
+  { text: browserLifecycleMenuLabel, link: `${PKG}/` },
   { text: "Request", link: "/packages/request/" },
   { text: "Scroll", link: "/packages/scroll/" },
   { text: "Keyboard", link: "/packages/keyboard/" },
@@ -44,100 +38,151 @@ const packageItems = [
 ];
 
 const browserLifecycleGuides = [
-  { text: "Quick Start", link: "/guides/browser-lifecycle/quick-start" },
-  { text: "Usage", link: "/guides/browser-lifecycle/usage" },
-  { text: "Configuration", link: "/guides/browser-lifecycle/configuration" },
-  { text: "Browser Support", link: "/guides/browser-lifecycle/browser-support" },
-  { text: "SSR", link: "/guides/browser-lifecycle/ssr" },
-  { text: "Error Handling", link: "/guides/browser-lifecycle/error-handling" },
-  { text: "Deployment", link: "/guides/browser-lifecycle/deployment" },
+  { text: "Quick Start", link: `${PKG}/guides/quick-start` },
+  { text: "Usage", link: `${PKG}/guides/usage` },
+  { text: "Configuration", link: `${PKG}/guides/configuration` },
+  { text: "Browser Support", link: `${PKG}/guides/browser-support` },
+  { text: "SSR", link: `${PKG}/guides/ssr` },
+  { text: "Error Handling", link: `${PKG}/guides/error-handling` },
+  { text: "Deployment", link: `${PKG}/guides/deployment` },
 ];
 
 const browserLifecycleModules = [
-  { text: "Core Infrastructure", link: "/packages/browser-lifecycle/modules/core-infrastructure" },
-  { text: "Session Core", link: "/packages/browser-lifecycle/modules/session-core" },
-  { text: "Events", link: "/packages/browser-lifecycle/modules/events" },
-  { text: "Visibility", link: "/packages/browser-lifecycle/modules/visibility" },
+  { text: "Core Infrastructure", link: `${PKG}/modules/core-infrastructure` },
+  { text: "Session Core", link: `${PKG}/modules/session-core` },
+  { text: "Events", link: `${PKG}/modules/events` },
+  { text: "Visibility", link: `${PKG}/modules/visibility` },
 ];
 
 const playgroundItems = [
-  { text: "Overview", link: "/playground/playground" },
-  { text: "Visibility", link: "/playground/visibility-playground" },
-  { text: "Focus", link: "/playground/focus-playground" },
-  { text: "Connectivity", link: "/playground/connectivity-playground" },
-  { text: "Idle", link: "/playground/idle-playground" },
-  { text: "Lifecycle", link: "/playground/lifecycle-playground" },
-  { text: "Cross Tab", link: "/playground/cross-tab-playground" },
-  { text: "Plugins", link: "/playground/plugin-playground" },
-  { text: "Events", link: "/playground/event-explorer" },
-  { text: "State", link: "/playground/state-explorer" },
-  { text: "Configuration", link: "/playground/configuration-playground" },
-  { text: "Performance", link: "/playground/performance-playground" },
-  { text: "Developer Tools", link: "/playground/developer-tools" },
+  { text: "Overview", link: `${PKG}/playground/playground` },
+  { text: "Visibility", link: `${PKG}/playground/visibility-playground` },
+  { text: "Focus", link: `${PKG}/playground/focus-playground` },
+  { text: "Connectivity", link: `${PKG}/playground/connectivity-playground` },
+  { text: "Idle", link: `${PKG}/playground/idle-playground` },
+  { text: "Lifecycle", link: `${PKG}/playground/lifecycle-playground` },
+  { text: "Cross Tab", link: `${PKG}/playground/cross-tab-playground` },
+  { text: "Plugins", link: `${PKG}/playground/plugin-playground` },
+  { text: "Events", link: `${PKG}/playground/event-explorer` },
+  { text: "State", link: `${PKG}/playground/state-explorer` },
+  { text: "Configuration", link: `${PKG}/playground/configuration-playground` },
+  { text: "Performance", link: `${PKG}/playground/performance-playground` },
+  { text: "Developer Tools", link: `${PKG}/playground/developer-tools` },
 ];
 
 const tutorialItems = [
-  { text: "Beginner", link: "/tutorials/beginner" },
-  { text: "Intermediate", link: "/tutorials/intermediate" },
-  { text: "Advanced", link: "/tutorials/advanced" },
+  { text: "Beginner", link: `${PKG}/tutorials/beginner` },
+  { text: "Intermediate", link: `${PKG}/tutorials/intermediate` },
+  { text: "Advanced", link: `${PKG}/tutorials/advanced` },
 ];
 
 const bestPracticeItems = [
-  { text: "Overview", link: "/best-practices/" },
-  { text: "Session Lifecycle", link: "/best-practices/session-lifecycle" },
-  { text: "Memory Management", link: "/best-practices/memory-management" },
-  { text: "Event Cleanup", link: "/best-practices/event-cleanup" },
-  { text: "Performance", link: "/best-practices/performance" },
-  { text: "Configuration", link: "/best-practices/configuration" },
-  { text: "Cross-Tab", link: "/best-practices/cross-tab" },
-  { text: "Idle Detection", link: "/best-practices/idle-detection" },
-  { text: "Visibility Handling", link: "/best-practices/visibility-handling" },
-  { text: "Framework Integration", link: "/best-practices/framework-integration" },
-  { text: "Plugin Development", link: "/best-practices/plugin-development" },
-  { text: "SSR Safety", link: "/best-practices/ssr-safety" },
-  { text: "Security", link: "/best-practices/security" },
-  { text: "Accessibility", link: "/best-practices/accessibility" },
-  { text: "Testing", link: "/best-practices/testing" },
-  { text: "Debugging", link: "/best-practices/debugging" },
+  { text: "Overview", link: `${PKG}/best-practices/` },
+  { text: "Session Lifecycle", link: `${PKG}/best-practices/session-lifecycle` },
+  { text: "Memory Management", link: `${PKG}/best-practices/memory-management` },
+  { text: "Event Cleanup", link: `${PKG}/best-practices/event-cleanup` },
+  { text: "Performance", link: `${PKG}/best-practices/performance` },
+  { text: "Configuration", link: `${PKG}/best-practices/configuration` },
+  { text: "Cross-Tab", link: `${PKG}/best-practices/cross-tab` },
+  { text: "Idle Detection", link: `${PKG}/best-practices/idle-detection` },
+  { text: "Visibility Handling", link: `${PKG}/best-practices/visibility-handling` },
+  { text: "Framework Integration", link: `${PKG}/best-practices/framework-integration` },
+  { text: "Plugin Development", link: `${PKG}/best-practices/plugin-development` },
+  { text: "SSR Safety", link: `${PKG}/best-practices/ssr-safety` },
+  { text: "Security", link: `${PKG}/best-practices/security` },
+  { text: "Accessibility", link: `${PKG}/best-practices/accessibility` },
+  { text: "Testing", link: `${PKG}/best-practices/testing` },
+  { text: "Debugging", link: `${PKG}/best-practices/debugging` },
 ];
 
 const patternItems = [
-  { text: "Overview", link: "/patterns/" },
-  { text: "Auto Save", link: "/patterns/auto-save" },
-  { text: "Analytics", link: "/patterns/analytics" },
-  { text: "Presence Detection", link: "/patterns/presence-detection" },
-  { text: "Session Timeout", link: "/patterns/session-timeout" },
-  { text: "Background Sync", link: "/patterns/background-sync" },
-  { text: "Offline First", link: "/patterns/offline-first" },
-  { text: "Polling", link: "/patterns/polling" },
-  { text: "Page Tracking", link: "/patterns/page-tracking" },
-  { text: "Visibility Pause", link: "/patterns/visibility-pause" },
-  { text: "Focus Resume", link: "/patterns/focus-resume" },
-  { text: "Shared WebSocket", link: "/patterns/shared-websocket" },
-  { text: "Leader Election", link: "/patterns/leader-election" },
-  { text: "Plugin Architecture", link: "/patterns/plugin-architecture" },
-  { text: "State Synchronization", link: "/patterns/state-synchronization" },
+  { text: "Overview", link: `${PKG}/patterns/` },
+  { text: "Auto Save", link: `${PKG}/patterns/auto-save` },
+  { text: "Analytics", link: `${PKG}/patterns/analytics` },
+  { text: "Presence Detection", link: `${PKG}/patterns/presence-detection` },
+  { text: "Session Timeout", link: `${PKG}/patterns/session-timeout` },
+  { text: "Background Sync", link: `${PKG}/patterns/background-sync` },
+  { text: "Offline First", link: `${PKG}/patterns/offline-first` },
+  { text: "Polling", link: `${PKG}/patterns/polling` },
+  { text: "Page Tracking", link: `${PKG}/patterns/page-tracking` },
+  { text: "Visibility Pause", link: `${PKG}/patterns/visibility-pause` },
+  { text: "Focus Resume", link: `${PKG}/patterns/focus-resume` },
+  { text: "Shared WebSocket", link: `${PKG}/patterns/shared-websocket` },
+  { text: "Leader Election", link: `${PKG}/patterns/leader-election` },
+  { text: "Plugin Architecture", link: `${PKG}/patterns/plugin-architecture` },
+  { text: "State Synchronization", link: `${PKG}/patterns/state-synchronization` },
 ];
 
 const faqItems = [
-  { text: "Overview", link: "/faq/" },
-  { text: "Getting Started", link: "/faq/getting-started" },
-  { text: "Installation", link: "/faq/installation" },
-  { text: "Configuration", link: "/faq/configuration" },
-  { text: "Visibility", link: "/faq/visibility" },
-  { text: "Focus", link: "/faq/focus" },
-  { text: "Connectivity", link: "/faq/connectivity" },
-  { text: "Idle", link: "/faq/idle" },
-  { text: "Lifecycle", link: "/faq/lifecycle" },
-  { text: "Cross Tab", link: "/faq/cross-tab" },
-  { text: "Plugins", link: "/faq/plugins" },
-  { text: "Events", link: "/faq/events" },
-  { text: "Performance", link: "/faq/performance" },
-  { text: "Debugging", link: "/faq/debugging" },
-  { text: "Browser Support", link: "/faq/browser-support" },
-  { text: "Frameworks", link: "/faq/frameworks" },
-  { text: "Deployment", link: "/faq/deployment" },
-  { text: "SSR", link: "/faq/ssr" },
+  { text: "Overview", link: `${PKG}/faq/` },
+  { text: "Getting Started", link: `${PKG}/faq/getting-started` },
+  { text: "Installation", link: `${PKG}/faq/installation` },
+  { text: "Configuration", link: `${PKG}/faq/configuration` },
+  { text: "Visibility", link: `${PKG}/faq/visibility` },
+  { text: "Focus", link: `${PKG}/faq/focus` },
+  { text: "Connectivity", link: `${PKG}/faq/connectivity` },
+  { text: "Idle", link: `${PKG}/faq/idle` },
+  { text: "Lifecycle", link: `${PKG}/faq/lifecycle` },
+  { text: "Cross Tab", link: `${PKG}/faq/cross-tab` },
+  { text: "Plugins", link: `${PKG}/faq/plugins` },
+  { text: "Events", link: `${PKG}/faq/events` },
+  { text: "Performance", link: `${PKG}/faq/performance` },
+  { text: "Debugging", link: `${PKG}/faq/debugging` },
+  { text: "Browser Support", link: `${PKG}/faq/browser-support` },
+  { text: "Frameworks", link: `${PKG}/faq/frameworks` },
+  { text: "Deployment", link: `${PKG}/faq/deployment` },
+  { text: "SSR", link: `${PKG}/faq/ssr` },
+];
+
+const browserLifecycleSidebar = [
+  {
+    text: browserLifecycleMenuLabel,
+    items: [
+      { text: "Overview", link: `${PKG}/` },
+      { text: "Installation", link: `${PKG}/installation` },
+      ...browserLifecycleGuides,
+    ],
+  },
+  {
+    text: "Modules",
+    items: browserLifecycleModules,
+  },
+  {
+    text: "API",
+    items: [{ text: "API Reference", link: `${PKG}/api/` }],
+  },
+  {
+    text: "Examples",
+    items: [{ text: "Framework Examples", link: `${PKG}/examples/` }],
+  },
+  {
+    text: "Tutorials",
+    items: tutorialItems,
+  },
+  {
+    text: "Best Practices",
+    items: bestPracticeItems,
+  },
+  {
+    text: "Patterns",
+    items: patternItems,
+  },
+  {
+    text: "FAQ",
+    items: faqItems,
+  },
+  {
+    text: "Playground",
+    items: playgroundItems,
+  },
+  {
+    text: "Support",
+    items: [
+      { text: "Troubleshooting", link: `${PKG}/troubleshooting/` },
+      { text: "Migration", link: `${PKG}/migration/` },
+      { text: "Changelog", link: "/changelog/" },
+    ],
+  },
 ];
 
 export default defineConfig({
@@ -187,50 +232,46 @@ export default defineConfig({
     nav: [
       { text: "Getting Started", link: "/getting-started/introduction" },
       {
-        text: "Browser Lifecycle",
-        items: [
-          { text: "Overview", link: "/packages/browser-lifecycle/" },
-          { text: "Quick Start", link: "/guides/browser-lifecycle/quick-start" },
-          { text: "Usage Guide", link: "/guides/browser-lifecycle/usage" },
-          { text: "API Reference", link: "/api/browser-lifecycle/" },
-          { text: "Playground Docs", link: "/playground/playground" },
-        ],
+        text: "Packages",
+        items: packageItems,
       },
-      { text: "Guides", link: "/guides/browser-lifecycle/usage" },
-      { text: "API", link: "/api/" },
-      { text: "Examples", link: "/examples/" },
-      { text: "FAQ", link: "/faq/" },
       {
-        text: browserLifecycleVersionLabel,
-        items: [
-          {
-            text: `${browserLifecycleVersionLabel} (current)`,
-            link: "/packages/browser-lifecycle/",
-          },
-          { text: "Migration", link: "/migration/" },
-          { text: "Changelog", link: "/changelog/" },
-        ],
+        text: "Contribute",
+        link: "/guides/contribution",
       },
+      { text: "Roadmap", link: "/roadmap/" },
+      { text: "Changelog", link: "/changelog/" },
       { text: "Playground", link: PLAYGROUND_URL },
     ],
     sidebar: {
       "/getting-started/": [
         {
-          text: "Getting Started",
+          text: "JayOnCode Monorepo",
           items: [
             { text: "Introduction", link: "/getting-started/introduction" },
             { text: "Installation", link: "/getting-started/installation" },
             { text: "Philosophy", link: "/getting-started/philosophy" },
             { text: "Ecosystem", link: "/getting-started/ecosystem" },
+            { text: "Package Catalog", link: "/packages/" },
           ],
         },
       ],
-      "/guides/browser-lifecycle/": [
+      "/packages/": [
         {
-          text: "Browser Lifecycle",
-          items: browserLifecycleGuides,
+          text: "Packages",
+          items: packageItems,
+        },
+        {
+          text: "Monorepo",
+          items: [
+            { text: "Introduction", link: "/getting-started/introduction" },
+            { text: "Contributor Guides", link: "/guides/contribution" },
+            { text: "Roadmap", link: "/roadmap/" },
+            { text: "Changelog", link: "/changelog/" },
+          ],
         },
       ],
+      [`${PKG}/`]: browserLifecycleSidebar,
       "/guides/": [
         {
           text: "Contributor Guides",
@@ -242,99 +283,6 @@ export default defineConfig({
             { text: "Package Standards", link: "/guides/package-standards" },
             { text: "Release Engineering", link: "/guides/release-engineering" },
           ],
-        },
-        {
-          text: "Browser Lifecycle",
-          items: browserLifecycleGuides,
-        },
-      ],
-      "/packages/browser-lifecycle/": [
-        {
-          text: "Browser Lifecycle",
-          items: [
-            { text: "Overview", link: "/packages/browser-lifecycle/" },
-            { text: "Installation", link: "/packages/browser-lifecycle/installation" },
-            ...browserLifecycleGuides,
-          ],
-        },
-        {
-          text: "Modules",
-          items: browserLifecycleModules,
-        },
-        {
-          text: "Reference",
-          items: [
-            { text: "API", link: "/api/browser-lifecycle/" },
-            { text: "Tutorials", link: "/tutorials/beginner" },
-            { text: "Best Practices", link: "/best-practices/" },
-            { text: "Patterns", link: "/patterns/" },
-            { text: "FAQ", link: "/faq/" },
-            { text: "Troubleshooting", link: "/troubleshooting/" },
-            { text: "Migration", link: "/migration/" },
-          ],
-        },
-      ],
-      "/packages/": [
-        {
-          text: "Packages",
-          items: packageItems,
-        },
-      ],
-      "/api/": [
-        {
-          text: "API",
-          items: [
-            { text: "Overview", link: "/api/" },
-            { text: "Browser Lifecycle", link: "/api/browser-lifecycle/" },
-          ],
-        },
-      ],
-      "/tutorials/": [
-        {
-          text: "Tutorials",
-          items: tutorialItems,
-        },
-      ],
-      "/best-practices/": [
-        {
-          text: "Best Practices",
-          items: bestPracticeItems,
-        },
-      ],
-      "/patterns/": [
-        {
-          text: "Patterns",
-          items: patternItems,
-        },
-      ],
-      "/faq/": [
-        {
-          text: "FAQ",
-          items: faqItems,
-        },
-      ],
-      "/examples/": [
-        {
-          text: "Examples",
-          items: [{ text: "Framework Examples", link: "/examples/" }],
-        },
-      ],
-      "/playground/": [
-        {
-          text: "Playground",
-          items: playgroundItems,
-        },
-      ],
-      "/troubleshooting/": [
-        {
-          text: "Troubleshooting",
-          items: [{ text: "Common Issues", link: "/troubleshooting/" }],
-        },
-      ],
-      "/migration/": [
-        {
-          text: "Migration",
-          items: [{ text: "Migration Guide", link: "/migration/" }],
         },
       ],
       "/roadmap/": [
@@ -357,7 +305,7 @@ export default defineConfig({
     },
     footer: {
       message:
-        "Browser Lifecycle documentation is synchronized with source through TypeDoc and sync scripts.",
+        "JOC is a JayOnCode monorepo of @jayoncode/* packages. Docs sync from source via TypeDoc and sync scripts.",
       copyright: "MIT Licensed. Built for the JayOnCode ecosystem.",
     },
     outline: {

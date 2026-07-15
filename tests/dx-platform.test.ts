@@ -1,3 +1,4 @@
+import { spawnSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -12,15 +13,16 @@ const requiredDocsPages = [
   "apps/docs/docs/guides/architecture.md",
   "apps/docs/docs/packages/browser-lifecycle/index.md",
   "apps/docs/docs/packages/browser-lifecycle/installation.md",
-  "apps/docs/docs/guides/browser-lifecycle/usage.md",
-  "apps/docs/docs/guides/browser-lifecycle/quick-start.md",
-  "apps/docs/docs/api/index.md",
-  "apps/docs/docs/tutorials/beginner.md",
-  "apps/docs/docs/best-practices/index.md",
-  "apps/docs/docs/patterns/index.md",
-  "apps/docs/docs/faq/index.md",
-  "apps/docs/docs/troubleshooting/index.md",
-  "apps/docs/docs/migration/index.md",
+  "apps/docs/docs/packages/browser-lifecycle/guides/usage.md",
+  "apps/docs/docs/packages/browser-lifecycle/guides/quick-start.md",
+  "apps/docs/docs/packages/index.md",
+  "apps/docs/docs/packages/browser-lifecycle/api/index.md",
+  "apps/docs/docs/packages/browser-lifecycle/tutorials/beginner.md",
+  "apps/docs/docs/packages/browser-lifecycle/best-practices/index.md",
+  "apps/docs/docs/packages/browser-lifecycle/patterns/index.md",
+  "apps/docs/docs/packages/browser-lifecycle/faq/index.md",
+  "apps/docs/docs/packages/browser-lifecycle/troubleshooting/index.md",
+  "apps/docs/docs/packages/browser-lifecycle/migration/index.md",
   "apps/docs/docs/roadmap/index.md",
   "scripts/sync-documentation.mjs",
   "packages/browser-lifecycle/typedoc.json",
@@ -97,24 +99,52 @@ describe("developer experience platform", () => {
     expect(docsPackage).toContain('"docs:sync"');
     expect(docsPackage).toContain('"docs:prepare"');
   });
+
+  it("formats and lints generated documentation output during sync", () => {
+    const syncScript = readText("scripts/sync-documentation.mjs");
+    expect(syncScript).toContain("formatGeneratedFiles");
+    expect(syncScript).toContain("lintGeneratedMetaFiles");
+  });
 });
 
 describe("documentation integration output", () => {
-  it("can generate synced documentation pages when the sync script has run", () => {
-    const syncedExamples = path.join(rootDir, "apps/docs/docs/examples/index.md");
+  it("generates synced documentation pages from source docs", () => {
+    const sourceModulesDir = path.join(rootDir, "packages/browser-lifecycle/docs");
+    const sourcePlaygroundDir = path.join(rootDir, "apps/browser-session-playground/docs");
+
+    if (!existsSync(sourceModulesDir) || !existsSync(sourcePlaygroundDir)) {
+      return;
+    }
+
+    const syncScript = path.join(rootDir, "scripts/sync-documentation.mjs");
+    const result = spawnSync(process.execPath, [syncScript], {
+      cwd: rootDir,
+      encoding: "utf8",
+      env: {
+        ...process.env,
+        DOCS_SYNC_SKIP_QUALITY: "1",
+      },
+    });
+
+    expect(result.status, result.stderr || result.stdout).toBe(0);
+
+    const syncedExamples = path.join(
+      rootDir,
+      "apps/docs/docs/packages/browser-lifecycle/examples/index.md",
+    );
     const syncedModulesDir = path.join(
       rootDir,
       "apps/docs/docs/packages/browser-lifecycle/modules",
     );
-    const syncedPlaygroundDir = path.join(rootDir, "apps/docs/docs/playground");
+    const syncedPlaygroundDir = path.join(
+      rootDir,
+      "apps/docs/docs/packages/browser-lifecycle/playground",
+    );
 
-    if (!existsSync(syncedExamples)) {
-      return;
-    }
-
+    expect(existsSync(syncedExamples)).toBe(true);
     expect(existsSync(syncedModulesDir)).toBe(true);
     expect(existsSync(syncedPlaygroundDir)).toBe(true);
     expect(readdirSync(syncedModulesDir).length).toBeGreaterThan(0);
     expect(readdirSync(syncedPlaygroundDir).length).toBeGreaterThan(0);
-  });
+  }, 15_000);
 });
