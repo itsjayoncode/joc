@@ -157,6 +157,8 @@ export default tseslint.config(
       "apps/browser-session-playground/vitest.config.ts",
       "apps/object-diff-playground/vite.config.ts",
       "apps/object-diff-playground/vitest.config.ts",
+      "apps/form-intelligent-playground/vite.config.ts",
+      "apps/form-intelligent-playground/vitest.config.ts",
     ],
     rules: {
       "import/no-default-export": "off",

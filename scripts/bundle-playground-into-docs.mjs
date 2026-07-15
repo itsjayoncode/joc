@@ -21,6 +21,12 @@ const PLAYGROUNDS = [
     buildScript: "object-diff-playground:build",
     base: process.env.VITE_OBJECT_DIFF_PLAYGROUND_BASE ?? "/joc/playground/object-diff/",
   },
+  {
+    name: "form-intelligent",
+    appDir: "apps/form-intelligent-playground",
+    buildScript: "form-intelligent-playground:build",
+    base: process.env.VITE_FORM_INTELLIGENT_PLAYGROUND_BASE ?? "/joc/playground/form-intelligent/",
+  },
 ];
 
 function normalizeBase(base) {

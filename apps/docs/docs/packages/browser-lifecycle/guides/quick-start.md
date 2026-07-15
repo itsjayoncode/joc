@@ -2,6 +2,10 @@
 
 Get a Browser Lifecycle session running in under five minutes.
 
+::: tip Full tutorial
+For the complete step-by-step path with playground links, see the [Tutorial](/packages/browser-lifecycle/modules/getting-started).
+:::
+
 ## 1. Install
 
 ```bash
@@ -30,7 +34,7 @@ lifecycle.on("page:hidden", () => {
 });
 ```
 
-Switch browser tabs to trigger events. Try the [Visibility Playground](http://127.0.0.1:4273/visibility) to inspect ordering and metadata.
+Switch browser tabs to trigger events. Try the [Visibility Playground](/playground/browser-lifecycle/visibility) to inspect ordering and metadata.
 
 ## 4. Read snapshot state
 
@@ -56,6 +60,7 @@ await lifecycle.dispose();
 
 ## Next steps
 
+- [Tutorial](/packages/browser-lifecycle/modules/getting-started)
 - [Usage Guide](/packages/browser-lifecycle/guides/usage)
 - [Beginner Tutorial](/packages/browser-lifecycle/tutorials/beginner)
 - [Framework Examples](/packages/browser-lifecycle/examples/)

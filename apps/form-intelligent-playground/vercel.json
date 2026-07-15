@@ -1,0 +1,6 @@
+{
+  "buildCommand": "pnpm form-intelligent-playground:build",
+  "outputDirectory": "apps/form-intelligent-playground/dist",
+  "framework": "vite",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}

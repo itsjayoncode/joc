@@ -26,7 +26,9 @@ const requiredDocsPages = [
   "scripts/sync-documentation.mjs",
   "packages/browser-lifecycle/typedoc.json",
   "packages/object-diff/typedoc.json",
+  "packages/form-intelligent/typedoc.json",
   "apps/object-diff-playground/docs/playground.md",
+  "apps/form-intelligent-playground/docs/playground.md",
   "apps/browser-session-playground/engineering/022-documentation-integration.md",
 ];
 
@@ -92,6 +94,21 @@ describe("developer experience platform", () => {
     );
     const hub = readText("apps/docs/docs/public/playground/index.html");
     expect(hub).toContain("object-diff/");
+    expect(hub).toContain("form-intelligent/");
+  });
+
+  it("includes form-intelligent documentation integration wiring", () => {
+    const config = readText("apps/docs/docs/.vitepress/config.ts");
+    const syncScript = readText("scripts/sync-documentation.mjs");
+    const bundleScript = readText("scripts/bundle-playground-into-docs.mjs");
+    const apiScript = readText("scripts/generate-api-documentation.mjs");
+    expect(config).toContain("createFormIntelligentSidebarMap");
+    expect(config).toContain("formIntelligentMeta");
+    expect(syncScript).toContain("syncFormIntelligentModules");
+    expect(syncScript).toContain("syncFormIntelligentMeta");
+    expect(bundleScript).toContain("form-intelligent-playground");
+    expect(bundleScript).toContain("/joc/playground/form-intelligent/");
+    expect(apiScript).toContain("form-intelligent");
   });
 
   it("includes object-diff documentation integration wiring", () => {
@@ -227,5 +244,28 @@ describe("documentation integration output", () => {
     expect(existsSync(objectDiffApiIndex)).toBe(true);
     expect(existsSync(objectDiffIndex)).toBe(true);
     expect(readdirSync(objectDiffModulesDir).length).toBeGreaterThan(0);
+
+    const formIntelligentModulesDir = path.join(
+      rootDir,
+      "apps/docs/docs/packages/form-intelligent/modules",
+    );
+    const formIntelligentPlaygroundDir = path.join(
+      rootDir,
+      "apps/docs/docs/packages/form-intelligent/playground",
+    );
+    const formIntelligentApiIndex = path.join(
+      rootDir,
+      "apps/docs/docs/packages/form-intelligent/api/index.md",
+    );
+    const formIntelligentIndex = path.join(
+      rootDir,
+      "apps/docs/docs/packages/form-intelligent/index.md",
+    );
+
+    expect(existsSync(formIntelligentModulesDir)).toBe(true);
+    expect(existsSync(formIntelligentPlaygroundDir)).toBe(true);
+    expect(existsSync(formIntelligentApiIndex)).toBe(true);
+    expect(existsSync(formIntelligentIndex)).toBe(true);
+    expect(readdirSync(formIntelligentModulesDir).length).toBeGreaterThan(0);
   }, 30_000);
 });

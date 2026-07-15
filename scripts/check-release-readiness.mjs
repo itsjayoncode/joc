@@ -4,7 +4,11 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
-const PUBLISHABLE_PACKAGES = new Set(["@jayoncode/browser-lifecycle", "@jayoncode/object-diff"]);
+const PUBLISHABLE_PACKAGES = new Set([
+  "@jayoncode/browser-lifecycle",
+  "@jayoncode/object-diff",
+  "@jayoncode/form-intelligent",
+]);
 
 const requiredFiles = [
   ".changeset/config.json",

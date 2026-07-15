@@ -1,5 +1,26 @@
 # Session Core
 
+The orchestration layer behind `createBrowserLifecycle()`.
+
+**Previous:** [Events](/packages/browser-lifecycle/modules/events) · **Next:** [Core infrastructure](/packages/browser-lifecycle/modules/core-infrastructure)
+
+::: tip Try it first
+[Open Lifecycle playground →](/playground/browser-lifecycle/lifecycle) — inspect session phases and startup ordering.
+:::
+
+## In plain English
+
+Session Core owns lifecycle phases (`created` → `running` → `stopped` → `disposed`), the readonly snapshot, and coordination between modules. You rarely touch it directly — but understanding phases helps debug startup issues.
+
+```ts
+const snapshot = lifecycle.getSnapshot();
+console.log(snapshot.session.phase); // "running"
+```
+
+---
+
+## Technical reference
+
 This document covers the Session Core introduced in Phase `2.2.2`.
 
 ## Overview

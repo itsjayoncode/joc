@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
 const packagesDir = path.join(rootDir, "packages");
-const PUBLISHABLE_PACKAGES = new Set(["browser-lifecycle", "object-diff"]);
+const PUBLISHABLE_PACKAGES = new Set(["browser-lifecycle", "object-diff", "form-intelligent"]);
 const INTERNAL_PRIVATE_PACKAGES = new Set(["shared"]);
 
 const failures = [];

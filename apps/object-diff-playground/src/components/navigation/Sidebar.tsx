@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { APP_NAVIGATION_GROUPS } from "../../constants/navigation.js";
 import { usePlaygroundUi } from "../../hooks/usePlaygroundUi.js";
 import { classNames } from "../../utils/class-names.js";
+import { playgroundAssetUrl } from "../../utils/playground-asset-url.js";
 
 export interface SidebarProps {
   readonly classNames: {
@@ -46,7 +47,7 @@ export function Sidebar({ classNames: classes }: SidebarProps) {
       ) : null}
       <aside className={classNamesForSidebar(classes, sidebarCollapsed, mobileSidebarOpen)}>
         <div className={classes.brand}>
-          <img alt="JOC" className={classes.brandMark} src="/logo.png" />
+          <img alt="JOC" className={classes.brandMark} src={playgroundAssetUrl("logo.png")} />
           <div className={classes.brandLabel}>
             <p className={classes.brandTitle}>Lifecycle Lab</p>
             <p className={classes.brandCaption}>Object Diff playground</p>

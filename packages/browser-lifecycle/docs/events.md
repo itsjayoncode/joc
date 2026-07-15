@@ -1,5 +1,26 @@
 # Events
 
+Subscribe to typed lifecycle events with a small, framework-agnostic API.
+
+**Previous:** [Visibility](/packages/browser-lifecycle/modules/visibility) · **Next:** [Session core](/packages/browser-lifecycle/modules/session-core)
+
+::: tip Try it first
+[Open Event explorer →](/playground/browser-lifecycle/events) — watch the live event feed as you interact.
+:::
+
+## In plain English
+
+`lifecycle.on(event, handler)` registers a listener. Return value is an unsubscribe function. Events are synchronous and typed — no stringly-typed custom events.
+
+```ts
+const unsub = lifecycle.on("page:visible", () => console.log("visible"));
+// later: unsub();
+```
+
+---
+
+## Technical reference
+
 This document covers the generic typed event infrastructure introduced in Phase `2.2.1`.
 
 ## Overview

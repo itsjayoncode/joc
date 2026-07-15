@@ -3,6 +3,8 @@ import { defineConfig } from "vitepress";
 import { browserLifecycleMeta } from "./browser-lifecycle-meta.js";
 import { createBrowserLifecycleSidebarMap } from "./browser-lifecycle-sidebar.js";
 import { browserLifecycleDocVersions } from "./browser-lifecycle-versions.js";
+import { formIntelligentMeta } from "./form-intelligent-meta.js";
+import { createFormIntelligentSidebarMap } from "./form-intelligent-sidebar.js";
 import { objectDiffMeta } from "./object-diff-meta.js";
 import { createObjectDiffSidebarMap } from "./object-diff-sidebar.js";
 import {
@@ -27,11 +29,14 @@ const browserLifecycleVersionLabel = browserLifecycleMeta.versionLabel;
 const browserLifecycleMenuLabel = `Browser Lifecycle · ${browserLifecycleVersionLabel}`;
 const objectDiffVersionLabel = objectDiffMeta.versionLabel;
 const objectDiffMenuLabel = `Object Diff · ${objectDiffVersionLabel}`;
+const formIntelligentVersionLabel = formIntelligentMeta.versionLabel;
+const formIntelligentMenuLabel = `Form Intelligent · ${formIntelligentVersionLabel}`;
 
 const packageItems = [
   { text: "All Packages", link: "/packages/" },
   { text: browserLifecycleMenuLabel, link: `${PKG}/` },
   { text: objectDiffMenuLabel, link: "/packages/object-diff/" },
+  { text: formIntelligentMenuLabel, link: "/packages/form-intelligent/" },
 ];
 
 const browserLifecycleSidebar = createBrowserLifecycleSidebarMap(
@@ -43,6 +48,12 @@ const browserLifecycleSidebar = createBrowserLifecycleSidebarMap(
 const OBJECT_DIFF_PKG = "/packages/object-diff/";
 const objectDiffSidebar = createObjectDiffSidebarMap(OBJECT_DIFF_PKG, objectDiffVersionLabel);
 
+const FORM_INTELLIGENT_PKG = "/packages/form-intelligent/";
+const formIntelligentSidebar = createFormIntelligentSidebarMap(
+  FORM_INTELLIGENT_PKG,
+  formIntelligentVersionLabel,
+);
+
 export default defineConfig({
   base: docsBase,
   title: siteName,
@@ -51,6 +62,8 @@ export default defineConfig({
   lang: "en-US",
   srcDir: ".",
   cleanUrls: true,
+  // Playground SPAs are copied into dist after `vitepress build` (see bundle-playground-into-docs.mjs).
+  ignoreDeadLinks: [/^\/playground\//],
   appearance: {
     // @ts-expect-error VitePress types only document `dark`; `light` is supported at runtime.
     initialValue: "light",
@@ -135,6 +148,7 @@ export default defineConfig({
       ],
       ...browserLifecycleSidebar,
       ...objectDiffSidebar,
+      ...formIntelligentSidebar,
       "/guides/": [
         {
           text: "Contributor Guides",

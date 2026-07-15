@@ -1,0 +1,350 @@
+.heroGrid,
+.cardGrid,
+.stack,
+.preferenceList,
+.recentList {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.heroGrid {
+  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.9fr);
+}
+
+.cardGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.sectionHeading,
+.listLabel {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.metricValue {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.08em;
+}
+
+.inlineList,
+.recentList {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.inlineList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 500;
+  background: var(--surface-strong);
+  border: 1px solid var(--border-subtle);
+}
+
+.preferenceField {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.fieldLabel {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.fieldHint {
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+.toggleGroup {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.choiceButton {
+  padding: 0.72rem 1rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  color: var(--text-secondary);
+  background: var(--surface-strong);
+}
+
+.choiceButtonActive {
+  color: var(--text-primary);
+  border-color: var(--accent-primary);
+  background: var(--accent-soft);
+}
+
+.recentRoute {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.recentRoute:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.routeLabel {
+  font-weight: 600;
+}
+
+.routePath {
+  color: var(--text-muted);
+  font-family: "IBM Plex Mono", "SFMono-Regular", "SF Mono", Consolas, monospace;
+  font-size: 0.84rem;
+}
+
+.splitGrid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.jsonEditor {
+  width: 100%;
+  min-height: 240px;
+  padding: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-strong);
+  color: var(--text-primary);
+  font-family: "IBM Plex Mono", "SFMono-Regular", "SF Mono", Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.codeBlock {
+  margin: 0;
+  padding: var(--space-3);
+  overflow: auto;
+  border-radius: var(--radius-md);
+  background: var(--surface-strong);
+  border: 1px solid var(--border-subtle);
+  font-family: "IBM Plex Mono", "SFMono-Regular", "SF Mono", Consolas, monospace;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.errorText {
+  color: var(--danger, #dc2626);
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.formGrid {
+  display: grid;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.textInput {
+  width: 100%;
+  margin-top: var(--space-1);
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-strong);
+  color: var(--text-primary);
+}
+
+.buttonRow {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.primaryButton,
+.secondaryButton {
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.primaryButton {
+  color: #fff;
+  border: 1px solid var(--accent-primary);
+  background: var(--accent-primary);
+}
+
+.secondaryButton {
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-strong);
+}
+
+.logList {
+  margin: var(--space-3) 0 0;
+  padding-left: 1.1rem;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+}
+
+.explorerLayout {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+}
+
+.inspectorStack {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.linkGrid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.linkCard {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-strong);
+  text-decoration: none;
+  color: inherit;
+  transition:
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.linkCard:hover {
+  border-color: var(--accent-primary);
+  transform: translateY(-1px);
+}
+
+.linkTitle {
+  margin: 0;
+  font-weight: 700;
+}
+
+.linkDescription {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+.progressTrack {
+  width: 100%;
+  height: 0.55rem;
+  border-radius: var(--radius-pill);
+  background: var(--surface-strong);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--accent-primary),
+    color-mix(in srgb, var(--accent-primary) 60%, #fff)
+  );
+  transition: width 0.2s ease;
+}
+
+.statusRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-strong);
+  color: var(--text-secondary);
+}
+
+.statusBadgeActive {
+  color: var(--accent-primary);
+  border-color: color-mix(in srgb, var(--accent-primary) 40%, var(--border-subtle));
+  background: var(--accent-soft);
+}
+
+.snapshotList {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.snapshotButton {
+  width: 100%;
+  text-align: left;
+  padding: 0.55rem 0.75rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-strong);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.snapshotButtonActive {
+  border-color: var(--accent-primary);
+  background: var(--accent-soft);
+  color: var(--text-primary);
+}
+
+.externalLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.externalLink {
+  color: var(--accent-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.externalLink:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .heroGrid,
+  .cardGrid,
+  .splitGrid,
+  .explorerLayout,
+  .linkGrid {
+    grid-template-columns: 1fr;
+  }
+}
