@@ -10,7 +10,7 @@
     "docs:stage-archives": "node ../../scripts/stage-doc-archives.mjs",
     "docs:prepare": "pnpm docs:api && pnpm docs:sync && pnpm docs:stage-archives",
     "docs:dev": "VITE_DOCS_PLAYGROUND_URL=http://127.0.0.1:4273 pnpm docs:prepare && vitepress dev docs --host 127.0.0.1 --port 4175",
-    "docs:build": "pnpm docs:prepare && vitepress build docs",
+    "docs:build": "pnpm docs:prepare && vitepress build docs && node ../../scripts/bundle-playground-into-docs.mjs",
     "docs:preview": "vitepress preview docs --host 127.0.0.1 --port 4176"
   },
   "license": "MIT",

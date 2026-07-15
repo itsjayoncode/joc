@@ -49,6 +49,8 @@ pnpm docs:prepare
 
 `docs:prepare` runs API generation, content sync, and archive staging for versioned package docs.
 
+`docs:build` also bundles the Browser Lifecycle playground into `playground/browser-lifecycle/` inside the Pages artifact via `scripts/bundle-playground-into-docs.mjs`.
+
 ### Archived package documentation
 
 Browser Lifecycle docs can be frozen per release under:

@@ -71,10 +71,23 @@ describe("developer experience platform", () => {
   it("points the docs site playground link at the browser session playground", () => {
     const config = readText("apps/docs/docs/.vitepress/config.ts");
     const seo = readText("apps/docs/docs/.vitepress/seo.ts");
+    const docsPackage = readText("apps/docs/package.json");
     expect(config).toContain("docsPlaygroundUrl");
     expect(seo).toContain("VITE_DOCS_PLAYGROUND_URL");
-    expect(readText("apps/docs/package.json")).toContain("http://127.0.0.1:4273");
+    expect(seo).toContain("playground/browser-lifecycle/");
+    expect(docsPackage).toContain("bundle-playground-into-docs.mjs");
+    expect(docsPackage).toContain("http://127.0.0.1:4273");
     expect(config).not.toContain("http://127.0.0.1:4173");
+  });
+
+  it("routes the browser session playground for GitHub Pages hosting", () => {
+    const appProviders = readText("apps/browser-session-playground/src/app/AppProviders.tsx");
+    expect(appProviders).toContain("...(routerBasename ? { basename: routerBasename } : {})");
+    expect(appProviders).toContain("import.meta.env.BASE_URL");
+    expect(existsSync(path.join(rootDir, "scripts/bundle-playground-into-docs.mjs"))).toBe(true);
+    expect(existsSync(path.join(rootDir, "apps/docs/docs/public/playground/index.html"))).toBe(
+      true,
+    );
   });
 
   it("configures GitHub Pages base path support for the docs site", () => {

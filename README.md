@@ -25,13 +25,13 @@ lifecycle.on("visibility:change", (event) => {
 
 ## Links
 
-| Resource               | URL                                                            |
-| ---------------------- | -------------------------------------------------------------- |
-| Documentation          | https://itsjayoncode.github.io/joc/                            |
-| Browser Lifecycle docs | https://itsjayoncode.github.io/joc/packages/browser-lifecycle/ |
-| Interactive playground | https://itsjayoncode.github.io/joc/playground/                 |
-| npm scope              | https://www.npmjs.com/~jayoncode                               |
-| Repository             | https://github.com/itsjayoncode/joc                            |
+| Resource               | URL                                                              |
+| ---------------------- | ---------------------------------------------------------------- |
+| Documentation          | https://itsjayoncode.github.io/joc/                              |
+| Browser Lifecycle docs | https://itsjayoncode.github.io/joc/packages/browser-lifecycle/   |
+| Interactive playground | https://itsjayoncode.github.io/joc/playground/browser-lifecycle/ |
+| npm scope              | https://www.npmjs.com/~jayoncode                                 |
+| Repository             | https://github.com/itsjayoncode/joc                              |
 
 ## What ships today
 
