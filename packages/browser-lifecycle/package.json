@@ -1,14 +1,15 @@
 {
   "name": "@jayoncode/browser-lifecycle",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
-  "description": "Browser lifecycle manager infrastructure for the JOC ecosystem.",
+  "description": "Typed browser session lifecycle for visibility, focus, idle, connectivity, cross-tab sync, and plugins — framework-agnostic and SSR-safe.",
   "license": "MIT",
-  "author": "JayOnCode",
+  "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
   "type": "module",
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -21,18 +22,30 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/JayOnCode/joc.git",
+    "url": "git+https://github.com/itsjayoncode/joc.git",
     "directory": "packages/browser-lifecycle"
   },
   "homepage": "https://itsjayoncode.github.io/joc/packages/browser-lifecycle/",
   "bugs": {
-    "url": "https://github.com/JayOnCode/joc/issues"
+    "url": "https://github.com/itsjayoncode/joc/issues"
   },
   "keywords": [
     "browser",
-    "joc",
+    "browser-lifecycle",
     "jayoncode",
-    "lifecycle"
+    "joc",
+    "lifecycle",
+    "visibility",
+    "page-visibility",
+    "focus",
+    "idle",
+    "connectivity",
+    "cross-tab",
+    "broadcast-channel",
+    "session",
+    "typescript",
+    "framework-agnostic",
+    "ssr"
   ],
   "publishConfig": {
     "access": "public"

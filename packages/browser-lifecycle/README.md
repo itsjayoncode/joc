@@ -1,117 +1,85 @@
 # @jayoncode/browser-lifecycle
 
-Browser Lifecycle Manager is the browser lifecycle package for the JOC ecosystem.
+[![npm version](https://img.shields.io/npm/v/@jayoncode/browser-lifecycle.svg)](https://www.npmjs.com/package/@jayoncode/browser-lifecycle)
+[![license](https://img.shields.io/npm/l/@jayoncode/browser-lifecycle.svg)](https://github.com/itsjayoncode/joc/blob/master/packages/browser-lifecycle/package.json)
+[![docs](https://img.shields.io/badge/docs-jayoncode.github.io-2563eb)](https://itsjayoncode.github.io/joc/packages/browser-lifecycle/)
 
-Phase `2.2.5` now includes the Connectivity Module on top of the Focus and Visibility modules. This package currently ships:
+**Typed, framework-agnostic browser session lifecycle for modern web apps.**
 
-- `createBrowserLifecycle()`
-- Session Core lifecycle orchestration
-- readonly lifecycle snapshots and capability reads
-- public named event subscriptions and full event feed subscriptions
-- Page Visibility observation through the Visibility Module
-- `page:visible` and `page:hidden` event integration
-- Window focus observation through the Focus Module
-- `window:focus` and `window:blur` event integration
-- Advisory connectivity observation through the Connectivity Module
-- `connection:online`, `connection:offline`, and `connection:reconnect` event integration
-- Idle activity observation through the Idle Module
-- `session:active`, `session:idle`, `activity:detected`, and `activity:reset` event integration
-- Page lifecycle observation through the Lifecycle Module
-- Cross-tab coordination through the Cross Tab Module
-- `tab:primary`, `tab:secondary`, and `tab:message` event integration
-- internal module registration infrastructure
-- plugin metadata registration guards
-- configuration helpers
-- infrastructure error types
-- typed event infrastructure
-- SSR-safe feature detection helpers
-- stateless utility helpers
-- public infrastructure types
+Track visibility, focus, connectivity, idle state, page lifecycle, and cross-tab coordination through one composable session API — with SSR-safe feature detection and a plugin system.
 
-It implements plugin lifecycle hooks through `PluginRuntime` and exposes plugin diagnostics through `getPlugins()` and `getPluginHookLog()`.
+## Install
 
-Phase 2.1 establishes the design source of truth in [`engineering/`](./engineering):
+```bash
+npm install @jayoncode/browser-lifecycle
+```
 
-- `000-product-vision.md`
-- `001-problem-research.md`
-- `002-browser-platform-research.md`
-- `003-system-architecture.md`
-- `004-public-api-design.md`
-- `005-event-specification.md`
-- `006-configuration-design.md`
-- `007-runtime-compatibility.md`
-- `008-folder-architecture.md`
-- `009-development-roadmap.md`
-- `010-non-goals.md`
-- `011-design-decisions.md`
+```bash
+pnpm add @jayoncode/browser-lifecycle
+```
 
-Core infrastructure documentation:
+```bash
+yarn add @jayoncode/browser-lifecycle
+```
 
-- [docs/core-infrastructure.md](./docs/core-infrastructure.md)
-- [examples/core-infrastructure/README.md](./examples/core-infrastructure/README.md)
-- [docs/events.md](./docs/events.md)
-- [examples/events/README.md](./examples/events/README.md)
-- [docs/session-core.md](./docs/session-core.md)
-- [examples/session-core/README.md](./examples/session-core/README.md)
-- [docs/visibility.md](./docs/visibility.md)
-- [examples/visibility/README.md](./examples/visibility/README.md)
-- [engineering/011-event-infrastructure.md](./engineering/011-event-infrastructure.md)
-- [engineering/012-session-core.md](./engineering/012-session-core.md)
-- [engineering/013-visibility-module.md](./engineering/013-visibility-module.md)
+## Quick start
 
-Current public exports:
+```ts
+import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
 
-- `createBrowserLifecycle()`
-- `createBrowserLifecycleConfig()`
-- `getDefaultBrowserLifecycleConfig()`
-- `mergeBrowserLifecycleConfig()`
-- `validateBrowserLifecycleConfig()`
-- `getPluginIds()`
-- `getPlugins()`
-- `getPluginHookLog()`
-- `setPluginEnabled(pluginId, enabled)`
-- `getRuntimeDiagnostics()`
-- `detectBrowserLifecycleCapabilities()`
-- `supportsVisibility()`
-- `supportsFocus()`
-- `supportsConnectivity()`
-- `supportsBroadcastChannel()`
-- `supportsPageLifecycle()`
-- `supportsRequestIdleCallback()`
-- `supportsAbortController()`
-- `TypedEventEmitter`
-- `assert()`
-- `noop()`
-- `isBrowser()`
-- `isFunction()`
-- `isObject()`
-- `deepFreeze()`
-- `mergeObjects()`
-- `BrowserLifecycleError`
-- `ConfigurationError`
-- `UnsupportedFeatureError`
-- `InitializationError`
-- `LifecycleError`
-- `ModuleRegistryError`
-- `PluginError`
-- `BrowserLifecycle`
-- `BrowserLifecycleSnapshot`
-- `BrowserLifecyclePhase`
-- `BrowserLifecycleEventName`
-- `BrowserLifecycleEventMap`
-- `PageVisibleEventMetadata`
-- `PageHiddenEventMetadata`
-- `EventDefinition`
-- `EventDispatchContext`
-- `EventDispatchMetadata`
-- `EventInternalMetadata`
-- `EventListener`
-- `EventListenerErrorHandler`
-- `EventMap`
-- `EventName`
-- `EventPayload`
-- `EventRegistryStats`
-- `EventSubscription`
-- `TypedEventEmitterOptions`
+const lifecycle = createBrowserLifecycle({
+  autoStart: true,
+  debug: false,
+});
 
-Implementation follows the frozen engineering documents and currently stops after the Visibility Module.
+lifecycle.on("page:visible", () => {
+  console.log("Tab is visible again");
+});
+
+lifecycle.on("session:idle", () => {
+  console.log("User went idle");
+});
+
+// Read a typed snapshot any time
+const snapshot = lifecycle.getSnapshot();
+
+// Clean up when your app unmounts
+lifecycle.dispose();
+```
+
+## Why use it
+
+| Capability       | What you get                                            |
+| ---------------- | ------------------------------------------------------- |
+| **Session core** | Start, stop, pause, and inspect lifecycle state         |
+| **Visibility**   | `page:visible` / `page:hidden` from document visibility |
+| **Focus**        | `window:focus` / `window:blur` normalization            |
+| **Connectivity** | Advisory online/offline signals                         |
+| **Idle**         | Activity-based idle detection                           |
+| **Cross-tab**    | Leader election and tab messaging                       |
+| **Plugins**      | Register hooks and inspect runtime diagnostics          |
+| **SSR-safe**     | Capability helpers that work without throwing in Node   |
+
+## Documentation
+
+- [Package overview](https://itsjayoncode.github.io/joc/packages/browser-lifecycle/)
+- [Quick start guide](https://itsjayoncode.github.io/joc/guides/browser-lifecycle/quick-start)
+- [Configuration](https://itsjayoncode.github.io/joc/guides/browser-lifecycle/configuration)
+- [Interactive playground](https://itsjayoncode.github.io/joc/playground/playground)
+
+## Requirements
+
+- **Node.js** 20+ (for tooling)
+- **Browsers**: modern evergreen browsers; see [browser support](https://itsjayoncode.github.io/joc/guides/browser-lifecycle/browser-support)
+
+## Repository
+
+Source, issues, and contributions:
+
+**https://github.com/itsjayoncode/joc**
+
+Package path: `packages/browser-lifecycle`
+
+## License
+
+MIT © [JayOnCode](https://github.com/itsjayoncode)

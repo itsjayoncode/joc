@@ -3,7 +3,7 @@
   "changelog": [
     "@changesets/changelog-git",
     {
-      "repo": "JayOnCode/joc"
+      "repo": "itsjayoncode/joc"
     }
   ],
   "commit": false,

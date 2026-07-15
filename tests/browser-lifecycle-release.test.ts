@@ -8,17 +8,18 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 const packageDir = path.join(rootDir, "packages/browser-lifecycle");
 
 describe("browser-lifecycle release version", () => {
-  it("ships version 0.1.0", () => {
+  it("ships version 0.1.1", () => {
     const manifest = JSON.parse(readFileSync(path.join(packageDir, "package.json"), "utf8")) as {
       version: string;
     };
 
-    expect(manifest.version).toBe("0.1.0");
+    expect(manifest.version).toBe("0.1.1");
   });
 
   it("documents the release in CHANGELOG.md", () => {
     const changelog = readFileSync(path.join(packageDir, "CHANGELOG.md"), "utf8");
 
+    expect(changelog).toContain("## [0.1.1]");
     expect(changelog).toContain("## [0.1.0]");
   });
 });
