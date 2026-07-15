@@ -21,7 +21,9 @@ describe("release engineering foundation", () => {
   });
 
   it("ignores placeholder packages so only browser-lifecycle can publish", () => {
-    const config = JSON.parse(readFileSync(path.join(rootDir, ".changeset/config.json"), "utf8")) as {
+    const config = JSON.parse(
+      readFileSync(path.join(rootDir, ".changeset/config.json"), "utf8"),
+    ) as {
       ignore: string[];
     };
 

@@ -76,7 +76,9 @@ try {
         const manifest = JSON.parse(await readFile(manifestPath, "utf8"));
         workspaceManifests.push(manifest);
       } catch {
-        failures.push(`Unreadable workspace package manifest: ${workspaceDir}/${entry.name}/package.json`);
+        failures.push(
+          `Unreadable workspace package manifest: ${workspaceDir}/${entry.name}/package.json`,
+        );
       }
     }
   }
@@ -90,7 +92,9 @@ try {
 
     if (isPublishable) {
       if (ignoredPackages.has(manifest.name)) {
-        failures.push(`Publishable package ${manifest.name} must not be in the changesets ignore list.`);
+        failures.push(
+          `Publishable package ${manifest.name} must not be in the changesets ignore list.`,
+        );
       }
 
       continue;
