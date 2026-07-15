@@ -27,7 +27,8 @@ export const jocPackages: JocPackage[] = [
     id: "object-diff",
     name: "Object Difference Engine",
     npmName: "@jayoncode/object-diff",
-    tagline: "Deep object comparison and structural diffing for state snapshots and change tracking.",
+    tagline:
+      "Deep object comparison and structural diffing for state snapshots and change tracking.",
     status: "coming-soon",
     docsLink: "/packages/object-diff/",
     accent: "violet",
@@ -136,4 +137,6 @@ export const jocPackages: JocPackage[] = [
 ];
 
 export const livePackageCount = jocPackages.filter((pkg) => pkg.status === "live").length;
-export const upcomingPackageCount = jocPackages.filter((pkg) => pkg.status === "coming-soon").length;
+export const upcomingPackageCount = jocPackages.filter(
+  (pkg) => pkg.status === "coming-soon",
+).length;

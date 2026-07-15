@@ -62,10 +62,14 @@
 
 @keyframes joc-grid-scroll {
   from {
-    background-position: 0 0, 0 0;
+    background-position:
+      0 0,
+      0 0;
   }
   to {
-    background-position: 0 48px, 48px 0;
+    background-position:
+      0 48px,
+      48px 0;
   }
 }
 
@@ -184,6 +188,52 @@
   font-weight: 700;
 }
 
+.VPNavBarTitle:has(.joc-nav-doc-version) {
+  position: relative;
+  align-self: center;
+  min-height: 2.5rem;
+  padding-bottom: 0.55rem;
+}
+
+.VPNavBarTitle:has(.joc-nav-doc-version) .title {
+  align-items: center;
+}
+
+.joc-nav-doc-version {
+  position: absolute;
+  left: 2.7rem;
+  bottom: 15px;
+  display: inline-block;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--joc-primary-rgb), 0.28);
+  background: rgba(var(--joc-primary-rgb), 0.08);
+  color: var(--joc-secondary);
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  padding: 0.14rem 0.45rem;
+}
+
+.VPHome .joc-nav-doc-version {
+  border-color: rgba(var(--joc-primary-rgb), 0.32);
+  background: rgba(var(--joc-primary-rgb), 0.1);
+  color: var(--joc-primary);
+}
+
+@media (max-width: 768px) {
+  .VPNavBarTitle:has(.joc-nav-doc-version) {
+    min-height: 2.35rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .joc-nav-doc-version {
+    left: 2.55rem;
+    font-size: 0.62rem;
+  }
+}
+
 .VPNav {
   backdrop-filter: blur(16px);
 }
@@ -242,12 +292,7 @@
   left: 0;
   right: 0;
   height: 140px;
-  background: linear-gradient(
-    180deg,
-    transparent,
-    rgba(var(--joc-primary-rgb), 0.08),
-    transparent
-  );
+  background: linear-gradient(180deg, transparent, rgba(var(--joc-primary-rgb), 0.08), transparent);
   animation: joc-scanline 9s linear infinite;
 }
 
@@ -362,8 +407,11 @@ html.joc-home-cursor-active .VPHome button {
   box-sizing: border-box;
   border-radius: 20px;
   padding: 2rem 1.5rem;
-  background:
-    linear-gradient(155deg, rgba(var(--joc-dark-alt-rgb), 0.96), rgba(var(--joc-dark-rgb), 0.94));
+  background: linear-gradient(
+    155deg,
+    rgba(var(--joc-dark-alt-rgb), 0.96),
+    rgba(var(--joc-dark-rgb), 0.94)
+  );
   border: 1px solid rgba(var(--joc-primary-rgb), 0.22);
   box-shadow:
     0 24px 60px rgba(var(--joc-dark-rgb), 0.45),
@@ -960,7 +1008,11 @@ html.joc-home-cursor-active .VPHome button {
   right: 0;
   width: 60px;
   height: 60px;
-  background: radial-gradient(circle at top right, rgba(var(--joc-primary-rgb), 0.1), transparent 70%);
+  background: radial-gradient(
+    circle at top right,
+    rgba(var(--joc-primary-rgb), 0.1),
+    transparent 70%
+  );
   pointer-events: none;
 }
 
@@ -1044,8 +1096,11 @@ html.joc-home-cursor-active .VPHome button {
   padding: 1.75rem;
   border-radius: 20px;
   position: relative;
-  background:
-    linear-gradient(155deg, rgba(var(--joc-dark-alt-rgb), 0.94), rgba(var(--joc-dark-rgb), 0.9));
+  background: linear-gradient(
+    155deg,
+    rgba(var(--joc-dark-alt-rgb), 0.94),
+    rgba(var(--joc-dark-rgb), 0.9)
+  );
   border: 1px solid rgba(var(--joc-primary-rgb), 0.2);
   box-shadow:
     0 20px 50px rgba(var(--joc-dark-rgb), 0.4),
@@ -1521,4 +1576,43 @@ html.joc-home-cursor-active .VPHome button {
   .joc-home-fx__cursor-ring {
     display: none;
   }
+}
+
+/* ── Package version badge (docs pages) ─────────────── */
+
+.vp-doc .joc-pkg-version {
+  display: inline-block;
+  margin-left: 0.65rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--joc-primary-rgb), 0.28);
+  background: rgba(var(--joc-primary-rgb), 0.08);
+  color: var(--joc-secondary);
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  vertical-align: middle;
+}
+
+.vp-doc .joc-pkg-version-block {
+  margin: 0;
+  color: var(--vp-c-text-2);
+  line-height: 1.65;
+}
+
+.vp-doc .joc-pkg-install-note {
+  margin: 0 0 1.25rem;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--joc-border);
+  background: var(--joc-surface);
+}
+
+.vp-doc .joc-pkg-install-note p {
+  margin: 0 0 0.65rem;
+}
+
+.vp-doc .joc-pkg-install-note pre {
+  margin: 0;
 }

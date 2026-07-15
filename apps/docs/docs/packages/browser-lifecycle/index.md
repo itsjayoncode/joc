@@ -5,6 +5,8 @@ description: Install and use @jayoncode/browser-lifecycle for typed page visibil
 
 # Browser Lifecycle
 
+<BrowserLifecycleVersion />
+
 `@jayoncode/browser-lifecycle` is the official browser lifecycle manager for the JOC ecosystem.
 
 Construction docs refer to this package as **Browser Session**. The canonical public API is `createBrowserLifecycle()` and the published package name is `@jayoncode/browser-lifecycle`.
@@ -40,15 +42,15 @@ lifecycle.on("page:hidden", () => {
 | Topic              | Page                                                                   |
 | ------------------ | ---------------------------------------------------------------------- |
 | Installation       | [Installation](/packages/browser-lifecycle/installation)               |
-| Usage              | [Usage Guide](/guides/browser-lifecycle/usage)                         |
-| Configuration      | [Configuration](/guides/browser-lifecycle/configuration)               |
+| Usage              | [Usage Guide](/packages/browser-lifecycle/guides/usage)                |
+| Configuration      | [Configuration](/packages/browser-lifecycle/guides/configuration)      |
 | Modules            | [Module docs](/packages/browser-lifecycle/modules/core-infrastructure) |
-| API Reference      | [Generated API](/api/browser-lifecycle/)                               |
+| API Reference      | [Generated API](/packages/browser-lifecycle/api/)                      |
 | Playground         | [Interactive docs](http://127.0.0.1:4273)                              |
-| Framework examples | [Examples](/examples/)                                                 |
-| Best practices     | [Best Practices](/best-practices/)                                     |
-| Patterns           | [Common Patterns](/patterns/)                                          |
-| FAQ                | [FAQ](/faq/)                                                           |
+| Framework examples | [Examples](/packages/browser-lifecycle/examples/)                      |
+| Best practices     | [Best Practices](/packages/browser-lifecycle/best-practices/)          |
+| Patterns           | [Common Patterns](/packages/browser-lifecycle/patterns/)               |
+| FAQ                | [FAQ](/packages/browser-lifecycle/faq/)                                |
 
 ## Interactive playground
 
@@ -69,6 +71,4 @@ Every major module has a matching playground page:
 
 ## Version
 
-Current documentation version: **v0.1.0** (initial pre-release).
-
-See [Migration](/migration/) and [Changelog](/changelog/) for release history.
+<BrowserLifecycleVersion mode="overview" />

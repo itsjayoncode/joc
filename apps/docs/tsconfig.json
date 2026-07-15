@@ -13,5 +13,5 @@
     "noEmit": true,
     "types": ["node"]
   },
-  "include": ["docs/.vitepress/**/*.ts"]
+  "include": ["docs/.vitepress/**/*.ts", "docs/.vitepress/**/*.vue", "docs/.vitepress/env.d.ts"]
 }
