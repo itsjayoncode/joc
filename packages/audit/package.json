@@ -1,7 +1,7 @@
 {
   "name": "@jayoncode/audit",
   "version": "0.0.0",
-  "private": false,
+  "private": true,
   "description": "Future audit package for the JOC ecosystem.",
   "license": "MIT",
   "repository": {

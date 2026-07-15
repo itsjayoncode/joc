@@ -1,7 +1,7 @@
 {
   "name": "@jayoncode/responsive",
   "version": "0.0.0",
-  "private": false,
+  "private": true,
   "description": "Future responsive package for the JOC ecosystem.",
   "license": "MIT",
   "repository": {

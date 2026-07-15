@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
 const packagesDir = path.join(rootDir, "packages");
+const PUBLISHABLE_PACKAGE = "browser-lifecycle";
+const INTERNAL_PRIVATE_PACKAGES = new Set(["shared"]);
 
 const failures = [];
 const packageEntries = await readdir(packagesDir, { withFileTypes: true });
@@ -60,12 +62,18 @@ for (const packageDirectory of packageDirectories) {
     );
   }
 
-  if (packageDirectory === "shared") {
-    if (manifest.private !== true) {
-      failures.push("packages/shared must remain private.");
+  if (packageDirectory === PUBLISHABLE_PACKAGE) {
+    if (manifest.private === true) {
+      failures.push("packages/browser-lifecycle must remain public for npm publication.");
     }
-  } else if (manifest.private === true) {
-    failures.push(`Package ${packageDirectory} should not be marked private.`);
+  } else if (INTERNAL_PRIVATE_PACKAGES.has(packageDirectory)) {
+    if (manifest.private !== true) {
+      failures.push(`packages/${packageDirectory} must remain private.`);
+    }
+  } else if (manifest.private !== true) {
+    failures.push(
+      `Placeholder package packages/${packageDirectory} must remain private until it is ready for npm publication.`,
+    );
   }
 }
 

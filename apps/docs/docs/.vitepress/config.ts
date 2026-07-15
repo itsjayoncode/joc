@@ -194,6 +194,10 @@ export default defineConfig({
   lang: "en-US",
   srcDir: ".",
   cleanUrls: true,
+  appearance: {
+    // @ts-expect-error VitePress types only document `dark`; `light` is supported at runtime.
+    initialValue: "light",
+  },
   lastUpdated: true,
   sitemap: {
     hostname: sitemapHostname,
@@ -223,8 +227,8 @@ export default defineConfig({
   themeConfig: {
     logo: {
       alt: "JOC",
-      light: resolveDocsBasePath("logo.png"),
-      dark: resolveDocsBasePath("logo.png"),
+      light: "/logo.png",
+      dark: "/logo.png",
     },
     siteTitle: "JOC",
     search: {
