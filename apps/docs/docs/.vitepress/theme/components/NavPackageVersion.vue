@@ -1,14 +1,9 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { useData } from "vitepress";
-
-const { theme } = useData();
-
-const pkg = computed(() => theme.value.browserLifecycle);
+import { browserLifecycleMeta } from "../../browser-lifecycle-meta.js";
 </script>
 
 <template>
   <span class="joc-nav-doc-version" aria-label="Documentation version">
-    {{ pkg.versionLabel }}
+    {{ browserLifecycleMeta.versionLabel }}
   </span>
 </template>

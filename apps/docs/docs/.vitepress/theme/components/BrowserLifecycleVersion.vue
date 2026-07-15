@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { useData } from "vitepress";
+import { browserLifecycleMeta } from "../../browser-lifecycle-meta.js";
 
 withDefaults(
   defineProps<{
@@ -11,9 +10,7 @@ withDefaults(
   },
 );
 
-const { theme } = useData();
-
-const pkg = computed(() => theme.value.browserLifecycle);
+const pkg = browserLifecycleMeta;
 </script>
 
 <template>
