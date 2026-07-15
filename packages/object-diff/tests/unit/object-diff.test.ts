@@ -6,6 +6,7 @@ import {
   compare,
   diff,
   hasChanges,
+  InvalidPatchError,
   patch,
   removed,
   serialize,
@@ -75,6 +76,13 @@ describe("patch", () => {
     expect(serialize(result, "json")).toContain("changed");
     expect(serialize(result, "markdown")).toContain("#");
     expect(serialize(result, "table")).toContain("|");
+  });
+
+  it("rejects prototype-polluting patch paths", () => {
+    const pollutionAttempt = [{ op: "add" as const, path: "/__proto__/polluted", value: true }];
+
+    expect(() => applyPatch({}, pollutionAttempt)).toThrow(InvalidPatchError);
+    expect(Object.prototype).not.toHaveProperty("polluted");
   });
 });
 

@@ -11,6 +11,29 @@ import type {
   PatchOptions,
 } from "../types/index.js";
 
+const UNSAFE_PATH_KEYS = new Set(["__proto__", "constructor", "prototype"]);
+
+function assertSafePathSegment(segment: string | number): void {
+  if (typeof segment === "string" && UNSAFE_PATH_KEYS.has(segment)) {
+    throw new InvalidPatchError(`Unsafe path segment "${segment}" is not allowed.`);
+  }
+}
+
+function setPropertyValue(
+  parent: Record<string | number, unknown> | unknown[],
+  key: string | number,
+  value: unknown,
+): void {
+  assertSafePathSegment(key);
+
+  if (Array.isArray(parent) && typeof key === "number") {
+    parent[key] = value;
+    return;
+  }
+
+  (parent as Record<string | number, unknown>)[key] = value;
+}
+
 function isPatchOperation(value: unknown): value is PatchOperation {
   if (!value || typeof value !== "object") {
     return false;
@@ -84,7 +107,11 @@ function parsePointer(pointer: string): Array<string | number> {
     .split("/")
     .slice(1)
     .map((segment) => segment.replace(/~1/g, "/").replace(/~0/g, "~"))
-    .map((segment) => (/^\d+$/.test(segment) ? Number(segment) : segment));
+    .map((segment) => (/^\d+$/.test(segment) ? Number(segment) : segment))
+    .map((segment) => {
+      assertSafePathSegment(segment);
+      return segment;
+    });
 }
 
 function getParent(
@@ -139,20 +166,17 @@ function applyOperation(target: unknown, operation: PatchOperation): void {
       if (Array.isArray(parent) && typeof key === "number") {
         parent.splice(key, 0, operation.value);
       } else {
-        (parent as Record<string | number, unknown>)[key] = operation.value;
+        setPropertyValue(parent, key, operation.value);
       }
       break;
     case "replace":
-      if (Array.isArray(parent) && typeof key === "number") {
-        parent[key] = operation.value;
-      } else {
-        (parent as Record<string | number, unknown>)[key] = operation.value;
-      }
+      setPropertyValue(parent, key, operation.value);
       break;
     case "remove":
       if (Array.isArray(parent) && typeof key === "number") {
         parent.splice(key, 1);
       } else {
+        assertSafePathSegment(key);
         Reflect.deleteProperty(parent, key);
       }
       break;
