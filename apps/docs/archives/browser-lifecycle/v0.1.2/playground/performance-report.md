@@ -37,4 +37,3 @@ description: Interactive playground documentation for Performance Report.
 - Add route-based code splitting in a future release if bundle grows beyond 250 KB
 - Lazy-load module pages with `React.lazy` when adding heavy visualizations
 - Keep playground integration logic in `src/lib/*` to preserve tree-shaking boundaries
-

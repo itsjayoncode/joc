@@ -31,4 +31,3 @@ The explorer starts a full Browser Lifecycle session with visibility, focus, con
 ## Interactive Playground
 
 Explore this topic live in the [Event Explorer](http://127.0.0.1:4273/events).
-

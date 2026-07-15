@@ -120,4 +120,3 @@ See:
 ## Interactive Playground
 
 Explore this topic live in the [Visibility](http://127.0.0.1:4273/visibility-playground).
-

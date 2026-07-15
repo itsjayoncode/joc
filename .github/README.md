@@ -4,14 +4,14 @@ Repository workflows, templates, and policies for the JOC monorepo.
 
 ## Workflows
 
-| Workflow | Trigger | Purpose |
-| --- | --- | --- |
-| **CI** | Push to `main` / `master` / `develop`, manual | Quality gates; on default branch also deploys docs and runs Changesets |
-| **Pull Request Validation** | Pull requests | Quality gates only (no deploy) |
-| **CodeQL** | Push, pull requests, weekly schedule | Security analysis for JavaScript and TypeScript |
-| **Release** | Manual | Draft a GitHub release for an existing tag |
-| **Deploy Docs** | Manual | Rebuild and redeploy documentation without a full CI run |
-| **Deploy Playground** | Manual | Build and publish the browser session playground artifact |
+| Workflow                    | Trigger                                       | Purpose                                                                |
+| --------------------------- | --------------------------------------------- | ---------------------------------------------------------------------- |
+| **CI**                      | Push to `main` / `master` / `develop`, manual | Quality gates; on default branch also deploys docs and runs Changesets |
+| **Pull Request Validation** | Pull requests                                 | Quality gates only (no deploy)                                         |
+| **CodeQL**                  | Push, pull requests, weekly schedule          | Security analysis for JavaScript and TypeScript                        |
+| **Release**                 | Manual                                        | Draft a GitHub release for an existing tag                             |
+| **Deploy Docs**             | Manual                                        | Rebuild and redeploy documentation without a full CI run               |
+| **Deploy Playground**       | Manual                                        | Build and publish the browser session playground artifact              |
 
 On push to `master` or `main`, expect **two** workflow runs: **CI** and **CodeQL**.
 

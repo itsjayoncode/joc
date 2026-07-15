@@ -159,4 +159,3 @@ emitter.destroy();
 ## Interactive Playground
 
 Explore this topic live in the [Events](http://127.0.0.1:4273/event-explorer).
-
