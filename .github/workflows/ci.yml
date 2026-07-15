@@ -58,7 +58,8 @@ jobs:
         env:
           VITE_DOCS_BASE: /joc/
           VITE_DOCS_SITE_URL: https://itsjayoncode.github.io/joc
-          VITE_DOCS_PLAYGROUND_URL: https://itsjayoncode.github.io/joc/playground/
+          VITE_DOCS_PLAYGROUND_URL: https://itsjayoncode.github.io/joc/playground/browser-lifecycle/
+          VITE_PLAYGROUND_BASE: /joc/playground/browser-lifecycle/
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
