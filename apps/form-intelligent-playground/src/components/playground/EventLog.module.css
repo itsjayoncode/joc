@@ -1,0 +1,41 @@
+.log {
+  display: grid;
+  gap: var(--space-2);
+  max-height: 220px;
+  margin: 0;
+  padding: var(--space-3);
+  overflow: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-strong);
+  list-style: none;
+}
+
+.entry {
+  display: grid;
+  gap: 0.15rem;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.82rem;
+}
+
+.entry:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.time {
+  color: var(--text-muted);
+  font-family: "IBM Plex Mono", "SFMono-Regular", "SF Mono", Consolas, monospace;
+  font-size: 0.75rem;
+}
+
+.message {
+  color: var(--text-secondary);
+}
+
+.empty {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.86rem;
+}

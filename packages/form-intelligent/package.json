@@ -1,0 +1,48 @@
+{
+  "name": "@jayoncode/form-intelligent",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Form Intelligent — A headless form workflow engine for validation, submission, state, and multi-step orchestration.",
+  "license": "MIT",
+  "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itsjayoncode/joc.git",
+    "directory": "packages/form-intelligent"
+  },
+  "homepage": "https://itsjayoncode.github.io/joc/packages/form-intelligent/",
+  "bugs": {
+    "url": "https://github.com/itsjayoncode/joc/issues"
+  },
+  "keywords": [
+    "form",
+    "forms",
+    "headless",
+    "validation",
+    "workflow",
+    "wizard",
+    "autosave",
+    "typescript",
+    "framework-agnostic",
+    "jayoncode",
+    "joc"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

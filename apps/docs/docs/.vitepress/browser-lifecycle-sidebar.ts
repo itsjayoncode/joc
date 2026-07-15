@@ -10,13 +10,6 @@ const browserLifecycleGuides = (pkgBase: string) => [
   { text: "Deployment", link: `${pkgBase}/guides/deployment` },
 ];
 
-const browserLifecycleModules = (pkgBase: string) => [
-  { text: "Core Infrastructure", link: `${pkgBase}/modules/core-infrastructure` },
-  { text: "Session Core", link: `${pkgBase}/modules/session-core` },
-  { text: "Events", link: `${pkgBase}/modules/events` },
-  { text: "Visibility", link: `${pkgBase}/modules/visibility` },
-];
-
 const playgroundItems = (pkgBase: string) => [
   { text: "Overview", link: `${pkgBase}/playground/playground` },
   { text: "Visibility", link: `${pkgBase}/playground/visibility-playground` },
@@ -106,41 +99,60 @@ export function createBrowserLifecycleSidebar(
       text: `Browser Lifecycle · ${versionLabel}`,
       items: [
         { text: "Overview", link: `${pkgBase}/` },
+        { text: "Core concepts", link: `${pkgBase}/modules/concepts` },
+        { text: "Tutorial", link: `${pkgBase}/modules/getting-started` },
         { text: "Installation", link: `${pkgBase}/installation` },
-        ...browserLifecycleGuides(pkgBase),
       ],
     },
     {
-      text: "Modules",
-      items: browserLifecycleModules(pkgBase),
+      text: "Build your session",
+      items: [
+        { text: "1. Visibility", link: `${pkgBase}/modules/visibility` },
+        { text: "2. Events", link: `${pkgBase}/modules/events` },
+        { text: "3. Session core", link: `${pkgBase}/modules/session-core` },
+        { text: "4. Core infrastructure", link: `${pkgBase}/modules/core-infrastructure` },
+      ],
     },
     {
-      text: "API",
-      items: [{ text: "API Reference", link: `${pkgBase}/api/` }],
+      text: "Guides",
+      collapsed: true,
+      items: browserLifecycleGuides(pkgBase),
     },
     {
-      text: "Examples",
-      items: [{ text: "Framework Examples", link: `${pkgBase}/examples/` }],
+      text: "Reference",
+      items: [
+        { text: "API (TypeDoc)", link: `${pkgBase}/api/` },
+        { text: "Framework examples", link: `${pkgBase}/examples/` },
+      ],
     },
     {
       text: "Tutorials",
+      collapsed: true,
       items: tutorialItems(pkgBase),
     },
     {
       text: "Best Practices",
+      collapsed: true,
       items: bestPracticeItems(pkgBase),
     },
     {
       text: "Patterns",
+      collapsed: true,
       items: patternItems(pkgBase),
     },
     {
       text: "FAQ",
+      collapsed: true,
       items: faqItems(pkgBase),
     },
     {
       text: "Playground",
       items: playgroundItems(pkgBase),
+    },
+    {
+      text: "Interactive",
+      collapsed: false,
+      items: [{ text: "Open playground ↗", link: "/playground/browser-lifecycle/" }],
     },
     {
       text: "Support",

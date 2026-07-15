@@ -1,5 +1,26 @@
 # Visibility
 
+React when the user switches tabs or minimizes the window.
+
+**Previous:** [Tutorial](/packages/browser-lifecycle/modules/getting-started) · **Next:** [Events](/packages/browser-lifecycle/modules/events)
+
+::: tip Try it first
+[Open Visibility playground →](/playground/browser-lifecycle/visibility) — switch tabs and watch `page:visible` / `page:hidden` events.
+:::
+
+## In plain English
+
+The Visibility module reads the Page Visibility API and emits typed events when the tab becomes visible or hidden. Use it to pause video, stop polling, or save drafts.
+
+```ts
+lifecycle.on("page:hidden", () => pauseVideo());
+lifecycle.on("page:visible", () => resumeVideo());
+```
+
+---
+
+## Technical reference
+
 This document covers the Visibility Module introduced in Phase `2.2.3`.
 
 ## Overview

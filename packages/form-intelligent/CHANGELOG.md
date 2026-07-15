@@ -1,0 +1,21 @@
+# Changelog
+
+## 0.1.0
+
+Initial public release of the headless form workflow engine for the JOC ecosystem.
+
+### Added
+
+- `createForm()` with field registration and headless bindings
+- Validation pipeline with built-in validators (`required`, `email`, `url`, `minLength`, `regex`)
+- Submission orchestration with double-submit guard
+- Workflow primitives: autosave, drafts, multi-step wizard
+- Formatters: `phone`, `currency`, `slug`, `trim`, `uppercase`, `lowercase`
+- Plugin registry and adapter interfaces
+- Interactive playground and package documentation on the JOC docs site
+
+All notable changes to `@jayoncode/form-intelligent` are documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]

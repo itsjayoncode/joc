@@ -1,0 +1,33 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "name": "@jayoncode/form-intelligent API",
+  "entryPoints": ["./src/index.ts"],
+  "tsconfig": "./tsconfig.json",
+  "out": "../../apps/docs/docs/packages/form-intelligent/api",
+  "plugin": ["typedoc-plugin-markdown"],
+  "readme": "none",
+  "excludePrivate": true,
+  "excludeInternal": true,
+  "excludeExternals": true,
+  "hideGenerator": true,
+  "sort": ["source-order"],
+  "categorizeByGroup": true,
+  "defaultCategory": "API",
+  "categoryOrder": ["API", "Types", "Interfaces", "Functions", "*"],
+  "entryFileName": "index",
+  "fileExtension": ".md",
+  "outputFileStrategy": "modules",
+  "membersWithOwnFile": ["Class", "Enum", "Function", "Interface", "TypeAlias", "Variable"],
+  "parametersFormat": "table",
+  "propertiesFormat": "table",
+  "enumMembersFormat": "table",
+  "typeDeclarationFormat": "table",
+  "useCodeBlocks": true,
+  "expandObjects": true,
+  "expandParameters": true,
+  "sanitizeComments": true,
+  "validation": {
+    "notExported": false,
+    "invalidLink": false
+  }
+}
