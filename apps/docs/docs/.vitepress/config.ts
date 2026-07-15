@@ -8,6 +8,7 @@ import {
   docsPlaygroundUrl,
   docsSiteUrl,
   resolvePublicAssetUrl,
+  resolveDocsBasePath,
   siteName,
   siteTagline,
 } from "./seo.js";
@@ -198,7 +199,7 @@ export default defineConfig({
     hostname: sitemapHostname,
   },
   head: [
-    ["link", { rel: "icon", href: "/favicon.png", type: "image/png" }],
+    ["link", { rel: "icon", href: resolveDocsBasePath("logo.png"), type: "image/png" }],
     ["link", { rel: "canonical", href: docsSiteUrl }],
     ["meta", { name: "theme-color", content: "#111827" }],
     ["meta", { name: "author", content: "JayOnCode" }],
@@ -222,8 +223,8 @@ export default defineConfig({
   themeConfig: {
     logo: {
       alt: "JOC",
-      light: "/logo.png",
-      dark: "/logo.png",
+      light: resolveDocsBasePath("logo.png"),
+      dark: resolveDocsBasePath("logo.png"),
     },
     siteTitle: "JOC",
     search: {

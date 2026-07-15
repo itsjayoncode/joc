@@ -30,6 +30,15 @@ export function resolvePublicAssetUrl(assetPath: string): string {
   return `${docsSiteUrl}/${normalizedAsset}`;
 }
 
+/** Site-relative path for public assets (respects VITE_DOCS_BASE on GitHub Pages). */
+export function resolveDocsBasePath(assetPath: string): string {
+  const normalizedAsset = assetPath.replace(/^\//, "");
+  const base = process.env.VITE_DOCS_BASE ?? "/";
+  const normalizedBase = base.endsWith("/") ? base : `${base}/`;
+
+  return normalizedBase === "/" ? `/${normalizedAsset}` : `${normalizedBase}${normalizedAsset}`;
+}
+
 export function buildOrganizationJsonLd(siteUrl: string): string {
   return JSON.stringify({
     "@context": "https://schema.org",

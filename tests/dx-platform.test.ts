@@ -16,7 +16,6 @@ const requiredDocsPages = [
   "apps/docs/docs/packages/browser-lifecycle/guides/usage.md",
   "apps/docs/docs/packages/browser-lifecycle/guides/quick-start.md",
   "apps/docs/docs/packages/index.md",
-  "apps/docs/docs/packages/browser-lifecycle/api/index.md",
   "apps/docs/docs/packages/browser-lifecycle/tutorials/beginner.md",
   "apps/docs/docs/packages/browser-lifecycle/best-practices/index.md",
   "apps/docs/docs/packages/browser-lifecycle/patterns/index.md",
@@ -102,22 +101,28 @@ describe("developer experience platform", () => {
 
   it("formats and lints generated documentation output during sync", () => {
     const syncScript = readText("scripts/sync-documentation.mjs");
+    const apiScript = readText("scripts/generate-api-documentation.mjs");
     expect(syncScript).toContain("formatGeneratedFiles");
     expect(syncScript).toContain("lintGeneratedMetaFiles");
+    expect(apiScript).toContain("formatGeneratedApiDocs");
   });
 });
 
 describe("documentation integration output", () => {
-  it("generates synced documentation pages from source docs", () => {
+  it("generates prepared documentation from source docs", () => {
     const sourceModulesDir = path.join(rootDir, "packages/browser-lifecycle/docs");
     const sourcePlaygroundDir = path.join(rootDir, "apps/browser-session-playground/docs");
+    const typedocConfig = path.join(rootDir, "packages/browser-lifecycle/typedoc.json");
 
-    if (!existsSync(sourceModulesDir) || !existsSync(sourcePlaygroundDir)) {
+    if (
+      !existsSync(sourceModulesDir) ||
+      !existsSync(sourcePlaygroundDir) ||
+      !existsSync(typedocConfig)
+    ) {
       return;
     }
 
-    const syncScript = path.join(rootDir, "scripts/sync-documentation.mjs");
-    const result = spawnSync(process.execPath, [syncScript], {
+    const result = spawnSync("pnpm", ["docs:prepare"], {
       cwd: rootDir,
       encoding: "utf8",
       env: {
@@ -140,11 +145,16 @@ describe("documentation integration output", () => {
       rootDir,
       "apps/docs/docs/packages/browser-lifecycle/playground",
     );
+    const generatedApiIndex = path.join(
+      rootDir,
+      "apps/docs/docs/packages/browser-lifecycle/api/index.md",
+    );
 
+    expect(existsSync(generatedApiIndex)).toBe(true);
     expect(existsSync(syncedExamples)).toBe(true);
     expect(existsSync(syncedModulesDir)).toBe(true);
     expect(existsSync(syncedPlaygroundDir)).toBe(true);
     expect(readdirSync(syncedModulesDir).length).toBeGreaterThan(0);
     expect(readdirSync(syncedPlaygroundDir).length).toBeGreaterThan(0);
-  }, 15_000);
+  }, 30_000);
 });
