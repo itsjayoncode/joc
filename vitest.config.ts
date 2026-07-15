@@ -34,6 +34,8 @@ export default defineConfig({
             "packages/**/*.{test,spec}.tsx",
             "apps/browser-session-playground/src/**/*.{test,spec}.ts",
             "apps/browser-session-playground/src/**/*.{test,spec}.tsx",
+            "apps/object-diff-playground/src/**/*.{test,spec}.ts",
+            "apps/object-diff-playground/src/**/*.{test,spec}.tsx",
             "tests/**/*.{test,spec}.ts",
             "tests/**/*.{test,spec}.tsx",
           ],

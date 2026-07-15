@@ -1,0 +1,6 @@
+{
+  "buildCommand": "pnpm object-diff-playground:build",
+  "outputDirectory": "apps/object-diff-playground/dist",
+  "framework": "vite",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}

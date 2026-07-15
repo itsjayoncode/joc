@@ -1,43 +1,28 @@
+---
+title: Object Diff
+description: Object Diff package overview.
+---
+
 # Object Diff
 
-> Status: Planned package. No public implementation exists yet.
+`@jayoncode/object-diff` compares structured data, reports detailed changes, and generates JSON Patch operations.
 
-## Introduction
+## Install
 
-`@jayoncode/object-diff` is reserved for future object comparison and diffing utilities.
+```bash
+npm install @jayoncode/object-diff
+```
 
-## Installation
+## Quick start
 
-Installation instructions will be added when the package is ready for release.
+```ts
+import { diff } from "@jayoncode/object-diff";
 
-## Quick Start
+const result = diff({ name: "John" }, { name: "Jane" });
+console.log(result.changes);
+```
 
-Quick start examples will be added after the first implementation milestone.
+## Playground
 
-## API
+Explore comparisons live in the [Object Diff Playground](/packages/object-diff/playground/playground).
 
-API reference is not available yet.
-
-## Events
-
-Event documentation will be added if the package exposes an event model.
-
-## Examples
-
-Examples will be linked from the docs site and the playground once real behavior exists.
-
-## Configuration
-
-Configuration guidance will be added during implementation.
-
-## Browser Support
-
-Browser support guidance will be published with the first release candidate.
-
-## FAQ
-
-This section will answer adoption and behavior questions once the package exists.
-
-## Migration
-
-No migration notes exist yet.

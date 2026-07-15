@@ -3,6 +3,8 @@ import { defineConfig } from "vitepress";
 import { browserLifecycleMeta } from "./browser-lifecycle-meta.js";
 import { createBrowserLifecycleSidebarMap } from "./browser-lifecycle-sidebar.js";
 import { browserLifecycleDocVersions } from "./browser-lifecycle-versions.js";
+import { objectDiffMeta } from "./object-diff-meta.js";
+import { createObjectDiffSidebarMap } from "./object-diff-sidebar.js";
 import {
   buildOrganizationJsonLd,
   buildSoftwarePackageJsonLd,
@@ -45,6 +47,10 @@ const browserLifecycleSidebar = createBrowserLifecycleSidebarMap(
   browserLifecycleVersionLabel,
   browserLifecycleDocVersions.archives,
 );
+
+const OBJECT_DIFF_PKG = "/packages/object-diff/";
+const objectDiffVersionLabel = objectDiffMeta.versionLabel;
+const objectDiffSidebar = createObjectDiffSidebarMap(OBJECT_DIFF_PKG, objectDiffVersionLabel);
 
 export default defineConfig({
   base: docsBase,
@@ -137,6 +143,7 @@ export default defineConfig({
         },
       ],
       ...browserLifecycleSidebar,
+      ...objectDiffSidebar,
       "/guides/": [
         {
           text: "Contributor Guides",
