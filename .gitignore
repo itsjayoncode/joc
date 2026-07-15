@@ -19,6 +19,7 @@ apps/docs/docs/api/browser-lifecycle/
 apps/docs/docs/packages/browser-lifecycle/modules/
 apps/docs/docs/packages/browser-lifecycle/playground/
 apps/docs/docs/packages/browser-lifecycle/examples/index.md
+apps/docs/docs/packages/browser-lifecycle/api/
 apps/docs/docs/.vitepress/browser-lifecycle-meta.ts
 apps/docs/docs/.vitepress/docs-meta.ts
 apps/docs/docs/playground/

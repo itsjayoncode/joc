@@ -39,7 +39,7 @@ jobs:
         run: pnpm workspace:health
 
       - name: Prepare generated documentation
-        run: pnpm docs:sync
+        run: pnpm docs:prepare
 
       - name: Typecheck repository
         run: pnpm typecheck
@@ -82,7 +82,7 @@ jobs:
             echo "## Quality Gates"
             echo ""
             echo "- Workspace health"
-            echo "- Documentation sync"
+            echo "- Documentation prepare (API + sync)"
             echo "- TypeScript build validation"
             echo "- ESLint"
             echo "- Prettier"

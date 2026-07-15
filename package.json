@@ -62,7 +62,7 @@
     "workspace:health": "node ./scripts/check-workspaces.mjs && pnpm list -r --depth -1",
     "package:integrity": "node ./scripts/check-package-integrity.mjs",
     "package:blueprint": "node ./scripts/check-package-blueprint.mjs",
-    "ci:quality": "pnpm workspace:health && pnpm docs:sync && pnpm typecheck && pnpm lint && pnpm format:check && pnpm test:coverage && pnpm build && pnpm package:integrity && pnpm release:readiness && pnpm package:blueprint",
+    "ci:quality": "pnpm workspace:health && pnpm docs:prepare && pnpm typecheck && pnpm lint && pnpm format:check && pnpm test:coverage && pnpm build && pnpm package:integrity && pnpm release:readiness && pnpm package:blueprint",
     "validate": "pnpm ci:quality",
     "workspaces:list": "pnpm list -r --depth -1",
     "clean": "node -e \"const fs=require('fs'); const path=require('path'); const root=process.cwd(); const removeNames=new Set(['dist','build','lib','coverage','.turbo']); const walk=(dir)=>{ for (const entry of fs.readdirSync(dir,{withFileTypes:true})) { const full=path.join(dir,entry.name); if (entry.isDirectory()) { if (entry.name === 'node_modules' || entry.name === '.git') continue; if (removeNames.has(entry.name)) { fs.rmSync(full,{recursive:true,force:true}); continue; } walk(full); continue; } if (entry.name.endsWith('.tsbuildinfo')) fs.rmSync(full,{force:true}); } }; walk(root);\""
