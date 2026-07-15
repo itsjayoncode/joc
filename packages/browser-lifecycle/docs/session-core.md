@@ -4,13 +4,17 @@ The orchestration layer behind `createBrowserLifecycle()`.
 
 **Previous:** [Events](/packages/browser-lifecycle/modules/events) · **Next:** [Core infrastructure](/packages/browser-lifecycle/modules/core-infrastructure)
 
-::: tip Try it first
+::: tip Playground
 [Open Lifecycle playground →](/playground/browser-lifecycle/lifecycle) — inspect session phases and startup ordering.
 :::
 
-## In plain English
+## Problem → approach
 
-Session Core owns lifecycle phases (`created` → `running` → `stopped` → `disposed`), the readonly snapshot, and coordination between modules. You rarely touch it directly — but understanding phases helps debug startup issues.
+| Without session orchestration                       | Session Core                                           |
+| --------------------------------------------------- | ------------------------------------------------------ |
+| Modules start/stop in undefined order               | Phases: `created` → `running` → `stopped` → `disposed` |
+| Each module exposes different state shapes          | `getSnapshot()` — one readonly view across modules     |
+| Debugging “why didn’t my handler run?” is guesswork | Phase and module status visible on the snapshot        |
 
 ```ts
 const snapshot = lifecycle.getSnapshot();

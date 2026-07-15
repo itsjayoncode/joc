@@ -4,22 +4,20 @@ Send valid data to your API — with loading state and protection against double
 
 **Previous:** [Validation](/packages/form-intelligent/modules/validation) · **Next:** [Workflow](/packages/form-intelligent/modules/workflow)
 
-::: tip Try it first
-[Open Submission playground →](/playground/form-intelligent/submission) — simulate flaky APIs, offline queue, and double-submit.
+::: tip Playground
+[Submission explorer →](/playground/form-intelligent/submission) — flaky API simulation, offline queue, double-submit guard.
 :::
 
-## In plain English
+## Overview
 
-1. User clicks submit
-2. Form Intelligent **validates** all fields
-3. If valid, runs your **`onSubmit`** handler
-4. While the handler runs, **`isSubmitting`** is `true`
-
-You write step 3. The engine handles 1, 2, and 4.
+1. `submit()` runs field validation
+2. On success, invokes `onSubmit(values)`
+3. `isSubmitting` is `true` for the handler duration
+4. Concurrent `submit()` calls are ignored while in flight
 
 ---
 
-## Level 1 — Basic submit
+## Basics — submit handler
 
 ```ts
 const form = createForm({
@@ -42,7 +40,7 @@ const { isSubmitting } = form.getFormState();
 
 ---
 
-## Level 2 — Handle failures
+## Error handling
 
 If `onSubmit` throws, `submit()` returns `false` and `onSubmitError` runs:
 
@@ -60,7 +58,7 @@ createForm({
 
 ---
 
-## Level 3 — Double-submit guard
+## Double-submit guard
 
 Calling `submit()` again while the first is still running returns `false` — your handler is **not** called twice.
 

@@ -1,77 +1,54 @@
 # Core concepts
 
-A 3-minute mental model before you dive into code.
+Terminology and data flow for `@jayoncode/object-diff`.
 
 **Previous:** [Overview](/packages/object-diff/) · **Next:** [Tutorial](/packages/object-diff/modules/getting-started)
 
-## Snapshots in, changes out
+## Problem → approach
 
-Object Diff compares two **snapshots** of data — usually a "before" and "after" state:
+| Manual comparison                                                                  | With Object Diff                                    |
+| ---------------------------------------------------------------------------------- | --------------------------------------------------- |
+| `JSON.stringify(a) !== JSON.stringify(b)` — no paths, false positives on key order | `diff(a, b)` — typed change records with paths      |
+| Hand-rolled patch objects for every API                                            | `patch(result)` — RFC 6902 operations from any diff |
+| Full re-send of large state on every edit                                          | `applyPatch(target, ops)` — minimal updates         |
+| Custom formatters for audit UIs                                                    | `serialize(result, "markdown" \| "json" \| …)`      |
+
+## Snapshots and change records
 
 ```ts
 const before = { user: { name: "John" }, count: 1 };
 const after = { user: { name: "Jane" }, count: 1 };
 
 const result = diff(before, after);
+// result.changes[] — path, type (add|update|remove), value, oldValue
 ```
 
-The result contains **change records** — each describes one mutation (update, add, remove) with a path and values.
+## API map
 
-## How pieces connect
+| API                         | Returns                   | Use when                         |
+| --------------------------- | ------------------------- | -------------------------------- |
+| `diff(a, b)`                | Change records + metadata | Audit, debug, UI diff viewers    |
+| `hasChanges(a, b)`          | `boolean`                 | Dirty flags, skip expensive work |
+| `compare(a, b)`             | Equality + path detail    | Tests                            |
+| `patch(diffResult)`         | JSON Patch ops            | Network sync, undo stacks        |
+| `applyPatch(target, ops)`   | New object                | Apply remote or local updates    |
+| `serialize(result, format)` | String                    | Logs, exports, docs              |
 
-```mermaid
-flowchart TB
-  subgraph Input
-    A[Object A — before]
-    B[Object B — after]
-  end
+## Change record fields
 
-  subgraph Engine["Object Diff"]
-    D[diff / compare]
-    P[patch]
-    S[serialize]
-  end
+| Field      | Meaning                               |
+| ---------- | ------------------------------------- |
+| `path`     | Dot/bracket path (e.g. `user.name`)   |
+| `type`     | `update`, `add`, or `remove`          |
+| `value`    | Value after change                    |
+| `oldValue` | Value before change (updates/removes) |
 
-  subgraph Output
-    C[Change records]
-    J[JSON Patch ops]
-    M[Markdown / JSON]
-  end
+## Next steps
 
-  A --> D
-  B --> D
-  D --> C
-  C --> P
-  P --> J
-  C --> S
-  S --> M
-```
+| Goal               | Guide                                                     |
+| ------------------ | --------------------------------------------------------- |
+| First integration  | [Tutorial](/packages/object-diff/modules/getting-started) |
+| Diff options       | [Diffing](/packages/object-diff/modules/diff)             |
+| Patch apply/revert | [Patching](/packages/object-diff/modules/patch)           |
 
-| API                         | Plain English              | When to use                       |
-| --------------------------- | -------------------------- | --------------------------------- |
-| `diff(a, b)`                | Full structured comparison | Debugging, audit logs             |
-| `hasChanges(a, b)`          | Quick boolean check        | Dirty flags, skip re-render       |
-| `compare(a, b)`             | Equality with path details | Testing                           |
-| `patch(diffResult)`         | RFC 6902 operations        | Send minimal updates over network |
-| `applyPatch(target, ops)`   | Apply ops to an object     | Sync remote state                 |
-| `serialize(result, format)` | Pretty output              | Docs, CLI, UI                     |
-
-## Change record anatomy
-
-Each change has:
-
-- **path** — where in the object (e.g. `user.name`)
-- **type** — `update`, `add`, or `remove`
-- **value** / **oldValue** — new and previous data
-
-## What comes next?
-
-| If you want to…           | Go to                                                     |
-| ------------------------- | --------------------------------------------------------- |
-| Run your first comparison | [Tutorial](/packages/object-diff/modules/getting-started) |
-| Master diff options       | [Diffing](/packages/object-diff/modules/diff)             |
-| Generate & apply patches  | [Patching](/packages/object-diff/modules/patch)           |
-
-::: tip Try it
-Open the [Diff explorer](/playground/object-diff/diff) — edit JSON on both sides and watch changes appear live.
-:::
+[Diff explorer →](/playground/object-diff/diff)

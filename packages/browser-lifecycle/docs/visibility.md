@@ -4,13 +4,17 @@ React when the user switches tabs or minimizes the window.
 
 **Previous:** [Tutorial](/packages/browser-lifecycle/modules/getting-started) · **Next:** [Events](/packages/browser-lifecycle/modules/events)
 
-::: tip Try it first
+::: tip Playground
 [Open Visibility playground →](/playground/browser-lifecycle/visibility) — switch tabs and watch `page:visible` / `page:hidden` events.
 :::
 
-## In plain English
+## Problem → approach
 
-The Visibility module reads the Page Visibility API and emits typed events when the tab becomes visible or hidden. Use it to pause video, stop polling, or save drafts.
+| Without visibility module                              | With visibility events                                       |
+| ------------------------------------------------------ | ------------------------------------------------------------ |
+| Raw `document.visibilityState` checks in every feature | `page:visible` / `page:hidden` on the lifecycle bus          |
+| Polling and media keep running in background tabs      | Central handlers pause video, timers, and network work       |
+| Hard to test or mock browser globals                   | Module abstracts the Page Visibility API behind typed events |
 
 ```ts
 lifecycle.on("page:hidden", () => pauseVideo());

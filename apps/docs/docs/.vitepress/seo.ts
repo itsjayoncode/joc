@@ -39,10 +39,13 @@ export function resolveDocsBasePath(assetPath: string): string {
   return normalizedBase === "/" ? `/${normalizedAsset}` : `${normalizedBase}${normalizedAsset}`;
 }
 
-/** Site-relative live playground URL (opens as a separate SPA, not a VitePress route). */
+/**
+ * VitePress-internal path to a bundled playground SPA.
+ * Do not prepend VITE_DOCS_BASE — VitePress `withBase()` adds it for sidebar and markdown links.
+ */
 export function resolvePlaygroundPath(playgroundName: string): string {
   const slug = playgroundName.replace(/^\/|\/$/g, "");
-  return resolveDocsBasePath(`playground/${slug}/`);
+  return `/playground/${slug}/`;
 }
 
 export function buildOrganizationJsonLd(siteUrl: string): string {

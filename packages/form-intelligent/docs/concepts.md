@@ -1,84 +1,54 @@
 # Core concepts
 
-A 3-minute mental model before you dive into code.
+Terminology and architecture for `@jayoncode/form-intelligent`.
 
 **Previous:** [Overview](/packages/form-intelligent/) · **Next:** [Tutorial](/packages/form-intelligent/modules/getting-started)
 
-## One object runs the show
+## Problem → approach
 
-Everything starts with `createForm()`. You get back a **form instance** — a single object that holds:
+| Without a form orchestration layer                                             | With Form Intelligent                               |
+| ------------------------------------------------------------------------------ | --------------------------------------------------- |
+| Validation, submit guards, and autosave spread across `useEffect` and handlers | One `createForm()` instance owns the workflow       |
+| Field state duplicated between UI and store                                    | `getFormState()` is the single source of truth      |
+| Framework-specific hooks lock you to one renderer                              | `field().bind()` is headless; adapters are optional |
+| Double-submit and in-flight race conditions handled ad hoc                     | `submit()` + `isSubmitting` built in                |
 
-- **Values** — what the user typed
-- **Errors** — what is wrong per field
-- **Flags** — touched, dirty, visited (for UX)
-- **Workflow** — autosave, drafts, wizard step (optional)
+## Form instance
 
-```ts
-const form = createForm({ initialValues: { email: "" } });
-```
+`createForm(options)` returns one instance per logical form:
 
-Think of it as a small state machine for your form — not a React component.
+| State        | Access                                                   |
+| ------------ | -------------------------------------------------------- |
+| Values       | `getFormState().values`                                  |
+| Field errors | `getFormState().errors`                                  |
+| Meta flags   | `touched`, `dirty`, `visited`, `isValid`, `isSubmitting` |
+| Updates      | `subscribe(listener)`                                    |
 
-## How pieces connect
+## API map
 
-```mermaid
-flowchart TB
-  subgraph UI["Your UI (any framework)"]
-    Input[Input / select / textarea]
-  end
+| Concept   | Responsibility           | API                          |
+| --------- | ------------------------ | ---------------------------- |
+| Field     | Path in the value tree   | `form.field("email")`        |
+| Binding   | Headless input contract  | `field().bind()`             |
+| Validator | `true` or error message  | `validators: { path: [fn] }` |
+| Submit    | Async handler when valid | `onSubmit`                   |
+| Workflow  | Autosave, draft, wizard  | `workflow: { … }`            |
 
-  subgraph FI["Form Intelligent"]
-    Field[field path + bind]
-    Validate[validators]
-    Submit[onSubmit handler]
-    Workflow[autosave / wizard / draft]
-  end
+## Field meta flags
 
-  Input <-->|onChange / value| Field
-  Field --> Validate
-  Validate -->|errors| Input
-  Field --> Submit
-  Field --> Workflow
-```
+| Flag      | Set when         | Typical use          |
+| --------- | ---------------- | -------------------- |
+| `touched` | Blur after focus | Defer error display  |
+| `dirty`   | Value ≠ initial  | Unsaved indicator    |
+| `visited` | Focus received   | Analytics, help text |
 
-| Piece     | Plain English                     | API                                        |
-| --------- | --------------------------------- | ------------------------------------------ |
-| Field     | One input in your form            | `form.field("email")`                      |
-| Binding   | Wire an input without a framework | `field().bind()`                           |
-| Validator | Rule that returns an error or OK  | `validators: { email: [required, email] }` |
-| Submit    | Your API call when form is valid  | `onSubmit: async (values) => …`            |
-| Workflow  | Extra orchestration on top        | `workflow: { autosave, draft, wizard }`    |
+## Next steps
 
-## Field state flags (for better UX)
+| Goal                    | Guide                                                          |
+| ----------------------- | -------------------------------------------------------------- |
+| Integration walkthrough | [Tutorial](/packages/form-intelligent/modules/getting-started) |
+| Validation              | [Validation](/packages/form-intelligent/modules/validation)    |
+| Submit lifecycle        | [Submission](/packages/form-intelligent/modules/submission)    |
+| Autosave / wizard       | [Workflow](/packages/form-intelligent/modules/workflow)        |
 
-| Flag      | Meaning                    | Typical use                |
-| --------- | -------------------------- | -------------------------- |
-| `touched` | User left the field        | Show error only after blur |
-| `dirty`   | Value changed from default | "Unsaved changes" warning  |
-| `visited` | User focused the field     | Analytics or help text     |
-
-Inspect all flags live in the [State explorer](/playground/form-intelligent/state).
-
-## Headless = you render, we orchestrate
-
-Form Intelligent **does not** ship `<TextField>` components.
-
-```ts
-const binding = form.field("email").bind();
-// binding.name, binding.value, binding.onChange, binding.onBlur
-```
-
-You pass those to whatever UI you already use. Framework adapters (React, Vue, etc.) are optional sugar on top.
-
-## What comes next?
-
-| If you want to…                  | Go to                                                          |
-| -------------------------------- | -------------------------------------------------------------- |
-| Write your first form end-to-end | [Tutorial](/packages/form-intelligent/modules/getting-started) |
-| Add validation rules             | [Validation](/packages/form-intelligent/modules/validation)    |
-| Handle submit + loading          | [Submission](/packages/form-intelligent/modules/submission)    |
-| Add autosave or wizards          | [Workflow](/packages/form-intelligent/modules/workflow)        |
-
-::: tip Try it
-Open the [State explorer](/playground/form-intelligent/state), edit a field, and watch values + flags update in real time.
-:::
+Inspect live state: [State explorer](/playground/form-intelligent/state)

@@ -4,17 +4,17 @@ Use Form Intelligent with your existing UI stack — today with headless HTML, t
 
 **Previous:** [Plugins](/packages/form-intelligent/modules/plugins) · **Back to:** [Overview](/packages/form-intelligent/)
 
-::: tip Try it first
-[Open Adapters playground →](/playground/form-intelligent/adapters) — see what's available now vs planned.
+::: tip Playground
+[Adapters explorer →](/playground/form-intelligent/adapters) — current integrations and planned bridges.
 :::
 
-## In plain English
+## Overview
 
-Form Intelligent **does not register fields for you** (that's React Hook Form / TanStack Form territory). Adapters translate between your framework and `createForm()`.
+Adapters connect `createForm()` to framework-specific field registration or schema tooling. The core package remains headless; adapters ship as optional integration layers.
 
 ---
 
-## Available today — headless HTML
+## Headless HTML (built-in)
 
 Works in any environment. No extra package:
 
@@ -42,15 +42,15 @@ const binding = form.field("email").bind();
 
 ---
 
-## How to think about it
+## Problem → approach
 
-```mermaid
-flowchart LR
-  RHF[React Hook Form / TanStack] -->|field registration| UI[Your components]
-  FI[Form Intelligent] -->|workflow + submit + autosave| UI
-```
+| Layer                           | Responsibility                                                                     |
+| ------------------------------- | ---------------------------------------------------------------------------------- |
+| React Hook Form / TanStack Form | Field registration, controlled inputs, local field state                           |
+| Form Intelligent                | Workflow orchestration — validation timing, submit lifecycle, autosave, multi-step |
+| Your components                 | Render UI; wire `bind()` or framework hooks to either stack                        |
 
-Use **both** when you want RHF ergonomics **and** workflow orchestration.
+Use **both** when you want framework field ergonomics **and** centralized workflow orchestration — not one package trying to own everything.
 
 ---
 

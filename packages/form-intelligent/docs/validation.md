@@ -4,26 +4,23 @@ Check user input before submit — with built-in rules, custom logic, or async A
 
 **Previous:** [Tutorial](/packages/form-intelligent/modules/getting-started) · **Next:** [Submission](/packages/form-intelligent/modules/submission)
 
-::: tip Try it first
-[Open Validation playground →](/playground/form-intelligent/validation) — toggle timing, trigger async checks, and watch the field inspector.
+::: tip Playground
+[Validation explorer →](/playground/form-intelligent/validation) — timing modes, async validators, field inspector.
 :::
 
-## In plain English
+## Overview
 
-A **validator** answers one question: _is this value OK?_
-
-- Returns `true` → valid
-- Returns a `string` → show that message as the error
+Validators run per field (or form) and return `true` when valid or a `string` error message. Multiple validators on one field run in order; the first failure wins.
 
 ```ts
 validators: {
-  email: [required, email],  // run in order; first error wins
+  email: [required, email],
 }
 ```
 
 ---
 
-## Level 1 — Built-in validators
+## Basics — built-in validators
 
 Good for most forms. Import what you need:
 
@@ -50,7 +47,7 @@ createForm({
 
 ---
 
-## Level 2 — When to validate
+## Validation timing
 
 Control **timing** with `validateOn`:
 
@@ -76,7 +73,7 @@ form.field("username", { validateOn: "onChange", validators: [required] });
 
 ---
 
-## Level 3 — Custom & cross-field rules
+## Custom and cross-field rules
 
 Compare fields using `context.values`:
 
@@ -92,7 +89,7 @@ validators: {
 
 ---
 
-## Level 4 — Async validation
+## Async validation
 
 Return a `Promise` for server checks (username taken, etc.):
 
