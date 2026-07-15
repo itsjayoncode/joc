@@ -44,4 +44,13 @@ describe("release engineering foundation", () => {
     expect(logger.private).toBe(true);
     expect(browserLifecycle.private).not.toBe(true);
   });
+
+  it("archives browser-lifecycle docs before changeset version bumps", () => {
+    const rootPackage = JSON.parse(readFileSync(path.join(rootDir, "package.json"), "utf8")) as {
+      scripts: Record<string, string>;
+    };
+
+    expect(rootPackage.scripts["release:version"]).toContain("archive-package-docs.mjs");
+    expect(rootPackage.scripts["release:version"]).toContain("--before-release");
+  });
 });
