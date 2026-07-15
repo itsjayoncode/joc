@@ -70,4 +70,3 @@ Copy-ready examples that use `createBrowserLifecycle()` for polling pause, retry
 ## Interactive Playground
 
 Explore this topic live in the [Connectivity Playground](http://127.0.0.1:4273/connectivity).
-

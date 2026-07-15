@@ -40,4 +40,3 @@ description: Interactive playground documentation for Browser Compatibility.
 | Dark mode    | Pass   | Pass    | Pass   | Pass |
 
 Manual verification performed during Phase 3.18 release validation. Automated cross-browser CI is not yet configured.
-

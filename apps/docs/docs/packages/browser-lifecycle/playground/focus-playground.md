@@ -80,4 +80,3 @@ Copy-ready examples that use `createBrowserLifecycle()` for:
 ## Interactive Playground
 
 Explore this topic live in the [Focus Playground](http://127.0.0.1:4273/focus).
-
