@@ -157,8 +157,8 @@ export function createBrowserLifecycleSidebarMap(
   pkgBase: string,
   currentVersionLabel: string,
   archives: ReadonlyArray<{ version: string; label: string }>,
-): DefaultTheme.Sidebar {
-  const sidebar: DefaultTheme.Sidebar = {
+): Record<string, DefaultTheme.SidebarItem[]> {
+  const sidebar: Record<string, DefaultTheme.SidebarItem[]> = {
     [`${pkgBase}/`]: createBrowserLifecycleSidebar(pkgBase, currentVersionLabel),
   };
 

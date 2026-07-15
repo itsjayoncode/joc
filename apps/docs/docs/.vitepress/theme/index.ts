@@ -1,8 +1,8 @@
 import DefaultTheme from "vitepress/theme";
 
+import ArchivedDocsBanner from "./components/ArchivedDocsBanner.vue";
 import BrowserLifecycleVersion from "./components/BrowserLifecycleVersion.vue";
 import DocsVersionSwitcher from "./components/DocsVersionSwitcher.vue";
-import ArchivedDocsBanner from "./components/ArchivedDocsBanner.vue";
 import HomeBelowFold from "./components/HomeBelowFold.vue";
 import HomeFx from "./components/HomeFx.vue";
 import HomePackageCatalog from "./components/HomePackageCatalog.vue";

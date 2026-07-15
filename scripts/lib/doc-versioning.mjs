@@ -49,14 +49,17 @@ export function writeBrowserLifecycleVersionsManifest(manifest) {
 }
 
 export function archiveDirectoryName(version) {
+  // Keep in sync with scripts/doc-versioning-policy.ts
   return `v${version}`;
 }
 
 export function archiveBasePath(version) {
+  // Keep in sync with scripts/doc-versioning-policy.ts
   return `/packages/browser-lifecycle/${archiveDirectoryName(version)}`;
 }
 
 export function shouldArchiveForBumpType(currentVersion, bumpType, archivePolicy = "minor") {
+  // Keep in sync with scripts/doc-versioning-policy.ts
   if (!bumpType || bumpType === "none") {
     return false;
   }
