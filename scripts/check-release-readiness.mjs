@@ -4,7 +4,10 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
-const PUBLISHABLE_PACKAGES = new Set(["@jayoncode/browser-lifecycle"]);
+const PUBLISHABLE_PACKAGES = new Set([
+  "@jayoncode/browser-lifecycle",
+  "@jayoncode/object-diff",
+]);
 
 const requiredFiles = [
   ".changeset/config.json",
@@ -106,7 +109,7 @@ try {
       );
     }
 
-    if (manifest.name !== "@jayoncode/browser-lifecycle" && manifest.private !== true) {
+    if (!isPublishable && manifest.private !== true) {
       failures.push(
         `Non-publishable package ${manifest.name} must be marked private until it is ready for npm publication.`,
       );

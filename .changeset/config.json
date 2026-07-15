@@ -26,7 +26,6 @@
     "@jayoncode/keyboard",
     "@jayoncode/layers",
     "@jayoncode/logger",
-    "@jayoncode/object-diff",
     "@jayoncode/permissions",
     "@jayoncode/queue",
     "@jayoncode/request",

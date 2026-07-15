@@ -29,7 +29,7 @@ export const jocPackages: JocPackage[] = [
     npmName: "@jayoncode/object-diff",
     tagline:
       "Deep object comparison and structural diffing for state snapshots and change tracking.",
-    status: "coming-soon",
+    status: "live",
     docsLink: "/packages/object-diff/",
     accent: "violet",
     icon: "≠",
