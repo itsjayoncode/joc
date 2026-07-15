@@ -1,6 +1,7 @@
 {
   "name": "joc",
   "private": true,
+  "description": "JayOnCode (JOC) — TypeScript monorepo for browser libraries, docs, and interactive tooling. Published: @jayoncode/browser-lifecycle.",
   "type": "module",
   "packageManager": "pnpm@10.13.1",
   "workspaces": [

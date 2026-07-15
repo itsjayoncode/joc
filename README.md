@@ -1,6 +1,19 @@
-# JOC
+# JOC — JayOnCode TypeScript Libraries
 
-JOC, short for JayOnCode, is the home of a growing ecosystem of focused JavaScript and TypeScript libraries designed to stay practical, composable, and maintainable over time.
+[![npm](https://img.shields.io/npm/v/@jayoncode/browser-lifecycle.svg)](https://www.npmjs.com/package/@jayoncode/browser-lifecycle)
+[![docs](https://img.shields.io/badge/docs-itsjayoncode.github.io-2563eb)](https://itsjayoncode.github.io/joc/)
+[![CI](https://github.com/itsjayoncode/joc/actions/workflows/ci.yml/badge.svg)](https://github.com/itsjayoncode/joc/actions/workflows/ci.yml)
+[![license](https://img.shields.io/github/license/itsjayoncode/joc)](https://github.com/itsjayoncode/joc/blob/master/LICENSE)
+
+**JOC** (JayOnCode) is an open source monorepo of focused **TypeScript browser libraries**. The first published package, [`@jayoncode/browser-lifecycle`](https://www.npmjs.com/package/@jayoncode/browser-lifecycle), provides a typed API for **page visibility**, **focus**, **connectivity**, **idle detection**, **cross-tab sync**, and **plugin-based session diagnostics**.
+
+```bash
+npm install @jayoncode/browser-lifecycle
+```
+
+- **Documentation:** https://itsjayoncode.github.io/joc/
+- **Repository:** https://github.com/itsjayoncode/joc
+- **npm scope:** `@jayoncode/*`
 
 ## Mission
 
@@ -23,12 +36,13 @@ Build a professional open source ecosystem of independently installable packages
 
 ## Current Status
 
-JOC has completed **Phase 1** (repository foundation through package engineering standards) and is actively building:
+JOC has completed **Phase 1** (repository foundation through package engineering standards) and shipped:
 
-- **Phase 2:** `@jayoncode/browser-lifecycle` — modules through cross-tab, plugins, and diagnostics are implemented with tests.
-- **Phase 3:** `apps/browser-session-playground` — **v1.0.0 release candidate** with all module playgrounds, explorer tools, documentation integration, and deployment guides.
+- **Phase 2:** [`@jayoncode/browser-lifecycle`](https://www.npmjs.com/package/@jayoncode/browser-lifecycle) **v0.1.1+** on npm — visibility, focus, connectivity, idle, lifecycle, cross-tab, plugins, and diagnostics
+- **Phase 3:** [`apps/browser-session-playground`](./apps/browser-session-playground/) **v1.0.0** — interactive module playgrounds, explorer tools, and deployment guides
+- **Docs site:** https://itsjayoncode.github.io/joc/ — guides, API reference, patterns, and FAQs
 
-No public npm releases have been published yet. The monorepo, CI quality gates, docs platform, and release tooling are operational.
+The monorepo, CI quality gates, docs platform, and npm release tooling are operational.
 
 ## Package Engineering Standards
 

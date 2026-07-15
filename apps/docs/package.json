@@ -8,7 +8,7 @@
     "docs:api": "typedoc --options ../../packages/browser-lifecycle/typedoc.json",
     "docs:sync": "node ../../scripts/sync-documentation.mjs",
     "docs:prepare": "pnpm docs:api && pnpm docs:sync",
-    "docs:dev": "pnpm docs:prepare && vitepress dev docs --host 127.0.0.1 --port 4175",
+    "docs:dev": "VITE_DOCS_PLAYGROUND_URL=http://127.0.0.1:4273 pnpm docs:prepare && vitepress dev docs --host 127.0.0.1 --port 4175",
     "docs:build": "pnpm docs:prepare && vitepress build docs",
     "docs:preview": "vitepress preview docs --host 127.0.0.1 --port 4176"
   },

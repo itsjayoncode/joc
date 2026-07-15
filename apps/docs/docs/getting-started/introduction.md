@@ -1,6 +1,11 @@
+---
+title: Introduction to JOC and JayOnCode
+description: Learn what JOC is, how the JayOnCode monorepo is organized, and where to start with @jayoncode/browser-lifecycle documentation.
+---
+
 # Introduction
 
-JOC, short for JayOnCode, is the repository for a future ecosystem of focused JavaScript and TypeScript libraries.
+JOC (JayOnCode) is an open source TypeScript monorepo for focused browser libraries. The first published package, [`@jayoncode/browser-lifecycle`](https://www.npmjs.com/package/@jayoncode/browser-lifecycle), helps you manage browser session lifecycle events such as page visibility, focus, connectivity, idle detection, and cross-tab coordination.
 
 ## What makes JOC different
 

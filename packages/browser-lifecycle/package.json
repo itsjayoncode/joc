@@ -1,8 +1,8 @@
 {
   "name": "@jayoncode/browser-lifecycle",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": false,
-  "description": "Typed browser session lifecycle for visibility, focus, idle, connectivity, cross-tab sync, and plugins — framework-agnostic and SSR-safe.",
+  "description": "TypeScript browser session lifecycle library for page visibility, focus, idle detection, connectivity, cross-tab sync, and plugins. Framework-agnostic and SSR-safe.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
   "type": "module",
@@ -45,7 +45,17 @@
     "session",
     "typescript",
     "framework-agnostic",
-    "ssr"
+    "react",
+    "vue",
+    "angular",
+    "svelte",
+    "nextjs",
+    "web",
+    "frontend",
+    "document-visibility",
+    "online-offline",
+    "leader-election",
+    "tab-sync"
   ],
   "publishConfig": {
     "access": "public"
