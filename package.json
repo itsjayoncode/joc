@@ -44,7 +44,7 @@
     "release:readiness": "node ./scripts/check-release-readiness.mjs",
     "release:check": "pnpm release:readiness && pnpm changeset:status",
     "release": "pnpm release:check && pnpm release:version",
-    "release:publish": "node ./scripts/publish-future-safe.mjs",
+    "release:publish": "pnpm build:packages && changeset publish",
     "docs:api": "pnpm --filter @jayoncode/docs docs:api",
     "docs:sync": "pnpm --filter @jayoncode/docs docs:sync",
     "docs:prepare": "pnpm --filter @jayoncode/docs docs:prepare",
