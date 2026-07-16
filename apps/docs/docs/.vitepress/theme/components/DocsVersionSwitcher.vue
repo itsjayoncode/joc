@@ -5,9 +5,11 @@ import { useRoute, useRouter } from "vitepress";
 import { browserLifecycleDocVersions } from "../../browser-lifecycle-versions.js";
 import { formIntelligentDocVersions } from "../../form-intelligent-versions.js";
 import { objectDiffDocVersions } from "../../object-diff-versions.js";
+import { useDocsPath } from "../normalize-docs-path.js";
 
 const route = useRoute();
 const router = useRouter();
+const { normalizeDocsPath } = useDocsPath();
 
 const DOC_VERSION_PACKAGES = [
   browserLifecycleDocVersions,
@@ -15,10 +17,12 @@ const DOC_VERSION_PACKAGES = [
   objectDiffDocVersions,
 ] as const;
 
+const docsPath = computed(() => normalizeDocsPath(route.path));
+
 const activePackage = computed(() => {
-  const matches = DOC_VERSION_PACKAGES.filter((pkg) => route.path.startsWith(pkg.basePath)).sort(
-    (left, right) => right.basePath.length - left.basePath.length,
-  );
+  const matches = DOC_VERSION_PACKAGES.filter((pkg) =>
+    docsPath.value.startsWith(pkg.basePath),
+  ).sort((left, right) => right.basePath.length - left.basePath.length);
 
   return matches[0] ?? null;
 });
@@ -42,7 +46,7 @@ const activeVersion = computed(() => {
     return "";
   }
 
-  const match = route.path.match(pattern);
+  const match = docsPath.value.match(pattern);
   return match?.[1]?.slice(1) ?? pkg.currentVersion;
 });
 
@@ -73,8 +77,9 @@ function mapPathToVersion(pathname: string, targetVersion: string): string {
     return pathname;
   }
 
+  const normalized = normalizeDocsPath(pathname);
   const escaped = pkg.basePath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const suffix = pathname.replace(new RegExp(`^${escaped}(?:/v[\\d.]+)?`), "");
+  const suffix = normalized.replace(new RegExp(`^${escaped}(?:/v[\\d.]+)?`), "");
 
   if (targetVersion === pkg.currentVersion) {
     return `${pkg.basePath}${suffix}`;
@@ -86,7 +91,7 @@ function mapPathToVersion(pathname: string, targetVersion: string): string {
 function onVersionChange(event: Event) {
   const select = event.target as HTMLSelectElement;
   const nextVersion = select.value;
-  const nextPath = mapPathToVersion(route.path, nextVersion);
+  const nextPath = mapPathToVersion(docsPath.value, nextVersion);
   router.go(nextPath);
 }
 </script>

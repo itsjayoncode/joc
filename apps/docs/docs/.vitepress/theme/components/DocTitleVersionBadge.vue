@@ -5,6 +5,7 @@ import { onContentUpdated, useRoute } from "vitepress";
 import { browserLifecycleMeta } from "../../browser-lifecycle-meta.js";
 import { formIntelligentMeta } from "../../form-intelligent-meta.js";
 import { objectDiffMeta } from "../../object-diff-meta.js";
+import { useDocsPath } from "../normalize-docs-path.js";
 
 const PACKAGE_OVERVIEW_META = {
   "browser-lifecycle": browserLifecycleMeta,
@@ -13,9 +14,10 @@ const PACKAGE_OVERVIEW_META = {
 } as const;
 
 const route = useRoute();
+const { normalizeDocsPath } = useDocsPath();
 
 function injectTitleVersionBadge() {
-  const match = route.path.match(/^\/packages\/([^/]+)\/?$/);
+  const match = normalizeDocsPath(route.path).match(/^\/packages\/([^/]+)\/?$/);
   if (!match) {
     return;
   }
