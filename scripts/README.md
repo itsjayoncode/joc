@@ -63,21 +63,27 @@ Hub page: `/playground/` (lists all three). Form Intelligent production URL:
 
 ### Archived package documentation
 
-Browser Lifecycle docs can be frozen per release under:
+Publishable packages keep frozen docs per release (version dropdown on package pages):
 
-- latest: `/packages/browser-lifecycle/`
-- archived: `/packages/browser-lifecycle/v{version}/`
+| Package           | Latest                         | Archives                                  |
+| ----------------- | ------------------------------ | ----------------------------------------- |
+| Browser Lifecycle | `/packages/browser-lifecycle/` | `/packages/browser-lifecycle/v{version}/` |
+| Object Diff       | `/packages/object-diff/`       | `/packages/object-diff/v{version}/`       |
+| Form Intelligent  | `/packages/form-intelligent/`  | `/packages/form-intelligent/v{version}/`  |
 
-Archives are stored in `apps/docs/archives/browser-lifecycle/` and staged into the VitePress tree during `docs:prepare`.
+Archives live under `apps/docs/archives/<package>/` and are staged into the VitePress tree during `docs:prepare`. Manifests: `apps/docs/doc-versions/<package>.json`.
 
 ```bash
-# Snapshot the current browser-lifecycle docs (manual or release hook)
+# Snapshot current docs for all versioned packages (or one with --package)
 pnpm docs:archive
+pnpm docs:archive -- --package form-intelligent --bootstrap
 
-# Release versioning archives automatically when a minor/major bump is pending
+# Release versioning archives automatically when a qualifying bump is pending
 pnpm release:version
 ```
 
-Generated output is gitignored under `apps/docs/docs/packages/browser-lifecycle/` (`api/`, `modules/`, `playground/`, `examples/index.md`, `v*/`) and `.vitepress/*-meta.ts`, `.vitepress/browser-lifecycle-versions.ts`. CI and local validation always run `docs:prepare` before typecheck and formatting checks.
+Archive policy (`archivePolicy: "minor"`): on `0.x`, archive on minor/major; on `1.x+`, archive on major only (patches never archive).
+
+Generated output is gitignored under each package’s `v*/` tree and `.vitepress/*-versions.ts` / `*-meta.ts`. CI and local validation always run `docs:prepare` before typecheck and formatting checks.
 
 Set `DOCS_SYNC_SKIP_QUALITY=1` only for fast integration tests that verify generation output without running format/lint.

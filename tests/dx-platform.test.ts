@@ -149,16 +149,23 @@ describe("developer experience platform", () => {
     expect(docsPackage).toContain('"docs:prepare"');
   });
 
-  it("supports versioned browser-lifecycle documentation archives", () => {
-    const manifestPath = path.join(rootDir, "apps/docs/doc-versions/browser-lifecycle.json");
-    const config = readText("apps/docs/docs/.vitepress/config.ts");
+  it("supports versioned documentation archives for publishable packages", () => {
     const rootPackage = readText("package.json");
     const versioningLib = path.join(rootDir, "scripts/lib/doc-versioning.mjs");
+    const config = readText("apps/docs/docs/.vitepress/config.ts");
 
-    expect(existsSync(manifestPath)).toBe(true);
+    for (const packageId of ["browser-lifecycle", "object-diff", "form-intelligent"]) {
+      const manifestPath = path.join(rootDir, `apps/docs/doc-versions/${packageId}.json`);
+      expect(existsSync(manifestPath)).toBe(true);
+    }
+
     expect(existsSync(versioningLib)).toBe(true);
     expect(config).toContain("browser-lifecycle-versions");
+    expect(config).toContain("object-diff-versions");
+    expect(config).toContain("form-intelligent-versions");
     expect(config).toContain("createBrowserLifecycleSidebarMap");
+    expect(config).toContain("createObjectDiffSidebarMap");
+    expect(config).toContain("createFormIntelligentSidebarMap");
     expect(rootPackage).toContain('"docs:archive"');
     expect(rootPackage).toContain("archive-package-docs.mjs --before-release");
   });

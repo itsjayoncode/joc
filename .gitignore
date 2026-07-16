@@ -27,9 +27,13 @@ apps/docs/docs/packages/browser-lifecycle/playground/
 apps/docs/docs/packages/browser-lifecycle/examples/index.md
 apps/docs/docs/packages/browser-lifecycle/api/
 apps/docs/docs/packages/browser-lifecycle/v*/
+apps/docs/docs/packages/object-diff/v*/
+apps/docs/docs/packages/form-intelligent/v*/
 apps/docs/docs/.vitepress/browser-lifecycle-meta.ts
 apps/docs/docs/.vitepress/docs-meta.ts
 apps/docs/docs/.vitepress/browser-lifecycle-versions.ts
+apps/docs/docs/.vitepress/object-diff-versions.ts
+apps/docs/docs/.vitepress/form-intelligent-versions.ts
 apps/docs/docs/packages/object-diff/modules/
 apps/docs/docs/packages/object-diff/playground/
 apps/docs/docs/packages/object-diff/api/

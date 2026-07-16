@@ -2,8 +2,8 @@ export function archiveDirectoryName(version: string): string {
   return `v${version}`;
 }
 
-export function archiveBasePath(version: string): string {
-  return `/packages/browser-lifecycle/${archiveDirectoryName(version)}`;
+export function archiveBasePath(packageId: string, version: string): string {
+  return `/packages/${packageId}/${archiveDirectoryName(version)}`;
 }
 
 export function shouldArchiveForBumpType(

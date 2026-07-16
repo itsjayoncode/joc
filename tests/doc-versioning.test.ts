@@ -7,9 +7,13 @@ import {
 } from "../scripts/doc-versioning-policy.js";
 
 describe("documentation versioning", () => {
-  it("maps archive paths under the browser-lifecycle package route", () => {
+  it("maps archive paths under package routes", () => {
     expect(archiveDirectoryName("0.1.2")).toBe("v0.1.2");
-    expect(archiveBasePath("0.1.2")).toBe("/packages/browser-lifecycle/v0.1.2");
+    expect(archiveBasePath("browser-lifecycle", "0.1.2")).toBe(
+      "/packages/browser-lifecycle/v0.1.2",
+    );
+    expect(archiveBasePath("form-intelligent", "1.0.0")).toBe("/packages/form-intelligent/v1.0.0");
+    expect(archiveBasePath("object-diff", "0.2.0")).toBe("/packages/object-diff/v0.2.0");
   });
 
   it("archives pre-1.0 docs on minor and major bumps", () => {

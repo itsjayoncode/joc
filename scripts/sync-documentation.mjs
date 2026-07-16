@@ -23,7 +23,7 @@ import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
-import { syncBrowserLifecycleVersionsMeta } from "./lib/doc-versioning.mjs";
+import { syncAllPackageVersionsMeta } from "./lib/doc-versioning.mjs";
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const docsRoot = path.join(rootDir, "apps/docs/docs");
@@ -512,6 +512,8 @@ function formatGeneratedFiles() {
     path.join(docsRoot, ".vitepress/browser-lifecycle-meta.ts"),
     path.join(docsRoot, ".vitepress/docs-meta.ts"),
     path.join(docsRoot, ".vitepress/browser-lifecycle-versions.ts"),
+    path.join(docsRoot, ".vitepress/object-diff-versions.ts"),
+    path.join(docsRoot, ".vitepress/form-intelligent-versions.ts"),
     path.join(docsRoot, ".vitepress/object-diff-meta.ts"),
     path.join(docsRoot, ".vitepress/form-intelligent-meta.ts"),
   ];
@@ -532,6 +534,8 @@ function lintGeneratedMetaFiles() {
     path.join(docsRoot, ".vitepress/browser-lifecycle-meta.ts"),
     path.join(docsRoot, ".vitepress/docs-meta.ts"),
     path.join(docsRoot, ".vitepress/browser-lifecycle-versions.ts"),
+    path.join(docsRoot, ".vitepress/object-diff-versions.ts"),
+    path.join(docsRoot, ".vitepress/form-intelligent-versions.ts"),
     path.join(docsRoot, ".vitepress/object-diff-meta.ts"),
     path.join(docsRoot, ".vitepress/form-intelligent-meta.ts"),
   ];
@@ -561,7 +565,7 @@ const objectDiffVersion = syncObjectDiffMeta();
 const formIntelligentVersion = syncFormIntelligentMeta();
 const changelogCount = syncPackageChangelogs();
 const docsVersion = syncDocsMeta();
-syncBrowserLifecycleVersionsMeta();
+syncAllPackageVersionsMeta();
 
 if (process.env.DOCS_SYNC_SKIP_QUALITY !== "1") {
   formatGeneratedFiles();

@@ -5,9 +5,11 @@ import { createBrowserLifecycleSidebarMap } from "./browser-lifecycle-sidebar.js
 import { browserLifecycleDocVersions } from "./browser-lifecycle-versions.js";
 import { formIntelligentMeta } from "./form-intelligent-meta.js";
 import { createFormIntelligentSidebarMap } from "./form-intelligent-sidebar.js";
+import { formIntelligentDocVersions } from "./form-intelligent-versions.js";
 import { navPackageLabel } from "./nav-package-label.js";
 import { objectDiffMeta } from "./object-diff-meta.js";
 import { createObjectDiffSidebarMap } from "./object-diff-sidebar.js";
+import { objectDiffDocVersions } from "./object-diff-versions.js";
 import {
   buildOrganizationJsonLd,
   buildSoftwarePackageJsonLd,
@@ -49,12 +51,17 @@ const browserLifecycleSidebar = createBrowserLifecycleSidebarMap(
 );
 
 const OBJECT_DIFF_PKG = "/packages/object-diff";
-const objectDiffSidebar = createObjectDiffSidebarMap(OBJECT_DIFF_PKG, objectDiffVersionLabel);
+const objectDiffSidebar = createObjectDiffSidebarMap(
+  OBJECT_DIFF_PKG,
+  objectDiffVersionLabel,
+  objectDiffDocVersions.archives,
+);
 
 const FORM_INTELLIGENT_PKG = "/packages/form-intelligent";
 const formIntelligentSidebar = createFormIntelligentSidebarMap(
   FORM_INTELLIGENT_PKG,
   formIntelligentVersionLabel,
+  formIntelligentDocVersions.archives,
 );
 
 export default defineConfig({
