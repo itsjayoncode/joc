@@ -1,0 +1,77 @@
+---
+title: "@jayoncode/browser-lifecycle | TypeScript Browser Session API"
+description: Install and use @jayoncode/browser-lifecycle for typed page visibility, focus, connectivity, idle detection, cross-tab sync, plugins, and SSR-safe browser session lifecycle management.
+---
+
+> [!NOTE]
+> **Archived documentation (v0.1.2)** — You are viewing a frozen snapshot for `@jayoncode/browser-lifecycle@0.1.2`. See the [latest docs](/packages/browser-lifecycle/) for the current release.
+
+# Browser Lifecycle
+
+<BrowserLifecycleVersion />
+
+`@jayoncode/browser-lifecycle` is the official browser lifecycle manager for the JOC ecosystem.
+
+Construction docs refer to this package as **Browser Session**. The canonical public API is `createBrowserLifecycle()` and the published package name is `@jayoncode/browser-lifecycle`.
+
+## What it provides
+
+- Session lifecycle orchestration (`created`, `running`, `stopped`, `disposed`)
+- Readonly runtime snapshots and capability detection
+- Typed public events and full event feed subscriptions
+- Visibility, focus, connectivity, idle, lifecycle, and cross-tab modules
+- Plugin registration, lifecycle hooks, and runtime diagnostics
+- Configuration helpers and infrastructure error types
+- SSR-safe feature detection utilities
+
+## Quick start
+
+```ts
+import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
+
+const lifecycle = createBrowserLifecycle({ autoStart: true });
+
+lifecycle.on("page:visible", () => {
+  console.log("Page became visible");
+});
+
+lifecycle.on("page:hidden", () => {
+  console.log("Page became hidden");
+});
+```
+
+## Documentation map
+
+| Topic              | Page                                                                   |
+| ------------------ | ---------------------------------------------------------------------- |
+| Installation       | [Installation](/packages/browser-lifecycle/installation)               |
+| Usage              | [Usage Guide](/packages/browser-lifecycle/guides/usage)                |
+| Configuration      | [Configuration](/packages/browser-lifecycle/guides/configuration)      |
+| Modules            | [Module docs](/packages/browser-lifecycle/modules/core-infrastructure) |
+| API Reference      | [Generated API](/packages/browser-lifecycle/api/)                      |
+| Playground         | [Interactive docs](http://127.0.0.1:4273)                              |
+| Framework examples | [Examples](/packages/browser-lifecycle/examples/)                      |
+| Best practices     | [Best Practices](/packages/browser-lifecycle/best-practices/)          |
+| Patterns           | [Common Patterns](/packages/browser-lifecycle/patterns/)               |
+| FAQ                | [FAQ](/packages/browser-lifecycle/faq/)                                |
+
+## Interactive playground
+
+Every major module has a matching playground page:
+
+- [Visibility](http://127.0.0.1:4273/visibility)
+- [Focus](http://127.0.0.1:4273/focus)
+- [Connectivity](http://127.0.0.1:4273/connectivity)
+- [Idle](http://127.0.0.1:4273/idle)
+- [Lifecycle](http://127.0.0.1:4273/lifecycle)
+- [Cross Tab](http://127.0.0.1:4273/cross-tab)
+- [Plugins](http://127.0.0.1:4273/plugins)
+- [Events](http://127.0.0.1:4273/events)
+- [State](http://127.0.0.1:4273/state)
+- [Configuration](http://127.0.0.1:4273/configuration)
+- [Performance](http://127.0.0.1:4273/performance)
+- [Developer Tools](http://127.0.0.1:4273/developer-tools)
+
+## Version
+
+<BrowserLifecycleVersion mode="overview" />
