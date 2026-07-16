@@ -2,11 +2,19 @@
 
 Check user input before submit — with built-in rules, custom logic, or async API calls.
 
-**Previous:** [Tutorial](/packages/form-intelligent/modules/getting-started) · **Next:** [Submission](/packages/form-intelligent/modules/submission)
+**Previous:** [Capabilities](/packages/form-intelligent/modules/capabilities) · **Next:** [Submission](/packages/form-intelligent/modules/submission)
 
 ::: tip Playground
 [Validation explorer →](/playground/form-intelligent/validation) — timing modes, async validators, field inspector.
 :::
+
+## Problem → solution
+
+| Problem                                         | Solution                                               |
+| ----------------------------------------------- | ------------------------------------------------------ |
+| Ad-hoc `if` checks scattered in submit handlers | Declarative `validators` / `schema` on `createForm`    |
+| Errors appear too early or too late             | `validateOn` timing (`onBlur`, `onChange`, `onSubmit`) |
+| Need server uniqueness checks                   | Async validators that return a string error            |
 
 ## Overview
 
@@ -104,6 +112,37 @@ const uniqueUsername: Validator = async (value) => {
 ::: warning Tip
 Async validators feel slow without UI feedback — disable the submit button or show a spinner on the field while waiting.
 :::
+
+---
+
+## Element structure
+
+Show the error next to the control — same shape for HTML and React.
+
+### Native HTML
+
+```html
+<label>
+  Username
+  <input name="username" autocomplete="username" />
+</label>
+<!-- Engine may inject / update:
+     data-form-intelligent-error="username"
+     aria-invalid="true"
+     aria-describedby="…"
+-->
+```
+
+### React JSX
+
+```tsx
+<label>
+  Username
+  <input {...form.field("username")} autoComplete="username" />
+  {form.state.fieldMeta.username?.isValidating ? <span>Checking…</span> : null}
+  {form.state.errors.username ? <span role="alert">{form.state.errors.username}</span> : null}
+</label>
+```
 
 ---
 

@@ -40,6 +40,8 @@ export function WorkflowPage() {
         draft: {
           enabled: true,
           storageKey: DRAFT_KEY,
+          promptOnRestore: true,
+          onRestorePrompt: () => window.confirm("Draft found — continue editing?"),
           onRestore: () => {
             push("draft restored from localStorage");
           },

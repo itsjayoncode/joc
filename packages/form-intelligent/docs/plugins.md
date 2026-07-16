@@ -1,8 +1,8 @@
 # Plugins
 
-Add cross-cutting behavior — analytics, logging, or integrations — without changing core form code.
+Add cross-cutting behavior — analytics, guards, or integrations — without forking core.
 
-**Previous:** [Formatters](/packages/form-intelligent/modules/formatters) · **Next:** [Adapters](/packages/form-intelligent/modules/adapters)
+**Previous:** [Adapters](/packages/form-intelligent/modules/adapters) · **Next:** [Patterns](/packages/form-intelligent/modules/patterns)
 
 ::: tip Playground
 [Plugins explorer →](/playground/form-intelligent/plugins) — register hooks and inspect the event log.
@@ -10,54 +10,102 @@ Add cross-cutting behavior — analytics, logging, or integrations — without c
 
 ## Overview
 
-Plugins subscribe to form lifecycle events (`change`, `submit`, `autosave`, etc.) and may return cleanup on unregister.
-
----
-
-## Quick example
+Plugins receive the form instance and a typed hook API. Return a cleanup function or `{ onDestroy }` for teardown.
 
 ```ts
-const analytics: FormPlugin = {
-  name: "analytics",
-  setup(form) {
-    return form.on("submit", () => {
-      track("form_submit");
+import type { FormPlugin } from "@jayoncode/form-intelligent";
+
+const audit: FormPlugin = {
+  name: "audit",
+  order: 10,
+  setup(form, api) {
+    api.on("beforeSubmit", () => {
+      console.log("submitting", form.values());
     });
+    return {
+      onDestroy() {
+        console.log("audit removed");
+      },
+    };
   },
 };
 
-form.registerPlugin(analytics);
+form.use(audit);
+// or form.registerPlugin(audit);
 ```
 
 ---
 
-## Available events
+## Lifecycle hooks
 
-| Event            | Fires when           |
-| ---------------- | -------------------- |
-| `change`         | A value updates      |
-| `blur` / `focus` | Field binding events |
-| `validate`       | Validation runs      |
-| `submit`         | Submit starts        |
-| `autosave`       | Autosave triggers    |
-| `draft`          | Draft persisted      |
-| `reset`          | Form resets          |
+| Hook             | When                          | Return `false` to |
+| ---------------- | ----------------------------- | ----------------- |
+| `beforeValidate` | Before validation             | Cancel validation |
+| `afterValidate`  | After validation              | —                 |
+| `beforeSubmit`   | After valid, before transport | Cancel submit     |
+| `afterSubmit`    | After submit attempt          | —                 |
+| `onAutosave`     | Autosave succeeded            | —                 |
+| `onDraftRestore` | Draft merged on create        | —                 |
 
 ```ts
-form.on("change", () => console.log("values changed"));
+api.on("beforeSubmit", () => false); // block submit
+api.on("afterValidate", ({ valid, paths }) => {
+  console.log(paths, valid);
+});
 ```
+
+---
+
+## Form events (lower level)
+
+| Event                    | Fires when                 |
+| ------------------------ | -------------------------- |
+| `change`                 | A value updates            |
+| `blur` / `focus`         | Field binding events       |
+| `validate` / `validated` | Validation runs / finishes |
+| `submit`                 | Submit starts              |
+| `autosave`               | Autosave triggers          |
+| `draft`                  | Draft persisted            |
+| `reset`                  | Form resets                |
+
+```ts
+setup(form) {
+  return form.on("change", () => console.log("changed"));
+}
+```
+
+---
+
+## Built-in plugin factories
+
+```ts
+import {
+  createBrowserLifecyclePlugin,
+  createDevToolsPlugin,
+  createKeyboardPlugin,
+  keyboard,
+} from "@jayoncode/form-intelligent/plugins";
+
+form.use(createBrowserLifecyclePlugin({ saveDraftOnHidden: true }));
+form.use(createDevToolsPlugin());
+form.use(createKeyboardPlugin([keyboard.shortcut("mod+s", (f) => f.saveDraft())]));
+```
+
+Aliases: `browserLifecyclePlugin`, `devtoolsPlugin`.
 
 ---
 
 ## Cleanup
 
-`setup` may return a function — called when the plugin is replaced or the form is destroyed:
-
 ```ts
-setup(form) {
-  const unsub = form.on("submit", handler);
-  return unsub;
+setup(form, api) {
+  const off = api.on("afterSubmit", handler);
+  return () => {
+    off();
+  };
 }
 ```
 
-**Next:** [Adapters](/packages/form-intelligent/modules/adapters) — connect React, Vue, or Zod.
+Destroying the form runs all plugin cleanups.
+
+**Next:** [Patterns](/packages/form-intelligent/modules/patterns) — wizard, offline submit, plugin recipes.

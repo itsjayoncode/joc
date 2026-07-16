@@ -38,7 +38,10 @@ describe("createForm", () => {
 
     const ok = await form.submit();
     expect(ok).toBe(true);
-    expect(onSubmit).toHaveBeenCalledWith({ name: "Jay" });
+    expect(onSubmit).toHaveBeenCalledWith(
+      { name: "Jay" },
+      expect.objectContaining({ signal: expect.any(AbortSignal) }),
+    );
   });
 
   it("prevents double submit while in flight", async () => {
@@ -87,7 +90,7 @@ describe("createForm", () => {
     form.setValue("step1", "done");
     const advanced = await form.workflow.next();
     expect(advanced).toBe(true);
-    expect(form.getFormState().workflow.currentStep).toBe(1);
+    expect(form.state.workflow.currentStep).toBe(1);
   });
 
   it("runs autosave workflow", async () => {
@@ -119,6 +122,30 @@ describe("createForm", () => {
 
     expect(binding.name).toBe("email");
     expect(binding.value).toBe("a@b.com");
+  });
+
+  it("reads state imperatively without subscribe", async () => {
+    const form = createForm({
+      initialValues: { email: "" },
+      validators: { email: [required] },
+    });
+
+    expect(form.state.values).toEqual({ email: "" });
+    expect(form.getValues()).toEqual({ email: "" });
+    expect(form.isValid()).toBe(true);
+    expect(form.isSubmitting()).toBe(false);
+
+    const valid = await form.validate();
+    expect(valid).toBe(false);
+    expect(form.isValid()).toBe(false);
+    expect(form.getErrors().email).toBe("This field is required.");
+    expect(form.state.errors.email).toBe("This field is required.");
+  });
+
+  it("exposes getSnapshot for external store integrations", () => {
+    const form = createForm({ initialValues: { name: "Jay" } });
+    expect(form.getSnapshot().values).toEqual({ name: "Jay" });
+    expect(form.state).toEqual(form.getFormState());
   });
 });
 

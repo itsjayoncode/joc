@@ -2,6 +2,20 @@
 
 Typed deep comparison, change records, and JSON Patch generation for structured snapshots.
 
+## Install
+
+```bash
+npm install @jayoncode/object-diff
+```
+
+```bash
+pnpm add @jayoncode/object-diff
+```
+
+```bash
+yarn add @jayoncode/object-diff
+```
+
 ## Example: detect changes and apply a patch
 
 ```ts
@@ -64,12 +78,6 @@ Object Diff compares plain objects and arrays, emits structured **change records
 | --- | -------------------------------------------------------- | ----------------------- | ------------------------------------------------- |
 | 5   | [Serialization](/packages/object-diff/modules/serialize) | Export formats          | [JSON](/playground/object-diff/json)              |
 | 6   | Performance                                              | Large-object benchmarks | [Benchmarks](/playground/object-diff/performance) |
-
-## Install
-
-```bash
-npm install @jayoncode/object-diff
-```
 
 ## Package fit
 

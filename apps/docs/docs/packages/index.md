@@ -9,11 +9,11 @@ JayOnCode (JOC) is a **monorepo of focused TypeScript packages**. Each `@jayonco
 
 ## How the docs are organized
 
-| Level           | What you will find                                                                                                                                                                   |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Monorepo**    | [Getting started](/getting-started/introduction), [philosophy](/getting-started/philosophy), [ecosystem](/getting-started/ecosystem), [roadmap](/roadmap/), [changelog](/changelog/) |
-| **Contributor** | [Contribution](/guides/contribution), [monorepo guide](/guides/monorepo), [package standards](/guides/package-standards)                                                             |
-| **Package**     | Guides, API, examples, FAQ, patterns, and playgrounds scoped to that package                                                                                                         |
+| Level           | What you will find                                                                                                                                                                     |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Monorepo**    | [Getting started](/getting-started/introduction), [philosophy](/getting-started/philosophy), [ecosystem](/getting-started/ecosystem), [roadmap](/roadmap/), [playground](/playground/) |
+| **Contributor** | [Contribution](/guides/contribution), [monorepo guide](/guides/monorepo), [package standards](/guides/package-standards)                                                               |
+| **Package**     | Guides, API, examples, FAQ, patterns, and playgrounds scoped to that package                                                                                                           |
 
 Start with the live package today, then explore planned libraries as they land.
 
@@ -50,7 +50,9 @@ Start with the live package today, then explore planned libraries as they land.
 1. [Overview & learning path](/packages/form-intelligent/)
 2. [Tutorial — your first form](/packages/form-intelligent/modules/getting-started)
 3. [Validation](/packages/form-intelligent/modules/validation) → [Submission](/packages/form-intelligent/modules/submission) → [Workflow](/packages/form-intelligent/modules/workflow)
-4. [Interactive playground](/playground/form-intelligent/)
+4. [Rules](/packages/form-intelligent/modules/rules) · [Calculations](/packages/form-intelligent/modules/calculations) · [State](/packages/form-intelligent/modules/state)
+5. [Migration](/packages/form-intelligent/modules/migration) · [Patterns](/packages/form-intelligent/modules/patterns)
+6. [Interactive playground](/playground/form-intelligent/)
 
 ## Coming soon
 

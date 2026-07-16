@@ -10,16 +10,12 @@ import { useFormSnapshot } from "../hooks/useFormSnapshot.js";
 import { createForm, required } from "../lib/form-intelligent.js";
 import { toInputValue } from "../utils/field-value.js";
 
-interface QueuedSubmit {
-  readonly id: string;
-  readonly message: string;
-}
+const OFFLINE_STORAGE_KEY = "joc.form-intelligent-playground.submission-offline";
 
 export function SubmissionPage() {
   const { clear, entries, push } = useEventLog();
   const [flakyMode, setFlakyMode] = useState(true);
   const [offlineMode, setOfflineMode] = useState(false);
-  const [queue, setQueue] = useState<readonly QueuedSubmit[]>([]);
   const submitGeneration = useRef(0);
   const activeSubmit = useRef(0);
 
@@ -28,6 +24,12 @@ export function SubmissionPage() {
       createForm({
         initialValues: { message: "" },
         validators: { message: [required] },
+        workflow: {
+          offlineQueue: {
+            enabled: true,
+            storageKey: OFFLINE_STORAGE_KEY,
+          },
+        },
         onSubmit: async (values) => {
           const generation = ++submitGeneration.current;
           activeSubmit.current = generation;
@@ -57,32 +59,38 @@ export function SubmissionPage() {
 
   const runSubmit = async () => {
     if (offlineMode) {
-      const queued: QueuedSubmit = {
-        id: `queued-${String(Date.now())}`,
-        message: toInputValue(form.values("message")),
-      };
-      setQueue((current) => [...current, queued]);
-      push(`queued while offline: ${queued.message}`);
-      return;
+      Object.defineProperty(window.navigator, "onLine", {
+        configurable: true,
+        value: false,
+      });
+    } else {
+      Object.defineProperty(window.navigator, "onLine", {
+        configurable: true,
+        value: true,
+      });
     }
 
     const ok = await form.submit();
+    if (offlineMode) {
+      push(
+        ok
+          ? `engine queued submit (pending ${String(form.state.submissionQueue.pending)})`
+          : "submit blocked",
+      );
+      return;
+    }
+
     push(ok ? "submit() resolved true" : "submit() resolved false");
   };
 
   const flushQueue = async () => {
-    if (queue.length === 0) {
-      push("flush queue — nothing queued");
-      return;
-    }
+    Object.defineProperty(window.navigator, "onLine", {
+      configurable: true,
+      value: true,
+    });
 
-    for (const item of queue) {
-      form.setValue("message", item.message);
-      push(`flushing queued item: ${item.message}`);
-      await form.submit();
-    }
-
-    setQueue([]);
+    const result = await form.flushOfflineQueue();
+    push(`flush queue — flushed ${String(result.flushed)}, failed ${String(result.failed)}`);
   };
 
   const cancelInFlight = () => {
@@ -92,7 +100,7 @@ export function SubmissionPage() {
 
   return (
     <PageContainer
-      description="Loading states, flaky APIs, duplicate-submit prevention, offline queueing, and cancel simulation."
+      description="Loading states, flaky APIs, duplicate-submit prevention, engine offline queue, and cancel simulation."
       eyebrow="Submission"
       title="Submission Playground"
     >
@@ -101,7 +109,7 @@ export function SubmissionPage() {
           <li>isSubmitting disables the button while the async handler runs</li>
           <li>Second submit() call returns false while the first is in flight</li>
           <li>Flaky mode randomly throws to exercise onSubmitError</li>
-          <li>Offline mode queues payloads locally until you flush</li>
+          <li>Offline mode uses workflow.offlineQueue — flush via form.flushOfflineQueue()</li>
           <li>Cancel bumps a generation counter so late responses are ignored</li>
         </ul>
       </ExplainPanel>
@@ -132,7 +140,9 @@ export function SubmissionPage() {
               </button>
             </div>
             <p className={styles.fieldHint}>
-              Submit count: {String(snapshot.submitCount)} · Queue depth: {String(queue.length)}
+              Submit count: {String(snapshot.submitCount)} · Engine queue:{" "}
+              {String(snapshot.submissionQueue.pending)}
+              {snapshot.submissionQueue.flushing ? " (flushing)" : ""}
             </p>
           </Card>
 

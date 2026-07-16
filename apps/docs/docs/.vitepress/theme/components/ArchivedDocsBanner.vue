@@ -30,7 +30,7 @@ const showBanner = computed(
       <a :href="`${pkgBase}/`"
         >Switch to latest ({{ browserLifecycleDocVersions.currentVersionLabel }})</a
       >
-      or read the <a href="/changelog/">changelog</a>.
+      or read the <a href="/packages/browser-lifecycle/changelog">changelog</a>.
     </p>
   </div>
 </template>

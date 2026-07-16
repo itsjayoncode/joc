@@ -1,3 +1,4 @@
+import { navPackageLabel } from "./nav-package-label.js";
 import { resolvePlaygroundPath } from "./seo.js";
 
 import type { DefaultTheme } from "vitepress";
@@ -98,7 +99,7 @@ export function createBrowserLifecycleSidebar(
 ): DefaultTheme.SidebarItem[] {
   return [
     {
-      text: `Browser Lifecycle · ${versionLabel}`,
+      text: navPackageLabel("Browser Lifecycle", versionLabel),
       items: [
         { text: "Overview", link: `${pkgBase}/` },
         { text: "Core concepts", link: `${pkgBase}/modules/concepts` },
@@ -168,7 +169,7 @@ export function createBrowserLifecycleSidebar(
       items: [
         { text: "Troubleshooting", link: `${pkgBase}/troubleshooting/` },
         { text: "Migration", link: `${pkgBase}/migration/` },
-        { text: "Changelog", link: "/changelog/" },
+        { text: "Changelog", link: `${pkgBase}/changelog` },
       ],
     },
   ];

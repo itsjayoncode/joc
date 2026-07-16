@@ -36,6 +36,37 @@ console.log(result.changes);
 
 **Outcome:** Structured change list with path, type, and values per mutation.
 
+### Render the change list (optional UI)
+
+Object Diff is data-only — map `result.changes` into whatever list you prefer:
+
+```tsx
+<ul>
+  {result.changes.map((change) => (
+    <li key={change.path}>
+      <code>{change.path}</code> — {change.type}
+      {change.type === "changed" ? (
+        <span>
+          {JSON.stringify(change.previous)} → {JSON.stringify(change.current)}
+        </span>
+      ) : null}
+    </li>
+  ))}
+</ul>
+```
+
+```html
+<ul id="changes"></ul>
+<script type="module">
+  const list = document.querySelector("#changes");
+  for (const change of result.changes) {
+    const li = document.createElement("li");
+    li.textContent = `${change.path}: ${change.type}`;
+    list.append(li);
+  }
+</script>
+```
+
 ---
 
 ## Step 3 — Dirty check

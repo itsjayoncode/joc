@@ -222,11 +222,16 @@
 .navLinkActive {
   color: var(--text-primary);
   background: var(--accent-soft);
-  border-color: rgba(37, 99, 235, 0.12);
+  border-color: color-mix(in srgb, var(--accent-primary) 22%, transparent);
+  font-weight: 600;
 }
 
 .navLinkActive::before {
   height: 55%;
+}
+
+.navLinkActive .navLabel {
+  color: var(--text-primary);
 }
 
 .plannedLink {

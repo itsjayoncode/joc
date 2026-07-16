@@ -61,6 +61,54 @@ console.log(snapshot.page.visibility); // "visible" | "hidden"
 
 ---
 
+## UI structure (framework shell)
+
+Browser Lifecycle has no form markup — mount **one shared session** and dispose on unmount.
+
+### React JSX
+
+```tsx
+import { useEffect, useMemo } from "react";
+import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
+
+export function AppShell({ children }: { children: React.ReactNode }) {
+  const lifecycle = useMemo(() => createBrowserLifecycle({ autoStart: true }), []);
+
+  useEffect(() => {
+    const offVisible = lifecycle.on("page:visible", () => resumeWork());
+    const offHidden = lifecycle.on("page:hidden", () => pauseWork());
+
+    return () => {
+      offVisible();
+      offHidden();
+      void lifecycle.dispose();
+    };
+  }, [lifecycle]);
+
+  return <>{children}</>;
+}
+```
+
+### Vanilla HTML + module script
+
+```html
+<body>
+  <main id="app"><!-- your UI --></main>
+  <script type="module">
+    import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
+
+    const lifecycle = createBrowserLifecycle({ autoStart: true });
+    lifecycle.on("page:hidden", () => console.log("tab hidden"));
+
+    window.addEventListener("pagehide", () => {
+      void lifecycle.dispose();
+    });
+  </script>
+</body>
+```
+
+---
+
 ## Step 5 — Dispose
 
 ```ts

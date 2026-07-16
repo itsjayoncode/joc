@@ -20,6 +20,29 @@
   --joc-gradient-brand: linear-gradient(135deg, var(--joc-primary), var(--joc-secondary));
   --joc-gradient-brand-deep: linear-gradient(135deg, var(--joc-secondary), var(--joc-accent));
   --joc-gradient-hero: linear-gradient(135deg, var(--joc-secondary) 0%, var(--joc-accent) 100%);
+  /* Light docs backdrop — cool cyan → soft blue wash (not purple) */
+  --joc-gradient-docs-light:
+    radial-gradient(ellipse 90% 55% at 8% -8%, rgba(var(--joc-primary-rgb), 0.22), transparent 58%),
+    radial-gradient(
+      ellipse 70% 45% at 96% 4%,
+      rgba(var(--joc-secondary-rgb), 0.14),
+      transparent 52%
+    ),
+    radial-gradient(
+      ellipse 55% 40% at 70% 100%,
+      rgba(var(--joc-accent-rgb), 0.07),
+      transparent 55%
+    ),
+    linear-gradient(165deg, #f8fbff 0%, #eef4fb 42%, #f5f8fc 100%);
+  --joc-gradient-docs-dark:
+    radial-gradient(ellipse 90% 55% at 8% -8%, rgba(var(--joc-primary-rgb), 0.18), transparent 58%),
+    radial-gradient(
+      ellipse 70% 45% at 96% 4%,
+      rgba(var(--joc-secondary-rgb), 0.12),
+      transparent 52%
+    ),
+    radial-gradient(ellipse 55% 40% at 70% 100%, rgba(var(--joc-accent-rgb), 0.1), transparent 55%),
+    linear-gradient(165deg, #081426 0%, #0a1f44 50%, #081426 100%);
   --joc-glow-primary: rgba(var(--joc-primary-rgb), 0.28);
   --joc-glow-secondary: rgba(var(--joc-secondary-rgb), 0.2);
   --joc-grid-line: rgba(var(--joc-secondary-rgb), 0.07);

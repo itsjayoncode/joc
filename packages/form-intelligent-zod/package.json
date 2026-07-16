@@ -1,0 +1,47 @@
+{
+  "name": "@jayoncode/form-intelligent-zod",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Zod schema adapter for @jayoncode/form-intelligent.",
+  "license": "MIT",
+  "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itsjayoncode/joc.git",
+    "directory": "packages/form-intelligent-zod"
+  },
+  "keywords": [
+    "form",
+    "zod",
+    "validation",
+    "schema",
+    "jayoncode",
+    "joc"
+  ],
+  "peerDependencies": {
+    "@jayoncode/form-intelligent": "workspace:^",
+    "zod": ">=3.22.0"
+  },
+  "devDependencies": {
+    "@jayoncode/form-intelligent": "workspace:*",
+    "zod": "^3.24.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

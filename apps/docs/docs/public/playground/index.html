@@ -3,17 +3,104 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="refresh" content="0; url=./browser-lifecycle/" />
-    <link rel="canonical" href="https://itsjayoncode.github.io/joc/playground/browser-lifecycle/" />
+    <link rel="canonical" href="https://itsjayoncode.github.io/joc/playground/" />
     <title>JOC Playgrounds</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f8fafc;
+        --fg: #0f172a;
+        --muted: #64748b;
+        --card: #ffffff;
+        --border: #e2e8f0;
+        --accent: #2563eb;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0b1220;
+          --fg: #e2e8f0;
+          --muted: #94a3b8;
+          --card: #111827;
+          --border: #1f2937;
+          --accent: #60a5fa;
+        }
+      }
+      body {
+        margin: 0;
+        font-family: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+        background: radial-gradient(circle at top left, #dbeafe55, transparent 40%), var(--bg);
+        color: var(--fg);
+      }
+      main {
+        max-width: 42rem;
+        margin: 0 auto;
+        padding: 3rem 1.25rem 4rem;
+      }
+      h1 {
+        margin: 0 0 0.5rem;
+        font-size: clamp(1.8rem, 4vw, 2.4rem);
+        letter-spacing: -0.04em;
+      }
+      p {
+        margin: 0 0 1.5rem;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 0.75rem;
+      }
+      a {
+        display: block;
+        padding: 1rem 1.1rem;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--card);
+        color: inherit;
+        text-decoration: none;
+      }
+      a:hover {
+        border-color: var(--accent);
+      }
+      strong {
+        display: block;
+        margin-bottom: 0.25rem;
+      }
+      span {
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+    </style>
   </head>
   <body>
     <main>
       <h1>JOC Playgrounds</h1>
+      <p>
+        Interactive explorers bundled with the docs site. Open a playground to try APIs live —
+        guides stay linked from each package section.
+      </p>
       <ul>
-        <li><a href="./browser-lifecycle/">Browser Lifecycle Playground</a></li>
-        <li><a href="./object-diff/">Object Diff Playground</a></li>
-        <li><a href="./form-intelligent/">Form Intelligent Playground</a></li>
+        <li>
+          <a href="./browser-lifecycle/">
+            <strong>Browser Lifecycle</strong>
+            <span>Visibility, focus, idle, connectivity, cross-tab</span>
+          </a>
+        </li>
+        <li>
+          <a href="./object-diff/">
+            <strong>Object Diff</strong>
+            <span>Deep diffs, patches, serialization benches</span>
+          </a>
+        </li>
+        <li>
+          <a href="./form-intelligent/">
+            <strong>Form Intelligent</strong>
+            <span>Validation, submission, workflow, plugins, DevTools</span>
+          </a>
+        </li>
       </ul>
     </main>
   </body>

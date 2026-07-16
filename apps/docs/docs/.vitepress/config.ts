@@ -5,6 +5,7 @@ import { createBrowserLifecycleSidebarMap } from "./browser-lifecycle-sidebar.js
 import { browserLifecycleDocVersions } from "./browser-lifecycle-versions.js";
 import { formIntelligentMeta } from "./form-intelligent-meta.js";
 import { createFormIntelligentSidebarMap } from "./form-intelligent-sidebar.js";
+import { navPackageLabel } from "./nav-package-label.js";
 import { objectDiffMeta } from "./object-diff-meta.js";
 import { createObjectDiffSidebarMap } from "./object-diff-sidebar.js";
 import {
@@ -21,23 +22,23 @@ import {
 import { createDocsVitePlugins, docsPublicAssetsDir } from "./vite-dev-fix.js";
 
 const docsBase = process.env.VITE_DOCS_BASE ?? "/";
-const PLAYGROUND_URL = docsPlaygroundUrl;
 const ogImageUrl = resolvePublicAssetUrl("jayoncode-logo-512.png");
 const sitemapHostname = docsSiteUrl.endsWith("/") ? docsSiteUrl : `${docsSiteUrl}/`;
+const _canonicalPlaygroundUrl = docsPlaygroundUrl;
 
 const PKG = browserLifecycleDocVersions.basePath;
 const browserLifecycleVersionLabel = browserLifecycleMeta.versionLabel;
-const browserLifecycleMenuLabel = `Browser Lifecycle · ${browserLifecycleVersionLabel}`;
 const objectDiffVersionLabel = objectDiffMeta.versionLabel;
-const objectDiffMenuLabel = `Object Diff · ${objectDiffVersionLabel}`;
 const formIntelligentVersionLabel = formIntelligentMeta.versionLabel;
-const formIntelligentMenuLabel = `Form Intelligent · ${formIntelligentVersionLabel}`;
 
 const packageItems = [
   { text: "All Packages", link: "/packages/" },
-  { text: browserLifecycleMenuLabel, link: `${PKG}/` },
-  { text: objectDiffMenuLabel, link: "/packages/object-diff/" },
-  { text: formIntelligentMenuLabel, link: "/packages/form-intelligent/" },
+  { text: navPackageLabel("Browser Lifecycle", browserLifecycleVersionLabel), link: `${PKG}/` },
+  { text: navPackageLabel("Object Diff", objectDiffVersionLabel), link: "/packages/object-diff/" },
+  {
+    text: navPackageLabel("Form Intelligent", formIntelligentVersionLabel),
+    link: "/packages/form-intelligent/",
+  },
 ];
 
 const browserLifecycleSidebar = createBrowserLifecycleSidebarMap(
@@ -46,10 +47,10 @@ const browserLifecycleSidebar = createBrowserLifecycleSidebarMap(
   browserLifecycleDocVersions.archives,
 );
 
-const OBJECT_DIFF_PKG = "/packages/object-diff/";
+const OBJECT_DIFF_PKG = "/packages/object-diff";
 const objectDiffSidebar = createObjectDiffSidebarMap(OBJECT_DIFF_PKG, objectDiffVersionLabel);
 
-const FORM_INTELLIGENT_PKG = "/packages/form-intelligent/";
+const FORM_INTELLIGENT_PKG = "/packages/form-intelligent";
 const formIntelligentSidebar = createFormIntelligentSidebarMap(
   FORM_INTELLIGENT_PKG,
   formIntelligentVersionLabel,
@@ -112,13 +113,12 @@ export default defineConfig({
         text: "Packages",
         items: packageItems,
       },
+      { text: "Playground", link: "/playground/" },
+      { text: "Roadmap", link: "/roadmap/" },
       {
         text: "Contribute",
         link: "/guides/contribution",
       },
-      { text: "Roadmap", link: "/roadmap/" },
-      { text: "Changelog", link: "/changelog/" },
-      { text: "Playground", link: PLAYGROUND_URL },
     ],
     sidebar: {
       "/getting-started/": [
@@ -144,7 +144,7 @@ export default defineConfig({
             { text: "Introduction", link: "/getting-started/introduction" },
             { text: "Contributor Guides", link: "/guides/contribution" },
             { text: "Roadmap", link: "/roadmap/" },
-            { text: "Changelog", link: "/changelog/" },
+            { text: "Playground", link: "/playground/" },
           ],
         },
       ],
@@ -170,10 +170,30 @@ export default defineConfig({
           items: [{ text: "Product Roadmap", link: "/roadmap/" }],
         },
       ],
-      "/changelog/": [
+      "/playground/": [
         {
-          text: "Changelog",
-          items: [{ text: "Repository Changelog", link: "/changelog/" }],
+          text: "Playground",
+          items: [
+            { text: "All playgrounds", link: "/playground/" },
+            {
+              text: "Browser Lifecycle ↗",
+              link: "/playground/browser-lifecycle/",
+              target: "_blank",
+              rel: "noreferrer",
+            },
+            {
+              text: "Object Diff ↗",
+              link: "/playground/object-diff/",
+              target: "_blank",
+              rel: "noreferrer",
+            },
+            {
+              text: "Form Intelligent ↗",
+              link: "/playground/form-intelligent/",
+              target: "_blank",
+              rel: "noreferrer",
+            },
+          ],
         },
       ],
     },

@@ -1,0 +1,19 @@
+{
+  "fixtures": [
+    {
+      "id": "core-login",
+      "file": "core-login.mjs",
+      "maxGzipKb": 18
+    },
+    {
+      "id": "workflow-rules",
+      "file": "workflow-rules.mjs",
+      "maxGzipKb": 3
+    },
+    {
+      "id": "format-only",
+      "file": "format-only.mjs",
+      "maxGzipKb": 2
+    }
+  ]
+}

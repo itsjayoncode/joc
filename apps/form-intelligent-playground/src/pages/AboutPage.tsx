@@ -10,19 +10,19 @@ import {
 
 const POSITIONING = [
   {
-    title: "Workflow orchestration",
+    title: "Form OS",
     description:
-      "Autosave, drafts, wizards, and submit guards are core — not community recipes layered on top of field registration.",
+      "25 capabilities — state, validation, rules, calculations, autosave, offline queue, undo/redo, analytics. Pick what you need per project.",
   },
   {
     title: "Headless first",
     description:
-      "Works with plain HTML today. Framework adapters (React, Vue, Zod) extend the same createForm() instance.",
+      "Native HTML enhancement via target + schema, or useForm() in React. You own the markup.",
   },
   {
     title: "Inspectable",
     description:
-      "Every flag (touched, dirty, visited) and error map is readable for DevTools panels and tests.",
+      "form.state exposes fieldUi, formUi, fieldMeta, fieldOptions, and submissionQueue for DevTools panels.",
   },
 ] as const;
 
@@ -43,9 +43,14 @@ export function AboutPage() {
     >
       <ExplainPanel title="What Form Intelligent is (and is not)">
         <ul className={styles.logList}>
-          <li>It is a workflow engine for validation timing, submission, autosave, and wizards.</li>
-          <li>It is not a replacement for React Hook Form or TanStack Form field registration.</li>
-          <li>Adapters and bridges let both coexist — orchestration here, field wiring there.</li>
+          <li>
+            It is a headless form workflow engine — an operating system for forms — not just a
+            validation library.
+          </li>
+          <li>
+            It manages everything before, during, and after submission while you keep your UI.
+          </li>
+          <li>It complements field-registration libraries (React Hook Form, TanStack Form).</li>
         </ul>
       </ExplainPanel>
 
