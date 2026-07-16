@@ -97,10 +97,7 @@ export default defineConfig({
     ["meta", { name: "twitter:image", content: ogImageUrl }],
     ["script", { type: "application/ld+json" }, buildOrganizationJsonLd(docsSiteUrl)],
     ["script", { type: "application/ld+json" }, buildSoftwarePackageJsonLd(docsSiteUrl)],
-    [
-      "script",
-      { async: "", src: `https://www.googletagmanager.com/gtag/js?id=${docsGaId}` },
-    ],
+    ["script", { async: "", src: `https://www.googletagmanager.com/gtag/js?id=${docsGaId}` }],
     [
       "script",
       {},
