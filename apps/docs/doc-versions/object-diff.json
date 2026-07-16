@@ -1,0 +1,6 @@
+{
+  "package": "@jayoncode/object-diff",
+  "basePath": "/packages/object-diff",
+  "archivePolicy": "minor",
+  "archives": []
+}

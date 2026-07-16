@@ -1,5 +1,6 @@
 import { navPackageLabel } from "./nav-package-label.js";
 import { resolvePlaygroundPath } from "./seo.js";
+import { buildVersionedSidebarMap } from "./versioned-sidebar.js";
 
 import type { DefaultTheme } from "vitepress";
 
@@ -180,14 +181,10 @@ export function createBrowserLifecycleSidebarMap(
   currentVersionLabel: string,
   archives: ReadonlyArray<{ version: string; label: string }>,
 ): Record<string, DefaultTheme.SidebarItem[]> {
-  const sidebar: Record<string, DefaultTheme.SidebarItem[]> = {
-    [`${pkgBase}/`]: createBrowserLifecycleSidebar(pkgBase, currentVersionLabel),
-  };
-
-  for (const archive of archives) {
-    const archiveBase = `${pkgBase}/v${archive.version}`;
-    sidebar[`${archiveBase}/`] = createBrowserLifecycleSidebar(archiveBase, archive.label);
-  }
-
-  return sidebar;
+  return buildVersionedSidebarMap(
+    pkgBase,
+    currentVersionLabel,
+    archives,
+    createBrowserLifecycleSidebar,
+  );
 }

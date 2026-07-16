@@ -7,26 +7,26 @@ import { fileURLToPath } from "node:url";
 
 import {
   archiveDirectoryName,
-  BROWSER_LIFECYCLE_ARCHIVES_ROOT,
-  BROWSER_LIFECYCLE_DOCS_ROOT,
-  readBrowserLifecycleVersionsManifest,
-  syncBrowserLifecycleVersionsMeta,
+  DOC_VERSIONED_PACKAGES,
+  isStagedArchiveDirectoryName,
+  readVersionsManifest,
+  syncAllPackageVersionsMeta,
 } from "./lib/doc-versioning.mjs";
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
-function cleanStagedArchives() {
-  if (!existsSync(BROWSER_LIFECYCLE_DOCS_ROOT)) {
+function cleanStagedArchives(docsRoot) {
+  if (!existsSync(docsRoot)) {
     return;
   }
 
-  for (const entry of readdirSync(BROWSER_LIFECYCLE_DOCS_ROOT, { withFileTypes: true })) {
+  for (const entry of readdirSync(docsRoot, { withFileTypes: true })) {
     if (!entry.isDirectory()) {
       continue;
     }
 
-    if (/^v\d/.test(entry.name)) {
-      rmSync(path.join(BROWSER_LIFECYCLE_DOCS_ROOT, entry.name), {
+    if (isStagedArchiveDirectoryName(entry.name)) {
+      rmSync(path.join(docsRoot, entry.name), {
         recursive: true,
         force: true,
       });
@@ -34,22 +34,19 @@ function cleanStagedArchives() {
   }
 }
 
-function stageArchives() {
-  const manifest = readBrowserLifecycleVersionsManifest();
+function stagePackageArchives(pkg) {
+  const manifest = readVersionsManifest(pkg);
   const archives = manifest.archives ?? [];
   let stagedCount = 0;
 
-  cleanStagedArchives();
+  cleanStagedArchives(pkg.docsRoot);
 
   for (const archive of archives) {
-    const sourceDir = path.join(
-      BROWSER_LIFECYCLE_ARCHIVES_ROOT,
-      archiveDirectoryName(archive.version),
-    );
-    const targetDir = path.join(BROWSER_LIFECYCLE_DOCS_ROOT, archiveDirectoryName(archive.version));
+    const sourceDir = path.join(pkg.archivesRoot, archiveDirectoryName(archive.version));
+    const targetDir = path.join(pkg.docsRoot, archiveDirectoryName(archive.version));
 
     if (!existsSync(sourceDir)) {
-      console.warn(`Missing archived docs for ${archive.label} at ${sourceDir}`);
+      console.warn(`Missing archived docs for ${pkg.id}@${archive.label} at ${sourceDir}`);
       continue;
     }
 
@@ -63,27 +60,38 @@ function stageArchives() {
 
 function formatGeneratedMeta() {
   const prettierBin = path.join(rootDir, "node_modules/prettier/bin/prettier.cjs");
-  const result = spawnSync(
-    process.execPath,
-    [prettierBin, "--write", "apps/docs/docs/.vitepress/browser-lifecycle-versions.ts"],
-    {
-      cwd: rootDir,
-      stdio: "inherit",
-    },
+  const metaFiles = DOC_VERSIONED_PACKAGES.map((pkg) =>
+    path.relative(rootDir, pkg.versionsMetaPath),
   );
+  const result = spawnSync(process.execPath, [prettierBin, "--write", ...metaFiles], {
+    cwd: rootDir,
+    stdio: "inherit",
+  });
 
   if (result.status !== 0) {
-    throw new Error("Prettier failed while formatting browser-lifecycle-versions.ts.");
+    throw new Error("Prettier failed while formatting package versions meta files.");
   }
 }
 
-const stagedCount = stageArchives();
-const { currentVersion, archiveCount } = syncBrowserLifecycleVersionsMeta();
+let totalStaged = 0;
+const summaries = [];
+
+for (const pkg of DOC_VERSIONED_PACKAGES) {
+  const stagedCount = stagePackageArchives(pkg);
+  totalStaged += stagedCount;
+  summaries.push(`${pkg.id}=${stagedCount}`);
+}
+
+const results = syncAllPackageVersionsMeta();
 
 if (process.env.DOCS_SYNC_SKIP_QUALITY !== "1") {
   formatGeneratedMeta();
 }
 
+const currentSummary = results
+  .map((entry) => `${entry.id}@${entry.currentVersion}(${entry.archiveCount})`)
+  .join(", ");
+
 console.log(
-  `Staged ${stagedCount} archived browser-lifecycle doc version(s); current=${currentVersion}, manifest=${archiveCount}.`,
+  `Staged ${totalStaged} archived doc version(s) [${summaries.join(", ")}]; ${currentSummary}.`,
 );

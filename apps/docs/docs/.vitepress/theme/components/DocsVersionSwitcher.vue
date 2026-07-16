@@ -3,28 +3,62 @@ import { computed } from "vue";
 import { useRoute, useRouter } from "vitepress";
 
 import { browserLifecycleDocVersions } from "../../browser-lifecycle-versions.js";
+import { formIntelligentDocVersions } from "../../form-intelligent-versions.js";
+import { objectDiffDocVersions } from "../../object-diff-versions.js";
 
 const route = useRoute();
 const router = useRouter();
 
-const pkgBase = browserLifecycleDocVersions.basePath;
-const archivedVersionPattern = /\/packages\/browser-lifecycle\/(v[\d.]+)(?=\/|$)/;
+const DOC_VERSION_PACKAGES = [
+  browserLifecycleDocVersions,
+  formIntelligentDocVersions,
+  objectDiffDocVersions,
+] as const;
 
-const showSwitcher = computed(() => route.path.startsWith(pkgBase));
+const activePackage = computed(() => {
+  const matches = DOC_VERSION_PACKAGES.filter((pkg) => route.path.startsWith(pkg.basePath)).sort(
+    (left, right) => right.basePath.length - left.basePath.length,
+  );
+
+  return matches[0] ?? null;
+});
+
+const showSwitcher = computed(() => activePackage.value !== null);
+
+const archivedVersionPattern = computed(() => {
+  const pkg = activePackage.value;
+  if (!pkg) {
+    return null;
+  }
+
+  const escaped = pkg.basePath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`${escaped}/(v[\\d.]+)(?=/|$)`);
+});
 
 const activeVersion = computed(() => {
-  const match = route.path.match(archivedVersionPattern);
-  return match?.[1]?.slice(1) ?? browserLifecycleDocVersions.currentVersion;
+  const pkg = activePackage.value;
+  const pattern = archivedVersionPattern.value;
+  if (!pkg || !pattern) {
+    return "";
+  }
+
+  const match = route.path.match(pattern);
+  return match?.[1]?.slice(1) ?? pkg.currentVersion;
 });
 
 const versionOptions = computed(() => {
+  const pkg = activePackage.value;
+  if (!pkg) {
+    return [];
+  }
+
   const latest = {
-    version: browserLifecycleDocVersions.currentVersion,
-    label: `${browserLifecycleDocVersions.currentVersionLabel} (latest)`,
+    version: pkg.currentVersion,
+    label: `${pkg.currentVersionLabel} (latest)`,
   };
 
-  const archived = browserLifecycleDocVersions.archives
-    .filter((archive) => archive.version !== browserLifecycleDocVersions.currentVersion)
+  const archived = pkg.archives
+    .filter((archive) => archive.version !== pkg.currentVersion)
     .map((archive) => ({
       version: archive.version,
       label: archive.label,
@@ -34,13 +68,19 @@ const versionOptions = computed(() => {
 });
 
 function mapPathToVersion(pathname: string, targetVersion: string): string {
-  const suffix = pathname.replace(/^\/packages\/browser-lifecycle(?:\/v[\d.]+)?/, "");
-
-  if (targetVersion === browserLifecycleDocVersions.currentVersion) {
-    return `${pkgBase}${suffix}`;
+  const pkg = activePackage.value;
+  if (!pkg) {
+    return pathname;
   }
 
-  return `${pkgBase}/v${targetVersion}${suffix}`;
+  const escaped = pkg.basePath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const suffix = pathname.replace(new RegExp(`^${escaped}(?:/v[\\d.]+)?`), "");
+
+  if (targetVersion === pkg.currentVersion) {
+    return `${pkg.basePath}${suffix}`;
+  }
+
+  return `${pkg.basePath}/v${targetVersion}${suffix}`;
 }
 
 function onVersionChange(event: Event) {
