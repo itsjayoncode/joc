@@ -7,6 +7,7 @@ export interface FieldMetaRow {
   readonly touched: boolean;
   readonly dirty: boolean;
   readonly visited: boolean;
+  readonly validating?: boolean;
   readonly error?: string | undefined;
 }
 
@@ -24,6 +25,7 @@ export function FieldMetaTable({ rows }: FieldMetaTableProps) {
             <th>Touched</th>
             <th>Dirty</th>
             <th>Visited</th>
+            <th>Validating</th>
             <th>Error</th>
           </tr>
         </thead>
@@ -34,6 +36,7 @@ export function FieldMetaTable({ rows }: FieldMetaTableProps) {
               <td>{row.touched ? "yes" : "—"}</td>
               <td>{row.dirty ? "yes" : "—"}</td>
               <td>{row.visited ? "yes" : "—"}</td>
+              <td>{row.validating ? "yes" : "—"}</td>
               <td className={styles.errorCell}>{row.error ?? "—"}</td>
             </tr>
           ))}

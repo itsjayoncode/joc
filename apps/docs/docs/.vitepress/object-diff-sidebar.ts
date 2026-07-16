@@ -1,3 +1,4 @@
+import { navPackageLabel } from "./nav-package-label.js";
 import { resolvePlaygroundPath } from "./seo.js";
 
 import type { DefaultTheme } from "vitepress";
@@ -6,29 +7,35 @@ export function createObjectDiffSidebarMap(
   pkgBase: string,
   versionLabel: string,
 ): Record<string, DefaultTheme.SidebarItem[]> {
+  const base = pkgBase.replace(/\/$/, "");
+
   return {
-    [pkgBase]: [
+    [`${base}/`]: [
       {
-        text: `Object Diff · ${versionLabel}`,
+        text: navPackageLabel("Object Diff", versionLabel),
         items: [
-          { text: "Overview", link: `${pkgBase}/` },
-          { text: "Core concepts", link: `${pkgBase}/modules/concepts` },
-          { text: "Tutorial", link: `${pkgBase}/modules/getting-started` },
+          { text: "Overview", link: `${base}/` },
+          { text: "Core concepts", link: `${base}/modules/concepts` },
+          { text: "Tutorial", link: `${base}/modules/getting-started` },
         ],
       },
       {
         text: "Build your workflow",
         items: [
-          { text: "1. Diffing", link: `${pkgBase}/modules/diff` },
-          { text: "2. Patching", link: `${pkgBase}/modules/patch` },
-          { text: "3. Serialization", link: `${pkgBase}/modules/serialize` },
+          { text: "1. Diffing", link: `${base}/modules/diff` },
+          { text: "2. Patching", link: `${base}/modules/patch` },
+          { text: "3. Serialization", link: `${base}/modules/serialize` },
         ],
+      },
+      {
+        text: "Support",
+        items: [{ text: "Changelog", link: `${base}/changelog` }],
       },
       {
         text: "Reference",
         items: [
-          { text: "API (TypeDoc)", link: `${pkgBase}/api/` },
-          { text: "Playground guide", link: `${pkgBase}/playground/playground` },
+          { text: "API (TypeDoc)", link: `${base}/api/` },
+          { text: "Playground guide", link: `${base}/playground/playground` },
         ],
       },
       {

@@ -1,8 +1,22 @@
 ---
-title: Moved — Playground Docs
-description: Playground documentation is scoped to the Browser Lifecycle package.
+title: Playground
+description: Interactive playgrounds for live JOC packages — explore Browser Lifecycle, Object Diff, and Form Intelligent in the browser.
 ---
 
-# Playground docs moved
+# Playground
 
-**[Browser Lifecycle playground docs →](/packages/browser-lifecycle/playground/playground)**
+Explore live JOC packages in the browser. Each playground is a standalone app bundled with the docs site — open a package below to try APIs, inspect state, and validate behavior without cloning the monorepo.
+
+<PlaygroundCatalog />
+
+## Local development
+
+Run a playground app directly from the monorepo when you are contributing or debugging:
+
+```bash
+pnpm browser-session-playground:dev
+pnpm object-diff-playground:dev
+pnpm form-intelligent-playground:dev
+```
+
+See each package’s playground guide for routes, deployment notes, and module-specific walkthroughs.

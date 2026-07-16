@@ -23,7 +23,7 @@ Docs are organized in two layers:
 - [Philosophy](/getting-started/philosophy)
 - [Package catalog](/packages/)
 - [Contributor guides](/guides/contribution)
-- [Roadmap](/roadmap/) and [changelog](/changelog/)
+- [Roadmap](/roadmap/) and package changelogs under each live package (for example [Browser Lifecycle](/packages/browser-lifecycle/changelog))
 
 ### Per package
 

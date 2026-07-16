@@ -182,6 +182,9 @@ export function ValidationPage() {
                   }}
                   value={toInputValue(form.values("username"))}
                 />
+                {snapshot.fieldMeta.username?.isValidating ? (
+                  <span className={styles.fieldHint}>Checking…</span>
+                ) : null}
                 {snapshot.errors.username ? (
                   <span className={styles.errorText}>{snapshot.errors.username}</span>
                 ) : null}

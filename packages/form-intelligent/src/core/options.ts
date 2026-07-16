@@ -7,10 +7,12 @@ export interface ResolvedFormConfig<TValues extends Record<string, unknown>> {
   readonly onSubmit: FormConfig<TValues>["onSubmit"];
   readonly onSubmitError: FormConfig<TValues>["onSubmitError"];
   readonly validators: FormConfig<TValues>["validators"];
+  readonly crossFieldValidators: FormConfig<TValues>["crossFieldValidators"];
+  readonly formValidators: FormConfig<TValues>["formValidators"];
 }
 
 export function normalizeFormConfig<TValues extends Record<string, unknown>>(
-  config: FormConfig<TValues>,
+  config: FormConfig<TValues> & { readonly initialValues: TValues },
 ): ResolvedFormConfig<TValues> {
   return {
     initialValues: config.initialValues,
@@ -19,5 +21,7 @@ export function normalizeFormConfig<TValues extends Record<string, unknown>>(
     onSubmit: config.onSubmit,
     onSubmitError: config.onSubmitError,
     validators: config.validators,
+    crossFieldValidators: config.crossFieldValidators,
+    formValidators: config.formValidators,
   };
 }

@@ -18,6 +18,66 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./validation": {
+      "types": "./dist/validation/index.d.ts",
+      "import": "./dist/validation/index.js"
+    },
+    "./format": {
+      "types": "./dist/format/index.d.ts",
+      "import": "./dist/format/index.js"
+    },
+    "./rules": {
+      "types": "./dist/rules/index.d.ts",
+      "import": "./dist/rules/index.js"
+    },
+    "./workflow": {
+      "types": "./dist/workflow/index.d.ts",
+      "import": "./dist/workflow/index.js"
+    },
+    "./submission": {
+      "types": "./dist/submission/index.d.ts",
+      "import": "./dist/submission/index.js"
+    },
+    "./plugins": {
+      "types": "./dist/plugins/index.d.ts",
+      "import": "./dist/plugins/index.js"
+    },
+    "./analytics": {
+      "types": "./dist/analytics/index.d.ts",
+      "import": "./dist/analytics/index.js"
+    },
+    "./offline": {
+      "types": "./dist/offline/index.d.ts",
+      "import": "./dist/offline/index.js"
+    },
+    "./history": {
+      "types": "./dist/history/index.d.ts",
+      "import": "./dist/history/index.js"
+    },
+    "./draft": {
+      "types": "./dist/draft/index.d.ts",
+      "import": "./dist/draft/index.js"
+    },
+    "./wizard": {
+      "types": "./dist/wizard/index.d.ts",
+      "import": "./dist/wizard/index.js"
+    },
+    "./devtools": {
+      "types": "./dist/devtools/index.d.ts",
+      "import": "./dist/devtools/index.js"
+    },
+    "./fields": {
+      "types": "./dist/fields/index.d.ts",
+      "import": "./dist/fields/index.js"
+    },
+    "./state": {
+      "types": "./dist/state/index.d.ts",
+      "import": "./dist/state/index.js"
+    },
+    "./adapters": {
+      "types": "./dist/adapters/index.d.ts",
+      "import": "./dist/adapters/index.js"
     }
   },
   "repository": {
@@ -28,6 +88,14 @@
   "homepage": "https://itsjayoncode.github.io/joc/packages/form-intelligent/",
   "bugs": {
     "url": "https://github.com/itsjayoncode/joc/issues"
+  },
+  "scripts": {
+    "test": "pnpm -w exec vitest run packages/form-intelligent/tests",
+    "test:coverage": "pnpm -w exec vitest run --coverage packages/form-intelligent/src packages/form-intelligent/tests",
+    "typecheck:examples": "tsc -p tsconfig.examples.json --noEmit",
+    "check:entry-sizes": "node ./scripts/check-entry-sizes.mjs",
+    "check:bundle-budgets": "node ./scripts/bundle-budgets.mjs",
+    "check:size": "pnpm run check:entry-sizes && pnpm run check:bundle-budgets"
   },
   "keywords": [
     "form",
@@ -42,6 +110,24 @@
     "jayoncode",
     "joc"
   ],
+  "peerDependencies": {
+    "@jayoncode/browser-lifecycle": ">=0.1.0",
+    "@jayoncode/object-diff": ">=0.1.0"
+  },
+  "peerDependenciesMeta": {
+    "@jayoncode/browser-lifecycle": {
+      "optional": true
+    },
+    "@jayoncode/object-diff": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@jayoncode/browser-lifecycle": "workspace:*",
+    "@jayoncode/object-diff": "workspace:*",
+    "esbuild": "^0.21.5",
+    "fake-indexeddb": "^6.0.0"
+  },
   "publishConfig": {
     "access": "public"
   }

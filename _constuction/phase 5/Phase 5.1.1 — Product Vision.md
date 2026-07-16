@@ -44,7 +44,7 @@ Marketing line
 Alternative names considered
 
 - `@jayoncode/form` (shorter, but less distinctive in npm search)
-- `@jayoncode/form-intelligence` (rejected — sounds AI-related; user chose **form-intelligent** as the compromise spelling)
+- `@jayoncode/form-intelligent` (rejected — sounds AI-related; user chose **form-intelligent** as the compromise spelling)
 - `@jayoncode/forms` (rejected for this package — plural reserved for monorepo catalog stub)
 
 Decision

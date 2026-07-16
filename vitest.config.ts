@@ -11,6 +11,38 @@ export default defineConfig({
   resolve: {
     alias: [
       {
+        find: /^@jayoncode\/form-intelligent\/(.+)$/,
+        replacement: path.join(rootDir, "packages/form-intelligent/src/$1/index.ts"),
+      },
+      {
+        find: "@jayoncode/form-intelligent-valibot",
+        replacement: path.join(rootDir, "packages/form-intelligent-valibot/src/index.ts"),
+      },
+      {
+        find: "@jayoncode/form-intelligent-yup",
+        replacement: path.join(rootDir, "packages/form-intelligent-yup/src/index.ts"),
+      },
+      {
+        find: "@jayoncode/form-intelligent-ajv",
+        replacement: path.join(rootDir, "packages/form-intelligent-ajv/src/index.ts"),
+      },
+      {
+        find: "@jayoncode/form-intelligent-angular",
+        replacement: path.join(rootDir, "packages/form-intelligent-angular/src/index.ts"),
+      },
+      {
+        find: "@jayoncode/form-intelligent-vue",
+        replacement: path.join(rootDir, "packages/form-intelligent-vue/src/index.ts"),
+      },
+      {
+        find: "@jayoncode/form-intelligent-zod",
+        replacement: path.join(rootDir, "packages/form-intelligent-zod/src/index.ts"),
+      },
+      {
+        find: "@jayoncode/form-intelligent",
+        replacement: path.join(rootDir, "packages/form-intelligent/src/index.ts"),
+      },
+      {
         find: /^@jayoncode\/(.+)$/,
         replacement: path.join(rootDir, "packages/$1/src/index.ts"),
       },
@@ -23,7 +55,17 @@ export default defineConfig({
       reportsDirectory: "./coverage",
       reporter: ["text", "html", "lcov", "json-summary"],
       include: ["packages/**/*.{ts,tsx}", "test-utils/**/*.{ts,tsx}"],
-      exclude: ["**/*.d.ts", "**/dist/**", "**/build/**", "**/coverage/**", "**/node_modules/**"],
+      exclude: [
+        "**/*.d.ts",
+        "**/dist/**",
+        "**/build/**",
+        "**/coverage/**",
+        "**/node_modules/**",
+        "**/tests/**",
+        "**/examples/**",
+        "**/scripts/**",
+        "**/engineering/**",
+      ],
     },
     projects: [
       {

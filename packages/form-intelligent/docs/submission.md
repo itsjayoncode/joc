@@ -1,19 +1,27 @@
 # Submission
 
-Send valid data to your API — with loading state and protection against double-clicks.
+Send valid data to your API — with loading state, cancel, retries, and offline queueing.
 
-**Previous:** [Validation](/packages/form-intelligent/modules/validation) · **Next:** [Workflow](/packages/form-intelligent/modules/workflow)
+**Previous:** [Validation](/packages/form-intelligent/modules/validation) · **Next:** [State](/packages/form-intelligent/modules/state)
 
 ::: tip Playground
-[Submission explorer →](/playground/form-intelligent/submission) — flaky API simulation, offline queue, double-submit guard.
+[Submission explorer →](/playground/form-intelligent/submission) — flaky API, offline queue, double-submit guard, cancel.
 :::
+
+## Problem → solution
+
+| Problem                                 | Solution                                                  |
+| --------------------------------------- | --------------------------------------------------------- |
+| Double-submit and missing loading flags | Built-in `isSubmitting` + concurrent-submit guard         |
+| Need cancel / retry on flaky networks   | `cancelSubmit()`, `retry`, AbortSignal in `onSubmit` meta |
+| Submit while offline                    | `workflow.offlineQueue`                                   |
 
 ## Overview
 
 1. `submit()` runs field validation
-2. On success, invokes `onSubmit(values)`
+2. On success, invokes `onSubmit(values, meta)`
 3. `isSubmitting` is `true` for the handler duration
-4. Concurrent `submit()` calls are ignored while in flight
+4. Concurrent `submit()` calls are ignored while in flight (by default)
 
 ---
 
@@ -23,20 +31,74 @@ Send valid data to your API — with loading state and protection against double
 const form = createForm({
   initialValues: { message: "" },
   validators: { message: [required] },
-  onSubmit: async (values) => {
-    await api.sendMessage(values);
+  onSubmit: async (values, meta) => {
+    await api.sendMessage(values, { signal: meta?.signal });
   },
 });
 
-await form.submit(); // returns true on success, false on validation fail
+await form.submit(); // true on success, false on validation fail / cancel / guard
 ```
 
-Show a loading button:
+Loading UI:
 
 ```ts
-const { isSubmitting } = form.getFormState();
-// disabled={isSubmitting}
+form.state.isSubmitting;
+// or form.isSubmitting()
 ```
+
+---
+
+## AbortSignal and cancel
+
+`onSubmit` receives `meta.signal` so you can abort in-flight fetches:
+
+```ts
+onSubmit: async (values, meta) => {
+  await fetch("/api/save", {
+    method: "POST",
+    body: JSON.stringify(values),
+    signal: meta?.signal,
+  });
+},
+```
+
+Cancel from UI:
+
+```ts
+form.cancelSubmit();
+```
+
+---
+
+## Retries
+
+```ts
+await form.submit({
+  retry: 3, // number of attempts
+});
+
+await form.submit({
+  retry: {
+    maxAttempts: 3,
+    delayMs: 250,
+    // optional shouldRetry(error, attempt)
+  },
+});
+```
+
+---
+
+## Include object diff in meta
+
+```ts
+await form.submit({ includeDiff: true });
+
+onSubmit: async (values, meta) => {
+  console.log(meta?.diff); // FormDiffResult when includeDiff is set
+},
+```
+
+Requires optional peer `@jayoncode/object-diff`.
 
 ---
 
@@ -47,7 +109,10 @@ If `onSubmit` throws, `submit()` returns `false` and `onSubmitError` runs:
 ```ts
 createForm({
   onSubmit: async (values) => {
-    const res = await fetch("/api/signup", { method: "POST", body: JSON.stringify(values) });
+    const res = await fetch("/api/signup", {
+      method: "POST",
+      body: JSON.stringify(values),
+    });
     if (!res.ok) throw new Error("Signup failed");
   },
   onSubmitError: (error) => {
@@ -63,32 +128,113 @@ createForm({
 Calling `submit()` again while the first is still running returns `false` — your handler is **not** called twice.
 
 ```ts
-// User double-clicks — safe by default
 await form.submit();
-await form.submit(); // → false, onSubmit not invoked again
+await form.submit(); // → false while in flight
 ```
 
 Opt out: `form.submit({ preventDoubleSubmit: false })`.
 
 ---
 
+## Offline queue
+
+Queue submits while offline; flush when back online:
+
+```ts
+createForm({
+  initialValues: { email: "" },
+  validators: { email: [required, email] },
+  workflow: {
+    offlineQueue: {
+      enabled: true,
+      storageKey: "signup:offline",
+    },
+  },
+  onSubmit: async (values) => api.register(values),
+});
+
+form.state.submissionQueue.pending;
+form.state.submissionQueue.flushing;
+
+await form.flushOfflineQueue();
+```
+
+Pair with `createBrowserLifecyclePlugin({ flushOfflineQueueOnOnline: true })` — see [Integrations](/packages/form-intelligent/modules/integrations).
+
+---
+
 ## Common patterns
 
-| Scenario          | What to do                                               |
-| ----------------- | -------------------------------------------------------- |
-| Retry after error | Show error UI; user clicks submit again                  |
-| Optimistic UI     | Update UI before `onSubmit`; rollback in `onSubmitError` |
-| Offline           | Queue in your app; flush when back online                |
-| Cancel request    | Use `AbortController` inside `onSubmit`                  |
+| Scenario            | What to do                                                      |
+| ------------------- | --------------------------------------------------------------- |
+| Retry after error   | Show error UI; user clicks submit again — or use `retry` option |
+| Cancel slow request | `form.cancelSubmit()` + honor `meta.signal`                     |
+| Offline             | Enable `workflow.offlineQueue`                                  |
+| Optimistic UI       | Update UI before `onSubmit`; rollback in `onSubmitError`        |
+
+---
+
+## Element structure
+
+### Native HTML
+
+```html
+<form id="contact">
+  <label>
+    Message
+    <textarea name="message" rows="4"></textarea>
+  </label>
+  <button type="submit">Send</button>
+  <button type="button" id="cancel">Cancel</button>
+</form>
+```
+
+```ts
+createForm({
+  target: "#contact",
+  schema: { message: { required: true } },
+  onSubmit: async (values, meta) => {
+    await api.send(values, { signal: meta?.signal });
+  },
+});
+
+document.querySelector("#cancel")?.addEventListener("click", () => {
+  form.cancelSubmit();
+});
+```
+
+While submitting, the engine sets `aria-busy` on the form and disables submit buttons.
+
+### React JSX
+
+```tsx
+<form {...form.form()}>
+  <label>
+    Message
+    <textarea {...form.field("message")} rows={4} />
+    {form.state.errors.message ? <span role="alert">{form.state.errors.message}</span> : null}
+  </label>
+
+  <button {...form.submit()} disabled={form.state.isSubmitting || form.state.ui.submitDisabled}>
+    {form.state.isSubmitting ? "Sending…" : "Send"}
+  </button>
+  <button type="button" onClick={() => form.cancelSubmit()} disabled={!form.state.isSubmitting}>
+    Cancel
+  </button>
+</form>
+```
 
 ---
 
 ## Cheat sheet
 
 ```ts
-const ok = await form.submit();
-form.getFormState().isSubmitting; // true while handler runs
-form.getFormState().submitCount; // how many successful submits
+const ok = await form.submit({ retry: 2, includeDiff: true });
+form.cancelSubmit();
+form.state.isSubmitting;
+form.state.submitCount;
+form.state.submissionQueue;
+await form.flushOfflineQueue();
 ```
 
-**Next:** [Workflow](/packages/form-intelligent/modules/workflow) — autosave, drafts, and wizards.
+**Next:** [State](/packages/form-intelligent/modules/state) — snapshots, field meta, undo/redo, diffs.

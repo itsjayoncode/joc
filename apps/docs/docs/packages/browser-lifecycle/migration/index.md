@@ -24,4 +24,4 @@ Future releases will document breaking API changes, configuration shape changes,
 
 ## Changelog
 
-See the [repository changelog](/changelog/) and `packages/browser-lifecycle/CHANGELOG.md`.
+See the [package changelog](/packages/browser-lifecycle/changelog).

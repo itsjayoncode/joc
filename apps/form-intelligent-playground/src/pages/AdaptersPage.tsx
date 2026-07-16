@@ -1,3 +1,8 @@
+import { useState } from "react";
+
+import { when } from "@jayoncode/form-intelligent/rules";
+import { useForm } from "@jayoncode/form-intelligent-react";
+
 import styles from "./Pages.module.css";
 import { ExplainPanel } from "../components/playground/ExplainPanel.js";
 import { Card } from "../components/primitives/Card.js";
@@ -8,20 +13,32 @@ const ADAPTERS = [
   {
     name: "Headless HTML",
     status: "Available now",
-    description: "Use field().bind() with native inputs — zero framework dependency.",
-    code: `const binding = form.field("email").bind();\n<input name={binding.name} value={binding.value} onChange={(e) => binding.onChange(e.target.value)} />`,
-  },
-  {
-    name: "React adapter",
-    status: "Planned (@jayoncode/form-intelligent-react)",
-    description: "useFormField() hook and context provider for React apps.",
-    code: `// coming soon\nconst field = useFormField("email");`,
+    description: "Use createForm with target + schema, or field().setValue() in headless mode.",
+    code: `createForm({\n  target: "#register",\n  schema: { email: "email", password: "password" },\n  onSubmit,\n});`,
   },
   {
     name: "Zod adapter",
-    status: "Planned (@jayoncode/form-intelligent-zod)",
-    description: "Bridge Zod schemas to the validation pipeline via SchemaAdapter.",
-    code: `// coming soon\nadapter: zodAdapter(signupSchema)`,
+    status: "Available (@jayoncode/form-intelligent-zod)",
+    description: "Pass a Zod schema through zodAdapter() as createForm schema.",
+    code: `import { zodAdapter } from "@jayoncode/form-intelligent-zod";\n\ncreateForm({\n  initialValues: { email: "", password: "" },\n  schema: zodAdapter(signupSchema),\n  onSubmit,\n});`,
+  },
+  {
+    name: "Yup adapter",
+    status: "Available (@jayoncode/form-intelligent-yup)",
+    description: "Pass a Yup schema through yupAdapter() as createForm schema.",
+    code: `import { yupAdapter } from "@jayoncode/form-intelligent-yup";\n\ncreateForm({\n  initialValues: { email: "", password: "" },\n  schema: yupAdapter(signupSchema),\n  onSubmit,\n});`,
+  },
+  {
+    name: "Valibot adapter",
+    status: "Available (@jayoncode/form-intelligent-valibot)",
+    description: "Pass a Valibot schema through valibotAdapter() as createForm schema.",
+    code: `import { valibotAdapter } from "@jayoncode/form-intelligent-valibot";\n\ncreateForm({\n  initialValues: { email: "", password: "" },\n  schema: valibotAdapter(signupSchema),\n  onSubmit,\n});`,
+  },
+  {
+    name: "AJV adapter",
+    status: "Available (@jayoncode/form-intelligent-ajv)",
+    description: "Pass JSON Schema through ajvAdapter() — or a pre-compiled AJV validate function.",
+    code: `import { ajvAdapter } from "@jayoncode/form-intelligent-ajv";\n\ncreateForm({\n  initialValues: { email: "", password: "" },\n  schema: ajvAdapter(signupSchema),\n  onSubmit,\n});`,
   },
   {
     name: "React Hook Form bridge",
@@ -36,12 +53,84 @@ const ADAPTERS = [
     code: `// planned integration pattern`,
   },
   {
-    name: "Vue / Angular / Svelte",
+    name: "Vue adapter",
+    status: "Available (@jayoncode/form-intelligent-vue)",
+    description:
+      "useForm(), provideForm(), and useField() composables mirroring the React adapter.",
+    code: `import { useForm } from "@jayoncode/form-intelligent-vue";\n\nconst form = useForm({\n  schema: { email: "email" },\n  onSubmit,\n});`,
+  },
+  {
+    name: "Angular adapter",
+    status: "Available (@jayoncode/form-intelligent-angular)",
+    description: "FormService, provideFormIntelligent(), fiForm and fiField standalone directives.",
+    code: `import { provideFormIntelligent, injectForm } from "@jayoncode/form-intelligent-angular";\n\n@Component({\n  providers: [provideFormIntelligent({ schema: { email: "email" }, onSubmit })],\n  template: '<form fiForm><input fiField="email" /></form>',\n})\nexport class LoginComponent {\n  readonly form = injectForm();\n}`,
+  },
+  {
+    name: "Svelte",
     status: "Planned",
-    description: "Framework-specific composables and services mirroring the React adapter API.",
-    code: `// @jayoncode/form-intelligent-vue (planned)`,
+    description: "Framework-specific bindings mirroring the React adapter API.",
+    code: `// @jayoncode/form-intelligent-svelte (planned)`,
   },
 ] as const;
+
+function ReactAdapterDemo() {
+  const [submitted, setSubmitted] = useState<string | null>(null);
+
+  type AdapterDemoValues = {
+    email: string;
+    loanAmount: number;
+  };
+
+  const form = useForm<AdapterDemoValues>({
+    schema: { email: "email" },
+    initialValues: { email: "", loanAmount: 600_000 },
+    rules: [when<AdapterDemoValues>("loanAmount").greaterThan(500_000).disableSubmit().build()],
+    onSubmit: (values) => {
+      setSubmitted(`Submitted ${values.email} (loan ${String(values.loanAmount)})`);
+    },
+  });
+
+  return (
+    <Card
+      description="useForm() wires schema validation, rules, and submit state — no manual subscribe."
+      title="React adapter (live)"
+    >
+      <form {...form.form()}>
+        <label className={styles.fieldLabel}>
+          Email
+          <input {...form.field("email")} aria-label="Email" className={styles.textInput} />
+        </label>
+        {form.state.errors.email ? (
+          <p className={styles.fieldHint}>{form.state.errors.email}</p>
+        ) : null}
+
+        <label className={styles.fieldLabel}>
+          Loan amount
+          <input
+            {...form.field("loanAmount")}
+            aria-label="Loan amount"
+            className={styles.textInput}
+            type="number"
+          />
+        </label>
+
+        <button {...form.submitButton()} className={styles.primaryButton}>
+          Submit
+        </button>
+      </form>
+
+      <p className={styles.fieldHint}>
+        submitDisabled: <code>{String(form.state.formUi.submitDisabled)}</code>
+      </p>
+      {submitted ? <p className={styles.fieldHint}>{submitted}</p> : null}
+
+      <CodeBlock
+        code={`const form = useForm({\n  schema: { email: "email" },\n  rules: [when("loanAmount").greaterThan(500_000).disableSubmit()],\n  onSubmit,\n});\n\n<input {...form.field("email")} />\n<button {...form.submitButton()}>Submit</button>`}
+        language="typescript"
+      />
+    </Card>
+  );
+}
 
 export function AdaptersPage() {
   return (
@@ -51,9 +140,11 @@ export function AdaptersPage() {
       title="Adapter Playground"
     >
       <ExplainPanel
-        body="Form Intelligent deliberately avoids owning field registration. Adapters translate framework events into setValue, bind(), and workflow APIs. Until adapter packages ship, use the headless binding pattern below."
+        body="Form Intelligent deliberately avoids owning field registration. Adapters translate framework events into setValue, bind(), and workflow APIs. The React adapter uses useSyncExternalStore internally so components read form.state without manual subscribe."
         title="Positioning"
       />
+
+      <ReactAdapterDemo />
 
       <div className={styles.cardGrid}>
         {ADAPTERS.map((adapter) => (

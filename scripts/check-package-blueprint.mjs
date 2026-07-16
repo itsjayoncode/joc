@@ -71,6 +71,20 @@ for (const entry of packageEntries) {
     continue;
   }
 
+  const manifestPath = path.join(packageRoot, "package.json");
+  let manifest;
+
+  try {
+    manifest = JSON.parse(await readFile(manifestPath, "utf8"));
+  } catch {
+    failures.push(`Production package packages/${entry.name} has an unreadable package.json.`);
+    continue;
+  }
+
+  if (manifest.private === true) {
+    continue;
+  }
+
   for (const relativePath of productionPackageRequirements) {
     try {
       await access(path.join(packageRoot, relativePath));
@@ -91,8 +105,6 @@ for (const entry of packageEntries) {
       `Production package packages/${entry.name} should document its folder layout in engineering/008-folder-architecture.md`,
     );
   }
-
-  const manifest = JSON.parse(await readFile(path.join(packageRoot, "package.json"), "utf8"));
 
   if (!manifest.name?.startsWith("@jayoncode/")) {
     failures.push(`Production package packages/${entry.name} should use the @jayoncode npm scope.`);

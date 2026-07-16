@@ -6,11 +6,25 @@ import { Card } from "../components/primitives/Card.js";
 import { CodeBlock } from "../components/primitives/CodeBlock.js";
 import { PageContainer } from "../components/primitives/PageContainer.js";
 import { useFormSnapshot } from "../hooks/useFormSnapshot.js";
-import { createForm, currency, phone, slug } from "../lib/form-intelligent.js";
-import { creditCard, normalizeUrl } from "../lib/playground-formatters.js";
+import {
+  createForm,
+  creditCard,
+  currency,
+  philippinePhone,
+  phone,
+  slug,
+} from "../lib/form-intelligent.js";
+import { normalizeUrl } from "../lib/playground-formatters.js";
 import { toInputValue } from "../utils/field-value.js";
 
 const FORMAT_DEMOS = [
+  {
+    path: "phMobile",
+    label: "Philippine phone",
+    format: philippinePhone,
+    hint: 'Preset format: "philippine-phone" — 0917 123 4567',
+    placeholder: "09171234567",
+  },
   {
     path: "phone",
     label: "Phone",
@@ -36,7 +50,7 @@ const FORMAT_DEMOS = [
     path: "card",
     label: "Credit card",
     format: creditCard,
-    hint: "Playground formatter groups card digits (display layer demo).",
+    hint: "Package formatter groups card digits (4111 1111 1111 1111).",
     placeholder: "4242424242424242",
   },
   {
@@ -53,6 +67,7 @@ export function FormatterPage() {
     () =>
       createForm({
         initialValues: {
+          phMobile: "",
           phone: "",
           amount: "",
           slug: "",
@@ -63,7 +78,20 @@ export function FormatterPage() {
     [],
   );
 
+  const schemaForm = useMemo(
+    () =>
+      createForm({
+        initialValues: { phPreset: "", cardPreset: "" },
+        schema: {
+          phPreset: { format: "philippine-phone" },
+          cardPreset: { format: "credit-card" },
+        },
+      }),
+    [],
+  );
+
   const snapshot = useFormSnapshot(form);
+  const schemaSnapshot = useFormSnapshot(schemaForm);
 
   return (
     <PageContainer
@@ -96,6 +124,48 @@ export function FormatterPage() {
           </Card>
         ))}
       </div>
+
+      <Card
+        description='Schema strings "philippine-phone" and "credit-card" compile to format + parse hooks automatically.'
+        title="Schema format presets"
+      >
+        <label className={styles.fieldLabel}>
+          Philippine phone (schema preset)
+          <input
+            className={styles.textInput}
+            name="phPreset"
+            onChange={(event) => {
+              schemaForm.setValue("phPreset", event.target.value);
+            }}
+            placeholder="09171234567"
+            value={toInputValue(schemaForm.values("phPreset"))}
+          />
+        </label>
+        <p className={styles.fieldHint}>
+          Stored: <code>{JSON.stringify(schemaSnapshot.values.phPreset)}</code>
+        </p>
+
+        <label className={styles.fieldLabel}>
+          Credit card (schema preset)
+          <input
+            className={styles.textInput}
+            name="cardPreset"
+            onChange={(event) => {
+              schemaForm.setValue("cardPreset", event.target.value);
+            }}
+            placeholder="4242424242424242"
+            value={toInputValue(schemaForm.values("cardPreset"))}
+          />
+        </label>
+        <p className={styles.fieldHint}>
+          Stored: <code>{JSON.stringify(schemaSnapshot.values.cardPreset)}</code>
+        </p>
+
+        <CodeBlock
+          code={`createForm({\n  schema: {\n    phone: { format: "philippine-phone" },\n    card: { format: "credit-card" },\n  },\n});`}
+          language="typescript"
+        />
+      </Card>
 
       <Card description="Built-in and custom formatters side by side." title="Registration pattern">
         <CodeBlock

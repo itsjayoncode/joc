@@ -68,9 +68,44 @@ input.onblur = binding.onBlur;`,
 }`,
   },
   {
+    title: "Conditional rules",
+    description: "Show, require, and disable submit based on other field values.",
+    code: `import { createForm, when } from "@jayoncode/form-intelligent";
+
+createForm({
+  initialValues: { customerType: "Personal", companyName: "" },
+  rules: [when("customerType").equals("Business").show("companyName")],
+});
+
+form.state.fieldUi.companyName?.visible;
+form.state.formUi.submitDisabled;`,
+  },
+  {
+    title: "Field dependencies",
+    description: "Load select options when a parent field changes.",
+    code: `when("country")
+  .changes(async (country) => loadProvinces(country))
+  .populate("province");`,
+  },
+  {
+    title: "Calculations",
+    description: "Derived fields without manual event wiring.",
+    code: `const form = createForm({ initialValues: { price: 100, qty: 2, total: 0 } });
+form.calculate("total", ({ values }) => values.price * values.qty);`,
+  },
+  {
+    title: "Offline submit queue",
+    description: "Queue while offline, flush when connectivity returns.",
+    code: `createForm({
+  workflow: { offlineQueue: { enabled: true } },
+  onSubmit: async (values) => api.save(values),
+});
+await form.flushOfflineQueue();`,
+  },
+  {
     title: "Custom plugin",
     description: "Subscribe to lifecycle events and return cleanup.",
-    code: `form.registerPlugin({
+    code: `form.use({
   name: "analytics",
   setup(instance) {
     return instance.on("submit", () => track("form_submit"));

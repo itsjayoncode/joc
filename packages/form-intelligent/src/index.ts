@@ -1,4 +1,24 @@
-export { createForm, clearDraft } from "./core/create-form.js";
+export { createForm } from "./core/create-form.js";
+export { when } from "./rules/index.js";
+export {
+  asyncValidator,
+  currency,
+  custom,
+  date,
+  email,
+  max,
+  maxLength,
+  min,
+  minLength,
+  number,
+  password,
+  phone,
+  regex,
+  required,
+  url,
+} from "./validation/validators/index.js";
+export { matchesField, requiredWhen } from "./validation/cross-field.js";
+export { runValidationPipeline } from "./validation/pipeline.js";
 export {
   ConfigurationError,
   FormIntelligentError,
@@ -6,29 +26,68 @@ export {
   ValidationError,
   WorkflowError,
 } from "./errors/index.js";
-export { currency, lowercase, phone, slug, trim, uppercase } from "./format/formatters.js";
-export { email, minLength, regex, required, url } from "./validation/validators.js";
+export {
+  isSchemaAdapter,
+  isPersistenceAdapter,
+  isFrameworkAdapter,
+  isSubmitTransportAdapter,
+} from "./adapters/index.js";
 export type {
+  FrameworkAdapter,
+  PersistenceAdapter,
+  SchemaAdapter,
+  SubmitTransportAdapter,
+  SyncPersistenceAdapter,
+} from "./adapters/index.js";
+export { FormModuleRegistry } from "./core/module-registry.js";
+export { FormModuleHost, pluginAsModule } from "./core/form-module-host.js";
+export type {
+  AnalyticsConfig,
   AutosaveConfig,
+  BuiltInFieldType,
+  CalculateOptions,
+  CustomFieldValidator,
+  CustomFieldValidatorContext,
   DraftConfig,
   FieldBinding,
   FieldHandle,
+  FieldMetaState,
+  FieldOption,
   FieldOptions,
   FieldPath,
+  FieldSchemaConfig,
+  FieldSchemaDefinition,
   FieldState,
+  FieldUiMap,
+  FieldUiState,
+  FormAnalyticsSnapshot,
   FormConfig,
+  FormChangeRecord,
+  FormDiffMetadata,
+  FormDiffOptions,
+  FormDiffResult,
   FormEvent,
   FormInstance,
   FormPlugin,
+  FormPluginSetupResult,
+  FormRef,
+  FormRuleDefinition,
   FormSelector,
   FormState,
+  FormUiState,
   Formatter,
+  KeyboardShortcutConfig,
+  OfflineQueueConfig,
   Parser,
   ResetOptions,
-  SchemaAdapter,
+  RuleContext,
+  SetValueOptions,
+  SubmissionQueueState,
+  SubmitMeta,
   SubmitOptions,
   ValidateOptions,
   ValidationContext,
+  ValidationFormAccessor,
   ValidationMode,
   Validator,
   ValidatorResult,
@@ -37,3 +96,5 @@ export type {
   WorkflowConfig,
   WorkflowState,
 } from "./types/index.js";
+export type { FormModule, FormModuleContext } from "./core/module-types.js";
+export type { FormatPreset } from "./engines/formatter/presets.js";

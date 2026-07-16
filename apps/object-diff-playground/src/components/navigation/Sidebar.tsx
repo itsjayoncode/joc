@@ -89,6 +89,7 @@ export function Sidebar({ classNames: classes }: SidebarProps) {
                       className={({ isActive }) =>
                         classNames(classes.navLink, isActive && classes.navLinkActive)
                       }
+                      end={item.path === "/"}
                       onClick={closeMobileSidebar}
                       title={item.description}
                       to={item.path}

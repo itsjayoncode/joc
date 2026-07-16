@@ -1,0 +1,105 @@
+.stack {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.formList {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.formButton,
+.formButtonActive {
+  display: grid;
+  gap: 0.2rem;
+  width: 100%;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  text-align: left;
+  cursor: pointer;
+}
+
+.formButton {
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-strong);
+  color: inherit;
+}
+
+.formButtonActive {
+  border: 1px solid var(--accent-primary);
+  background: var(--accent-soft);
+  color: inherit;
+}
+
+.formId {
+  font-family: "IBM Plex Mono", "SFMono-Regular", "SF Mono", Consolas, monospace;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.formMeta {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.toolbar {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.secondaryButton {
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-strong);
+}
+
+.empty {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.86rem;
+}
+
+.timeline {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timelineEntry {
+  display: grid;
+  gap: 0.25rem;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.timelineEntry:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.timelineTime {
+  color: var(--text-muted);
+  font-family: "IBM Plex Mono", "SFMono-Regular", "SF Mono", Consolas, monospace;
+  font-size: 0.75rem;
+}
+
+.timelineLabel {
+  color: var(--text-secondary);
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.timelineDetail {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}

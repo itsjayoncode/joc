@@ -6,7 +6,7 @@ export const docsPlaygroundUrl = process.env.VITE_DOCS_PLAYGROUND_URL ?? DEFAULT
 
 export const siteName = "JOC by JayOnCode";
 export const siteTagline =
-  "TypeScript browser libraries, documentation, and interactive tooling for session lifecycle, visibility, idle detection, and cross-tab coordination.";
+  "Modern TypeScript libraries for high-quality web apps — lightweight, type-safe, framework-agnostic packages under @jayoncode/*.";
 
 export const defaultKeywords = [
   "JOC",
@@ -39,14 +39,9 @@ export function resolveDocsBasePath(assetPath: string): string {
   return normalizedBase === "/" ? `/${normalizedAsset}` : `${normalizedBase}${normalizedAsset}`;
 }
 
-/**
- * VitePress-internal path to a bundled playground SPA.
- * Do not prepend VITE_DOCS_BASE — VitePress `withBase()` adds it for sidebar and markdown links.
- */
-export function resolvePlaygroundPath(playgroundName: string): string {
-  const slug = playgroundName.replace(/^\/|\/$/g, "");
-  return `/playground/${slug}/`;
-}
+import { resolvePlaygroundPath } from "./playground-path.js";
+
+export { resolvePlaygroundPath };
 
 export function buildOrganizationJsonLd(siteUrl: string): string {
   return JSON.stringify({

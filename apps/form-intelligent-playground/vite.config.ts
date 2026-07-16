@@ -19,6 +19,7 @@ function readPackageVersion(relativePackagePath: string): string {
 
 const playgroundVersion = readPackageVersion("apps/form-intelligent-playground");
 const formIntelligentVersion = readPackageVersion("packages/form-intelligent");
+const formIntelligentReactVersion = readPackageVersion("packages/form-intelligent-react");
 
 export default defineConfig({
   base: process.env.VITE_PLAYGROUND_BASE ?? "/",
@@ -28,11 +29,18 @@ export default defineConfig({
     target: "es2022",
   },
   define: {
-    __FORM_INTELLIGENT_VERSION__: JSON.stringify(formIntelligentVersion),
-    __PLAYGROUND_VERSION__: JSON.stringify(playgroundVersion),
+    "import.meta.env.VITE_FORM_INTELLIGENT_VERSION": JSON.stringify(formIntelligentVersion),
+    "import.meta.env.VITE_FORM_INTELLIGENT_REACT_VERSION": JSON.stringify(
+      formIntelligentReactVersion,
+    ),
+    "import.meta.env.VITE_PLAYGROUND_VERSION": JSON.stringify(playgroundVersion),
   },
   resolve: {
     alias: [
+      {
+        find: /^@jayoncode\/form-intelligent\/(.+)$/,
+        replacement: path.join(repoRoot, "packages/form-intelligent/src/$1/index.ts"),
+      },
       { find: /^@jayoncode\/(.+)$/, replacement: path.join(repoRoot, "packages/$1/src/index.ts") },
     ],
   },

@@ -25,7 +25,7 @@ const pkg = browserLifecycleMeta;
     >). See
     <a href="/packages/browser-lifecycle/migration/">Migration</a>
     and
-    <a href="/changelog/">Changelog</a>
+    <a href="/packages/browser-lifecycle/changelog">Changelog</a>
     for release history.
   </p>
 

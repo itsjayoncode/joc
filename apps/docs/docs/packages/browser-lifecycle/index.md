@@ -5,9 +5,21 @@ description: "Install and use @jayoncode/browser-lifecycle for typed page visibi
 
 # Browser Lifecycle
 
-<BrowserLifecycleVersion />
-
 Typed browser session lifecycle — visibility, focus, connectivity, idle detection, cross-tab sync, and plugins in one headless API.
+
+## Install
+
+```bash
+npm install @jayoncode/browser-lifecycle
+```
+
+```bash
+pnpm add @jayoncode/browser-lifecycle
+```
+
+```bash
+yarn add @jayoncode/browser-lifecycle
+```
 
 ## Example: pause work when the tab is hidden
 
@@ -82,12 +94,6 @@ Designed for SSR-safe capability detection and framework-agnostic integration (R
 | 6   | [Core infrastructure](/packages/browser-lifecycle/modules/core-infrastructure) | Config, capabilities, SSR | [Configuration](/playground/browser-lifecycle/configuration)     |
 | 7   | [Usage guide](/packages/browser-lifecycle/guides/usage)                        | Production patterns       | [Developer tools](/playground/browser-lifecycle/developer-tools) |
 | 8   | Plugins                                                                        | Module registration       | [Plugins](/playground/browser-lifecycle/plugins)                 |
-
-## Install
-
-```bash
-npm install @jayoncode/browser-lifecycle
-```
 
 ## Package fit
 

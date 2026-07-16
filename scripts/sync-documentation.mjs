@@ -4,6 +4,10 @@
  *
  * - packages/browser-lifecycle/docs → apps/docs/docs/packages/browser-lifecycle/modules
  * - apps/browser-session-playground/docs → apps/docs/docs/packages/browser-lifecycle/playground
+ * - packages/object-diff/docs → apps/docs/docs/packages/object-diff/modules
+ * - apps/object-diff-playground/docs → apps/docs/docs/packages/object-diff/playground
+ * - packages/form-intelligent/docs → apps/docs/docs/packages/form-intelligent/modules
+ * - apps/form-intelligent-playground/docs → apps/docs/docs/packages/form-intelligent/playground
  */
 
 import {
@@ -431,6 +435,48 @@ export const browserLifecycleMeta = {
   return pkg.version;
 }
 
+function syncPackageChangelogs() {
+  const packages = [
+    {
+      sourceDir: "packages/browser-lifecycle",
+      targetFile: "packages/browser-lifecycle/changelog.md",
+      npmName: "@jayoncode/browser-lifecycle",
+    },
+    {
+      sourceDir: "packages/object-diff",
+      targetFile: "packages/object-diff/changelog.md",
+      npmName: "@jayoncode/object-diff",
+    },
+    {
+      sourceDir: "packages/form-intelligent",
+      targetFile: "packages/form-intelligent/changelog.md",
+      npmName: "@jayoncode/form-intelligent",
+    },
+  ];
+
+  let count = 0;
+
+  for (const pkg of packages) {
+    const sourceFile = path.join(rootDir, pkg.sourceDir, "CHANGELOG.md");
+    if (!existsSync(sourceFile)) {
+      continue;
+    }
+
+    const body = readFileSync(sourceFile, "utf8");
+    writeFileSync(
+      path.join(docsRoot, pkg.targetFile),
+      withFrontmatter("changelog.md", body, {
+        title: "Changelog",
+        description: `Release history for ${pkg.npmName}.`,
+      }),
+      "utf8",
+    );
+    count += 1;
+  }
+
+  return count;
+}
+
 function syncDocsMeta() {
   const pkg = JSON.parse(readFileSync(path.join(rootDir, "apps/docs/package.json"), "utf8"));
   const targetFile = path.join(docsRoot, ".vitepress/docs-meta.ts");
@@ -453,13 +499,16 @@ function formatGeneratedFiles() {
     path.join(docsRoot, "packages/browser-lifecycle/modules"),
     path.join(docsRoot, "packages/browser-lifecycle/playground"),
     path.join(docsRoot, "packages/browser-lifecycle/index.md"),
+    path.join(docsRoot, "packages/browser-lifecycle/changelog.md"),
     path.join(docsRoot, "packages/browser-lifecycle/examples"),
     path.join(docsRoot, "packages/object-diff/modules"),
     path.join(docsRoot, "packages/object-diff/playground"),
     path.join(docsRoot, "packages/object-diff/index.md"),
+    path.join(docsRoot, "packages/object-diff/changelog.md"),
     path.join(docsRoot, "packages/form-intelligent/modules"),
     path.join(docsRoot, "packages/form-intelligent/playground"),
     path.join(docsRoot, "packages/form-intelligent/index.md"),
+    path.join(docsRoot, "packages/form-intelligent/changelog.md"),
     path.join(docsRoot, ".vitepress/browser-lifecycle-meta.ts"),
     path.join(docsRoot, ".vitepress/docs-meta.ts"),
     path.join(docsRoot, ".vitepress/browser-lifecycle-versions.ts"),
@@ -510,6 +559,7 @@ const formIntelligentPlaygroundCount = syncFormIntelligentPlaygroundDocs();
 const browserLifecycleVersion = syncBrowserLifecycleMeta();
 const objectDiffVersion = syncObjectDiffMeta();
 const formIntelligentVersion = syncFormIntelligentMeta();
+const changelogCount = syncPackageChangelogs();
 const docsVersion = syncDocsMeta();
 syncBrowserLifecycleVersionsMeta();
 
@@ -519,5 +569,5 @@ if (process.env.DOCS_SYNC_SKIP_QUALITY !== "1") {
 }
 
 console.log(
-  `Synced documentation: ${moduleCount} browser-lifecycle module pages, ${browserLifecycleIndexCount} browser-lifecycle index, ${playgroundCount} browser-lifecycle playground pages, ${exampleCount} framework examples, ${objectDiffModuleCount} object-diff module pages, ${objectDiffIndexCount} object-diff index, ${objectDiffPlaygroundCount} object-diff playground pages, ${formIntelligentModuleCount} form-intelligent module pages, ${formIntelligentIndexCount} form-intelligent index, ${formIntelligentPlaygroundCount} form-intelligent playground pages, browser-lifecycle@${browserLifecycleVersion}, object-diff@${objectDiffVersion}, form-intelligent@${formIntelligentVersion}, docs@${docsVersion}.`,
+  `Synced documentation: ${moduleCount} browser-lifecycle module pages, ${browserLifecycleIndexCount} browser-lifecycle index, ${playgroundCount} browser-lifecycle playground pages, ${exampleCount} framework examples, ${objectDiffModuleCount} object-diff module pages, ${objectDiffIndexCount} object-diff index, ${objectDiffPlaygroundCount} object-diff playground pages, ${formIntelligentModuleCount} form-intelligent module pages, ${formIntelligentIndexCount} form-intelligent index, ${formIntelligentPlaygroundCount} form-intelligent playground pages, ${changelogCount} package changelogs, browser-lifecycle@${browserLifecycleVersion}, object-diff@${objectDiffVersion}, form-intelligent@${formIntelligentVersion}, docs@${docsVersion}.`,
 );

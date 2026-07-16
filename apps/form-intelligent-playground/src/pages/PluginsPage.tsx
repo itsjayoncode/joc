@@ -1,6 +1,4 @@
-import { useEffect, useMemo } from "react";
-
-import type { FormEvent, FormPlugin } from "@jayoncode/form-intelligent";
+import { useEffect, useMemo, useState } from "react";
 
 import styles from "./Pages.module.css";
 import { EventLog } from "../components/playground/EventLog.js";
@@ -9,87 +7,217 @@ import { Card } from "../components/primitives/Card.js";
 import { CodeBlock } from "../components/primitives/CodeBlock.js";
 import { PageContainer } from "../components/primitives/PageContainer.js";
 import { useEventLog } from "../hooks/useEventLog.js";
-import { createForm } from "../lib/form-intelligent.js";
+import { useFormSnapshot } from "../hooks/useFormSnapshot.js";
+import {
+  createBrowserLifecyclePlugin,
+  createForm,
+  required,
+  type FormPlugin,
+} from "../lib/form-intelligent.js";
 import { toInputValue } from "../utils/field-value.js";
 
-const TRACKED_EVENTS: readonly FormEvent[] = [
-  "change",
-  "blur",
-  "focus",
-  "validate",
-  "submit",
-  "autosave",
-  "draft",
-  "reset",
-];
+interface PluginToggle {
+  readonly id: string;
+  readonly label: string;
+  readonly description: string;
+  enabled: boolean;
+}
+
+const PLUGIN_TEMPLATE = `import type { FormPlugin } from "@jayoncode/form-intelligent";
+
+const audit: FormPlugin = {
+  name: "audit",
+  order: 10,
+  setup(form, api) {
+    api.on("beforeSubmit", () => {
+      console.log("submitting", form.values());
+      // return false to cancel
+    });
+    api.on("afterValidate", ({ valid }) => {
+      console.log("valid?", valid);
+    });
+    api.on("onAutosave", ({ savedAt }) => {
+      console.log("autosaved at", savedAt);
+    });
+    return {
+      onDestroy() {
+        console.log("audit removed");
+      },
+    };
+  },
+};
+
+form.use(audit);`;
 
 export function PluginsPage() {
   const { clear, entries, push } = useEventLog();
+  const [toggles, setToggles] = useState<PluginToggle[]>([
+    {
+      id: "hooks",
+      label: "Lifecycle hooks",
+      description: "beforeValidate / afterValidate / beforeSubmit / afterSubmit / onAutosave",
+      enabled: true,
+    },
+    {
+      id: "guard",
+      label: "Submit guard",
+      description: "beforeSubmit returns false when note is empty — blocks submit",
+      enabled: true,
+    },
+    {
+      id: "lifecycle",
+      label: "Browser lifecycle",
+      description: "createBrowserLifecyclePlugin — save draft on page:hidden",
+      enabled: false,
+    },
+  ]);
 
-  const form = useMemo(
-    () =>
-      createForm({
-        initialValues: { note: "" },
-        workflow: {
-          autosave: {
-            enabled: true,
-            debounceMs: 500,
-            onSave: () => undefined,
-          },
-          draft: { enabled: true, storageKey: "fi-playground-plugin-draft" },
-        },
-      }),
-    [],
+  const enabledIds = useMemo(
+    () => new Set(toggles.filter((toggle) => toggle.enabled).map((toggle) => toggle.id)),
+    [toggles],
   );
 
+  const formKey = [...enabledIds].sort().join(",");
+
+  const form = useMemo(() => {
+    const instance = createForm({
+      initialValues: { note: "hello" },
+      validators: {
+        note: [required],
+      },
+      workflow: {
+        autosave: {
+          enabled: true,
+          debounceMs: 400,
+          onSave: () => undefined,
+        },
+        draft: { enabled: true, storageKey: "fi-playground-plugin-draft-v2" },
+      },
+      onSubmit: (values) => {
+        push(`onSubmit called: ${JSON.stringify(values)}`);
+      },
+    });
+
+    if (enabledIds.has("hooks")) {
+      const hooksPlugin: FormPlugin<{ note: string }> = {
+        name: "playground-hooks",
+        order: 10,
+        setup(_form, api) {
+          api.on("beforeValidate", ({ paths }) => {
+            push(`hook:beforeValidate paths=${paths.join(",") || "*"}`);
+          });
+          api.on("afterValidate", ({ valid }) => {
+            push(`hook:afterValidate valid=${String(valid)}`);
+          });
+          api.on("beforeSubmit", () => {
+            push("hook:beforeSubmit");
+          });
+          api.on("afterSubmit", ({ success }) => {
+            push(`hook:afterSubmit success=${String(success)}`);
+          });
+          api.on("onAutosave", ({ savedAt }) => {
+            push(`hook:onAutosave at=${String(savedAt)}`);
+          });
+          push("plugin registered: playground-hooks");
+          return {
+            onDestroy: () => {
+              push("plugin destroyed: playground-hooks");
+            },
+          };
+        },
+      };
+      instance.use(hooksPlugin);
+    }
+
+    if (enabledIds.has("guard")) {
+      const guardPlugin: FormPlugin<{ note: string }> = {
+        name: "submit-guard",
+        order: 5,
+        setup(formInstance, api) {
+          api.on("beforeSubmit", () => {
+            const note = toInputValue(formInstance.get("note"));
+            if (note.trim() === "") {
+              push("hook:beforeSubmit blocked (empty note)");
+              return false;
+            }
+            return undefined;
+          });
+          push("plugin registered: submit-guard");
+          return {
+            onDestroy: () => {
+              push("plugin destroyed: submit-guard");
+            },
+          };
+        },
+      };
+      instance.use(guardPlugin);
+    }
+
+    if (enabledIds.has("lifecycle")) {
+      instance.use(
+        createBrowserLifecyclePlugin<{ note: string }>({
+          saveDraftOnHidden: true,
+          flushOfflineQueueOnOnline: false,
+        }),
+      );
+      push("plugin registered: browser-lifecycle");
+    }
+
+    return instance;
+  }, [enabledIds, formKey, push]);
+
   useEffect(() => {
-    const eventLogger: FormPlugin = {
-      name: "event-logger",
-      setup(instance) {
-        const unsubscribers = TRACKED_EVENTS.map((event) =>
-          instance.on(event, () => {
-            push(`event:${event}`);
-          }),
-        );
-
-        push("plugin registered: event-logger");
-        return () => {
-          for (const unsubscribe of unsubscribers) {
-            unsubscribe();
-          }
-          push("plugin destroyed: event-logger");
-        };
-      },
+    return () => {
+      form.destroy();
     };
+  }, [form]);
 
-    const autosaveEcho: FormPlugin = {
-      name: "autosave-echo",
-      setup(instance) {
-        return instance.on("autosave", () => {
-          push("plugin hook: autosave-echo fired");
-        });
-      },
-    };
+  const snapshot = useFormSnapshot(form);
 
-    form.registerPlugin(eventLogger);
-    form.registerPlugin(autosaveEcho);
-  }, [form, push]);
+  const setEnabled = (id: string, enabled: boolean) => {
+    setToggles((current) =>
+      current.map((toggle) => (toggle.id === id ? { ...toggle, enabled } : toggle)),
+    );
+  };
 
   return (
     <PageContainer
-      description="Register plugins that subscribe to form lifecycle events and clean up on destroy."
+      description="Enable plugins, fire validate/submit/autosave, and inspect the FormPluginApi hook stream."
       eyebrow="Plugins"
       title="Plugin Playground"
     >
       <ExplainPanel
-        body="Plugins are ideal for cross-cutting concerns: analytics, autosave side effects, browser-lifecycle integration, or custom DevTools panels. Each plugin can return a cleanup function."
-        title="Extension model"
+        body="Phase 5.2.9 plugins receive setup(form, api). Use api.on() for beforeValidate, afterValidate, beforeSubmit, afterSubmit, onAutosave, and onDraftRestore. Return false from before* hooks to cancel. Cleanup via returned function or { onDestroy }."
+        title="Hook-based extension model"
       />
 
       <div className={styles.explorerLayout}>
+        <Card description="Toggle demos then exercise the form." title="Plugins">
+          <ul className={styles.stackList}>
+            {toggles.map((toggle) => (
+              <li key={toggle.id}>
+                <label className={styles.checkboxRow}>
+                  <input
+                    checked={toggle.enabled}
+                    onChange={(event) => {
+                      setEnabled(toggle.id, event.target.checked);
+                    }}
+                    type="checkbox"
+                  />
+                  <span>
+                    <strong>{toggle.label}</strong>
+                    <br />
+                    <span className={styles.muted}>{toggle.description}</span>
+                  </span>
+                </label>
+              </li>
+            ))}
+          </ul>
+        </Card>
+
         <Card
-          description="Mutate the note field to emit change events. Autosave and draft events fire from workflow config."
-          title="Trigger events"
+          description="Mutate note, validate, submit, or clear to block submit with the guard plugin."
+          title="Trigger actions"
         >
           <label className={styles.fieldLabel}>
             note
@@ -98,7 +226,7 @@ export function PluginsPage() {
               onChange={(event) => {
                 form.setValue("note", event.target.value);
               }}
-              value={toInputValue(form.values("note"))}
+              value={toInputValue(snapshot.values.note)}
             />
           </label>
           <div className={styles.buttonRow}>
@@ -112,6 +240,24 @@ export function PluginsPage() {
               validate()
             </button>
             <button
+              className={styles.primaryButton}
+              onClick={() => {
+                void form.submit();
+              }}
+              type="button"
+            >
+              submit()
+            </button>
+            <button
+              className={styles.secondaryButton}
+              onClick={() => {
+                form.setValue("note", "");
+              }}
+              type="button"
+            >
+              Clear note
+            </button>
+            <button
               className={styles.secondaryButton}
               onClick={() => {
                 form.reset();
@@ -123,10 +269,7 @@ export function PluginsPage() {
           </div>
         </Card>
 
-        <Card
-          description="Hook activity from registered plugins and core events."
-          title="Plugin event log"
-        >
+        <Card description="Hook activity from FormPluginApi and onSubmit." title="Plugin event log">
           <div className={styles.buttonRow}>
             <button className={styles.secondaryButton} onClick={clear} type="button">
               Clear log
@@ -137,13 +280,10 @@ export function PluginsPage() {
       </div>
 
       <Card
-        description="Copy this template into your integration tests or app bootstrap."
+        description="Copy this template into app bootstrap or integration tests."
         title="Custom plugin template"
       >
-        <CodeBlock
-          code={`const analytics: FormPlugin = {\n  name: "analytics",\n  setup(form) {\n    return form.on("submit", () => {\n      // track submit\n    });\n  },\n};\n\nform.registerPlugin(analytics);`}
-          language="typescript"
-        />
+        <CodeBlock code={PLUGIN_TEMPLATE} language="typescript" />
       </Card>
     </PageContainer>
   );

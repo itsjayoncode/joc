@@ -25,3 +25,13 @@ All notable changes to `@jayoncode/form-intelligent` are documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+### Added
+
+- Modular engines: fields, validation, state, submission, workflow, format, plugins, adapters
+- Plugin hook API (`beforeValidate`, `beforeSubmit`, …) and middleware helpers
+- Core adapter interfaces (`SchemaAdapter`, `PersistenceAdapter`, `FrameworkAdapter`, `SubmitTransportAdapter`)
+- Documentation: migration guide and common patterns
+- Examples: `vanilla-html`, `basic-validation`, `wizard-workflow` (+ framework stubs)
+
+## 0.1.1

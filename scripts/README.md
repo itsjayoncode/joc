@@ -49,7 +49,17 @@ pnpm docs:prepare
 
 `docs:prepare` runs API generation, content sync, and archive staging for versioned package docs.
 
-`docs:build` also bundles the Browser Lifecycle playground into `playground/browser-lifecycle/` inside the Pages artifact via `scripts/bundle-playground-into-docs.mjs`.
+`docs:build` also bundles interactive playgrounds into the Pages artifact via `scripts/bundle-playground-into-docs.mjs`:
+
+| Playground        | Dist path                       | Base env                                |
+| ----------------- | ------------------------------- | --------------------------------------- |
+| Browser Lifecycle | `playground/browser-lifecycle/` | `VITE_BROWSER_PLAYGROUND_BASE`          |
+| Object Diff       | `playground/object-diff/`       | `VITE_OBJECT_DIFF_PLAYGROUND_BASE`      |
+| Form Intelligent  | `playground/form-intelligent/`  | `VITE_FORM_INTELLIGENT_PLAYGROUND_BASE` |
+
+Hub page: `/playground/` (lists all three). Form Intelligent production URL:
+
+`https://itsjayoncode.github.io/joc/playground/form-intelligent/`
 
 ### Archived package documentation
 
