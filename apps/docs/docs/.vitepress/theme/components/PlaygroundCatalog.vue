@@ -1,9 +1,20 @@
 <script setup lang="ts">
+import { withBase } from "vitepress";
+
 import { livePackages } from "../data/joc-packages";
 import { resolvePlaygroundPath } from "../../playground-path.js";
 
 function playgroundGuideLink(docsLink: string): string {
-  return `${docsLink.replace(/\/$/, "")}/playground/playground`;
+  return withBase(`${docsLink.replace(/\/$/, "")}/playground/playground`);
+}
+
+function playgroundHref(packageId: string): string {
+  // Plain <a href> does not get VitePress withBase — required for GitHub Pages /joc/ base.
+  return withBase(resolvePlaygroundPath(packageId));
+}
+
+function docsHref(docsLink: string): string {
+  return withBase(docsLink);
 }
 </script>
 
@@ -40,10 +51,7 @@ function playgroundGuideLink(docsLink: string): string {
           </div>
 
           <div class="joc-playground-card__actions">
-            <a
-              class="joc-cta-primary joc-playground-card__cta"
-              :href="resolvePlaygroundPath(pkg.id)"
-            >
+            <a class="joc-cta-primary joc-playground-card__cta" :href="playgroundHref(pkg.id)">
               Open playground
             </a>
 
@@ -52,7 +60,7 @@ function playgroundGuideLink(docsLink: string): string {
                 Playground docs
               </a>
               <span class="joc-playground-card__divider" aria-hidden="true">·</span>
-              <a class="joc-playground-card__link" :href="pkg.docsLink">Package docs</a>
+              <a class="joc-playground-card__link" :href="docsHref(pkg.docsLink)">Package docs</a>
             </div>
           </div>
         </div>
