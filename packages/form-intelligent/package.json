@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/form-intelligent",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "private": false,
   "description": "Form Intelligent — A headless form workflow engine for validation, submission, state, and multi-step orchestration.",
   "license": "MIT",
@@ -111,8 +111,8 @@
     "joc"
   ],
   "peerDependencies": {
-    "@jayoncode/browser-lifecycle": ">=0.1.0",
-    "@jayoncode/object-diff": ">=0.1.0"
+    "@jayoncode/browser-lifecycle": ">=0.2.0",
+    "@jayoncode/object-diff": ">=0.2.0"
   },
   "peerDependenciesMeta": {
     "@jayoncode/browser-lifecycle": {

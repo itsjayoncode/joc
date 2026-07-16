@@ -5,6 +5,18 @@ description: "Release history for @jayoncode/form-intelligent."
 
 # Changelog
 
+## 1.0.0
+
+### Major Changes
+
+- 926fd56: JOC Docs v1.3.0 — Form Intelligent, playground hub, per-package changelogs
+
+### Patch Changes
+
+- Updated dependencies [926fd56]
+  - @jayoncode/browser-lifecycle@0.2.0
+  - @jayoncode/object-diff@0.2.0
+
 ## 0.1.1
 
 ### Patch Changes

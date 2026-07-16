@@ -5,6 +5,12 @@ description: "Release history for @jayoncode/browser-lifecycle."
 
 # Changelog
 
+## 0.2.0
+
+### Minor Changes
+
+- 926fd56: JOC Docs v1.3.0 — Form Intelligent, playground hub, per-package changelogs
+
 ## 0.1.3
 
 ### Patch Changes
