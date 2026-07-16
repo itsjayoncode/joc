@@ -40,6 +40,17 @@ function formatGeneratedApiDocs(apiDir) {
   }
 }
 
+// form-intelligent project-references browser-lifecycle and object-diff; TypeDoc
+// needs their dist/*.d.ts before it can resolve those imports.
+const buildResult = spawnSync("pnpm", ["exec", "tsc", "-b", "--force"], {
+  cwd: rootDir,
+  stdio: "inherit",
+});
+
+if (buildResult.status !== 0) {
+  process.exit(buildResult.status ?? 1);
+}
+
 for (const pkg of packages) {
   const typedocResult = spawnSync("pnpm", ["exec", "typedoc", "--options", pkg.typedocConfig], {
     cwd: docsPackageRoot,
