@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/form-intelligent",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": false,
   "description": "Form Intelligent — Typed, framework-agnostic headless form engine for validation, submission, state, drafts, wizards, and plugins. Works with native HTML or any UI framework.",
   "license": "MIT",
