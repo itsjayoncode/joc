@@ -51,7 +51,12 @@ function docsHref(docsLink: string): string {
           </div>
 
           <div class="joc-playground-card__actions">
-            <a class="joc-cta-primary joc-playground-card__cta" :href="playgroundHref(pkg.id)">
+            <a
+              class="joc-cta-primary joc-playground-card__cta"
+              :href="playgroundHref(pkg.id)"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
               Open playground
             </a>
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { useRoute, useRouter } from "vitepress";
+import { useRoute, useRouter, withBase } from "vitepress";
 
 import { browserLifecycleDocVersions } from "../../browser-lifecycle-versions.js";
 import { formIntelligentDocVersions } from "../../form-intelligent-versions.js";
@@ -91,7 +91,8 @@ function mapPathToVersion(pathname: string, targetVersion: string): string {
 function onVersionChange(event: Event) {
   const select = event.target as HTMLSelectElement;
   const nextVersion = select.value;
-  const nextPath = mapPathToVersion(docsPath.value, nextVersion);
+  // router.go() writes history as-is — must include site base (/joc/ on GitHub Pages).
+  const nextPath = withBase(mapPathToVersion(docsPath.value, nextVersion));
   router.go(nextPath);
 }
 </script>
