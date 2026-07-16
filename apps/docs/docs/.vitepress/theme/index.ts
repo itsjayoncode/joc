@@ -8,6 +8,7 @@ import HomeFx from "./components/HomeFx.vue";
 import HomePackageCatalog from "./components/HomePackageCatalog.vue";
 import PlaygroundCatalog from "./components/PlaygroundCatalog.vue";
 import Layout from "./Layout.vue";
+import { installPlaygroundNewTabLinks } from "./playground-new-tab.js";
 
 import type { Theme } from "vitepress";
 import "./brand.css";
@@ -24,6 +25,10 @@ const theme: Theme = {
     app.component("HomeFx", HomeFx);
     app.component("HomePackageCatalog", HomePackageCatalog);
     app.component("PlaygroundCatalog", PlaygroundCatalog);
+
+    if (typeof window !== "undefined") {
+      installPlaygroundNewTabLinks();
+    }
   },
 };
 
