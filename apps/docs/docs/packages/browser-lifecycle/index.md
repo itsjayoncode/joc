@@ -120,3 +120,4 @@ Designed for SSR-safe capability detection and framework-agnostic integration (R
 ## Version
 
 <BrowserLifecycleVersion mode="overview" />
+
