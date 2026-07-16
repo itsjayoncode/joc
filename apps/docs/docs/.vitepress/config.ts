@@ -25,6 +25,7 @@ const docsBase = process.env.VITE_DOCS_BASE ?? "/";
 const ogImageUrl = resolvePublicAssetUrl("jayoncode-logo-512.png");
 const sitemapHostname = docsSiteUrl.endsWith("/") ? docsSiteUrl : `${docsSiteUrl}/`;
 const _canonicalPlaygroundUrl = docsPlaygroundUrl;
+const docsGaId = process.env.VITE_DOCS_GA_ID ?? "G-7EG7FB1SL4";
 
 const PKG = browserLifecycleDocVersions.basePath;
 const browserLifecycleVersionLabel = browserLifecycleMeta.versionLabel;
@@ -96,6 +97,18 @@ export default defineConfig({
     ["meta", { name: "twitter:image", content: ogImageUrl }],
     ["script", { type: "application/ld+json" }, buildOrganizationJsonLd(docsSiteUrl)],
     ["script", { type: "application/ld+json" }, buildSoftwarePackageJsonLd(docsSiteUrl)],
+    [
+      "script",
+      { async: "", src: `https://www.googletagmanager.com/gtag/js?id=${docsGaId}` },
+    ],
+    [
+      "script",
+      {},
+      `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${docsGaId}');`,
+    ],
   ],
   themeConfig: {
     logo: {
