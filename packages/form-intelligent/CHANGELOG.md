@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0
+
+### Minor Changes
+
+- 0f961ff: Change package title in npm server
+
 ## 1.0.0
 
 ### Major Changes
