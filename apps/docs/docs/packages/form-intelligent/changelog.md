@@ -5,6 +5,13 @@ description: "Release history for @jayoncode/form-intelligent."
 
 # Changelog
 
+## 2.0.0
+
+### Patch Changes
+
+- Updated dependencies [36dc43a]
+  - @jayoncode/browser-lifecycle@0.3.0
+
 ## 1.1.0
 
 ### Minor Changes

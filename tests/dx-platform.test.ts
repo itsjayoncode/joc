@@ -136,7 +136,11 @@ describe("developer experience platform", () => {
   });
 
   it("documents browser lifecycle instead of a placeholder package page", () => {
-    const overview = readText("apps/docs/docs/packages/browser-lifecycle/index.md");
+    const landing = readText("apps/docs/docs/packages/browser-lifecycle/index.md");
+    const overview = readText("apps/docs/docs/packages/browser-lifecycle/overview.md");
+
+    expect(landing).toContain('<PackageLanding package-id="browser-lifecycle" />');
+    expect(landing).not.toContain("No public implementation exists yet");
     expect(overview).toContain("createBrowserLifecycle()");
     expect(overview).not.toContain("No public implementation exists yet");
   });

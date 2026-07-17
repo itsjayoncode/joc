@@ -17,7 +17,7 @@ const route = useRoute();
 const { normalizeDocsPath } = useDocsPath();
 
 function injectTitleVersionBadge() {
-  const match = normalizeDocsPath(route.path).match(/^\/packages\/([^/]+)\/?$/);
+  const match = normalizeDocsPath(route.path).match(/^\/packages\/([^/]+)\/overview\/?$/);
   if (!match) {
     return;
   }

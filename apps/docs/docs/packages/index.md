@@ -56,7 +56,7 @@ Start with the live package today, then explore planned libraries as they land.
 
 ## Coming soon
 
-These packages are tracked in the monorepo and documented as stubs until they publish:
+These libraries are on the roadmap and documented as stubs until implementation begins:
 
 | Package     | npm name                 | Docs                               |
 | ----------- | ------------------------ | ---------------------------------- |

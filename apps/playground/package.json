@@ -16,6 +16,9 @@
     "directory": "apps/playground"
   },
   "dependencies": {
+    "@jayoncode/browser-lifecycle": "workspace:*",
+    "@jayoncode/form-intelligent": "workspace:*",
+    "@jayoncode/object-diff": "workspace:*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

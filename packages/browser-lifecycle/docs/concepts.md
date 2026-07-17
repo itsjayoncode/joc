@@ -2,7 +2,7 @@
 
 Terminology and session model for `@jayoncode/browser-lifecycle`.
 
-**Previous:** [Overview](/packages/browser-lifecycle/) · **Next:** [Tutorial](/packages/browser-lifecycle/modules/getting-started)
+**Previous:** [Overview](/packages/browser-lifecycle/overview) · **Next:** [Tutorial](/packages/browser-lifecycle/modules/getting-started)
 
 ## Problem → approach
 

@@ -1,0 +1,50 @@
+{
+  "name": "@jayoncode/browser-lifecycle-svelte",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Svelte adapter for @jayoncode/browser-lifecycle — context helpers and reactive snapshots.",
+  "license": "MIT",
+  "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itsjayoncode/joc.git",
+    "directory": "packages/browser-lifecycle-svelte"
+  },
+  "homepage": "https://itsjayoncode.github.io/joc/packages/browser-lifecycle-svelte/",
+  "bugs": {
+    "url": "https://github.com/itsjayoncode/joc/issues"
+  },
+  "keywords": [
+    "browser-lifecycle",
+    "svelte",
+    "typescript",
+    "jayoncode",
+    "joc"
+  ],
+  "peerDependencies": {
+    "@jayoncode/browser-lifecycle": "workspace:^",
+    "svelte": ">=5"
+  },
+  "devDependencies": {
+    "@jayoncode/browser-lifecycle": "workspace:*",
+    "svelte": "^5.19.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

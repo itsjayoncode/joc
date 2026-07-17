@@ -2,7 +2,7 @@
 
 Export diff results for humans, logs, or downstream tools.
 
-**Previous:** [Patching](/packages/object-diff/modules/patch) · **Back to:** [Overview](/packages/object-diff/)
+**Previous:** [Patching](/packages/object-diff/modules/patch) · **Back to:** [Overview](/packages/object-diff/overview)
 
 ::: tip Playground
 [Open JSON viewer →](/playground/object-diff/json) — inspect serialized output formats.

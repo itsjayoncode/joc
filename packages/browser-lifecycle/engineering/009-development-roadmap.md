@@ -339,18 +339,27 @@ Hotfixes should remain minimal and should not smuggle new behavior behind urgent
 | Developer Experience       | usable defaults and predictable event semantics           |
 | Examples Quality           | examples reflect supported behavior accurately            |
 
-## 10. Post-1.0 Roadmap
+## 10. Post-Core Roadmap (Optional Intelligence)
 
-Potential post-1.0 work:
+Core runtime (Visibility, Focus, Connectivity, Idle, Lifecycle, Cross Tab, Snapshot, Events, Session, Plugins, Diagnostics) is treated as **done**.
+
+Do not enlarge always-on core. Group future work by derive-only layers:
+
+| Phase | Name                 | Features                                        | Rules                                                                                         |
+| ----- | -------------------- | ----------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| 3     | Session intelligence | Activity facade, Local presence                 | Compose existing signals only — no new browser listeners. Avoid multi-user “presence” naming. |
+| 4     | Insights             | Timeline → Metrics → Reports                    | Opt-in. Metrics must not require Timeline retention for basic counters.                       |
+| 5     | Developer experience | Wait helpers, Conditions                        | Subscription-based DX; no polling timers as the primary mechanism.                            |
+| 6     | Resilience           | Resilience helpers (reconnect / wake / restore) | React to existing events; rename away from vague “Recovery”.                                  |
+
+Also post-core (separate packages preferred):
 
 - framework adapters
-- richer diagnostics
-- DevTools integration
-- additional lifecycle-adjacent browser APIs
-- plugin ecosystem tooling
-- stronger offline-first and background tooling integrations
+- analytics integrations
+- persistence / rehydration helpers
+- DevTools integrations
 
-These are roadmap items only and must not expand Version 1 scope.
+These must not expand the always-on core contract.
 
 ## 11. Engineering Decisions
 

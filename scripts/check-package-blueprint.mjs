@@ -48,7 +48,7 @@ const packagesDir = path.join(rootDir, "packages");
 const packageEntries = await readdir(packagesDir, { withFileTypes: true });
 
 for (const entry of packageEntries) {
-  if (!entry.isDirectory() || entry.name === "shared") {
+  if (!entry.isDirectory()) {
     continue;
   }
 
