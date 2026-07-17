@@ -13,7 +13,13 @@ function loadObjectDiff(): Promise<ObjectDiffModule> {
 
 function toFormDiffResult(result: DiffResult, hasChanges: boolean): FormDiffResult {
   return {
-    changes: result.changes,
+    changes: result.changes.map((change) => ({
+      path: change.path,
+      type: change.type,
+      ...(change.previous !== undefined ? { previous: change.previous } : {}),
+      ...(change.current !== undefined ? { current: change.current } : {}),
+      ...(change.from !== undefined ? { from: change.from } : {}),
+    })),
     hasChanges,
     metadata: {
       durationMs: result.metadata.durationMs,
@@ -22,6 +28,7 @@ function toFormDiffResult(result: DiffResult, hasChanges: boolean): FormDiffResu
       removedCount: result.metadata.removedCount,
       changedCount: result.metadata.changedCount,
       unchangedCount: result.metadata.unchangedCount,
+      movedCount: result.metadata.movedCount,
     },
   };
 }

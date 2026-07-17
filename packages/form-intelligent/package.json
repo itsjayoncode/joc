@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/form-intelligent",
-  "version": "2.0.0",
+  "version": "3.1.0",
   "private": false,
   "description": "Form Intelligent — Typed, framework-agnostic headless form engine for validation, submission, state, drafts, wizards, and plugins. Works with native HTML or any UI framework.",
   "license": "MIT",
@@ -112,7 +112,7 @@
   ],
   "peerDependencies": {
     "@jayoncode/browser-lifecycle": ">=0.3.0",
-    "@jayoncode/object-diff": ">=0.2.0"
+    "@jayoncode/object-diff": ">=0.3.0"
   },
   "peerDependenciesMeta": {
     "@jayoncode/browser-lifecycle": {

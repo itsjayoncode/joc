@@ -85,16 +85,36 @@ const merged = applyPatch(clientA, operations);
 
 ## API
 
-| Function                                   | Description                                        |
-| ------------------------------------------ | -------------------------------------------------- |
-| `diff(a, b, options?)`                     | Structured change list with metadata               |
-| `compare(a, b, options?)`                  | Deep equality                                      |
-| `hasChanges(a, b, options?)`               | Fast boolean dirty check                           |
-| `added`, `removed`, `updated`, `unchanged` | Filtered change views                              |
-| `patch(diff, options?)`                    | Generate patch operations                          |
-| `applyPatch(target, patch, options?)`      | Apply patch immutably                              |
-| `revertPatch(target, patch, options?)`     | Reverse patch operations                           |
-| `serialize(diff, format, options?)`        | Export as `json`, `pretty`, `markdown`, or `table` |
+| Function                                   | Description                                             |
+| ------------------------------------------ | ------------------------------------------------------- |
+| `diff(a, b, options?)`                     | Structured change list with metadata                    |
+| `compare(a, b, options?)`                  | Deep equality                                           |
+| `hasChanges(a, b, options?)`               | Fast boolean dirty check                                |
+| `added`, `removed`, `updated`, `unchanged` | Filtered change views                                   |
+| `patch(diff, options?)`                    | Generate patch operations                               |
+| `applyPatch(target, patch, options?)`      | Apply patch immutably                                   |
+| `revertPatch(target, patch, options?)`     | Reverse patch operations                                |
+| `serialize(diff, format, options?)`        | Export as json/pretty/markdown/table/html/console/human |
+
+### Optional engines (subpaths)
+
+| Import                             | API                                                         |
+| ---------------------------------- | ----------------------------------------------------------- |
+| `@jayoncode/object-diff/core`      | Slim `diff` / `compare` / `hasChanges` (no patch/serialize) |
+| `@jayoncode/object-diff/patch`     | `patch` / `applyPatch` / validate / optimize                |
+| `@jayoncode/object-diff/merge`     | `merge`                                                     |
+| `@jayoncode/object-diff/query`     | `find` / `filter` / `query`                                 |
+| `@jayoncode/object-diff/stats`     | `statistics`                                                |
+| `@jayoncode/object-diff/formatter` | `serialize` / `createSerializer`                            |
+| `@jayoncode/object-diff/plugins`   | `createEngine`                                              |
+| `@jayoncode/object-diff/view`      | `createDiffView` (fluent wrapper)                           |
+
+```ts
+import { diff } from "@jayoncode/object-diff";
+import { createDiffView } from "@jayoncode/object-diff/view";
+
+createDiffView(diff(a, b, { detectMoves: true })).serialize("markdown");
+```
 
 ## Documentation
 

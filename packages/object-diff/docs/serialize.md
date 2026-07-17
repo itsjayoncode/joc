@@ -2,49 +2,64 @@
 
 Export diff results for humans, logs, or downstream tools.
 
-**Previous:** [Patching](/packages/object-diff/modules/patch) · **Back to:** [Overview](/packages/object-diff/overview)
+**Previous:** [Patching](/packages/object-diff/modules/patch) · **Next:** [Engines & entrypoints](/packages/object-diff/modules/engines)
 
 ::: tip Playground
 [Open JSON viewer →](/playground/object-diff/json) — inspect serialized output formats.
 :::
 
+Prefer `@jayoncode/object-diff/formatter` for formatting-focused apps (root still re-exports `serialize`).
+
 ## Problem → approach
 
-| Typical pain                                        | `serialize()`                                                      |
-| --------------------------------------------------- | ------------------------------------------------------------------ |
-| `console.log(diffResult)` is noisy and not PR-ready | `serialize(result, "markdown")` for changelogs and review comments |
-| APIs need structured payloads; humans need tables   | Same `diff()` output, multiple export formats                      |
-| Custom formatters duplicated across tools           | One serializer with `json`, `markdown`, and `table` targets        |
+| Typical pain                                        | `serialize()`                                  |
+| --------------------------------------------------- | ---------------------------------------------- |
+| `console.log(diffResult)` is noisy and not PR-ready | `serialize(result, "markdown")` for changelogs |
+| APIs need JSON; humans need tables or prose         | Same `diff()` output, many formats             |
+| Custom formatters duplicated across tools           | Built-ins + `createSerializer` plugins         |
 
-## JSON export
+## Formats
 
 ```ts
 import { diff, serialize } from "@jayoncode/object-diff";
+// or: import { serialize, createSerializer } from "@jayoncode/object-diff/formatter";
 
 const result = diff(before, after);
-const json = serialize(result, "json");
+
+serialize(result, "json");
+serialize(result, "pretty");
+serialize(result, "markdown", { title: "Form changes" });
+serialize(result, "table");
+serialize(result, "html", { title: "Audit" }); // HTML-escaped
+serialize(result, "console"); // ANSI colors; { color: false } to disable
+serialize(result, "human"); // short prose + bullets
 ```
 
-## Markdown for changelogs
+| Format            | Best for                      |
+| ----------------- | ----------------------------- |
+| `json` / `pretty` | APIs, structured logs         |
+| `markdown`        | PRs, docs, changelogs         |
+| `table`           | CLI / quick scans             |
+| `html`            | Email / docs tables (escaped) |
+| `console`         | Terminal output               |
+| `human`           | Short summaries               |
+
+## Custom formatters
 
 ```ts
-const markdown = serialize(result, "markdown");
-// paste into PR body or release notes
+import { createSerializer } from "@jayoncode/object-diff/formatter";
+
+const serializeWith = createSerializer([
+  {
+    name: "csv",
+    format: (result) => result.changes.map((c) => `${c.type},${c.path}`).join("\n"),
+  },
+]);
+
+serializeWith(result, "csv");
+serializeWith(result, "human"); // built-ins still work
 ```
 
-## Table format
+No import side effects — pass plugins explicitly. Plugin names must not collide with built-ins.
 
-```ts
-const table = serialize(result, "table");
-// compact tabular view for terminals or docs
-```
-
-## When to use each format
-
-| Format     | Best for                |
-| ---------- | ----------------------- |
-| `json`     | APIs, structured logs   |
-| `markdown` | PRs, docs, changelogs   |
-| `table`    | CLI output, quick scans |
-
-**Done with the guides?** Browse the [API Reference](/packages/object-diff/api/) or [playground examples](/playground/object-diff/examples).
+**Next:** [Engines](/packages/object-diff/modules/engines) — merge, query, stats, plugins, view, and slim `/core`.

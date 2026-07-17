@@ -215,13 +215,15 @@ export interface SubmitOptions {
   readonly retry?: import("../submission/retry.js").RetryPolicy | number;
 }
 
-export type FormChangeType = "added" | "removed" | "changed" | "unchanged";
+export type FormChangeType = "added" | "removed" | "changed" | "unchanged" | "moved";
 
 export interface FormChangeRecord {
   readonly path: string;
   readonly type: FormChangeType;
   readonly previous?: unknown;
   readonly current?: unknown;
+  /** Present when `type` is `moved` (source path). */
+  readonly from?: string;
 }
 
 export interface FormDiffMetadata {
@@ -231,6 +233,7 @@ export interface FormDiffMetadata {
   readonly removedCount: number;
   readonly changedCount: number;
   readonly unchangedCount: number;
+  readonly movedCount: number;
 }
 
 export interface FormDiffResult {

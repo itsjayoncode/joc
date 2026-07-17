@@ -1,5 +1,34 @@
 # Changelog
 
+## 3.1.0
+
+### Minor Changes
+
+- Fixed. DiffType gained "moved", which broke form-intelligent’s narrower FormChangeType.
+
+## 3.0.0
+
+### Minor Changes
+
+- Align FormChangeType / FormDiffMetadata with object-diff `moved` records and movedCount.
+- Fixed DiffTye gained "moved" which broke FI FormChangeType
+
+### Patch Changes
+
+- Updated dependencies [8c0a09f]
+- Updated dependencies [8c0a09f]
+- Updated dependencies [8c0a09f]
+- Updated dependencies [8c0a09f]
+- Updated dependencies [8c0a09f]
+- Updated dependencies [8c0a09f]
+- Updated dependencies [8c0a09f]
+- Updated dependencies [8c0a09f]
+- Updated dependencies [8c0a09f]
+- Updated dependencies [8c0a09f]
+- Updated dependencies [8c0a09f]
+- Updated dependencies [8c0a09f]
+  - @jayoncode/object-diff@0.3.0
+
 ## 2.0.0
 
 ### Patch Changes

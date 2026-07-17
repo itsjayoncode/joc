@@ -1,4 +1,4 @@
-import type { Path, PathSegment } from "../../types/index.js";
+import type { IdentityKey, Path, PathSegment } from "../../types/index.js";
 
 export interface TraversalContext {
   readonly path: Path;
@@ -7,6 +7,8 @@ export interface TraversalContext {
   readonly circular: "error" | "skip";
   readonly seenA: WeakMap<object, Path>;
   readonly seenB: WeakMap<object, Path>;
+  readonly identityKey: IdentityKey | undefined;
+  readonly shouldVisit: ((path: Path) => boolean) | undefined;
 }
 
 export type PairVisitor = (
@@ -16,9 +18,15 @@ export type PairVisitor = (
   context: TraversalContext,
 ) => boolean | undefined;
 
+export interface CreateTraversalContextOptions {
+  readonly identityKey?: IdentityKey;
+  readonly shouldVisit?: (path: Path) => boolean;
+}
+
 export function createTraversalContext(
   maxDepth: number,
   circular: "error" | "skip",
+  options: CreateTraversalContextOptions = {},
 ): TraversalContext {
   return {
     path: [],
@@ -27,6 +35,8 @@ export function createTraversalContext(
     circular,
     seenA: new WeakMap<object, Path>(),
     seenB: new WeakMap<object, Path>(),
+    identityKey: options.identityKey,
+    shouldVisit: options.shouldVisit,
   };
 }
 

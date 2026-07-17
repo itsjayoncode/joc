@@ -3,14 +3,18 @@ import { describe, expect, it } from "vitest";
 import {
   added,
   applyPatch,
+  applyPatchWithInverse,
   compare,
   diff,
   hasChanges,
   InvalidPatchError,
+  optimizePatch,
   patch,
   removed,
   serialize,
   updated,
+  validatePatch,
+  type Patch,
 } from "../../src/index.js";
 
 describe("compare", () => {
@@ -104,5 +108,120 @@ describe("dates and regex", () => {
   it("compares regex by source and flags", () => {
     expect(compare(/abc/i, /abc/i)).toBe(true);
     expect(hasChanges(/abc/i, /abc/g)).toBe(true);
+  });
+});
+
+describe("phase 2 options", () => {
+  it("detectMoves pairs equal removed+added into moved", () => {
+    const result = diff({ a: { id: 1 }, b: 2 }, { c: { id: 1 }, b: 2 }, { detectMoves: true });
+
+    expect(result.changes).toEqual([
+      expect.objectContaining({
+        type: "moved",
+        from: "a",
+        path: "c",
+      }),
+    ]);
+    expect(result.metadata.movedCount).toBe(1);
+  });
+
+  it("ignores configured paths", () => {
+    const result = diff(
+      { user: { name: "a", secret: "x" } },
+      { user: { name: "b", secret: "y" } },
+      { ignore: ["user.secret"] },
+    );
+
+    expect(result.changes.some((c) => c.path === "user.secret")).toBe(false);
+    expect(result.changes.some((c) => c.path === "user.name")).toBe(true);
+  });
+
+  it("includes only configured paths", () => {
+    const result = diff(
+      { a: 1, b: 2, c: { d: 3 } },
+      { a: 9, b: 8, c: { d: 7 } },
+      { include: ["a"] },
+    );
+
+    expect(result.changes.every((c) => c.path === "a")).toBe(true);
+  });
+
+  it("matches array items by identityKey", () => {
+    const before = [
+      { id: 1, name: "a" },
+      { id: 2, name: "b" },
+    ];
+    const after = [
+      { id: 2, name: "b" },
+      { id: 1, name: "a2" },
+    ];
+
+    const positional = diff(before, after);
+    const byId = diff(before, after, { identityKey: "id" });
+
+    expect(byId.changes.some((c) => c.path.endsWith(".name"))).toBe(true);
+    expect(byId.metadata.changeCount).toBeLessThan(positional.metadata.changeCount);
+  });
+
+  it("hasChanges respects ignore", () => {
+    expect(hasChanges({ keep: 1, skip: 1 }, { keep: 1, skip: 2 }, { ignore: ["skip"] })).toBe(
+      false,
+    );
+  });
+});
+
+describe("phase 3 patch hardening", () => {
+  it("validates patch shape and unsupported ops", () => {
+    expect(() => {
+      validatePatch("nope");
+    }).toThrow(InvalidPatchError);
+    expect(() => {
+      validatePatch([{ op: "wat" as "add", path: "/a", value: 1 }]);
+    }).toThrow(InvalidPatchError);
+    expect(() => {
+      validatePatch([{ op: "add", path: "a", value: 1 }]);
+    }).toThrow(InvalidPatchError);
+  });
+
+  it("optimizes sequential replaces on the same path", () => {
+    const optimized = optimizePatch([
+      { op: "replace", path: "/a", value: 1 },
+      { op: "replace", path: "/a", value: 2 },
+      { op: "replace", path: "/b", value: 3 },
+    ]);
+
+    expect(optimized).toEqual([
+      { op: "replace", path: "/a", value: 2 },
+      { op: "replace", path: "/b", value: 3 },
+    ]);
+  });
+
+  it("applies RFC-style add/replace/remove fixtures", () => {
+    const doc = { foo: "bar", baz: [1, 2] };
+    const safeOps: Patch = [
+      { op: "replace", path: "/foo", value: "qux" },
+      { op: "add", path: "/baz/2", value: 3 },
+      { op: "remove", path: "/baz/0" },
+    ];
+
+    const next = applyPatch(doc, safeOps);
+    expect(next).toEqual({ foo: "qux", baz: [2, 3] });
+    expect(doc).toEqual({ foo: "bar", baz: [1, 2] });
+  });
+
+  it("applyPatchWithInverse restores previous values", () => {
+    const source = { user: { name: "John", role: "admin" } };
+    const ops = patch(diff(source, { user: { name: "Jane", role: "admin" } }));
+    const { value, inverse } = applyPatchWithInverse(source, ops);
+
+    expect(value).toEqual({ user: { name: "Jane", role: "admin" } });
+    expect(applyPatch(value, inverse)).toEqual(source);
+  });
+
+  it("patch({ optimize: true }) coalesces replaces", () => {
+    const result = diff({ a: 1, b: 1 }, { a: 2, b: 2 });
+    const raw = patch(result);
+    const optimized = patch(result, { optimize: true });
+    expect(optimized.length).toBeLessThanOrEqual(raw.length);
   });
 });

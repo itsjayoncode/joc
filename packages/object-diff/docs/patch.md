@@ -10,55 +10,87 @@ Generate RFC 6902 JSON Patch operations and apply them to targets.
 
 ## Problem → approach
 
-| Typical pain                                              | Patch pipeline                                                                   |
-| --------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| Sending full object snapshots over the wire on every edit | `patch(diffResult)` → compact `add` / `remove` / `replace` ops                   |
-| Mutating shared state when applying updates               | `applyPatch()` returns a new object; clone the target when you need the original |
-| Undo/redo requires storing full before/after copies       | `revertPatch(operations)` generates inverse ops for a stack                      |
+| Typical pain                                | Patch pipeline                                      |
+| ------------------------------------------- | --------------------------------------------------- |
+| Sending full object snapshots on every edit | `patch(diffResult)` → compact ops                   |
+| Mutating shared state when applying updates | `applyPatch()` returns a new object by default      |
+| Undo needs full before/after copies         | `applyPatchWithInverse` journals a faithful inverse |
+
+Prefer importing from `@jayoncode/object-diff/patch` when you only need the patch domain (root still re-exports for compatibility).
 
 ## Generate patch
 
 ```ts
 import { diff, patch } from "@jayoncode/object-diff";
+// or: import { patch } from "@jayoncode/object-diff/patch";
 
-const result = diff(before, after);
+const result = diff(before, after, { detectMoves: true });
 const operations = patch(result);
-// [{ op: "replace", path: "/name", value: "Jane" }, ...]
+const optimized = patch(result, { optimize: true });
 ```
 
-## Apply patch
+Supported ops: **`add`**, **`remove`**, **`replace`**, **`move`**, **`copy`**, **`test`**.
+
+With `detectMoves: true`, equal remove+add pairs become `{ op: "move", from, path }`.
+
+## Apply / validate / optimize
 
 ```ts
-import { applyPatch } from "@jayoncode/object-diff";
+import {
+  applyPatch,
+  applyPatchWithInverse,
+  validatePatch,
+  optimizePatch,
+} from "@jayoncode/object-diff";
 
-const updated = applyPatch(structuredClone(before), operations);
+validatePatch(operations); // throws InvalidPatchError
+const next = applyPatch(before, operations);
+
+const { value, inverse } = applyPatchWithInverse(before, operations);
+applyPatch(value, inverse); // restore
+
+optimizePatch(operations); // coalesce sequential replaces, etc.
 ```
 
-Always clone the target if you need to preserve the original.
+`applyPatch` validates by default (`{ validate: false }` to skip). Use `{ mutable: true }` only when you intentionally mutate the target.
 
-## Revert changes
+## Conditional apply (`test`)
+
+```ts
+applyPatch({ version: 3, name: "Ada" }, [
+  { op: "test", path: "/version", value: 3 },
+  { op: "replace", path: "/name", value: "Grace" },
+]);
+// throws PatchApplyError if version !== 3
+```
+
+## Copy and move
+
+```ts
+applyPatch({ a: 1 }, [{ op: "copy", from: "/a", path: "/b" }]);
+// → { a: 1, b: 1 }
+
+applyPatch({ a: 1 }, [{ op: "move", from: "/a", path: "/b" }]);
+// → { b: 1 }
+```
+
+## Revert
 
 ```ts
 import { revertPatch } from "@jayoncode/object-diff";
 
-const undoOps = revertPatch(operations);
-const restored = applyPatch(structuredClone(after), undoOps);
+// Structural inverse — prefer applyPatchWithInverse when you need faithful undo of replaces/removes
+const restored = revertPatch(after, operations);
 ```
-
-## Common patterns
-
-| Scenario           | Approach                                       |
-| ------------------ | ---------------------------------------------- |
-| Optimistic UI      | Apply patch locally; revert on server error    |
-| Collaborative edit | Send patch ops over the wire, not full objects |
-| Undo stack         | Store patches; `revertPatch` for undo          |
 
 ## Cheat sheet
 
 ```ts
-patch(diffResult); // → operations
-applyPatch(target, operations); // → patched object
-revertPatch(operations); // → inverse ops
+patch(diffResult, { optimize?: boolean });
+applyPatch(target, ops, { validate?, mutable? });
+applyPatchWithInverse(target, ops);
+validatePatch(ops);
+optimizePatch(ops);
 ```
 
-**Next:** [Serialization](/packages/object-diff/modules/serialize) — export diffs as JSON or Markdown.
+**Next:** [Serialization](/packages/object-diff/modules/serialize) — export diffs as JSON, Markdown, HTML, and more.

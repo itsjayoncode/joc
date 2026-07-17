@@ -15,6 +15,9 @@ export function normalizeDiffOptions(options: DiffOptions = {}): ResolvedDiffOpt
     circular: options.circular ?? "error",
     customComparator: options.customComparator,
     treatUndefinedAsMissing: options.treatUndefinedAsMissing ?? false,
+    identityKey: options.identityKey,
+    ignore: options.ignore,
+    include: options.include,
   };
 }
 

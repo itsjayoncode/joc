@@ -113,5 +113,6 @@ const updated = applyPatch({ ...before }, operations);
 | Options & filtering | [Diffing](/packages/object-diff/modules/diff)            | [Diff](/playground/object-diff/diff)   |
 | Revert & edge cases | [Patching](/packages/object-diff/modules/patch)          | [Patch](/playground/object-diff/patch) |
 | Export formats      | [Serialization](/packages/object-diff/modules/serialize) | [JSON](/playground/object-diff/json)   |
+| Subpaths & engines  | [Engines](/packages/object-diff/modules/engines)         | —                                      |
 
 [Examples](/playground/object-diff/examples) · [Benchmarks](/playground/object-diff/performance)

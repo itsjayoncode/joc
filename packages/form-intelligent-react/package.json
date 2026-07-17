@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/form-intelligent-react",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "description": "React adapter for @jayoncode/form-intelligent — useForm hook and minimal field bindings.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
@@ -39,7 +39,7 @@
     "joc"
   ],
   "peerDependencies": {
-    "@jayoncode/form-intelligent": "^2.0.0",
+    "@jayoncode/form-intelligent": "^3.0.0",
     "react": ">=18"
   },
   "devDependencies": {
