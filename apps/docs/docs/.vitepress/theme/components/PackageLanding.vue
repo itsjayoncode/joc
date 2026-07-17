@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
+import DocsLink from "./DocsLink.vue";
+import PackageIcon from "./PackageIcon.vue";
 import { getPackageLanding } from "../data/package-landings.js";
 import { highlightTypeScript } from "../highlight-typescript.js";
-import PackageIcon from "./PackageIcon.vue";
 
 const props = defineProps<{
   packageId: string;
@@ -30,18 +31,18 @@ const highlightedSample = computed(() => {
         <p class="joc-pkg-landing__headline">{{ landing.headline }}</p>
         <p class="joc-pkg-landing__description">{{ landing.description }}</p>
         <div class="joc-pkg-landing__actions">
-          <a
+          <DocsLink
             class="joc-pkg-landing__cta joc-pkg-landing__cta--primary"
             :href="landing.getStartedLink"
           >
             Get Started
-          </a>
-          <a
+          </DocsLink>
+          <DocsLink
             class="joc-pkg-landing__cta joc-pkg-landing__cta--ghost"
             :href="landing.playgroundLink"
           >
             Open playground
-          </a>
+          </DocsLink>
         </div>
       </div>
     </section>
@@ -54,9 +55,12 @@ const highlightedSample = computed(() => {
         <div class="joc-pkg-landing__code" data-lang="ts">
           <pre><code class="language-ts" v-html="highlightedSample" /></pre>
         </div>
-        <a class="joc-pkg-landing__cta joc-pkg-landing__cta--primary" :href="landing.overviewLink">
+        <DocsLink
+          class="joc-pkg-landing__cta joc-pkg-landing__cta--primary"
+          :href="landing.overviewLink"
+        >
           Read the overview
-        </a>
+        </DocsLink>
       </div>
     </section>
 

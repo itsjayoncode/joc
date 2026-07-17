@@ -1,21 +1,15 @@
 <script setup lang="ts">
-import { withBase } from "vitepress";
-
+import { docsHref } from "../docs-href.js";
 import { livePackages } from "../data/joc-packages";
 import { resolvePlaygroundPath } from "../../playground-path.js";
 import PackageIcon from "./PackageIcon.vue";
 
 function playgroundGuideLink(docsLink: string): string {
-  return withBase(`${docsLink.replace(/\/$/, "")}/playground/playground`);
+  return docsHref(`${docsLink.replace(/\/$/, "")}/playground/playground`);
 }
 
 function playgroundHref(packageId: string): string {
-  // Plain <a href> does not get VitePress withBase — required for GitHub Pages /joc/ base.
-  return withBase(resolvePlaygroundPath(packageId));
-}
-
-function docsHref(docsLink: string): string {
-  return withBase(docsLink);
+  return docsHref(resolvePlaygroundPath(packageId));
 }
 </script>
 

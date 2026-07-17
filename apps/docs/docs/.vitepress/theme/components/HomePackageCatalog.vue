@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { docsHref } from "../docs-href.js";
 import { livePackages, livePackageCount } from "../data/joc-packages";
 import PackageIcon from "./PackageIcon.vue";
 </script>
@@ -9,7 +10,7 @@ import PackageIcon from "./PackageIcon.vue";
     <h2 class="joc-section-title">Available now</h2>
     <p class="joc-muted joc-section-lead">
       Three live packages on npm today. More libraries are on the
-      <a href="/roadmap/">roadmap</a>.
+      <a :href="docsHref('/roadmap/')">roadmap</a>.
     </p>
 
     <div class="joc-package-stats" aria-label="Package ecosystem status">
@@ -37,7 +38,7 @@ import PackageIcon from "./PackageIcon.vue";
         <p class="joc-package-card__npm">{{ pkg.npmName }}</p>
         <p class="joc-package-card__tagline joc-muted">{{ pkg.tagline }}</p>
 
-        <a class="joc-package-card__link" :href="pkg.docsLink">View docs</a>
+        <a class="joc-package-card__link" :href="docsHref(pkg.docsLink)">View docs</a>
       </article>
     </div>
   </section>

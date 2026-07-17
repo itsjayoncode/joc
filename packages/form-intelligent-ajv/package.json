@@ -1,7 +1,6 @@
 {
   "name": "@jayoncode/form-intelligent-ajv",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0",
   "description": "AJV JSON Schema adapter for @jayoncode/form-intelligent.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
@@ -35,7 +34,7 @@
     "joc"
   ],
   "peerDependencies": {
-    "@jayoncode/form-intelligent": "workspace:^",
+    "@jayoncode/form-intelligent": "^2.0.0",
     "ajv": ">=8.0.0"
   },
   "devDependencies": {
@@ -43,6 +42,11 @@
     "ajv": "^8.17.1"
   },
   "publishConfig": {
-    "access": "public"
-  }
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "bugs": {
+    "url": "https://github.com/itsjayoncode/joc/issues"
+  },
+  "homepage": "https://itsjayoncode.github.io/joc/packages/form-intelligent/"
 }
