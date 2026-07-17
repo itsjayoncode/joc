@@ -11,6 +11,26 @@ export interface ValidationCache {
   clear(): void;
 }
 
+/**
+ * FNV-1a 64-bit hex digest. Session storage must never persist raw field values
+ * in keys (`path:JSON(value)` can include passwords / PII).
+ */
+function digestCacheKey(key: string): string {
+  let hash = 0xcbf29ce484222325n;
+  for (let index = 0; index < key.length; index += 1) {
+    hash ^= BigInt(key.charCodeAt(index));
+    hash = BigInt.asUintN(64, hash * 0x100000001b3n);
+  }
+  return hash.toString(16).padStart(16, "0");
+}
+
+/** Paths that must not be mirrored to sessionStorage even as hashed keys. */
+function isSensitiveCacheKey(key: string): boolean {
+  const separator = key.indexOf(":");
+  const path = separator === -1 ? key : key.slice(0, separator);
+  return /password|passwd|secret|token|cvv|ssn|\bpin\b|credit.?card/i.test(path);
+}
+
 class MemoryValidationCache implements ValidationCache {
   private readonly entries = new Map<string, CacheEntry>();
   private readonly maxEntries: number;
@@ -63,24 +83,28 @@ class SessionValidationCache implements ValidationCache {
     this.maxEntries = maxEntries;
   }
 
+  private sessionKey(logicalKey: string): string {
+    return this.prefix + digestCacheKey(logicalKey);
+  }
+
   public get(key: string): CacheEntry | undefined {
     const memoryHit = this.memory.get(key);
     if (memoryHit) {
       return memoryHit;
     }
 
-    if (typeof sessionStorage === "undefined") {
+    if (typeof sessionStorage === "undefined" || isSensitiveCacheKey(key)) {
       return undefined;
     }
 
     try {
-      const raw = sessionStorage.getItem(this.prefix + key);
+      const raw = sessionStorage.getItem(this.sessionKey(key));
       if (!raw) {
         return undefined;
       }
       const parsed = JSON.parse(raw) as CacheEntry;
       if (Date.now() >= parsed.expiresAt) {
-        sessionStorage.removeItem(this.prefix + key);
+        sessionStorage.removeItem(this.sessionKey(key));
         return undefined;
       }
       this.memory.set(key, parsed.result, Math.max(0, parsed.expiresAt - Date.now()));
@@ -92,14 +116,19 @@ class SessionValidationCache implements ValidationCache {
 
   public set(key: string, result: string | undefined, ttlMs: number): void {
     this.memory.set(key, result, ttlMs);
-    if (typeof sessionStorage === "undefined") {
+    // Memory-only for sensitive paths; hashed keys for everything else so
+    // sessionStorage never holds cleartext field values (CodeQL js/clear-text-storage-of-sensitive-data).
+    if (typeof sessionStorage === "undefined" || isSensitiveCacheKey(key)) {
       return;
     }
     try {
       this.evictSessionIfNeeded();
       sessionStorage.setItem(
-        this.prefix + key,
-        JSON.stringify({ result, expiresAt: Date.now() + ttlMs } satisfies CacheEntry),
+        this.sessionKey(key),
+        JSON.stringify({
+          result,
+          expiresAt: Date.now() + ttlMs,
+        } satisfies CacheEntry),
       );
     } catch {
       // Quota / private mode — memory cache still works.
@@ -114,13 +143,13 @@ class SessionValidationCache implements ValidationCache {
     try {
       const toRemove: string[] = [];
       for (let i = 0; i < sessionStorage.length; i += 1) {
-        const key = sessionStorage.key(i);
-        if (key?.startsWith(this.prefix)) {
-          toRemove.push(key);
+        const storageKey = sessionStorage.key(i);
+        if (storageKey?.startsWith(this.prefix)) {
+          toRemove.push(storageKey);
         }
       }
-      for (const key of toRemove) {
-        sessionStorage.removeItem(key);
+      for (const storageKey of toRemove) {
+        sessionStorage.removeItem(storageKey);
       }
     } catch {
       // ignore
@@ -130,9 +159,9 @@ class SessionValidationCache implements ValidationCache {
   private evictSessionIfNeeded(): void {
     const keys: string[] = [];
     for (let i = 0; i < sessionStorage.length; i += 1) {
-      const key = sessionStorage.key(i);
-      if (key?.startsWith(this.prefix)) {
-        keys.push(key);
+      const storageKey = sessionStorage.key(i);
+      if (storageKey?.startsWith(this.prefix)) {
+        keys.push(storageKey);
       }
     }
     while (keys.length >= this.maxEntries) {

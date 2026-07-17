@@ -186,4 +186,71 @@ describe("asyncValidator options overload (Phase 4B)", () => {
     expect(validate).toHaveBeenCalledTimes(1);
     form.destroy();
   });
+
+  it("session cache stores hashed keys, not raw field values", async () => {
+    sessionStorage.clear();
+    const form = createForm({
+      initialValues: { username: "secret-user" },
+      validateOn: "onBlur",
+      validators: {
+        username: [
+          asyncValidator({
+            validate: async () => "taken",
+            cache: { ttl: "1m", storage: "session" },
+            debounce: 0,
+            sharedCache: "session-hash-test",
+          }),
+        ],
+      },
+    });
+
+    await form.validate({ paths: ["username"] });
+
+    const stored = JSON.stringify(
+      Object.fromEntries(
+        Array.from({ length: sessionStorage.length }, (_, index) => {
+          const key = sessionStorage.key(index) ?? "";
+          return [key, sessionStorage.getItem(key)];
+        }),
+      ),
+    );
+    expect(stored).not.toContain("secret-user");
+    expect(stored).toMatch(/fi:async-cache:session-hash-test:[0-9a-f]{16}/);
+    form.destroy();
+    sessionStorage.clear();
+  });
+
+  it("does not write password paths to sessionStorage", async () => {
+    sessionStorage.clear();
+    const form = createForm({
+      initialValues: { password: "hunter2-secret" },
+      validateOn: "onBlur",
+      validators: {
+        password: [
+          asyncValidator({
+            validate: async () => true,
+            cache: { ttl: "1m", storage: "session" },
+            debounce: 0,
+            sharedCache: "session-password-test",
+          }),
+        ],
+      },
+    });
+
+    await form.validate({ paths: ["password"] });
+
+    for (let index = 0; index < sessionStorage.length; index += 1) {
+      const key = sessionStorage.key(index) ?? "";
+      const value = sessionStorage.getItem(key) ?? "";
+      expect(key).not.toContain("hunter2");
+      expect(value).not.toContain("hunter2");
+    }
+    expect(
+      Array.from({ length: sessionStorage.length }, (_, i) => sessionStorage.key(i)).every(
+        (key) => !key?.includes("session-password-test"),
+      ),
+    ).toBe(true);
+    form.destroy();
+    sessionStorage.clear();
+  });
 });

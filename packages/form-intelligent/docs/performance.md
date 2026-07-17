@@ -39,13 +39,15 @@ Measured as **entry chunk** gzip (esbuild minify + `splitting: true`) so dynamic
 
 ## Timing budgets (Vitest)
 
-See `tests/performance/performance-budgets.test.ts` (CI headroom):
+See `tests/performance/performance-budgets.test.ts`.
 
-| Workload                         | Budget   |
-| -------------------------------- | -------- |
-| Validate 50 fields (warm median) | < 150 ms |
-| setValue 50 × 100                | < 300 ms |
-| Undo depth 50                    | < 200 ms |
+Budgets catch **order-of-magnitude** regressions. Limits scale by **1.5× locally** and **3× on CI** (`CI` / `GITHUB_ACTIONS`) because shared runners are noisy.
+
+| Workload                         | Base   | Local (×1.5) | CI (×3) |
+| -------------------------------- | ------ | ------------ | ------- |
+| Validate 50 fields (warm median) | 150 ms | 225 ms       | 450 ms  |
+| setValue 50 × 100                | 300 ms | 450 ms       | 900 ms  |
+| Undo depth 50                    | 200 ms | 300 ms       | 600 ms  |
 
 ## Complexity (Big-O targets)
 

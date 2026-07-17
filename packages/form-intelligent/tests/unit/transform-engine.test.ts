@@ -29,6 +29,14 @@ describe("transform stage order", () => {
     expect(pipeline.inbound("  <b>42</b>  ", { path: "n", values: {} })).toBe(42);
   });
 
+  it("neutralizes incomplete HTML tags when stripHtml is on", () => {
+    const pipeline = createTransformPipeline({ sanitize: { stripHtml: true } });
+    expect(pipeline.inbound("<script alert(1)", { path: "x", values: {} })).toBe("script alert(1)");
+    expect(pipeline.inbound("hello<img src=x onerror=alert(1)", { path: "x", values: {} })).toBe(
+      "helloimg src=x onerror=alert(1)",
+    );
+  });
+
   it("normalizes unicode NFC", () => {
     const composed = "é";
     const decomposed = "e\u0301";

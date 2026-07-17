@@ -66,7 +66,10 @@ export function createSanitizeStage(
       next = next.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "");
     }
     if (options.stripHtml) {
+      // Strip well-formed tags, then neutralize residual angle brackets so
+      // incomplete markup (e.g. `<script`) cannot survive (CodeQL js/incomplete-sanitization).
       next = next.replace(/<\/?[^>]+>/g, "");
+      next = next.replace(/[<>]/g, "");
     }
     return next;
   };
