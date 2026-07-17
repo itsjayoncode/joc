@@ -6,6 +6,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
 const PUBLISHABLE_PACKAGES = new Set([
   "@jayoncode/browser-lifecycle",
+  "@jayoncode/browser-lifecycle-angular",
+  "@jayoncode/browser-lifecycle-react",
+  "@jayoncode/browser-lifecycle-solid",
+  "@jayoncode/browser-lifecycle-svelte",
+  "@jayoncode/browser-lifecycle-vue",
   "@jayoncode/object-diff",
   "@jayoncode/form-intelligent",
 ]);
@@ -45,17 +50,16 @@ try {
     failures.push('Changesets baseBranch should be "main" or "master".');
   }
 
-  if (
-    !Array.isArray(changesetConfig.ignore) ||
-    !changesetConfig.ignore.includes("@jayoncode/browser-lifecycle-react")
-  ) {
-    failures.push("Changesets ignore list should exclude private browser-lifecycle adapters.");
-  }
-
   const ignoredPackages = new Set(changesetConfig.ignore ?? []);
 
   if (ignoredPackages.has("@jayoncode/browser-lifecycle")) {
     failures.push("Changesets ignore list must not exclude @jayoncode/browser-lifecycle.");
+  }
+
+  if (ignoredPackages.has("@jayoncode/browser-lifecycle-react")) {
+    failures.push(
+      "Changesets ignore list must not exclude publishable browser-lifecycle adapters.",
+    );
   }
 
   const workspaceManifests = [];

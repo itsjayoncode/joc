@@ -5,7 +5,16 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
 const packagesDir = path.join(rootDir, "packages");
-const PUBLISHABLE_PACKAGES = new Set(["browser-lifecycle", "object-diff", "form-intelligent"]);
+const PUBLISHABLE_PACKAGES = new Set([
+  "browser-lifecycle",
+  "browser-lifecycle-angular",
+  "browser-lifecycle-react",
+  "browser-lifecycle-solid",
+  "browser-lifecycle-svelte",
+  "browser-lifecycle-vue",
+  "object-diff",
+  "form-intelligent",
+]);
 
 const failures = [];
 const packageEntries = await readdir(packagesDir, { withFileTypes: true });
