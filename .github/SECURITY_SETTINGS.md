@@ -40,11 +40,11 @@ There is **no “Automation” token** anymore (classic tokens were revoked). Us
 
 On each package (e.g. `@jayoncode/form-intelligent`) → **Settings** → **Trusted Publisher**:
 
-| Field | Value |
-| --- | --- |
-| Provider | GitHub Actions |
+| Field                | Value          |
+| -------------------- | -------------- |
+| Provider             | GitHub Actions |
 | Organization or user | `itsjayoncode` |
-| Repository | `joc` |
-| Workflow filename | `ci.yml` |
+| Repository           | `joc`          |
+| Workflow filename    | `ci.yml`       |
 
 CI already requests `id-token: write` for the version/publish job.

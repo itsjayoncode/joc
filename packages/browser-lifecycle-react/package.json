@@ -1,7 +1,6 @@
 {
   "name": "@jayoncode/browser-lifecycle-react",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0",
   "description": "React adapter for @jayoncode/browser-lifecycle — Provider, hooks, and reactive snapshots.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
@@ -25,7 +24,7 @@
     "url": "git+https://github.com/itsjayoncode/joc.git",
     "directory": "packages/browser-lifecycle-react"
   },
-  "homepage": "https://itsjayoncode.github.io/joc/packages/browser-lifecycle-react/",
+  "homepage": "https://itsjayoncode.github.io/joc/packages/browser-lifecycle/modules/adapters",
   "bugs": {
     "url": "https://github.com/itsjayoncode/joc/issues"
   },
@@ -38,7 +37,7 @@
     "joc"
   ],
   "peerDependencies": {
-    "@jayoncode/browser-lifecycle": "workspace:^",
+    "@jayoncode/browser-lifecycle": "^0.3.0",
     "react": ">=18"
   },
   "devDependencies": {
@@ -49,6 +48,7 @@
     "react-dom": "^18.3.1"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

@@ -1,7 +1,6 @@
 {
   "name": "@jayoncode/browser-lifecycle-vue",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0",
   "description": "Vue adapter for @jayoncode/browser-lifecycle — provide/inject composables and reactive snapshots.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
@@ -25,7 +24,7 @@
     "url": "git+https://github.com/itsjayoncode/joc.git",
     "directory": "packages/browser-lifecycle-vue"
   },
-  "homepage": "https://itsjayoncode.github.io/joc/packages/browser-lifecycle-vue/",
+  "homepage": "https://itsjayoncode.github.io/joc/packages/browser-lifecycle/modules/adapters",
   "bugs": {
     "url": "https://github.com/itsjayoncode/joc/issues"
   },
@@ -38,7 +37,7 @@
     "joc"
   ],
   "peerDependencies": {
-    "@jayoncode/browser-lifecycle": "workspace:^",
+    "@jayoncode/browser-lifecycle": "^0.3.0",
     "vue": ">=3.4"
   },
   "devDependencies": {
@@ -47,6 +46,7 @@
     "vue": "^3.5.13"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }
