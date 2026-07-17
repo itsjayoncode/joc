@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { docsHref } from "../docs-href.js";
 import { featuredPackages, livePackages, livePackageCount } from "../data/joc-packages";
 import HomePackageCatalog from "./HomePackageCatalog.vue";
 import PackageIcon from "./PackageIcon.vue";
@@ -81,7 +82,7 @@ const communityLinks = [
             `joc-eco-card--${pkg.accent}`,
             pkg.status === 'live' ? 'joc-eco-card--live' : 'joc-eco-card--soon',
           ]"
-          :href="pkg.docsLink"
+          :href="docsHref(pkg.docsLink)"
         >
           <div class="joc-eco-card__head">
             <span class="joc-eco-card__icon" aria-hidden="true">
@@ -122,7 +123,7 @@ const communityLinks = [
             <tr v-for="pkg in featuredPackages" :key="`problem-${pkg.id}`">
               <td>{{ pkg.problem }}</td>
               <td>
-                <a :href="pkg.docsLink">{{ pkg.name }}</a>
+                <a :href="docsHref(pkg.docsLink)">{{ pkg.name }}</a>
               </td>
             </tr>
           </tbody>
@@ -199,7 +200,7 @@ const communityLinks = [
           <tbody>
             <tr v-for="pkg in featuredPackages" :key="`cmp-${pkg.id}`">
               <td>
-                <a :href="pkg.docsLink">{{ pkg.name }}</a>
+                <a :href="docsHref(pkg.docsLink)">{{ pkg.name }}</a>
               </td>
               <td>{{ pkg.purpose }}</td>
               <td>{{ pkg.statusLabel }}</td>
@@ -228,7 +229,7 @@ import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
 
 const lifecycle = createBrowserLifecycle({ autoStart: true });</code></pre>
           <p class="joc-home-links">
-            <a href="/packages/browser-lifecycle/">Package docs</a>
+            <a :href="docsHref('/packages/browser-lifecycle/')">Package docs</a>
           </p>
         </div>
         <div class="joc-code-panel" aria-label="Form Intelligent install">
@@ -244,7 +245,7 @@ const form = createForm({
   initialValues: { email: "" },
 });</code></pre>
           <p class="joc-home-links">
-            <a href="/packages/form-intelligent/">Package docs</a>
+            <a :href="docsHref('/packages/form-intelligent/')">Package docs</a>
           </p>
         </div>
       </div>
@@ -265,7 +266,7 @@ const form = createForm({
           <ul class="joc-show-card__caps">
             <li v-for="cap in pkg.capabilities" :key="cap">{{ cap }}</li>
           </ul>
-          <a class="joc-show-card__link" :href="pkg.docsLink">Open docs</a>
+          <a class="joc-show-card__link" :href="docsHref(pkg.docsLink)">Open docs</a>
         </article>
       </div>
     </section>
@@ -282,8 +283,8 @@ const form = createForm({
           </p>
         </div>
         <div class="joc-cta-actions">
-          <a class="joc-cta-primary" href="/playground/">Open playground</a>
-          <a class="joc-cta-secondary" href="/packages/">Browse packages</a>
+          <a class="joc-cta-primary" :href="docsHref('/playground/')">Open playground</a>
+          <a class="joc-cta-secondary" :href="docsHref('/packages/')">Browse packages</a>
         </div>
       </div>
     </section>
@@ -296,7 +297,7 @@ const form = createForm({
           <h2 id="docs-community" class="joc-section-title">Quick links</h2>
           <ul class="joc-link-list">
             <li v-for="link in docLinks" :key="link.href">
-              <a :href="link.href">{{ link.label }}</a>
+              <a :href="docsHref(link.href)">{{ link.label }}</a>
             </li>
           </ul>
         </div>
@@ -306,7 +307,7 @@ const form = createForm({
           <ul class="joc-link-list">
             <li v-for="link in communityLinks" :key="link.href">
               <a
-                :href="link.href"
+                :href="link.external ? link.href : docsHref(link.href)"
                 :target="link.external ? '_blank' : undefined"
                 :rel="link.external ? 'noopener noreferrer' : undefined"
               >
@@ -320,7 +321,7 @@ const form = createForm({
           <h2 class="joc-section-title">On npm now</h2>
           <ul class="joc-release-list">
             <li v-for="pkg in livePackages" :key="`rel-${pkg.id}`">
-              <a :href="pkg.docsLink">
+              <a :href="docsHref(pkg.docsLink)">
                 <strong>{{ pkg.name }}</strong>
                 <span>{{ pkg.versionLabel ?? "Latest" }}</span>
               </a>

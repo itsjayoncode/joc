@@ -1,7 +1,6 @@
 {
   "name": "@jayoncode/form-intelligent-angular",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0",
   "description": "Angular adapter for @jayoncode/form-intelligent — FormService, signals, and standalone directives.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
@@ -37,7 +36,7 @@
   ],
   "peerDependencies": {
     "@angular/core": ">=17.0.0",
-    "@jayoncode/form-intelligent": "workspace:^"
+    "@jayoncode/form-intelligent": "^2.0.0"
   },
   "devDependencies": {
     "@angular/core": "^18.2.13",
@@ -47,6 +46,11 @@
     "zone.js": "^0.14.10"
   },
   "publishConfig": {
-    "access": "public"
-  }
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "bugs": {
+    "url": "https://github.com/itsjayoncode/joc/issues"
+  },
+  "homepage": "https://itsjayoncode.github.io/joc/packages/form-intelligent/"
 }

@@ -1,0 +1,12 @@
+export declare const adjectives: string[];
+export declare const nouns: string[];
+export declare const verbs: string[];
+export declare const minLength: number;
+export declare const maxLength: number;
+export declare const poolSize: number;
+interface Options {
+    separator?: string;
+    capitalize?: boolean;
+}
+export declare function humanId(options?: Options | string): string;
+export default humanId;

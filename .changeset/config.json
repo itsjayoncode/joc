@@ -17,13 +17,6 @@
     "@jayoncode/playground",
     "@jayoncode/browser-session-playground",
     "@jayoncode/object-diff-playground",
-    "@jayoncode/form-intelligent-playground",
-    "@jayoncode/form-intelligent-ajv",
-    "@jayoncode/form-intelligent-angular",
-    "@jayoncode/form-intelligent-react",
-    "@jayoncode/form-intelligent-valibot",
-    "@jayoncode/form-intelligent-vue",
-    "@jayoncode/form-intelligent-yup",
-    "@jayoncode/form-intelligent-zod"
+    "@jayoncode/form-intelligent-playground"
   ]
 }

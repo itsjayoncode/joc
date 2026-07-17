@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { docsHref } from "../docs-href.js";
 import { browserLifecycleMeta } from "../../browser-lifecycle-meta.js";
 
 withDefaults(
@@ -23,9 +24,9 @@ const pkg = browserLifecycleMeta;
     <strong>{{ pkg.versionLabel }}</strong>
     (<code>{{ pkg.npmName }}</code
     >). See
-    <a href="/packages/browser-lifecycle/migration/">Migration</a>
+    <a :href="docsHref('/packages/browser-lifecycle/migration/')">Migration</a>
     and
-    <a href="/packages/browser-lifecycle/changelog">Changelog</a>
+    <a :href="docsHref('/packages/browser-lifecycle/changelog')">Changelog</a>
     for release history.
   </p>
 

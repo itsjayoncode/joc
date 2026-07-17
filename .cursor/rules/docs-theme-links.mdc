@@ -1,0 +1,26 @@
+---
+description: Docs theme links must use VitePress withBase / docsHref for GitHub Pages
+globs: apps/docs/docs/.vitepress/theme/**/*.{vue,ts}
+alwaysApply: false
+---
+
+# Docs theme base-aware links
+
+GitHub Pages serves this site under `/joc/`. Plain `<a href="/packages/...">` in custom theme Vue **does not** get VitePress base rewriting and breaks after deploy.
+
+## Required
+
+- Import `docsHref` from `../docs-href` (or `./docs-href`) and wrap every internal path:
+  - `:href="docsHref('/packages/browser-lifecycle/overview')"`
+  - `:href="docsHref(pkg.docsLink)"`
+- Or use `<DocsLink href="/packages/...">` / `<DocsLink :href="pkg.docsLink">`.
+- External URLs (`https://...`) may stay bare or pass through `docsHref` (it leaves them unchanged).
+
+## Do not
+
+- Write `href="/getting-started/..."` or `:href="pkg.docsLink"` without `docsHref` / `DocsLink`.
+- Hardcode `/joc/` in theme links — `withBase` / `docsHref` handle local (`/`) and Pages (`/joc/`).
+
+## Check
+
+`tests/docs-theme-links.test.ts` fails CI if bare absolute hrefs appear in theme Vue files.
