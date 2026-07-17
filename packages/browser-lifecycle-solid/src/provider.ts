@@ -9,10 +9,7 @@ import {
   type ParentProps,
 } from "solid-js";
 
-import type {
-  BrowserLifecycle,
-  BrowserLifecycleSnapshot,
-} from "@jayoncode/browser-lifecycle";
+import type { BrowserLifecycle, BrowserLifecycleSnapshot } from "@jayoncode/browser-lifecycle";
 
 import {
   resolveBrowserLifecycleBinding,
@@ -73,9 +70,7 @@ export function BrowserLifecycleProvider(props: BrowserLifecycleProviderProps): 
 export function useBrowserLifecycle(): BrowserLifecycleApi {
   const api = useContext(BrowserLifecycleContext);
   if (!api) {
-    throw new Error(
-      "useBrowserLifecycle() requires a BrowserLifecycleProvider ancestor.",
-    );
+    throw new Error("useBrowserLifecycle() requires a BrowserLifecycleProvider ancestor.");
   }
   return api;
 }

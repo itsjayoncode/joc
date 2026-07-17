@@ -1,5 +1,6 @@
 import * as browserLifecycleModule from "@jayoncode/browser-lifecycle";
-import * as sharedModule from "@jayoncode/shared";
+import * as formIntelligentModule from "@jayoncode/form-intelligent";
+import * as objectDiffModule from "@jayoncode/object-diff";
 
 export type PlaygroundExample = {
   id: string;
@@ -21,40 +22,37 @@ export const playgroundExamples: PlaygroundExample[] = [
   {
     id: "browser-lifecycle",
     name: "Browser Lifecycle Sandbox",
-    summary:
-      "Reserved for future browser lifecycle manager experiments and browser-driven debugging.",
+    summary: "Explore browser session lifecycle APIs locally before shipping changes.",
     packageName: "@jayoncode/browser-lifecycle",
     status: "ready-for-wiring",
     details: [
-      "Use this area to verify future browser lifecycle APIs before package release.",
+      "Use this area to verify browser lifecycle APIs before package release.",
       "Intended for manual testing, demos, and scenario exploration.",
     ],
     moduleShape: describeModuleShape(browserLifecycleModule),
   },
   {
-    id: "shared",
-    name: "Shared Workspace Probe",
-    summary:
-      "Confirms the internal shared workspace package can be consumed locally by the playground.",
-    packageName: "@jayoncode/shared",
+    id: "form-intelligent",
+    name: "Form Intelligent Sandbox",
+    summary: "Probe headless form workflows, validation, and rules in the workspace.",
+    packageName: "@jayoncode/form-intelligent",
     status: "ready-for-wiring",
     details: [
-      "Internal workspace code should remain private while still being usable across the repo.",
-      "This placeholder confirms local import plumbing before shared utilities exist.",
+      "Wire createForm() experiments without leaving the monorepo.",
+      "Useful for validating adapters and workflow options quickly.",
     ],
-    moduleShape: describeModuleShape(sharedModule),
+    moduleShape: describeModuleShape(formIntelligentModule),
   },
   {
-    id: "future-examples",
-    name: "Future Example Surface",
-    summary:
-      "Reserved for request, theme, scroll, and forms package demos once implementation work begins.",
-    packageName: "examples/*",
-    status: "placeholder",
+    id: "object-diff",
+    name: "Object Diff Sandbox",
+    summary: "Try deep comparison, patch generation, and serialization helpers.",
+    packageName: "@jayoncode/object-diff",
+    status: "ready-for-wiring",
     details: [
-      "This area will grow into focused usage examples once package features exist.",
-      "The playground is intentionally simple so examples stay easy to add and maintain.",
+      "Compare structured snapshots and inspect change records.",
+      "Generate patches for optimistic UI and audit-style reviews.",
     ],
-    moduleShape: "Placeholder only",
+    moduleShape: describeModuleShape(objectDiffModule),
   },
 ];

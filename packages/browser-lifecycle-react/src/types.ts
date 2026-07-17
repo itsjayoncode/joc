@@ -1,9 +1,10 @@
-import type { ReactNode } from "react";
 import type {
   BrowserLifecycle,
   BrowserLifecycleConfig,
   BrowserLifecycleSnapshot,
 } from "@jayoncode/browser-lifecycle";
+
+import type { ReactNode } from "react";
 
 export type {
   BrowserLifecycleAdapterOptions,

@@ -2,7 +2,7 @@
 
 Terminology and data flow for `@jayoncode/object-diff`.
 
-**Previous:** [Overview](/packages/object-diff/) · **Next:** [Tutorial](/packages/object-diff/modules/getting-started)
+**Previous:** [Overview](/packages/object-diff/overview) · **Next:** [Tutorial](/packages/object-diff/modules/getting-started)
 
 ## Problem → approach
 

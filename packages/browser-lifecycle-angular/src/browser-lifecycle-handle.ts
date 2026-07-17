@@ -1,14 +1,12 @@
 import { signal, type DestroyRef, type Signal, type WritableSignal } from "@angular/core";
 
-import type {
-  BrowserLifecycle,
-  BrowserLifecycleSnapshot,
-} from "@jayoncode/browser-lifecycle";
+import type { BrowserLifecycle, BrowserLifecycleSnapshot } from "@jayoncode/browser-lifecycle";
 
 import {
   resolveBrowserLifecycleBinding,
   type BrowserLifecycleAdapterOptions,
 } from "./resolve-binding.js";
+
 import type { BrowserLifecycleHandle } from "./tokens.js";
 
 export class BrowserLifecycleHandleImpl implements BrowserLifecycleHandle {

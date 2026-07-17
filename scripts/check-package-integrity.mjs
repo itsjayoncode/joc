@@ -6,7 +6,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
 const packagesDir = path.join(rootDir, "packages");
 const PUBLISHABLE_PACKAGES = new Set(["browser-lifecycle", "object-diff", "form-intelligent"]);
-const INTERNAL_PRIVATE_PACKAGES = new Set(["shared"]);
 
 const failures = [];
 const packageEntries = await readdir(packagesDir, { withFileTypes: true });
@@ -69,13 +68,9 @@ for (const packageDirectory of packageDirectories) {
     if (manifest.private === true) {
       failures.push(`packages/${packageDirectory} must remain public for npm publication.`);
     }
-  } else if (INTERNAL_PRIVATE_PACKAGES.has(packageDirectory)) {
-    if (manifest.private !== true) {
-      failures.push(`packages/${packageDirectory} must remain private.`);
-    }
   } else if (manifest.private !== true) {
     failures.push(
-      `Placeholder package packages/${packageDirectory} must remain private until it is ready for npm publication.`,
+      `Adapter package packages/${packageDirectory} must remain private until it is ready for npm publication.`,
     );
   }
 }

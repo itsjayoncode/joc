@@ -6,10 +6,7 @@ import type {
   ConditionsApi,
   CreateConditionsApiOptions,
 } from "./types.js";
-import type {
-  BrowserLifecycle,
-  BrowserLifecycleEventName,
-} from "../../core/session/types.js";
+import type { BrowserLifecycle, BrowserLifecycleEventName } from "../../core/session/types.js";
 
 /**
  * Creates a thin conditions DSL over public lifecycle events.
@@ -30,7 +27,9 @@ export function createConditionsApi(
     handler: ConditionHandler,
   ): ConditionHandle => {
     if (disposed) {
-      throw new LifecycleError("Cannot register conditions because the conditions API was disposed.");
+      throw new LifecycleError(
+        "Cannot register conditions because the conditions API was disposed.",
+      );
     }
 
     const unsubscribeEvent = lifecycle.on(eventName, () => {

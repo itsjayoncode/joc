@@ -221,4 +221,3 @@ Related documents:
 ## Review
 
 These decisions form a coherent design philosophy: honest browser semantics, small public surface, layered capability use, and strict scope control. Core is frozen as a product. Growth happens in optional interpret layers that must not tax browsers or bundles by default.
-

@@ -1,9 +1,6 @@
 import { InjectionToken, type Signal } from "@angular/core";
 
-import type {
-  BrowserLifecycle,
-  BrowserLifecycleSnapshot,
-} from "@jayoncode/browser-lifecycle";
+import type { BrowserLifecycle, BrowserLifecycleSnapshot } from "@jayoncode/browser-lifecycle";
 
 export interface BrowserLifecycleHandle {
   readonly lifecycle: BrowserLifecycle;
@@ -11,6 +8,4 @@ export interface BrowserLifecycleHandle {
   destroy(): void;
 }
 
-export const BROWSER_LIFECYCLE = new InjectionToken<BrowserLifecycleHandle>(
-  "BROWSER_LIFECYCLE",
-);
+export const BROWSER_LIFECYCLE = new InjectionToken<BrowserLifecycleHandle>("BROWSER_LIFECYCLE");

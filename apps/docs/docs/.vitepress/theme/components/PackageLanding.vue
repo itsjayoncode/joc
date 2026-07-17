@@ -1,0 +1,76 @@
+<script setup lang="ts">
+import { computed } from "vue";
+
+import { getPackageLanding } from "../data/package-landings.js";
+import { highlightTypeScript } from "../highlight-typescript.js";
+import PackageIcon from "./PackageIcon.vue";
+
+const props = defineProps<{
+  packageId: string;
+}>();
+
+const landing = computed(() => getPackageLanding(props.packageId));
+
+const highlightedSample = computed(() => {
+  const code = landing.value?.sampleCode;
+  return code ? highlightTypeScript(code) : "";
+});
+</script>
+
+<template>
+  <div v-if="landing" class="joc-pkg-landing" :class="`joc-pkg-landing--${landing.accent}`">
+    <div class="joc-pkg-landing__bg" aria-hidden="true" />
+    <section class="joc-pkg-landing__hero" aria-labelledby="joc-pkg-landing-title">
+      <div class="joc-pkg-landing__hero-inner">
+        <div class="joc-pkg-landing__icon" aria-hidden="true">
+          <PackageIcon :package-id="landing.id" size="lg" />
+        </div>
+        <p class="joc-pkg-landing__npm">{{ landing.npmName }}</p>
+        <h1 id="joc-pkg-landing-title" class="joc-pkg-landing__title">{{ landing.name }}</h1>
+        <p class="joc-pkg-landing__headline">{{ landing.headline }}</p>
+        <p class="joc-pkg-landing__description">{{ landing.description }}</p>
+        <div class="joc-pkg-landing__actions">
+          <a
+            class="joc-pkg-landing__cta joc-pkg-landing__cta--primary"
+            :href="landing.getStartedLink"
+          >
+            Get Started
+          </a>
+          <a
+            class="joc-pkg-landing__cta joc-pkg-landing__cta--ghost"
+            :href="landing.playgroundLink"
+          >
+            Open playground
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="joc-pkg-landing__sample" aria-labelledby="joc-pkg-sample-title">
+      <div class="joc-pkg-landing__sample-inner">
+        <h2 id="joc-pkg-sample-title" class="joc-pkg-landing__section-title">
+          {{ landing.sampleTitle }}
+        </h2>
+        <div class="joc-pkg-landing__code" data-lang="ts">
+          <pre><code class="language-ts" v-html="highlightedSample" /></pre>
+        </div>
+        <a class="joc-pkg-landing__cta joc-pkg-landing__cta--primary" :href="landing.overviewLink">
+          Read the overview
+        </a>
+      </div>
+    </section>
+
+    <section class="joc-pkg-landing__highlights" aria-labelledby="joc-pkg-highlights-title">
+      <h2 id="joc-pkg-highlights-title" class="joc-pkg-landing__section-title">
+        Why it stands out
+      </h2>
+      <div class="joc-pkg-landing__grid">
+        <article v-for="item in landing.highlights" :key="item.title" class="joc-pkg-landing__card">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.detail }}</p>
+        </article>
+      </div>
+    </section>
+  </div>
+  <p v-else class="joc-pkg-landing__missing">Unknown package landing: {{ packageId }}</p>
+</template>

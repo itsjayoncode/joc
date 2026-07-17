@@ -2,7 +2,7 @@
 
 Move from scattered `useEffect` draft logic to Form Intelligent workflow.
 
-**Previous:** [Patterns](/packages/form-intelligent/modules/patterns) · **Back to:** [Overview](/packages/form-intelligent/)
+**Previous:** [Patterns](/packages/form-intelligent/modules/patterns) · **Back to:** [Overview](/packages/form-intelligent/overview)
 
 ---
 

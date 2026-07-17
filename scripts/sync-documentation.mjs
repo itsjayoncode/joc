@@ -2,12 +2,14 @@
 /**
  * Syncs source-of-truth documentation into the VitePress site.
  *
- * - packages/browser-lifecycle/docs → apps/docs/docs/packages/browser-lifecycle/modules
- * - apps/browser-session-playground/docs → apps/docs/docs/packages/browser-lifecycle/playground
- * - packages/object-diff/docs → apps/docs/docs/packages/object-diff/modules
- * - apps/object-diff-playground/docs → apps/docs/docs/packages/object-diff/playground
- * - packages/form-intelligent/docs → apps/docs/docs/packages/form-intelligent/modules
- * - apps/form-intelligent-playground/docs → apps/docs/docs/packages/form-intelligent/playground
+ * - packages/<pkg>/docs/index.md -> package landing pages
+ * - packages/<pkg>/docs/overview.md -> package /overview pages
+ * - packages/browser-lifecycle/docs/*.md -> modules/ (except index/overview)
+ * - apps/browser-session-playground/docs -> browser-lifecycle playground docs
+ * - packages/object-diff/docs -> object-diff modules
+ * - apps/object-diff-playground/docs -> object-diff playground docs
+ * - packages/form-intelligent/docs -> form-intelligent modules
+ * - apps/form-intelligent-playground/docs -> form-intelligent playground docs
  */
 
 import {
@@ -86,6 +88,22 @@ function withFrontmatter(fileName, body, extra = {}) {
     lines.push(`description: ${yamlScalar(extra.description)}`);
   }
 
+  if (extra.layout) {
+    lines.push(`layout: ${yamlScalar(extra.layout)}`);
+  }
+
+  if (extra.sidebar === false) {
+    lines.push("sidebar: false");
+  }
+
+  if (extra.aside === false) {
+    lines.push("aside: false");
+  }
+
+  if (extra.pageClass) {
+    lines.push(`pageClass: ${yamlScalar(extra.pageClass)}`);
+  }
+
   if (extra.playgroundUrl) {
     lines.push(`playground: ${yamlScalar(extra.playgroundUrl)}`);
   } else if (extra.playgroundRoute) {
@@ -131,7 +149,7 @@ function syncDirectory({ sourceDir, targetDir, transform }) {
   mkdirSync(targetDir, { recursive: true });
 
   const files = readdirSync(sourceDir).filter(
-    (file) => file.endsWith(".md") && file !== "index.md",
+    (file) => file.endsWith(".md") && file !== "index.md" && file !== "overview.md",
   );
   for (const file of files) {
     const body = readFileSync(path.join(sourceDir, file), "utf8");
@@ -164,7 +182,33 @@ function syncBrowserLifecycleIndex() {
     withFrontmatter("index.md", body, {
       title: "@jayoncode/browser-lifecycle | TypeScript Browser Session API",
       description:
-        "Install and use @jayoncode/browser-lifecycle for typed page visibility, focus, connectivity, idle detection, cross-tab sync, plugins, and SSR-safe browser session lifecycle management.",
+        "Landing page for @jayoncode/browser-lifecycle — typed page visibility, focus, connectivity, idle, cross-tab, and session lifecycle.",
+      layout: "doc",
+      sidebar: false,
+      aside: false,
+      pageClass: "joc-package-landing-page",
+    }),
+    "utf8",
+  );
+
+  return 1;
+}
+
+function syncBrowserLifecycleOverview() {
+  const sourceFile = path.join(rootDir, "packages/browser-lifecycle/docs/overview.md");
+  const targetFile = path.join(docsRoot, "packages/browser-lifecycle/overview.md");
+
+  if (!existsSync(sourceFile)) {
+    return 0;
+  }
+
+  const body = rewriteBrowserLifecyclePackageDocLinks(readFileSync(sourceFile, "utf8"));
+  writeFileSync(
+    targetFile,
+    withFrontmatter("overview.md", body, {
+      title: "Browser Lifecycle overview",
+      description:
+        "Documentation overview for @jayoncode/browser-lifecycle — guides, modules, intelligence, and adapters.",
     }),
     "utf8",
   );
@@ -250,6 +294,8 @@ Official Browser Lifecycle framework examples live in the monorepo under \`examp
 
 Each example demonstrates installation, initialization, configuration, event subscriptions, and cleanup using \`createBrowserLifecycle()\` from \`@jayoncode/browser-lifecycle\`.
 
+For first-party adapter packages (Provider / composables / signals), see **[Framework adapters](/packages/browser-lifecycle/modules/adapters)**.
+
 ## Examples
 
 | Framework | Location | Status |
@@ -258,10 +304,11 @@ ${rows}
 
 ## Related Documentation
 
+- [Framework adapters](/packages/browser-lifecycle/modules/adapters)
 - [Usage Guide](/packages/browser-lifecycle/guides/usage)
 - [Best Practices](/packages/browser-lifecycle/best-practices/)
 - [Common Patterns](/packages/browser-lifecycle/patterns/)
-- [Playground](${PLAYGROUND_BASE_URL})
+- [Playground](/playground/browser-lifecycle/)
 `;
 
   mkdirSync(path.dirname(targetFile), { recursive: true });
@@ -301,7 +348,32 @@ function syncObjectDiffIndex() {
     targetFile,
     withFrontmatter("index.md", body, {
       title: "Object Diff",
-      description: "Object Diff package overview.",
+      description: "Landing page for @jayoncode/object-diff — deep comparison and JSON Patch.",
+      layout: "doc",
+      sidebar: false,
+      aside: false,
+      pageClass: "joc-package-landing-page",
+    }),
+    "utf8",
+  );
+
+  return 1;
+}
+
+function syncObjectDiffOverview() {
+  const sourceFile = path.join(rootDir, "packages/object-diff/docs/overview.md");
+  const targetFile = path.join(docsRoot, "packages/object-diff/overview.md");
+
+  if (!existsSync(sourceFile)) {
+    return 0;
+  }
+
+  const body = rewriteObjectDiffDocLinks(readFileSync(sourceFile, "utf8"));
+  writeFileSync(
+    targetFile,
+    withFrontmatter("overview.md", body, {
+      title: "Object Diff overview",
+      description: "Documentation overview for @jayoncode/object-diff.",
     }),
     "utf8",
   );
@@ -375,7 +447,32 @@ function syncFormIntelligentIndex() {
     targetFile,
     withFrontmatter("index.md", body, {
       title: "Form Intelligent",
-      description: "Form Intelligent package overview.",
+      description: "Landing page for @jayoncode/form-intelligent — headless form workflow engine.",
+      layout: "doc",
+      sidebar: false,
+      aside: false,
+      pageClass: "joc-package-landing-page",
+    }),
+    "utf8",
+  );
+
+  return 1;
+}
+
+function syncFormIntelligentOverview() {
+  const sourceFile = path.join(rootDir, "packages/form-intelligent/docs/overview.md");
+  const targetFile = path.join(docsRoot, "packages/form-intelligent/overview.md");
+
+  if (!existsSync(sourceFile)) {
+    return 0;
+  }
+
+  const body = rewriteFormIntelligentDocLinks(readFileSync(sourceFile, "utf8"));
+  writeFileSync(
+    targetFile,
+    withFrontmatter("overview.md", body, {
+      title: "Form Intelligent overview",
+      description: "Documentation overview for @jayoncode/form-intelligent.",
     }),
     "utf8",
   );
@@ -499,15 +596,18 @@ function formatGeneratedFiles() {
     path.join(docsRoot, "packages/browser-lifecycle/modules"),
     path.join(docsRoot, "packages/browser-lifecycle/playground"),
     path.join(docsRoot, "packages/browser-lifecycle/index.md"),
+    path.join(docsRoot, "packages/browser-lifecycle/overview.md"),
     path.join(docsRoot, "packages/browser-lifecycle/changelog.md"),
     path.join(docsRoot, "packages/browser-lifecycle/examples"),
     path.join(docsRoot, "packages/object-diff/modules"),
     path.join(docsRoot, "packages/object-diff/playground"),
     path.join(docsRoot, "packages/object-diff/index.md"),
+    path.join(docsRoot, "packages/object-diff/overview.md"),
     path.join(docsRoot, "packages/object-diff/changelog.md"),
     path.join(docsRoot, "packages/form-intelligent/modules"),
     path.join(docsRoot, "packages/form-intelligent/playground"),
     path.join(docsRoot, "packages/form-intelligent/index.md"),
+    path.join(docsRoot, "packages/form-intelligent/overview.md"),
     path.join(docsRoot, "packages/form-intelligent/changelog.md"),
     path.join(docsRoot, ".vitepress/browser-lifecycle-meta.ts"),
     path.join(docsRoot, ".vitepress/docs-meta.ts"),
@@ -551,14 +651,17 @@ function lintGeneratedMetaFiles() {
 }
 
 const browserLifecycleIndexCount = syncBrowserLifecycleIndex();
+const browserLifecycleOverviewCount = syncBrowserLifecycleOverview();
 const moduleCount = syncPackageModules();
 const playgroundCount = syncPlaygroundDocs();
 const exampleCount = syncFrameworkExamplesIndex();
 const objectDiffModuleCount = syncObjectDiffModules();
 const objectDiffIndexCount = syncObjectDiffIndex();
+const objectDiffOverviewCount = syncObjectDiffOverview();
 const objectDiffPlaygroundCount = syncObjectDiffPlaygroundDocs();
 const formIntelligentModuleCount = syncFormIntelligentModules();
 const formIntelligentIndexCount = syncFormIntelligentIndex();
+const formIntelligentOverviewCount = syncFormIntelligentOverview();
 const formIntelligentPlaygroundCount = syncFormIntelligentPlaygroundDocs();
 const browserLifecycleVersion = syncBrowserLifecycleMeta();
 const objectDiffVersion = syncObjectDiffMeta();
@@ -573,5 +676,5 @@ if (process.env.DOCS_SYNC_SKIP_QUALITY !== "1") {
 }
 
 console.log(
-  `Synced documentation: ${moduleCount} browser-lifecycle module pages, ${browserLifecycleIndexCount} browser-lifecycle index, ${playgroundCount} browser-lifecycle playground pages, ${exampleCount} framework examples, ${objectDiffModuleCount} object-diff module pages, ${objectDiffIndexCount} object-diff index, ${objectDiffPlaygroundCount} object-diff playground pages, ${formIntelligentModuleCount} form-intelligent module pages, ${formIntelligentIndexCount} form-intelligent index, ${formIntelligentPlaygroundCount} form-intelligent playground pages, ${changelogCount} package changelogs, browser-lifecycle@${browserLifecycleVersion}, object-diff@${objectDiffVersion}, form-intelligent@${formIntelligentVersion}, docs@${docsVersion}.`,
+  `Synced documentation: ${moduleCount} browser-lifecycle module pages, ${browserLifecycleIndexCount} browser-lifecycle landing, ${browserLifecycleOverviewCount} browser-lifecycle overview, ${playgroundCount} browser-lifecycle playground pages, ${exampleCount} framework examples, ${objectDiffModuleCount} object-diff module pages, ${objectDiffIndexCount} object-diff landing, ${objectDiffOverviewCount} object-diff overview, ${objectDiffPlaygroundCount} object-diff playground pages, ${formIntelligentModuleCount} form-intelligent module pages, ${formIntelligentIndexCount} form-intelligent landing, ${formIntelligentOverviewCount} form-intelligent overview, ${formIntelligentPlaygroundCount} form-intelligent playground pages, ${changelogCount} package changelogs, browser-lifecycle@${browserLifecycleVersion}, object-diff@${objectDiffVersion}, form-intelligent@${formIntelligentVersion}, docs@${docsVersion}.`,
 );

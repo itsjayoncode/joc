@@ -1,6 +1,11 @@
 import { TimelineRingBuffer } from "./ring-buffer.js";
 
-import type { TimelineApi, TimelineEntry, TimelineSnapshotFields } from "./types.js";
+import type {
+  FormatTimelineOptions,
+  TimelineApi,
+  TimelineEntry,
+  TimelineSnapshotFields,
+} from "./types.js";
 import type {
   BrowserLifecycle,
   BrowserLifecycleEventMap,
@@ -87,7 +92,7 @@ export function createTimelineApi(
     events(): readonly TimelineEntry[] {
       return buffer.toArray();
     },
-    format(options?: import("./types.js").FormatTimelineOptions): readonly string[] {
+    format(options?: FormatTimelineOptions): readonly string[] {
       const locale = options?.locale;
       const timeZone = options?.timeZone;
       return buffer.toArray().map((entry) => {

@@ -20,8 +20,7 @@ export function projectActivityView(
 
   return {
     lastActiveAt:
-      lastActiveAt ??
-      (status === "active" ? snapshot.timestamps.lastEventAt : undefined),
+      lastActiveAt ?? (status === "active" ? snapshot.timestamps.lastEventAt : undefined),
     status,
   };
 }

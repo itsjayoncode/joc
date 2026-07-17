@@ -8,10 +8,7 @@ import {
   type Ref,
 } from "vue";
 
-import type {
-  BrowserLifecycle,
-  BrowserLifecycleSnapshot,
-} from "@jayoncode/browser-lifecycle";
+import type { BrowserLifecycle, BrowserLifecycleSnapshot } from "@jayoncode/browser-lifecycle";
 
 import {
   resolveBrowserLifecycleBinding,
@@ -23,9 +20,7 @@ export interface BrowserLifecycleApi {
   readonly snapshot: Ref<Readonly<BrowserLifecycleSnapshot>>;
 }
 
-const BROWSER_LIFECYCLE_KEY: InjectionKey<BrowserLifecycleApi> = Symbol(
-  "browser-lifecycle",
-);
+const BROWSER_LIFECYCLE_KEY: InjectionKey<BrowserLifecycleApi> = Symbol("browser-lifecycle");
 
 function createBrowserLifecycleApi(
   options: BrowserLifecycleAdapterOptions = {},

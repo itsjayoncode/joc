@@ -1,5 +1,5 @@
 # Packages
 
-This directory contains the future JOC library ecosystem.
+This directory contains the JOC library ecosystem.
 
-Each public package is intended to remain independently installable. Shared internal code belongs in `packages/shared`, which is not intended for npm publication.
+Public packages (`browser-lifecycle`, `form-intelligent`, `object-diff`) are independently installable on npm. Framework and schema adapters live beside their parent package and stay private until they are ready to publish.

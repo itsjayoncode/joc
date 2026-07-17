@@ -8,10 +8,7 @@ import {
   type ReactElement,
 } from "react";
 
-import type {
-  BrowserLifecycle,
-  BrowserLifecycleSnapshot,
-} from "@jayoncode/browser-lifecycle";
+import type { BrowserLifecycle, BrowserLifecycleSnapshot } from "@jayoncode/browser-lifecycle";
 
 import { resolveBrowserLifecycleBinding } from "./resolve-binding.js";
 
@@ -28,9 +25,7 @@ const BrowserLifecycleContext = createContext<BrowserLifecycle | null>(null);
  * Provide a BrowserLifecycle session to descendants.
  * Owns the session by default; pass `lifecycle` to adopt an existing instance.
  */
-export function BrowserLifecycleProvider(
-  props: BrowserLifecycleProviderProps,
-): ReactElement {
+export function BrowserLifecycleProvider(props: BrowserLifecycleProviderProps): ReactElement {
   const { children, config, lifecycle: adopted } = props;
   const bindingRef = useRef<ReturnType<typeof resolveBrowserLifecycleBinding> | null>(null);
 
@@ -70,9 +65,7 @@ export function BrowserLifecycleProvider(
 export function useBrowserLifecycle(): BrowserLifecycle {
   const lifecycle = useContext(BrowserLifecycleContext);
   if (!lifecycle) {
-    throw new Error(
-      "useBrowserLifecycle() requires a BrowserLifecycleProvider ancestor.",
-    );
+    throw new Error("useBrowserLifecycle() requires a BrowserLifecycleProvider ancestor.");
   }
   return lifecycle;
 }
@@ -88,7 +81,10 @@ export function useBrowserLifecycleSnapshot<TSelected = Readonly<BrowserLifecycl
   selectorRef.current = selector;
 
   const subscribe = useMemo(
-    () => (onStoreChange: () => void) => lifecycle.subscribe(() => onStoreChange()),
+    () => (onStoreChange: () => void) =>
+      lifecycle.subscribe(() => {
+        onStoreChange();
+      }),
     [lifecycle],
   );
 

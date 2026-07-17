@@ -109,10 +109,7 @@ describe("createTimelineApi", () => {
 
     expect(onOverflow).toHaveBeenCalledTimes(1);
     expect(timeline.size()).toBe(2);
-    expect(timeline.events().map((entry) => entry.type)).toEqual([
-      "page:hidden",
-      "page:visible",
-    ]);
+    expect(timeline.events().map((entry) => entry.type)).toEqual(["page:hidden", "page:visible"]);
     expect(timeline.record()).toEqual(timeline.events());
     expect(timeline.format()[0]).toMatch(/page:hidden$/);
     expect(timeline.events()[0]?.snapshot?.visibility).toBe("hidden");

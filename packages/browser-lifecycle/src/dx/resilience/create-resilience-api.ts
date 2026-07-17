@@ -6,10 +6,7 @@ import type {
   ResilienceHandler,
   Unsubscribe,
 } from "./types.js";
-import type {
-  BrowserLifecycle,
-  BrowserLifecycleEventName,
-} from "../../core/session/types.js";
+import type { BrowserLifecycle, BrowserLifecycleEventName } from "../../core/session/types.js";
 
 /**
  * Creates Resilience helpers for reconnect / wake / restore workflows.

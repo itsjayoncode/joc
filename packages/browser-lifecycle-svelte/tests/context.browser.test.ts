@@ -2,8 +2,8 @@
 
 import { get } from "svelte/store";
 import { describe, expect, it, vi } from "vitest";
-import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
 
+import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
 import {
   createOwnedBrowserLifecycle,
   resolveBrowserLifecycleBinding,

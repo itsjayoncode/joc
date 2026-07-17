@@ -179,6 +179,15 @@ importers:
 
   apps/playground:
     dependencies:
+      '@jayoncode/browser-lifecycle':
+        specifier: workspace:*
+        version: link:../../packages/browser-lifecycle
+      '@jayoncode/form-intelligent':
+        specifier: workspace:*
+        version: link:../../packages/form-intelligent
+      '@jayoncode/object-diff':
+        specifier: workspace:*
+        version: link:../../packages/object-diff
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -207,8 +216,6 @@ importers:
       '@jayoncode/browser-lifecycle':
         specifier: workspace:*
         version: link:../../packages/browser-lifecycle
-
-  packages/audit: {}
 
   packages/browser-lifecycle: {}
 
@@ -274,12 +281,6 @@ importers:
       vue:
         specifier: ^3.5.13
         version: 3.5.39(typescript@5.9.3)
-
-  packages/cache: {}
-
-  packages/config: {}
-
-  packages/doctor: {}
 
   packages/form-intelligent:
     devDependencies:
@@ -380,31 +381,7 @@ importers:
         specifier: ^3.24.0
         version: 3.25.76
 
-  packages/forms: {}
-
-  packages/keyboard: {}
-
-  packages/layers: {}
-
-  packages/logger: {}
-
   packages/object-diff: {}
-
-  packages/permissions: {}
-
-  packages/queue: {}
-
-  packages/request: {}
-
-  packages/responsive: {}
-
-  packages/scroll: {}
-
-  packages/shared: {}
-
-  packages/theme: {}
-
-  packages/workflow: {}
 
 packages:
 

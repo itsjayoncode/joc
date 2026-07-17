@@ -2,8 +2,8 @@
 
 import { createRoot } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
-import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
 
+import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
 import {
   resolveBrowserLifecycleBinding,
   useOwnedBrowserLifecycle,
@@ -11,12 +11,10 @@ import {
 
 describe("browser-lifecycle-solid", () => {
   it("owns a session and disposes on root dispose", () => {
-    let lifecycle: ReturnType<typeof createBrowserLifecycle> | undefined;
     let disposeSpy: ReturnType<typeof vi.spyOn> | undefined;
 
     const dispose = createRoot((disposeRoot) => {
       const api = useOwnedBrowserLifecycle();
-      lifecycle = api.lifecycle;
       expect(api.lifecycle.isRunning()).toBe(true);
       disposeSpy = vi.spyOn(api.lifecycle, "dispose");
       return disposeRoot;

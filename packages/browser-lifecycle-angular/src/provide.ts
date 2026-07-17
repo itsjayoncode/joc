@@ -7,13 +7,10 @@ import {
 } from "./resolve-binding.js";
 import { BROWSER_LIFECYCLE, type BrowserLifecycleHandle } from "./tokens.js";
 
-export function provideBrowserLifecycle(
-  options: BrowserLifecycleAdapterOptions = {},
-): Provider {
+export function provideBrowserLifecycle(options: BrowserLifecycleAdapterOptions = {}): Provider {
   return {
     provide: BROWSER_LIFECYCLE,
-    useFactory: (destroyRef: DestroyRef) =>
-      new BrowserLifecycleHandleImpl(options, destroyRef),
+    useFactory: (destroyRef: DestroyRef) => new BrowserLifecycleHandleImpl(options, destroyRef),
     deps: [DestroyRef],
   };
 }

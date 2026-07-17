@@ -1,6 +1,6 @@
 import { buildMetricHighlights } from "./build-highlights.js";
 
-import type { SessionSummaryReport } from "./types.js";
+import type { ReportsApi, SessionSummaryReport } from "./types.js";
 import type { MetricsApi } from "../metrics/types.js";
 import type { TimelineApi } from "../timeline/types.js";
 
@@ -22,7 +22,7 @@ export interface CreateReportsApiOptions {
  * - Never talks to browser APIs.
  * - No subscriptions — generation happens only when `sessionSummary()` / `report()` is called.
  */
-export function createReportsApi(options: CreateReportsApiOptions): import("./types.js").ReportsApi {
+export function createReportsApi(options: CreateReportsApiOptions): ReportsApi {
   const timeProvider = options.timeProvider ?? Date.now;
   const evidenceLimit =
     options.evidenceLimit === undefined ? 10 : Math.max(0, Math.floor(options.evidenceLimit));

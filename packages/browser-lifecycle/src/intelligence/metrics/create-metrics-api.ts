@@ -1,8 +1,4 @@
-import type {
-  AttentionReport,
-  MetricsSnapshot,
-  MetricsStats,
-} from "./types.js";
+import type { AttentionReport, MetricsApi, MetricsSnapshot, MetricsStats } from "./types.js";
 import type {
   BrowserLifecycle,
   BrowserLifecycleEventMap,
@@ -157,7 +153,7 @@ function toAttention(metrics: MutableMetrics): AttentionReport {
 export function createMetricsApi(
   lifecycle: Pick<BrowserLifecycle, "getSnapshot" | "subscribe">,
   options: CreateMetricsApiOptions = {},
-): import("./types.js").MetricsApi {
+): MetricsApi {
   const timeProvider = options.timeProvider ?? Date.now;
   let metrics = emptyMetrics(timeProvider());
   let intervals = emptyIntervals();

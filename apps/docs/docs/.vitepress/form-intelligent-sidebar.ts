@@ -26,7 +26,7 @@ export function createFormIntelligentSidebar(
   return [
     {
       text: navPackageLabel("Form Intelligent", versionLabel),
-      items: [{ text: "Overview", link: `${base}/` }],
+      items: [{ text: "Overview", link: `${base}/overview` }],
     },
     {
       text: "Getting Started",

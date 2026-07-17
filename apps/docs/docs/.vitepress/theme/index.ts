@@ -6,6 +6,7 @@ import DocsVersionSwitcher from "./components/DocsVersionSwitcher.vue";
 import HomeBelowFold from "./components/HomeBelowFold.vue";
 import HomeFx from "./components/HomeFx.vue";
 import HomePackageCatalog from "./components/HomePackageCatalog.vue";
+import PackageLanding from "./components/PackageLanding.vue";
 import PlaygroundCatalog from "./components/PlaygroundCatalog.vue";
 import Layout from "./Layout.vue";
 import { installPlaygroundNewTabLinks } from "./playground-new-tab.js";
@@ -24,6 +25,7 @@ const theme: Theme = {
     app.component("HomeBelowFold", HomeBelowFold);
     app.component("HomeFx", HomeFx);
     app.component("HomePackageCatalog", HomePackageCatalog);
+    app.component("PackageLanding", PackageLanding);
     app.component("PlaygroundCatalog", PlaygroundCatalog);
 
     if (typeof window !== "undefined") {

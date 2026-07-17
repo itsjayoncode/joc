@@ -41,11 +41,5 @@ export interface FormatTimelineOptions {
 /** Slim fields kept on each entry when snapshot capture is enabled. */
 export type TimelineSnapshotFields = Pick<
   BrowserLifecycleSnapshot,
-  | "activity"
-  | "attention"
-  | "connectivity"
-  | "lifecycle"
-  | "phase"
-  | "tab"
-  | "visibility"
+  "activity" | "attention" | "connectivity" | "lifecycle" | "phase" | "tab" | "visibility"
 >;

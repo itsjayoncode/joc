@@ -1,8 +1,5 @@
 import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
-import type {
-  BrowserLifecycle,
-  BrowserLifecycleConfig,
-} from "@jayoncode/browser-lifecycle";
+import type { BrowserLifecycle, BrowserLifecycleConfig } from "@jayoncode/browser-lifecycle";
 
 export interface BrowserLifecycleAdapterOptions {
   readonly config?: BrowserLifecycleConfig;
