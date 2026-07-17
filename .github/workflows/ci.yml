@@ -125,3 +125,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # setup-node registry-url auth reads NODE_AUTH_TOKEN (not NPM_TOKEN).
+          # Missing this causes misleading E404 on scoped package publish.
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

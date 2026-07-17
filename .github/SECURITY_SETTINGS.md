@@ -25,7 +25,9 @@ To prepare JOC for public collaboration, enable the following repository setting
 
 ## Release Secrets
 
-When JOC is ready for real publication, add:
+For Changesets publish on `master`/`main` (see `.github/workflows/ci.yml`):
 
-- `NPM_TOKEN` for npm publication
-- any future registry-specific secrets only after publication strategy is finalized
+- `NPM_TOKEN` — npm Automation or Granular Access token with **read + write** for every package under `@jayoncode` (not only packages that already exist on the token allow-list).
+- The publish job maps this secret to both `NPM_TOKEN` and `NODE_AUTH_TOKEN` (required by `actions/setup-node` `registry-url`).
+
+If publish fails with `E404 Not Found - PUT .../@jayoncode%2f...`, treat it as an **auth/permission** problem (npm hides 403 as 404). Rotate the token and ensure `@jayoncode/form-intelligent` (and any new adapters) are included in the token’s package scope, or scope the token to the whole `@jayoncode` org.
