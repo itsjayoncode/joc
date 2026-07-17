@@ -135,6 +135,7 @@ function ReactAdapterDemo() {
 export function AdaptersPage() {
   return (
     <PageContainer
+      compact
       description="How Form Intelligent fits alongside UI frameworks and validation libraries — not instead of them."
       eyebrow="Adapters"
       title="Adapter Playground"

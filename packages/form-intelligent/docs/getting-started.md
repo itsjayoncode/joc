@@ -16,7 +16,7 @@ Use the [Validation explorer](/playground/form-intelligent/validation) to mirror
 | ------------ | --------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
 | Basic        | This tutorial                                                                                                                     | [Validation](/playground/form-intelligent/validation)                                           |
 | Intermediate | [Rules (`when()`)](/packages/form-intelligent/modules/rules) · [Workflow / autosave](/packages/form-intelligent/modules/workflow) | [Rules](/playground/form-intelligent/rules) · [Workflow](/playground/form-intelligent/workflow) |
-| Advanced     | [Plugins](/packages/form-intelligent/modules/plugins) · [Performance](/packages/form-intelligent/modules/performance)             | [Dashboard](/playground/form-intelligent/)                                                      |
+| Advanced     | [Plugins](/packages/form-intelligent/modules/plugins) · [Performance](/packages/form-intelligent/modules/performance)             | [Sandbox](/playground/form-intelligent/)                                                        |
 
 ---
 

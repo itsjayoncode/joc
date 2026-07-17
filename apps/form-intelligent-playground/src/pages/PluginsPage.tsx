@@ -182,6 +182,7 @@ export function PluginsPage() {
 
   return (
     <PageContainer
+      compact
       description="Enable plugins, fire validate/submit/autosave, and inspect the FormPluginApi hook stream."
       eyebrow="Plugins"
       title="Plugin Playground"

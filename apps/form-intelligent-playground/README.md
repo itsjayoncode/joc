@@ -13,7 +13,8 @@ It is the shared environment for:
 
 | Route          | Focus                                                     |
 | -------------- | --------------------------------------------------------- |
-| `/`            | Dashboard, package versions, quick validate               |
+| `/`            | Interactive developer sandbox                             |
+| `/dashboard`   | Overview, package versions, explorer map                  |
 | `/validation`  | Validators, timing, async checks                          |
 | `/submission`  | Submit flow, loading state, guards                        |
 | `/workflow`    | Autosave, drafts, wizard steps                            |

@@ -275,17 +275,17 @@ Work through the journey groups below. Each guide links to a playground route.
 
 ### Getting Started
 
-| Guide                                                          | Topics                         | Playground                                 |
-| -------------------------------------------------------------- | ------------------------------ | ------------------------------------------ |
-| [Tutorial](/packages/form-intelligent/modules/getting-started) | `createForm`, `bind`, `submit` | [Dashboard](/playground/form-intelligent/) |
+| Guide                                                          | Topics                         | Playground                               |
+| -------------------------------------------------------------- | ------------------------------ | ---------------------------------------- |
+| [Tutorial](/packages/form-intelligent/modules/getting-started) | `createForm`, `bind`, `submit` | [Sandbox](/playground/form-intelligent/) |
 
 ### Core Concepts
 
 | Guide                                                           | Topics                              | Playground                                  |
 | --------------------------------------------------------------- | ----------------------------------- | ------------------------------------------- |
 | [Core concepts](/packages/form-intelligent/modules/concepts)    | Instance model, flags, architecture | [State](/playground/form-intelligent/state) |
-| [Capabilities](/packages/form-intelligent/modules/capabilities) | Form OS feature map and status      | [Dashboard](/playground/form-intelligent/)  |
-| [Entrypoints](/packages/form-intelligent/modules/entrypoints)   | Main vs `/format`, `/devtools`, …   | [Dashboard](/playground/form-intelligent/)  |
+| [Capabilities](/packages/form-intelligent/modules/capabilities) | Form OS feature map and status      | [Sandbox](/playground/form-intelligent/)    |
+| [Entrypoints](/packages/form-intelligent/modules/entrypoints)   | Main vs `/format`, `/devtools`, …   | [Sandbox](/playground/form-intelligent/)    |
 
 ### Guides
 
@@ -312,7 +312,7 @@ Work through the journey groups below. Each guide links to a playground route.
 | ------------------------------------------------------------- | ----------------------------- | ------------------------------------------------------- |
 | [Plugins](/packages/form-intelligent/modules/plugins)         | Lifecycle hooks + middleware  | [Plugins](/playground/form-intelligent/plugins)         |
 | [Performance](/packages/form-intelligent/modules/performance) | Bundle + timing budgets       | [Performance](/playground/form-intelligent/performance) |
-| [Patterns](/packages/form-intelligent/modules/patterns)       | Wizard, offline, recipes      | [Dashboard](/playground/form-intelligent/)              |
+| [Patterns](/packages/form-intelligent/modules/patterns)       | Wizard, offline, recipes      | [Sandbox](/playground/form-intelligent/)                |
 | [Migration](/packages/form-intelligent/modules/migration)     | DIY autosave + breaking notes | [Workflow](/playground/form-intelligent/workflow)       |
 
 ## Package fit

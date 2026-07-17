@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 
 import styles from "./Pages.module.css";
 import { Card } from "../components/primitives/Card.js";
@@ -35,9 +36,13 @@ export function DiffPage() {
 
   return (
     <PageContainer
-      description="Compare Object A and Object B using the real @jayoncode/object-diff engine."
-      eyebrow="Diff Explorer"
-      title="Structured change inspection"
+      compact
+      description={
+        <>
+          Focused before/after comparison. Prefer the <Link to="/">Object Diff Lab</Link> for full
+          options, patch, merge, and generated code.
+        </>
+      }
     >
       <div className={styles.splitGrid}>
         <Card description="Source object" title="Object A">

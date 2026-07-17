@@ -8,20 +8,19 @@ import { classNames } from "../utils/class-names.js";
 export function NotFoundPage() {
   return (
     <PageContainer
+      compact
       description="This route is reserved for future modules or invalid navigation targets."
-      eyebrow="Not Found"
-      title="The requested playground view is not available"
     >
       <Card
-        description="Return to the dashboard and continue from the foundation routes."
+        description="Return to the Lifecycle Sandbox and continue from known routes."
         title="Navigation recovery"
       >
         <div className={styles.toggleGroup}>
           <Link className={classNames(styles.choiceButton, styles.choiceButtonActive)} to="/">
-            Go to dashboard
+            Go to Lifecycle Sandbox
           </Link>
-          <Link className={styles.choiceButton} to="/about">
-            Review architecture
+          <Link className={styles.choiceButton} to="/dashboard">
+            Dashboard
           </Link>
         </div>
       </Card>

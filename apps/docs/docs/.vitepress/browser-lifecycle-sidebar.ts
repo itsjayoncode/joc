@@ -4,6 +4,24 @@ import { buildVersionedSidebarMap } from "./versioned-sidebar.js";
 
 import type { DefaultTheme } from "vitepress";
 
+function playgroundRoute(slug: string, route = ""): string {
+  const base = resolvePlaygroundPath(slug);
+  if (!route) {
+    return base;
+  }
+
+  return `${base}${route.replace(/^\//, "")}`;
+}
+
+function spaItem(text: string, route = ""): DefaultTheme.SidebarItem {
+  return {
+    text: `${text} ↗`,
+    link: playgroundRoute("browser-lifecycle", route),
+    target: "_blank",
+    rel: "noreferrer",
+  };
+}
+
 const browserLifecycleGuides = (pkgBase: string) => [
   { text: "Quick Start", link: `${pkgBase}/guides/quick-start` },
   { text: "Usage", link: `${pkgBase}/guides/usage` },
@@ -176,12 +194,14 @@ export function createBrowserLifecycleSidebar(
       text: "Interactive",
       collapsed: false,
       items: [
-        {
-          text: "Open playground ↗",
-          link: resolvePlaygroundPath("browser-lifecycle"),
-          target: "_blank",
-          rel: "noreferrer",
-        },
+        spaItem("Open sandbox"),
+        spaItem("Visibility", "visibility"),
+        spaItem("Events", "events"),
+        spaItem("Lifecycle", "lifecycle"),
+        spaItem("Configuration", "configuration"),
+        spaItem("Plugins", "plugins"),
+        spaItem("Developer tools", "developer-tools"),
+        { text: "Playground hub", link: "/playground/" },
       ],
     },
     {

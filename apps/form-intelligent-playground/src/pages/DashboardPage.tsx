@@ -60,6 +60,16 @@ export function DashboardPage() {
         title="Form OS positioning"
       />
 
+      <Card
+        description="Configure validateOn, workflow, plugins, and rules — then inspect field state, events, performance, and generated code live."
+        title="Start in the Sandbox"
+        tone="brand"
+      >
+        <Link className={styles.externalLink} to="/">
+          Open developer sandbox →
+        </Link>
+      </Card>
+
       <div className={styles.heroGrid}>
         <Card
           description="Headless workflow engine powered by @jayoncode/form-intelligent."

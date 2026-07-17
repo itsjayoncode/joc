@@ -95,6 +95,7 @@ export function FormatterPage() {
 
   return (
     <PageContainer
+      compact
       description="See how formatters transform values at write time — separate display concerns from validation."
       eyebrow="Formatters"
       title="Formatter Playground"

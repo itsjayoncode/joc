@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import styles from "./Pages.module.css";
 import { Card } from "../components/primitives/Card.js";
 import { PageContainer } from "../components/primitives/PageContainer.js";
@@ -15,9 +17,13 @@ export function DashboardPage() {
 
   return (
     <PageContainer
-      description="Operational overview for the Browser Session Playground release. All module routes, explorer tools, and developer diagnostics are available for manual QA."
-      eyebrow="Dashboard"
-      title="Browser Session Playground v1.0.0"
+      compact
+      description={
+        <>
+          Package overview. Open the <Link to="/">Lifecycle Sandbox</Link> for the full interactive
+          laboratory.
+        </>
+      }
     >
       <div className={styles.heroGrid}>
         <Card

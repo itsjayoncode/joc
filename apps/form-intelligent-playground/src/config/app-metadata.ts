@@ -56,10 +56,10 @@ export function createBreadcrumbs(pathname: string): readonly string[] {
   const currentItem = findNavigationItemByPath(pathname);
 
   if (!currentItem || currentItem.path === "/") {
-    return ["Dashboard"];
+    return ["Sandbox"];
   }
 
-  return ["Dashboard", currentItem.label];
+  return ["Sandbox", currentItem.label];
 }
 
 export function getPageSummary(pathname: string): NavigationItem | undefined {

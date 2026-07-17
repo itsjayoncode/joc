@@ -92,7 +92,7 @@ export function createFormIntelligentSidebar(
       collapsed: false,
       items: [
         {
-          text: "Open playground ↗",
+          text: "Open sandbox ↗",
           link: playgroundRoute("form-intelligent"),
           target: "_blank",
           rel: "noreferrer",
@@ -122,6 +122,18 @@ export function createFormIntelligentSidebar(
           rel: "noreferrer",
         },
         {
+          text: "Calculations ↗",
+          link: playgroundRoute("form-intelligent", "calculations"),
+          target: "_blank",
+          rel: "noreferrer",
+        },
+        {
+          text: "State ↗",
+          link: playgroundRoute("form-intelligent", "state"),
+          target: "_blank",
+          rel: "noreferrer",
+        },
+        {
           text: "DevTools ↗",
           link: playgroundRoute("form-intelligent", "devtools"),
           target: "_blank",
@@ -130,6 +142,12 @@ export function createFormIntelligentSidebar(
         {
           text: "Performance ↗",
           link: playgroundRoute("form-intelligent", "performance"),
+          target: "_blank",
+          rel: "noreferrer",
+        },
+        {
+          text: "Dashboard ↗",
+          link: playgroundRoute("form-intelligent", "dashboard"),
           target: "_blank",
           rel: "noreferrer",
         },

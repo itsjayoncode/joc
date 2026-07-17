@@ -40,6 +40,7 @@ const highlightedSample = computed(() => {
           <DocsLink
             class="joc-pkg-landing__cta joc-pkg-landing__cta--ghost"
             :href="landing.playgroundLink"
+            external
           >
             Open playground
           </DocsLink>

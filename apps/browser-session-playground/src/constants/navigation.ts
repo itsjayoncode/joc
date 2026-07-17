@@ -18,27 +18,38 @@ import type { NavigationGroup, NavigationItem } from "../types/navigation.js";
 
 export const APP_NAVIGATION_GROUPS: readonly NavigationGroup[] = [
   {
-    description: "Permanent entry points for the application shell and product overview.",
+    description: "Primary engineering laboratory.",
     id: "overview",
-    label: "Overview",
+    label: "Laboratory",
     order: 10,
     items: [
+      {
+        description:
+          "Interactive Browser Lifecycle Developer Sandbox — configure, observe, simulate, inspect.",
+        groupId: "overview",
+        icon: ToolsIcon,
+        id: "sandbox",
+        intent: "current",
+        keywords: ["sandbox", "lab", "home", "devtools"],
+        label: "Lifecycle Sandbox",
+        path: "/",
+      },
       {
         description: "Operational overview, readiness notes, and shell-level diagnostics.",
         groupId: "overview",
         icon: DashboardIcon,
         id: "dashboard",
         intent: "current",
-        keywords: ["overview", "home", "readiness"],
+        keywords: ["overview", "dashboard", "readiness"],
         label: "Dashboard",
-        path: "/",
+        path: "/dashboard",
       },
     ],
   },
   {
-    description: "Module pages that will evolve into dedicated Browser Lifecycle workspaces.",
+    description: "Focused module explorers for deep dives.",
     id: "modules",
-    label: "Modules",
+    label: "Explorers",
     order: 20,
     items: [
       {

@@ -100,6 +100,7 @@ export function SubmissionPage() {
 
   return (
     <PageContainer
+      compact
       description="Loading states, flaky APIs, duplicate-submit prevention, engine offline queue, and cancel simulation."
       eyebrow="Submission"
       title="Submission Playground"

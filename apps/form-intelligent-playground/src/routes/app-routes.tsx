@@ -14,6 +14,7 @@ import { NotFoundPage } from "../pages/NotFoundPage.js";
 import { PerformancePage } from "../pages/PerformancePage.js";
 import { PluginsPage } from "../pages/PluginsPage.js";
 import { RulesPage } from "../pages/RulesPage.js";
+import { SandboxPage } from "../pages/SandboxPage.js";
 import { SettingsPage } from "../pages/SettingsPage.js";
 import { StateExplorerPage } from "../pages/StateExplorerPage.js";
 import { SubmissionPage } from "../pages/SubmissionPage.js";
@@ -24,6 +25,7 @@ import type { RouteObject } from "react-router-dom";
 
 export const APP_ROUTE_PATHS = [
   "/",
+  "/dashboard",
   "/validation",
   "/submission",
   "/workflow",
@@ -48,7 +50,8 @@ const routeObjects: RouteObject[] = [
     element: <AppShell />,
     path: "/",
     children: [
-      { element: <DashboardPage />, index: true },
+      { element: <SandboxPage />, index: true },
+      { element: <DashboardPage />, path: "dashboard" },
       { element: <ValidationPage />, path: "validation" },
       { element: <SubmissionPage />, path: "submission" },
       { element: <WorkflowPage />, path: "workflow" },

@@ -6,6 +6,7 @@ describe("playground navigation", () => {
   it("defines the required object-diff routes", () => {
     expect(ROUTABLE_NAVIGATION_ITEMS.map((item) => item.path)).toEqual([
       "/",
+      "/dashboard",
       "/diff",
       "/patch",
       "/json",

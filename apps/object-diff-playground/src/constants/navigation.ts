@@ -12,31 +12,41 @@ import type { NavigationGroup } from "../types/navigation.js";
 
 export const APP_NAVIGATION_GROUPS: readonly NavigationGroup[] = [
   {
-    description: "Entry points and product overview.",
+    description: "Primary engineering laboratory.",
     id: "overview",
-    label: "Overview",
+    label: "Laboratory",
     order: 10,
     items: [
       {
-        description: "Quick compare demo and package summary.",
+        description: "Interactive Object Diff Laboratory — configure, compare, inspect, benchmark.",
+        groupId: "overview",
+        icon: ToolsIcon,
+        id: "lab",
+        intent: "current",
+        keywords: ["lab", "sandbox", "home", "playground"],
+        label: "Object Diff Lab",
+        path: "/",
+      },
+      {
+        description: "Package overview and sample quick-diff.",
         groupId: "overview",
         icon: DashboardIcon,
         id: "dashboard",
         intent: "current",
-        keywords: ["overview", "home"],
+        keywords: ["overview", "dashboard"],
         label: "Dashboard",
-        path: "/",
+        path: "/dashboard",
       },
     ],
   },
   {
-    description: "Interactive object-diff workspaces.",
+    description: "Focused deep-dive explorers.",
     id: "modules",
     label: "Explorers",
     order: 20,
     items: [
       {
-        description: "Compare Object A and Object B with tree and table views.",
+        description: "Focused before/after JSON comparison workspace.",
         groupId: "modules",
         icon: CompassIcon,
         id: "diff",

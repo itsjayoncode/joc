@@ -69,7 +69,7 @@ await lifecycle.dispose();
 
 One instance per tab replaces scattered `document` / `window` listeners with typed events and a readonly snapshot.
 
-[Verify event ordering →](/playground/browser-lifecycle/visibility)
+[Verify event ordering →](/playground/browser-lifecycle/)
 
 ## Problem → approach
 
@@ -105,10 +105,10 @@ Construct and `start()` only in the browser (or after hydration). Capability det
 
 ### Foundation
 
-| #   | Guide                                                           | Topics                               | Playground                                   |
-| --- | --------------------------------------------------------------- | ------------------------------------ | -------------------------------------------- |
-| 1   | [Tutorial](/packages/browser-lifecycle/modules/getting-started) | Install, session, subscribe, dispose | [Dashboard](/playground/browser-lifecycle/)  |
-| 2   | [Core concepts](/packages/browser-lifecycle/modules/concepts)   | Session, snapshot, events, modules   | [State](/playground/browser-lifecycle/state) |
+| #   | Guide                                                           | Topics                               | Playground                                                                               |
+| --- | --------------------------------------------------------------- | ------------------------------------ | ---------------------------------------------------------------------------------------- |
+| 1   | [Tutorial](/packages/browser-lifecycle/modules/getting-started) | Install, session, subscribe, dispose | [Sandbox](/playground/browser-lifecycle/)                                                |
+| 2   | [Core concepts](/packages/browser-lifecycle/modules/concepts)   | Session, snapshot, events, modules   | [Sandbox](/playground/browser-lifecycle/) / [State](/playground/browser-lifecycle/state) |
 
 ### Core modules
 

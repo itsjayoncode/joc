@@ -23,7 +23,9 @@ export function Header({ classNames }: HeaderProps) {
   const currentItem = findNavigationItemByPath(currentPath);
   const pageTitle = currentItem?.label ?? "Page not found";
   const pageDescription =
-    currentItem?.description ?? "This route is not registered in the playground navigation.";
+    currentPath === "/"
+      ? undefined
+      : (currentItem?.description ?? "This route is not registered in the playground navigation.");
 
   return (
     <header className={classNames.header}>
@@ -31,7 +33,7 @@ export function Header({ classNames }: HeaderProps) {
         <div className={classNames.headerCopy}>
           <p className={classNames.eyebrow}>v{metadata.versions.playground}</p>
           <h1 className={classNames.title}>{pageTitle}</h1>
-          <p className={classNames.subtitle}>{pageDescription}</p>
+          {pageDescription ? <p className={classNames.subtitle}>{pageDescription}</p> : null}
         </div>
       </div>
       <div className={classNames.headerActions}>

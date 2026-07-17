@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import styles from "./Pages.module.css";
 import { Card } from "../components/primitives/Card.js";
@@ -34,9 +35,13 @@ export function PerformancePage() {
 
   return (
     <PageContainer
-      description="Measure comparison time for common object-diff workloads."
-      eyebrow="Performance"
-      title="Benchmark presets"
+      compact
+      description={
+        <>
+          Quick preset timings. Use Lab experiments + Benchmark for history charts and large
+          datasets from the <Link to="/">Object Diff Lab</Link>.
+        </>
+      }
     >
       <Card description="Run built-in fixtures against the live package." title="Presets">
         <div className={styles.inlineList}>

@@ -27,8 +27,9 @@ const POSITIONING = [
 ] as const;
 
 const folderResponsibilities = [
-  ["pages", "Route-level explorers — each maps to a package capability."],
-  ["components/playground", "ExplainPanel, EventLog, and inspectors shared across routes."],
+  ["sandbox", "Interactive developer lab — primary home for configure / inspect / code."],
+  ["pages", "Focused explorers — each deep-dives one package capability."],
+  ["components/playground", "ExplainPanel, EventLog, inspectors, SandboxCue."],
   ["hooks", "useFormSnapshot and useEventLog bridge UI to form instances."],
   ["lib", "Package integration boundary — import @jayoncode/form-intelligent here only."],
   ["providers / layouts", "Theme, navigation shell, and status bar."],

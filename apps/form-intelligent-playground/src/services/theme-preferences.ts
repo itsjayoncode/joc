@@ -18,9 +18,9 @@ export function resolveTheme(preference: ThemePreference, prefersDarkMode: boole
 }
 
 export function readThemePreference(): ThemePreference {
-  const value = readStoredPreference(THEME_STORAGE_KEY, "system");
+  const value = readStoredPreference(THEME_STORAGE_KEY, "light");
 
-  return isThemePreference(value) ? value : "system";
+  return isThemePreference(value) ? value : "light";
 }
 
 export function writeThemePreference(value: ThemePreference): void {

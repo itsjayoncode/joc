@@ -37,3 +37,15 @@
   display: grid;
   gap: var(--space-5);
 }
+
+.compact {
+  gap: var(--space-3);
+}
+
+.purpose {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  max-width: 80ch;
+}

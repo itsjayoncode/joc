@@ -194,6 +194,7 @@ export function DevToolsPage() {
 
   return (
     <PageContainer
+      compact
       description="Inspect active forms, edit config JSON, export/import state, and toggle verbose validation tracing."
       eyebrow="DevTools"
       title="Form DevTools"

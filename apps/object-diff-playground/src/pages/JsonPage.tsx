@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 
 import styles from "./Pages.module.css";
 import { Card } from "../components/primitives/Card.js";
@@ -36,9 +37,13 @@ export function JsonPage() {
 
   return (
     <PageContainer
-      description="Inspect JSON with expandable path lines and copy-friendly output."
-      eyebrow="JSON Viewer"
-      title="Object tree inspection"
+      compact
+      description={
+        <>
+          Flattened path tree. Prefer the Lab <Link to="/">Tree / Raw JSON</Link> tabs for live diff
+          highlighting.
+        </>
+      }
     >
       <Card description="Paste JSON to inspect flattened paths." title="JSON input">
         <textarea

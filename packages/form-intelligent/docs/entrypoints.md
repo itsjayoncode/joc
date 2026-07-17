@@ -5,7 +5,7 @@ Tree-shakeable imports for `@jayoncode/form-intelligent`. Prefer the **narrowest
 **Previous:** [Capabilities](/packages/form-intelligent/modules/capabilities) · **Next:** [Validation](/packages/form-intelligent/modules/validation)
 
 ::: tip Playground
-[Dashboard](/playground/form-intelligent/) — explore features live; import paths below apply in app code.
+[Sandbox](/playground/form-intelligent/) — explore features live; import paths below apply in app code.
 :::
 
 ## Quick rule

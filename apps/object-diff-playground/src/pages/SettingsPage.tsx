@@ -14,11 +14,7 @@ export function SettingsPage() {
   const { sidebarCollapsed, toggleSidebarCollapsed } = usePlaygroundUi();
 
   return (
-    <PageContainer
-      description="Application-level preferences live here so future module pages can stay focused on Object Diff behavior instead of shell configuration."
-      eyebrow="Settings"
-      title="Developer preferences and shell controls"
-    >
+    <PageContainer compact description="Theme and shell preferences for the playground.">
       <div className={styles.cardGrid}>
         <Card
           description="Theme preference is persisted and resolved against the active system color scheme when needed."

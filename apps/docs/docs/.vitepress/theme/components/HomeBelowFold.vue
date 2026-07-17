@@ -142,6 +142,8 @@ const communityLinks = [
             v-if="selectedPackage.status === 'live'"
             class="joc-cta-secondary"
             :href="docsHref(`/playground/${selectedPackage.id}/`)"
+            target="_blank"
+            rel="noreferrer noopener"
           >
             Open playground
           </a>
@@ -218,7 +220,13 @@ lifecycle.on("page:visible", () => {
 await lifecycle.dispose();</code></pre>
         <p class="joc-home-links">
           <a :href="docsHref('/packages/browser-lifecycle/')">Package docs</a>
-          <a :href="docsHref('/playground/browser-lifecycle/visibility')">Visibility playground</a>
+          <a
+            :href="docsHref('/playground/browser-lifecycle/')"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            Open sandbox
+          </a>
           <a :href="docsHref('/packages/form-intelligent/')">Form Intelligent example</a>
         </p>
       </div>
