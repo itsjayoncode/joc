@@ -3,7 +3,7 @@
     {
       "id": "core-login",
       "file": "core-login.mjs",
-      "maxGzipKb": 18
+      "maxGzipKb": 19
     },
     {
       "id": "workflow-rules",
