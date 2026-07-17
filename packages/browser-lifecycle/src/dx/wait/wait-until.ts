@@ -14,6 +14,13 @@ interface WaitRequest {
   readonly cleanup: () => void;
 }
 
+function abortRejection(reason: unknown): Error {
+  if (reason instanceof Error) {
+    return reason;
+  }
+  return new DOMException("Wait aborted.", "AbortError");
+}
+
 /**
  * Shared wait primitive: snapshot check → one-shot event subscription → cleanup.
  * No polling.
@@ -26,10 +33,7 @@ export function waitUntil(
   track: (request: WaitRequest) => () => void,
 ): Promise<void> {
   if (options.signal?.aborted) {
-    return Promise.reject(
-      options.signal.reason ??
-        new DOMException("Wait aborted.", "AbortError"),
-    );
+    return Promise.reject(abortRejection(options.signal.reason));
   }
 
   const snapshot = lifecycle.getSnapshot();
@@ -47,7 +51,7 @@ export function waitUntil(
     let settled = false;
     const unsubscribers: Array<() => void> = [];
     let timeoutId: ReturnType<typeof setTimeout> | undefined;
-    let removeTrack: (() => void) | undefined;
+    const tracked: { remove?: () => void } = {};
 
     const settle = (action: () => void): void => {
       if (settled) {
@@ -61,16 +65,13 @@ export function waitUntil(
         unsubscribe();
       }
       options.signal?.removeEventListener("abort", onAbort);
-      removeTrack?.();
+      tracked.remove?.();
       action();
     };
 
     const onAbort = (): void => {
       settle(() => {
-        reject(
-          options.signal?.reason ??
-            new DOMException("Wait aborted.", "AbortError"),
-        );
+        reject(abortRejection(options.signal?.reason));
       });
     };
 
@@ -80,7 +81,7 @@ export function waitUntil(
       });
     };
 
-    removeTrack = track({ cleanup, reject });
+    tracked.remove = track({ cleanup, reject });
 
     for (const eventName of events) {
       unsubscribers.push(
@@ -108,9 +109,7 @@ export function waitUntil(
 
       timeoutId = setTimeout(() => {
         settle(() => {
-          reject(
-            new LifecycleError(`Wait timed out after ${String(options.timeoutMs)}ms.`),
-          );
+          reject(new LifecycleError(`Wait timed out after ${String(options.timeoutMs)}ms.`));
         });
       }, options.timeoutMs);
     }

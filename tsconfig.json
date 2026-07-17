@@ -17,7 +17,6 @@
     { "path": "./packages/form-intelligent-ajv" },
     { "path": "./packages/form-intelligent-react" },
     { "path": "./packages/form-intelligent-vue" },
-    { "path": "./packages/form-intelligent-angular" },
-    { "path": "./packages/shared" }
+    { "path": "./packages/form-intelligent-angular" }
   ]
 }

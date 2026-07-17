@@ -85,6 +85,7 @@ const faqItems = (pkgBase: string) => [
   { text: "Lifecycle", link: `${pkgBase}/faq/lifecycle` },
   { text: "Cross Tab", link: `${pkgBase}/faq/cross-tab` },
   { text: "Plugins", link: `${pkgBase}/faq/plugins` },
+  { text: "Intelligence & DX", link: `${pkgBase}/modules/intelligence` },
   { text: "Events", link: `${pkgBase}/faq/events` },
   { text: "Performance", link: `${pkgBase}/faq/performance` },
   { text: "Debugging", link: `${pkgBase}/faq/debugging` },
@@ -102,7 +103,7 @@ export function createBrowserLifecycleSidebar(
     {
       text: navPackageLabel("Browser Lifecycle", versionLabel),
       items: [
-        { text: "Overview", link: `${pkgBase}/` },
+        { text: "Overview", link: `${pkgBase}/overview` },
         { text: "Core concepts", link: `${pkgBase}/modules/concepts` },
         { text: "Tutorial", link: `${pkgBase}/modules/getting-started` },
         { text: "Installation", link: `${pkgBase}/installation` },
@@ -116,6 +117,24 @@ export function createBrowserLifecycleSidebar(
         { text: "3. Session core", link: `${pkgBase}/modules/session-core` },
         { text: "4. Core infrastructure", link: `${pkgBase}/modules/core-infrastructure` },
       ],
+    },
+    {
+      text: "Intelligence & DX",
+      items: [
+        { text: "Overview", link: `${pkgBase}/modules/intelligence` },
+        { text: "Activity", link: `${pkgBase}/modules/activity` },
+        { text: "Presence", link: `${pkgBase}/modules/presence` },
+        { text: "Timeline", link: `${pkgBase}/modules/timeline` },
+        { text: "Metrics", link: `${pkgBase}/modules/metrics` },
+        { text: "Reports", link: `${pkgBase}/modules/reports` },
+        { text: "Wait helpers", link: `${pkgBase}/modules/wait` },
+        { text: "Conditions", link: `${pkgBase}/modules/conditions` },
+        { text: "Resilience", link: `${pkgBase}/modules/resilience` },
+      ],
+    },
+    {
+      text: "Framework adapters",
+      items: [{ text: "Adapters", link: `${pkgBase}/modules/adapters` }],
     },
     {
       text: "Guides",

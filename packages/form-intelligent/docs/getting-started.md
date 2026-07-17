@@ -2,7 +2,7 @@
 
 Wire a field, observe state, and submit in a few minutes.
 
-**Previous:** [Overview](/packages/form-intelligent/) · **Next:** [Core concepts](/packages/form-intelligent/modules/concepts)
+**Previous:** [Overview](/packages/form-intelligent/overview) · **Next:** [Core concepts](/packages/form-intelligent/modules/concepts)
 
 ::: info Playground
 Use the [Validation explorer](/playground/form-intelligent/validation) to mirror these steps without a local install.

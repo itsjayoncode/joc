@@ -2,12 +2,20 @@
 
 ## Recommended
 
-Wrap Browser Lifecycle in a framework provider and expose hooks or services to the rest of the app.
+Use a dedicated adapter package so the session is owned once per scope and disposed on unmount:
+
+- [Framework adapters](/packages/browser-lifecycle/modules/adapters) — React, Vue, Svelte, Solid, Angular
+- Wrap with the adapter Provider / `provide` / context helpers
+- Read state via snapshot hooks / signals / stores
+
+## Core-only apps
+
+If you are not using a framework adapter, create **one** `createBrowserLifecycle()` per tab and share it through your own context.
 
 ## Examples
 
-See [Framework Examples](/packages/browser-lifecycle/examples/) for React, Vue, Angular, Svelte, Next.js, Electron, and PWA reference implementations.
+See [Framework Examples](/packages/browser-lifecycle/examples/) for monorepo demos, and the adapter module for package APIs.
 
 ## Not recommended
 
-Importing `createBrowserLifecycle()` directly inside leaf components.
+Importing `createBrowserLifecycle()` directly inside every leaf component (duplicate sessions and leaked listeners).

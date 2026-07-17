@@ -6,7 +6,7 @@
 
 Published as [`@jayoncode/browser-lifecycle`](https://www.npmjs.com/package/@jayoncode/browser-lifecycle) on npm.
 
-Track page visibility, window focus, online/offline connectivity, user idle state, page lifecycle, and cross-tab coordination through one composable TypeScript API — with SSR-safe feature detection and a plugin system. Works with React, Vue, Angular, Svelte, Next.js, and vanilla JavaScript.
+Stop wiring `visibilitychange`, `focus`, `online`, and idle timers by hand. One composable TypeScript API covers page visibility, window focus, connectivity, idle, page lifecycle, and cross-tab coordination — with SSR-safe feature detection and opt-in intelligence. Works with React, Vue, Angular, Svelte, Next.js, and vanilla JavaScript.
 
 ## Install
 
@@ -22,22 +22,46 @@ pnpm add @jayoncode/browser-lifecycle
 yarn add @jayoncode/browser-lifecycle
 ```
 
-## Quick start
+## The problem it solves
+
+Most apps slowly accumulate listeners like this:
+
+```ts
+document.addEventListener("visibilitychange", ...);
+window.addEventListener("focus", ...);
+window.addEventListener("blur", ...);
+window.addEventListener("online", ...);
+window.addEventListener("offline", ...);
+// + custom idle timer + cleanup bugs on every route change
+```
+
+`@jayoncode/browser-lifecycle` replaces that sprawl with one session object.
+
+## Quick start — stop wasting work in a background tab
 
 ```ts
 import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
 
 const lifecycle = createBrowserLifecycle({
   autoStart: true,
-  debug: false,
+  idleTimeout: 60_000,
+});
+
+lifecycle.on("page:hidden", () => {
+  pausePolling();
+  pauseMedia();
 });
 
 lifecycle.on("page:visible", () => {
-  console.log("Tab is visible again");
+  resumePolling();
 });
 
 lifecycle.on("session:idle", () => {
-  console.log("User went idle");
+  lockSensitiveScreen();
+});
+
+lifecycle.on("connection:reconnect", () => {
+  flushOfflineQueue();
 });
 
 // Read a typed snapshot any time
@@ -47,148 +71,65 @@ const snapshot = lifecycle.getSnapshot();
 lifecycle.dispose();
 ```
 
-### Optional: Activity facade (experimental)
+## More problem → solution snippets
 
-Derive-only helper over snapshot/events — **no extra DOM listeners**. Costs nothing until you call it. Meaningful status requires `idleTimeout`.
-
-```ts
-import { createActivityApi, createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
-
-const lifecycle = createBrowserLifecycle({ idleTimeout: 30_000 });
-const activity = createActivityApi(lifecycle);
-
-if (activity.isIdle()) {
-  // pause non-critical work
-}
-
-activity.dispose(); // unsubscribe tracking; does not dispose lifecycle
-lifecycle.dispose();
-```
-
-### Optional: Presence facade (experimental)
-
-Page-local availability only (**not** multi-user presence). Pure snapshot projection — **no subscriptions**.
-
-```ts
-import { createPresenceApi, createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
-
-const lifecycle = createBrowserLifecycle();
-const presence = createPresenceApi(lifecycle);
-
-if (presence.isAway()) {
-  // e.g. pause realtime work
-  console.log(presence.state().reasons); // ["hidden"] | ["blurred"] | …
-}
-
-lifecycle.dispose();
-```
-
-### Optional: Timeline (experimental)
-
-Bounded event history — **opt-in only**. Requires `maxEvents`. Drop-oldest overflow.
-
-```ts
-import { createBrowserLifecycle, createTimelineApi } from "@jayoncode/browser-lifecycle";
-
-const lifecycle = createBrowserLifecycle();
-const timeline = createTimelineApi(lifecycle, { maxEvents: 100 });
-
-console.log(timeline.events());
-timeline.dispose(); // unsubscribe + clear buffer
-lifecycle.dispose();
-```
-
-### Optional: Metrics (experimental)
-
-Live counters/durations from public events — **does not require Timeline**.
-
-```ts
-import { createBrowserLifecycle, createMetricsApi } from "@jayoncode/browser-lifecycle";
-
-const lifecycle = createBrowserLifecycle({ idleTimeout: 30_000 });
-const metrics = createMetricsApi(lifecycle);
-
-console.log(metrics.snapshot());
-// durations, counts, attentionScore, …
-console.log(metrics.attention().score); // 0–100
-console.log(metrics.stats());
-
-metrics.dispose();
-lifecycle.dispose();
-```
-
-### Optional: Reports (experimental)
-
-On-demand summary from Metrics (Timeline evidence optional). No subscriptions of its own.
-
-```ts
-import {
-  createBrowserLifecycle,
-  createMetricsApi,
-  createReportsApi,
-} from "@jayoncode/browser-lifecycle";
-
-const lifecycle = createBrowserLifecycle({ idleTimeout: 30_000 });
-const metrics = createMetricsApi(lifecycle);
-const reports = createReportsApi({ metrics });
-
-console.log(reports.sessionSummary().highlights);
-```
-
-### Optional: Wait helpers (experimental)
-
-Promise helpers over public events — **no polling**. Resolves immediately if already satisfied.
-
-```ts
-import { createBrowserLifecycle, createWaitApi } from "@jayoncode/browser-lifecycle";
-
-const lifecycle = createBrowserLifecycle();
-const wait = createWaitApi(lifecycle);
-
-await wait.untilVisible({ timeoutMs: 5_000 });
-wait.dispose();
-lifecycle.dispose();
-```
-
-### Optional: Conditions (experimental)
-
-Thin event DSL — handler errors are isolated from the session.
-
-```ts
-import { createBrowserLifecycle, createConditionsApi } from "@jayoncode/browser-lifecycle";
-
-const lifecycle = createBrowserLifecycle();
-const when = createConditionsApi(lifecycle);
-
-const handle = when.hidden(() => {
-  // pause non-critical work
-});
-handle.unsubscribe();
-when.dispose();
-lifecycle.dispose();
-```
-
-### Optional: Resilience (experimental)
-
-Named helpers over reconnect / wake / restore catalog events — no persistence, no extra browser APIs.
+### Flush work when the network comes back
 
 ```ts
 import { createBrowserLifecycle, createResilienceApi } from "@jayoncode/browser-lifecycle";
 
-const lifecycle = createBrowserLifecycle();
+const lifecycle = createBrowserLifecycle({ autoStart: true });
 const resilience = createResilienceApi(lifecycle);
 
-const off = resilience.onReconnect(() => {
-  // flush queued work
+resilience.onReconnect(() => {
+  flushOfflineQueue();
 });
-off();
-resilience.dispose();
-lifecycle.dispose();
+
+resilience.onWake(() => {
+  refreshStaleData();
+});
 ```
 
-### Framework adapters (experimental)
+### Wait until the tab is visible before heavy work
 
-Thin wrappers live in separate packages (public API only; dispose on unmount; client-only start):
+```ts
+import { createBrowserLifecycle, createWaitApi } from "@jayoncode/browser-lifecycle";
+
+const lifecycle = createBrowserLifecycle({ autoStart: true });
+const wait = createWaitApi(lifecycle);
+
+await wait.untilVisible({ timeoutMs: 10_000 });
+startExpensiveHydration();
+```
+
+### Measure attention without building your own telemetry
+
+```ts
+import { createBrowserLifecycle, createMetricsApi } from "@jayoncode/browser-lifecycle";
+
+const lifecycle = createBrowserLifecycle({ autoStart: true, idleTimeout: 30_000 });
+const metrics = createMetricsApi(lifecycle);
+
+console.log(metrics.attention().score); // 0–100
+console.log(metrics.snapshot().durations);
+```
+
+## Optional intelligence & DX (pay only when you import)
+
+| Helper                | What it solves                      |
+| --------------------- | ----------------------------------- |
+| `createActivityApi`   | Idle/active facade over the session |
+| `createPresenceApi`   | Page-local away/active reasons      |
+| `createTimelineApi`   | Bounded event history               |
+| `createMetricsApi`    | Durations, counts, attention score  |
+| `createReportsApi`    | On-demand session summaries         |
+| `createWaitApi`       | Promise helpers (`untilVisible`, …) |
+| `createConditionsApi` | Tiny event DSL (`when.hidden(...)`) |
+| `createResilienceApi` | Reconnect / wake / restore helpers  |
+
+## Framework adapters
+
+Thin wrappers live in separate packages (dispose on unmount; client-only start):
 
 - `@jayoncode/browser-lifecycle-react`
 - `@jayoncode/browser-lifecycle-vue`
@@ -198,27 +139,16 @@ Thin wrappers live in separate packages (public API only; dispose on unmount; cl
 
 ## Why use it
 
-| Capability       | What you get                                            |
-| ---------------- | ------------------------------------------------------- |
-| **Session core** | Start, stop, pause, and inspect lifecycle state         |
-| **Visibility**   | `page:visible` / `page:hidden` from document visibility |
-| **Focus**        | `window:focus` / `window:blur` normalization            |
-| **Connectivity** | Advisory online/offline signals                         |
-| **Idle**         | Activity-based idle detection                           |
-| **Activity API** | Optional derive-only facade (`createActivityApi`)       |
-| **Presence API** | Optional page-local presence (`createPresenceApi`)      |
-| **Timeline**     | Optional bounded event history (`createTimelineApi`)    |
-| **Metrics**      | Optional durations/counts/attention (`createMetricsApi`) |
-| **Reports**      | Optional on-demand summaries (`createReportsApi`)       |
-| **Health**       | Optional session health (`createSessionHealthApi`)      |
-| **Predict**      | Optional engagement heuristics (`createSessionPredictApi`) |
-| **Wait**         | Optional promise helpers (`createWaitApi`)              |
-| **Conditions**   | Optional event DSL (`createConditionsApi`)              |
-| **Resilience**   | Optional reconnect/wake/restore (`createResilienceApi`) |
-| **Adapters**     | Optional framework packages (`browser-lifecycle-react`, …) |
-| **Cross-tab**    | Leader election and tab messaging                       |
-| **Plugins**      | Register hooks and inspect runtime diagnostics          |
-| **SSR-safe**     | Capability helpers that work without throwing in Node   |
+| Capability       | What you get                                    |
+| ---------------- | ----------------------------------------------- |
+| **Session core** | Start, stop, pause, and inspect lifecycle state |
+| **Visibility**   | `page:visible` / `page:hidden`                  |
+| **Focus**        | `window:focus` / `window:blur`                  |
+| **Connectivity** | `connection:online` / `offline` / `reconnect`   |
+| **Idle**         | Activity-based `session:idle`                   |
+| **Cross-tab**    | Leader election and tab messaging               |
+| **Plugins**      | Register hooks and inspect diagnostics          |
+| **SSR-safe**     | Capability helpers that do not throw in Node    |
 
 ## Documentation
 
@@ -234,11 +164,7 @@ Thin wrappers live in separate packages (public API only; dispose on unmount; cl
 
 ## Repository
 
-Source, issues, and contributions:
-
-**https://github.com/itsjayoncode/joc**
-
-Package path: `packages/browser-lifecycle`
+**https://github.com/itsjayoncode/joc** · Package path: `packages/browser-lifecycle`
 
 ## License
 

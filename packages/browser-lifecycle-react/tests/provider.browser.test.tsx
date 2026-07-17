@@ -2,8 +2,8 @@
 
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
 
+import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
 import {
   BrowserLifecycleProvider,
   useBrowserLifecycle,
@@ -107,7 +107,8 @@ describe("browser-lifecycle-react", () => {
       expect(owned?.isRunning()).toBe(true);
     });
 
-    const dispose = vi.spyOn(owned!, "dispose");
+    expect(owned).toBeDefined();
+    const dispose = vi.spyOn(owned, "dispose");
     unmount();
     expect(dispose).toHaveBeenCalled();
   });

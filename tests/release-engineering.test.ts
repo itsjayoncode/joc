@@ -20,7 +20,7 @@ describe("release engineering foundation", () => {
     }
   });
 
-  it("ignores placeholder packages so only browser-lifecycle can publish", () => {
+  it("publishes live packages and ignores private adapters/apps", () => {
     const config = JSON.parse(
       readFileSync(path.join(rootDir, ".changeset/config.json"), "utf8"),
     ) as {
@@ -28,20 +28,22 @@ describe("release engineering foundation", () => {
     };
 
     expect(config.ignore).not.toContain("@jayoncode/browser-lifecycle");
-    expect(config.ignore).toContain("@jayoncode/audit");
-    expect(config.ignore).toContain("@jayoncode/forms");
+    expect(config.ignore).not.toContain("@jayoncode/form-intelligent");
+    expect(config.ignore).not.toContain("@jayoncode/object-diff");
     expect(config.ignore).toContain("@jayoncode/browser-session-playground");
+    expect(config.ignore).toContain("@jayoncode/form-intelligent-react");
+    expect(config.ignore).toContain("@jayoncode/browser-lifecycle-react");
   });
 
-  it("keeps placeholder packages private until they are ready for npm", () => {
-    const logger = JSON.parse(
-      readFileSync(path.join(rootDir, "packages/logger/package.json"), "utf8"),
+  it("keeps adapter packages private until they are ready for npm", () => {
+    const adapter = JSON.parse(
+      readFileSync(path.join(rootDir, "packages/browser-lifecycle-react/package.json"), "utf8"),
     ) as { private?: boolean };
     const browserLifecycle = JSON.parse(
       readFileSync(path.join(rootDir, "packages/browser-lifecycle/package.json"), "utf8"),
     ) as { private?: boolean };
 
-    expect(logger.private).toBe(true);
+    expect(adapter.private).toBe(true);
     expect(browserLifecycle.private).not.toBe(true);
   });
 

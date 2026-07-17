@@ -345,12 +345,12 @@ Core runtime (Visibility, Focus, Connectivity, Idle, Lifecycle, Cross Tab, Snaps
 
 Do not enlarge always-on core. Group future work by derive-only layers:
 
-| Phase | Name | Features | Rules |
-| ----- | ---- | -------- | ----- |
-| 3 | Session intelligence | Activity facade, Local presence | Compose existing signals only — no new browser listeners. Avoid multi-user “presence” naming. |
-| 4 | Insights | Timeline → Metrics → Reports | Opt-in. Metrics must not require Timeline retention for basic counters. |
-| 5 | Developer experience | Wait helpers, Conditions | Subscription-based DX; no polling timers as the primary mechanism. |
-| 6 | Resilience | Resilience helpers (reconnect / wake / restore) | React to existing events; rename away from vague “Recovery”. |
+| Phase | Name                 | Features                                        | Rules                                                                                         |
+| ----- | -------------------- | ----------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| 3     | Session intelligence | Activity facade, Local presence                 | Compose existing signals only — no new browser listeners. Avoid multi-user “presence” naming. |
+| 4     | Insights             | Timeline → Metrics → Reports                    | Opt-in. Metrics must not require Timeline retention for basic counters.                       |
+| 5     | Developer experience | Wait helpers, Conditions                        | Subscription-based DX; no polling timers as the primary mechanism.                            |
+| 6     | Resilience           | Resilience helpers (reconnect / wake / restore) | React to existing events; rename away from vague “Recovery”.                                  |
 
 Also post-core (separate packages preferred):
 

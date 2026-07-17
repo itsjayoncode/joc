@@ -13,10 +13,7 @@ npm install @jayoncode/browser-lifecycle @jayoncode/browser-lifecycle-solid
 ## Usage
 
 ```tsx
-import {
-  BrowserLifecycleProvider,
-  useBrowserLifecycle,
-} from "@jayoncode/browser-lifecycle-solid";
+import { BrowserLifecycleProvider, useBrowserLifecycle } from "@jayoncode/browser-lifecycle-solid";
 
 function Status() {
   const { snapshot } = useBrowserLifecycle();

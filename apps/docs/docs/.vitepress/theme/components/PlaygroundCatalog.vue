@@ -3,6 +3,7 @@ import { withBase } from "vitepress";
 
 import { livePackages } from "../data/joc-packages";
 import { resolvePlaygroundPath } from "../../playground-path.js";
+import PackageIcon from "./PackageIcon.vue";
 
 function playgroundGuideLink(docsLink: string): string {
   return withBase(`${docsLink.replace(/\/$/, "")}/playground/playground`);
@@ -31,7 +32,9 @@ function docsHref(docsLink: string): string {
 
         <div class="joc-playground-card__body">
           <div class="joc-playground-card__identity">
-            <div class="joc-playground-card__icon" aria-hidden="true">{{ pkg.icon }}</div>
+            <div class="joc-playground-card__icon" aria-hidden="true">
+              <PackageIcon :package-id="pkg.id" size="md" />
+            </div>
             <div class="joc-playground-card__meta">
               <span class="joc-playground-card__status">Live playground</span>
               <span v-if="pkg.versionLabel" class="joc-pkg-version-tag">{{

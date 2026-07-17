@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
 
 import { describe, expect, it, vi } from "vitest";
-import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
 
+import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
 import {
   createBrowserLifecycleHandle,
   resolveBrowserLifecycleBinding,

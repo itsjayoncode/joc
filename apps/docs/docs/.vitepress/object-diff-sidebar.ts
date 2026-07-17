@@ -14,7 +14,7 @@ export function createObjectDiffSidebar(
     {
       text: navPackageLabel("Object Diff", versionLabel),
       items: [
-        { text: "Overview", link: `${base}/` },
+        { text: "Overview", link: `${base}/overview` },
         { text: "Core concepts", link: `${base}/modules/concepts` },
         { text: "Tutorial", link: `${base}/modules/getting-started` },
       ],

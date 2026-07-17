@@ -1,11 +1,13 @@
 import { describe, expect, it } from "vitest";
 
 import * as browserLifecycleModule from "@jayoncode/browser-lifecycle";
-import * as sharedModule from "@jayoncode/shared";
+import * as formIntelligentModule from "@jayoncode/form-intelligent";
+import * as objectDiffModule from "@jayoncode/object-diff";
 
 describe("repository bootstrap", () => {
-  it("resolves the initial typed workspace packages", () => {
+  it("resolves the live typed workspace packages", () => {
     expect(browserLifecycleModule).toBeTypeOf("object");
-    expect(sharedModule).toBeTypeOf("object");
+    expect(formIntelligentModule).toBeTypeOf("object");
+    expect(objectDiffModule).toBeTypeOf("object");
   });
 });

@@ -47,9 +47,9 @@ try {
 
   if (
     !Array.isArray(changesetConfig.ignore) ||
-    !changesetConfig.ignore.includes("@jayoncode/shared")
+    !changesetConfig.ignore.includes("@jayoncode/browser-lifecycle-react")
   ) {
-    failures.push("Changesets ignore list should exclude the internal shared package.");
+    failures.push("Changesets ignore list should exclude private browser-lifecycle adapters.");
   }
 
   const ignoredPackages = new Set(changesetConfig.ignore ?? []);

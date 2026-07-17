@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { featuredPackages, livePackages, livePackageCount } from "../data/joc-packages";
 import HomePackageCatalog from "./HomePackageCatalog.vue";
+import PackageIcon from "./PackageIcon.vue";
 
 const philosophy = [
   { title: "Write less", detail: "Shared patterns instead of one-off utilities per app." },
@@ -83,7 +84,9 @@ const communityLinks = [
           :href="pkg.docsLink"
         >
           <div class="joc-eco-card__head">
-            <span class="joc-eco-card__icon" aria-hidden="true">{{ pkg.icon }}</span>
+            <span class="joc-eco-card__icon" aria-hidden="true">
+              <PackageIcon :package-id="pkg.id" size="sm" />
+            </span>
             <span
               class="joc-eco-card__status"
               :class="

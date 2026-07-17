@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { livePackages, livePackageCount } from "../data/joc-packages";
+import PackageIcon from "./PackageIcon.vue";
 </script>
 
 <template>
@@ -26,7 +27,9 @@ import { livePackages, livePackageCount } from "../data/joc-packages";
         :class="`joc-package-card--${pkg.accent}`"
       >
         <div class="joc-package-card__head">
-          <div class="joc-package-card__icon" aria-hidden="true">{{ pkg.icon }}</div>
+          <div class="joc-package-card__icon" aria-hidden="true">
+            <PackageIcon :package-id="pkg.id" size="sm" />
+          </div>
           <span class="joc-package-card__status joc-package-card__status--live">Live</span>
         </div>
 

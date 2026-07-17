@@ -1,5 +1,5 @@
-import { LifecycleError } from "../../errors/index.js";
 import { waitUntil } from "./wait-until.js";
+import { LifecycleError } from "../../errors/index.js";
 
 import type { WaitApi, WaitOptions } from "./types.js";
 import type { BrowserLifecycle } from "../../core/session/types.js";
@@ -11,9 +11,7 @@ import type { BrowserLifecycle } from "../../core/session/types.js";
  * - Resolves immediately when the snapshot already satisfies the condition.
  * - Allocates nothing on `createBrowserLifecycle()` — only when this factory is called.
  */
-export function createWaitApi(
-  lifecycle: Pick<BrowserLifecycle, "getSnapshot" | "on">,
-): WaitApi {
+export function createWaitApi(lifecycle: Pick<BrowserLifecycle, "getSnapshot" | "on">): WaitApi {
   const pending = new Set<{ cleanup: () => void }>();
   let disposed = false;
 
@@ -30,9 +28,7 @@ export function createWaitApi(
     options: WaitOptions = {},
   ): Promise<void> => {
     if (disposed) {
-      return Promise.reject(
-        new LifecycleError("Cannot wait because the wait API was disposed."),
-      );
+      return Promise.reject(new LifecycleError("Cannot wait because the wait API was disposed."));
     }
     return waitUntil(lifecycle, predicate, events, options, track);
   };

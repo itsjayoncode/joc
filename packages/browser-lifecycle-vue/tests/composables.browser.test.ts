@@ -1,10 +1,10 @@
 // @vitest-environment jsdom
 
-import { defineComponent, h, nextTick } from "vue";
 import { mount } from "@vue/test-utils";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
+import { defineComponent, h, nextTick } from "vue";
 
+import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
 import {
   provideBrowserLifecycle,
   useBrowserLifecycle,
@@ -21,7 +21,7 @@ describe("browser-lifecycle-vue", () => {
 
     const Child = defineComponent({
       setup() {
-        const { lifecycle, snapshot } = useBrowserLifecycle();
+        const { lifecycle } = useBrowserLifecycle();
         lifecycleRef = lifecycle;
         return () => h("span", { "data-testid": "running" }, String(lifecycle.isRunning()));
       },
@@ -36,9 +36,10 @@ describe("browser-lifecycle-vue", () => {
 
     const wrapper = mount(Parent);
     await nextTick();
-    expect(lifecycleRef!.isRunning()).toBe(true);
+    expect(lifecycleRef).toBeDefined();
+    expect(lifecycleRef.isRunning()).toBe(true);
 
-    const dispose = vi.spyOn(lifecycleRef!, "dispose");
+    const dispose = vi.spyOn(lifecycleRef, "dispose");
     wrapper.unmount();
     expect(dispose).toHaveBeenCalled();
   });
@@ -108,8 +109,9 @@ describe("browser-lifecycle-vue", () => {
 
     const wrapper = mount(Comp);
     await nextTick();
-    expect(owned?.isRunning()).toBe(true);
-    const dispose = vi.spyOn(owned!, "dispose");
+    expect(owned).toBeDefined();
+    expect(owned.isRunning()).toBe(true);
+    const dispose = vi.spyOn(owned, "dispose");
     wrapper.unmount();
     expect(dispose).toHaveBeenCalled();
   });

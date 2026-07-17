@@ -27,7 +27,18 @@ const activePackage = computed(() => {
   return matches[0] ?? null;
 });
 
-const showSwitcher = computed(() => activePackage.value !== null);
+const isPackageLanding = computed(() => {
+  const pkg = activePackage.value;
+  if (!pkg) {
+    return false;
+  }
+
+  const path = docsPath.value.replace(/\/$/, "") || "/";
+  const base = pkg.basePath.replace(/\/$/, "");
+  return path === base;
+});
+
+const showSwitcher = computed(() => activePackage.value !== null && !isPackageLanding.value);
 
 const archivedVersionPattern = computed(() => {
   const pkg = activePackage.value;

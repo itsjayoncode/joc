@@ -30,11 +30,11 @@ Do **not** split the six core observers into `withVisibility()`-style installers
 
 > **Core modules observe. Optional modules interpret.**
 
-| Layer | May | Must not |
-| ----- | --- | -------- |
-| Core observers | Attach browser listeners, normalize signals into snapshot + events | Compute business intelligence (timelines, aggregates, reports) |
-| Optional intelligence | Derive from snapshot/events (or an optional Timeline buffer) | Attach new browser API listeners |
-| Session | Coordinate modules, own phase + snapshot store + public event bus | Become a grab bag of feature logic |
+| Layer                 | May                                                                | Must not                                                       |
+| --------------------- | ------------------------------------------------------------------ | -------------------------------------------------------------- |
+| Core observers        | Attach browser listeners, normalize signals into snapshot + events | Compute business intelligence (timelines, aggregates, reports) |
+| Optional intelligence | Derive from snapshot/events (or an optional Timeline buffer)       | Attach new browser API listeners                               |
+| Session               | Coordinate modules, own phase + snapshot store + public event bus  | Become a grab bag of feature logic                             |
 
 Light derivation inside core is allowed when it is **normalized session state**, not product analytics:
 
@@ -130,13 +130,13 @@ observer --> public subscriber registry directly
 
 As optional features arrive, keep:
 
-| Role | Owns |
-| ---- | ---- |
-| Session | Coordination, phase machine, wiring |
-| Modules | Behavior and browser listeners |
-| Snapshot store | Current state |
-| Events | Communicating changes |
-| Optional packages / services | Interpretation and DX helpers |
+| Role                         | Owns                                |
+| ---------------------------- | ----------------------------------- |
+| Session                      | Coordination, phase machine, wiring |
+| Modules                      | Behavior and browser listeners      |
+| Snapshot store               | Current state                       |
+| Events                       | Communicating changes               |
+| Optional packages / services | Interpretation and DX helpers       |
 
 Do not hang every future namespace permanently on the session instance (`browser.timeline`, `browser.metrics`, …) unless the feature is intentionally tiny and opt-in. Prefer plugins, lazy services, or separate packages for heavy intelligence.
 
@@ -164,14 +164,14 @@ It coordinates modules; it must not replace them.
 
 Each observer translates one browser concern into normalized internal signals.
 
-| Observer | Concern |
-| -------- | ------- |
-| Visibility | Page Visibility API |
-| Focus | Window focus / blur |
-| Connectivity | Advisory online / offline |
-| Idle | Activity inputs + idle timeout (opt-in via `idleTimeout`) |
-| Lifecycle | pagehide / pageshow / freeze / resume |
-| Cross Tab | Same-origin leadership (opt-in via `crossTab`) |
+| Observer     | Concern                                                   |
+| ------------ | --------------------------------------------------------- |
+| Visibility   | Page Visibility API                                       |
+| Focus        | Window focus / blur                                       |
+| Connectivity | Advisory online / offline                                 |
+| Idle         | Activity inputs + idle timeout (opt-in via `idleTimeout`) |
+| Lifecycle    | pagehide / pageshow / freeze / resume                     |
+| Cross Tab    | Same-origin leadership (opt-in via `crossTab`)            |
 
 Idle and cross-tab must remain **runtime-gated**: no listeners/timers/channels when disabled.
 
@@ -233,13 +233,13 @@ Cross-tab awareness is in scope. Multi-user / collaborative presence is not. Fut
 
 ## Risks and Mitigations
 
-| Risk | Mitigation |
-| ---- | ---------- |
-| Session becomes a god object | Session coordinates; modules/stores/events own behavior |
-| Feature creep into analytics/BI | Observe vs interpret rule + non-goals |
-| Optional features tax everyone | Lazy services, opt-in config, separate packages |
-| Performance regressions | Gate listeners/timers; measure idle/cross-tab/plugin paths |
-| Premature platform API | Keep product DX until core itself is too large |
+| Risk                            | Mitigation                                                 |
+| ------------------------------- | ---------------------------------------------------------- |
+| Session becomes a god object    | Session coordinates; modules/stores/events own behavior    |
+| Feature creep into analytics/BI | Observe vs interpret rule + non-goals                      |
+| Optional features tax everyone  | Lazy services, opt-in config, separate packages            |
+| Performance regressions         | Gate listeners/timers; measure idle/cross-tab/plugin paths |
+| Premature platform API          | Keep product DX until core itself is too large             |
 
 ## Review
 

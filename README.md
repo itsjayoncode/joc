@@ -7,43 +7,82 @@
 
 **JOC** (JayOnCode) is an open source monorepo of focused, independently installable **TypeScript browser libraries**. Each `@jayoncode/*` package solves one problem well, ships on its own version line, and documents under its own section on the [official docs site](https://itsjayoncode.github.io/joc/).
 
-The first published package is [`@jayoncode/browser-lifecycle`](https://www.npmjs.com/package/@jayoncode/browser-lifecycle) — a framework-agnostic, SSR-safe session lifecycle manager for page visibility, focus, connectivity, idle detection, cross-tab coordination, and plugin diagnostics.
+## Live packages
 
-```bash
-npm install @jayoncode/browser-lifecycle
-```
+| Package                                                                                      | Solves                                           | Install                              |
+| -------------------------------------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------ |
+| [`@jayoncode/browser-lifecycle`](https://www.npmjs.com/package/@jayoncode/browser-lifecycle) | Tab visibility, idle, reconnect, session signals | `npm i @jayoncode/browser-lifecycle` |
+| [`@jayoncode/form-intelligent`](https://www.npmjs.com/package/@jayoncode/form-intelligent)   | Headless forms, `when()` rules, autosave         | `npm i @jayoncode/form-intelligent`  |
+| [`@jayoncode/object-diff`](https://www.npmjs.com/package/@jayoncode/object-diff)             | Deep diff, dirty checks, patches                 | `npm i @jayoncode/object-diff`       |
+
+### Stop wasting work in a background tab
 
 ```ts
 import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
 
-const lifecycle = createBrowserLifecycle({ autoStart: true });
+const lifecycle = createBrowserLifecycle({ autoStart: true, idleTimeout: 60_000 });
 
-lifecycle.on("visibility:change", (event) => {
-  console.log(event.state);
+lifecycle.on("page:hidden", () => {
+  pausePolling();
+  pauseMedia();
 });
+
+lifecycle.on("page:visible", () => resumePolling());
+lifecycle.on("connection:reconnect", () => flushOfflineQueue());
+```
+
+### Conditional form fields without `useEffect`
+
+```ts
+import { createForm, when } from "@jayoncode/form-intelligent";
+
+createForm({
+  target: "#checkout",
+  schema: { plan: { required: true } },
+  rules: [when("plan").equals("enterprise").show("seatCount").require("seatCount")],
+  async onSubmit(values) {
+    await api.checkout(values);
+  },
+});
+```
+
+### Know exactly what changed — then patch it
+
+```ts
+import { diff, hasChanges, patch, applyPatch, serialize } from "@jayoncode/object-diff";
+
+if (hasChanges(saved, draft)) {
+  const changes = diff(saved, draft);
+  await audit.log(serialize(changes, "markdown"));
+  const synced = applyPatch(saved, patch(changes));
+}
 ```
 
 ## Links
 
-| Resource               | URL                                                              |
-| ---------------------- | ---------------------------------------------------------------- |
-| Documentation          | https://itsjayoncode.github.io/joc/                              |
-| Browser Lifecycle docs | https://itsjayoncode.github.io/joc/packages/browser-lifecycle/   |
-| Interactive playground | https://itsjayoncode.github.io/joc/playground/browser-lifecycle/ |
-| npm scope              | https://www.npmjs.com/~jayoncode                                 |
-| Repository             | https://github.com/itsjayoncode/joc                              |
+| Resource          | URL                                                            |
+| ----------------- | -------------------------------------------------------------- |
+| Documentation     | https://itsjayoncode.github.io/joc/                            |
+| Browser Lifecycle | https://itsjayoncode.github.io/joc/packages/browser-lifecycle/ |
+| Form Intelligent  | https://itsjayoncode.github.io/joc/packages/form-intelligent/  |
+| Object Diff       | https://itsjayoncode.github.io/joc/packages/object-diff/       |
+| Playground        | https://itsjayoncode.github.io/joc/playground/                 |
+| npm scope         | https://www.npmjs.com/~jayoncode                               |
+| Repository        | https://github.com/itsjayoncode/joc                            |
 
 ## What ships today
 
 | Area                           | Status                                                                   |
 | ------------------------------ | ------------------------------------------------------------------------ |
-| `@jayoncode/browser-lifecycle` | Published on npm (v0.1.2)                                                |
+| `@jayoncode/browser-lifecycle` | Published on npm                                                         |
+| `@jayoncode/form-intelligent`  | Published on npm                                                         |
+| `@jayoncode/object-diff`       | Published on npm                                                         |
 | Documentation site             | VitePress on GitHub Pages — guides, API reference, patterns, FAQs        |
-| Browser Session Playground     | Interactive module explorers and deployment guides                       |
+| Interactive playgrounds        | Per-package explorers                                                    |
 | Monorepo tooling               | pnpm workspaces, TypeScript project references, Vitest, ESLint, Prettier |
 | CI & release engineering       | Quality gates, Changesets, independent package versioning                |
 
-Additional packages (`request`, `scroll`, `theme`, and others) are scaffolded in the monorepo and documented as planned work. Only `@jayoncode/browser-lifecycle` is published to npm today.
+Additional packages (`request`, `scroll`, `theme`, and others) are scaffolded in the monorepo and documented as planned work.
 
 ## Documentation versioning
 
@@ -54,7 +93,7 @@ Package docs support **latest** and **archived** URLs so users can reference old
 | `/packages/browser-lifecycle/`        | Latest documentation (current npm version) |
 | `/packages/browser-lifecycle/v0.1.2/` | Frozen snapshot for that release           |
 
-Archives are stored under `apps/docs/archives/` and staged into the site at build time. A version switcher appears on Browser Lifecycle pages.
+Archives are stored under `apps/docs/archives/` and staged into the site at build time. A version switcher appears on package documentation pages (not package landing pages).
 
 **Day to day** — edit docs as usual; CI runs `pnpm docs:prepare` before build and deploy.
 
@@ -82,7 +121,9 @@ joc/
 | `apps/docs/`                       | VitePress documentation platform                      |
 | `apps/browser-session-playground/` | Long-lived Browser Lifecycle engineering shell        |
 | `packages/browser-lifecycle/`      | Published session lifecycle library                   |
-| `templates/package-template/`      | Standard structure for future packages                |
+| `packages/form-intelligent/`       | Published headless form workflow engine               |
+| `packages/object-diff/`            | Published deep comparison and patch library           |
+| `templates/package-template/`      | Standard structure for future libraries               |
 | `engineering/`                     | Monorepo architecture, versioning, and release policy |
 
 ## Development
@@ -130,7 +171,7 @@ For package standards and the contributor workflow, see the [Contributor Guides]
 
 ## Roadmap
 
-Phases 1–3 established the monorepo foundation, shipped Browser Lifecycle to npm, and delivered the documentation platform with interactive playgrounds. Future work expands the `@jayoncode/*` catalog using the shared package blueprint.
+Phases 1–3 established the monorepo foundation, shipped packages to npm, and delivered the documentation platform with interactive playgrounds. Future work expands the `@jayoncode/*` catalog using the shared package blueprint.
 
 See [ROADMAP.md](./ROADMAP.md) for milestone detail.
 

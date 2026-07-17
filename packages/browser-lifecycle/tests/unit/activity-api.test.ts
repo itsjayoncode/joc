@@ -8,9 +8,7 @@ import {
 
 import type { BrowserLifecycleSnapshot } from "../../src/core/session/types.js";
 
-function baseSnapshot(
-  overrides: Partial<BrowserLifecycleSnapshot> = {},
-): BrowserLifecycleSnapshot {
+function baseSnapshot(overrides: Partial<BrowserLifecycleSnapshot> = {}): BrowserLifecycleSnapshot {
   return {
     activity: "unknown",
     attention: "unknown",

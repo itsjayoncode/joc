@@ -1,10 +1,7 @@
 import { getContext, onDestroy, setContext } from "svelte";
 import { writable, type Readable } from "svelte/store";
 
-import type {
-  BrowserLifecycle,
-  BrowserLifecycleSnapshot,
-} from "@jayoncode/browser-lifecycle";
+import type { BrowserLifecycle, BrowserLifecycleSnapshot } from "@jayoncode/browser-lifecycle";
 
 import {
   resolveBrowserLifecycleBinding,
