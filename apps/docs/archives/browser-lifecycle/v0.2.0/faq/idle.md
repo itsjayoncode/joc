@@ -14,4 +14,4 @@ const lifecycle = createBrowserLifecycle({
 
 ## Playground
 
-[Idle Playground](http://127.0.0.1:4273/idle)
+[Idle Playground](/playground/browser-lifecycle/idle)

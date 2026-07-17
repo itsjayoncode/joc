@@ -1,7 +1,7 @@
 ---
 title: Playground
 description: Object Diff playground documentation for Playground.
-playground: "http://127.0.0.1:4275"
+playground: "/playground/object-diff"
 ---
 
 # Object Diff Playground

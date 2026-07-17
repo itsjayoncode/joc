@@ -13,4 +13,4 @@ flowchart LR
 
 ## Playground
 
-[Connectivity Playground](http://127.0.0.1:4273/connectivity)
+[Connectivity Playground](/playground/browser-lifecycle/connectivity)

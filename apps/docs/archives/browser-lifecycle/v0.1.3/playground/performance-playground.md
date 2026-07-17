@@ -1,7 +1,7 @@
 ---
 title: Performance Playground
 description: Interactive playground documentation for Performance Playground.
-playground: "http://127.0.0.1:4273/performance"
+playground: "/playground/browser-lifecycle/performance"
 ---
 
 # Performance Playground
@@ -12,4 +12,4 @@ Uses `lifecycle.getRuntimeDiagnostics()` and live `subscribe()` dispatch timing 
 
 ## Interactive Playground
 
-Explore this topic live in the [Performance Playground](http://127.0.0.1:4273/performance).
+Explore this topic live in the [Performance Playground](/playground/browser-lifecycle/performance).

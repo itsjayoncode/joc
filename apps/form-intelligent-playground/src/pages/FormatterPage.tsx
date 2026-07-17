@@ -8,11 +8,11 @@ import { PageContainer } from "../components/primitives/PageContainer.js";
 import { useFormSnapshot } from "../hooks/useFormSnapshot.js";
 import {
   createForm,
-  creditCard,
-  currency,
-  philippinePhone,
-  phone,
-  slug,
+  formatCreditCard,
+  formatCurrency,
+  formatPhilippinePhone,
+  formatPhone,
+  formatSlug,
 } from "../lib/form-intelligent.js";
 import { normalizeUrl } from "../lib/playground-formatters.js";
 import { toInputValue } from "../utils/field-value.js";
@@ -21,35 +21,35 @@ const FORMAT_DEMOS = [
   {
     path: "phMobile",
     label: "Philippine phone",
-    format: philippinePhone,
+    format: formatPhilippinePhone,
     hint: 'Preset format: "philippine-phone" — 0917 123 4567',
     placeholder: "09171234567",
   },
   {
     path: "phone",
     label: "Phone",
-    format: phone,
+    format: formatPhone,
     hint: "Digits are grouped as (555) 123-4567 while typing.",
     placeholder: "5551234567",
   },
   {
     path: "amount",
     label: "Currency",
-    format: currency,
+    format: formatCurrency,
     hint: "Numeric input is normalized to two decimal places in stored state.",
     placeholder: "42.5",
   },
   {
     path: "slug",
     label: "Slug",
-    format: slug,
+    format: formatSlug,
     hint: "Title text becomes a URL-safe slug.",
     placeholder: "Hello World!",
   },
   {
     path: "card",
     label: "Credit card",
-    format: creditCard,
+    format: formatCreditCard,
     hint: "Package formatter groups card digits (4111 1111 1111 1111).",
     placeholder: "4242424242424242",
   },
@@ -100,7 +100,7 @@ export function FormatterPage() {
       title="Formatter Playground"
     >
       <ExplainPanel
-        body="Attach format: phone (or a custom formatter) on form.field(path, { format }). The formatter runs inside setValue before state updates. Pair with parse when you need a different wire format."
+        body="Attach format: formatPhone (or a custom formatter) on form.field(path, { format }). The formatter runs inside setValue before state updates. Pair with parse when you need a different wire format."
         title="Format vs parse"
       />
 
@@ -169,7 +169,7 @@ export function FormatterPage() {
 
       <Card description="Built-in and custom formatters side by side." title="Registration pattern">
         <CodeBlock
-          code={`import { phone, currency, slug } from "@jayoncode/form-intelligent";\n\nform.field("phone", { format: phone }).setValue(rawInput);\nform.field("amount", { format: currency }).setValue(rawInput);`}
+          code={`import { formatPhone, formatCurrency, formatSlug } from "@jayoncode/form-intelligent/format";\n\nform.field("phone", { format: formatPhone }).setValue(rawInput);\nform.field("amount", { format: formatCurrency }).setValue(rawInput);`}
           language="typescript"
         />
       </Card>

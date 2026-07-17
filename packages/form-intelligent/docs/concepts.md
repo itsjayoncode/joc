@@ -4,6 +4,20 @@ Terminology and architecture for `@jayoncode/form-intelligent`. Prefer this page
 
 **Previous:** [Tutorial](/packages/form-intelligent/modules/getting-started) · **Next:** [Capabilities](/packages/form-intelligent/modules/capabilities)
 
+## Glossary
+
+| Term              | Meaning                                                                      |
+| ----------------- | ---------------------------------------------------------------------------- |
+| **Form instance** | Object returned by `createForm()` — owns values, errors, submit, workflow    |
+| **`bind()`**      | Headless field contract (`value`, `onChange`, `onBlur`, …) for any UI        |
+| **Validator**     | Sync/async check returning `true` or an error string                         |
+| **`when()` rule** | Declarative show/hide/require/populate/disableSubmit from field values       |
+| **Format**        | Display ↔ store masking (`format` / `parse`) — import helpers from `/format` |
+| **Transform**     | Inbound canonicalize before validation (trim → normalize → sanitize → …)     |
+| **Autosave**      | Debounced persist of current values (often to an API)                        |
+| **Draft**         | Local (or custom) restore of in-progress values across refresh               |
+| **Wizard**        | Multi-step flow with per-step fields and validation                          |
+
 ## Problem → approach
 
 | Without a form orchestration layer                                             | With Form Intelligent                               |

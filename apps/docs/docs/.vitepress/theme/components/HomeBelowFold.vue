@@ -1,14 +1,63 @@
 <script setup lang="ts">
+import { computed, ref } from "vue";
 import { docsHref } from "../docs-href.js";
-import { featuredPackages, livePackages, livePackageCount } from "../data/joc-packages";
+import { featuredPackages, livePackages, jocPackages } from "../data/joc-packages";
 import HomePackageCatalog from "./HomePackageCatalog.vue";
 import PackageIcon from "./PackageIcon.vue";
 
-const philosophy = [
-  { title: "Write less", detail: "Shared patterns instead of one-off utilities per app." },
-  { title: "Ship less", detail: "Install only the @jayoncode/* packages you need." },
-  { title: "Learn once", detail: "Same docs journey and API philosophy across the ecosystem." },
-  { title: "Reuse everywhere", detail: "Headless cores that adapt to your UI stack." },
+const problems = [
+  {
+    id: "browser",
+    label: "Browser events & session",
+    intent: "Detect when a tab becomes hidden, idle, offline, or resumes",
+    packageId: "browser-lifecycle",
+  },
+  {
+    id: "forms",
+    label: "Complex forms",
+    intent: "Validation, conditional fields, drafts, wizards, and submit flows",
+    packageId: "form-intelligent",
+  },
+  {
+    id: "diff",
+    label: "Object comparison",
+    intent: "Compare two objects and generate patches or merge drafts",
+    packageId: "object-diff",
+  },
+  {
+    id: "keyboard",
+    label: "Keyboard shortcuts",
+    intent: "Manage scoped shortcuts without fighting the DOM",
+    packageId: "keyboard",
+  },
+  {
+    id: "theme",
+    label: "Theming",
+    intent: "Build theme-aware apps with tokens and dark mode",
+    packageId: "theme",
+  },
+] as const;
+
+const selectedProblemId = ref<(typeof problems)[number]["id"]>("browser");
+
+const selectedProblem = computed(
+  () => problems.find((p) => p.id === selectedProblemId.value) ?? problems[0],
+);
+
+const selectedPackage = computed(
+  () => jocPackages.find((pkg) => pkg.id === selectedProblem.value.packageId) ?? livePackages[0],
+);
+
+const learningPath = [
+  { step: "1", title: "Read introduction", href: "/getting-started/introduction" },
+  { step: "2", title: "Browse packages", href: "/packages/" },
+  {
+    step: "3",
+    title: "Quick start a package",
+    href: "/packages/browser-lifecycle/modules/getting-started",
+  },
+  { step: "4", title: "Try the playground", href: "/playground/" },
+  { step: "5", title: "API reference", href: "/packages/browser-lifecycle/api/" },
 ] as const;
 
 const docLinks = [
@@ -43,116 +92,145 @@ const communityLinks = [
 
 <template>
   <div class="joc-home-custom">
-    <!-- Why JOC -->
-    <section class="joc-home-section joc-surface-band" aria-labelledby="why-joc">
-      <span class="joc-kicker">Why JOC</span>
-      <h2 id="why-joc" class="joc-section-title">Build once. Use everywhere.</h2>
+    <!-- Choose by problem -->
+    <section class="joc-home-section joc-surface-band" aria-labelledby="choose-problem">
+      <span class="joc-kicker">Choose by problem</span>
+      <h2 id="choose-problem" class="joc-section-title">What are you trying to build?</h2>
       <p class="joc-muted joc-section-lead">
-        JOC is a collection of modern, modular, headless TypeScript libraries that solve common
-        frontend engineering problems — without locking you into a framework.
-      </p>
-    </section>
-
-    <!-- Ecosystem (primary) -->
-    <section
-      id="ecosystem"
-      class="joc-home-section joc-surface-band"
-      aria-labelledby="ecosystem-title"
-    >
-      <span class="joc-kicker">Ecosystem</span>
-      <h2 id="ecosystem-title" class="joc-section-title">JOC packages</h2>
-      <p class="joc-muted joc-section-lead">
-        Independently installable libraries under <code>@jayoncode/*</code>. Start with a live
-        package, or explore what is coming next.
+        Arrive with a problem — not a package name. Pick an intent and we’ll point you at the right
+        library.
       </p>
 
-      <div class="joc-package-stats" aria-label="Package ecosystem status">
-        <div class="joc-package-stat">
-          <span class="joc-package-stat__value">{{ livePackageCount }}</span>
-          <span class="joc-package-stat__label">Live on npm</span>
+      <div class="joc-choose" role="list">
+        <button
+          v-for="problem in problems"
+          :key="problem.id"
+          type="button"
+          class="joc-choose__option"
+          :class="{ 'joc-choose__option--active': selectedProblemId === problem.id }"
+          role="listitem"
+          :aria-pressed="selectedProblemId === problem.id"
+          @click="selectedProblemId = problem.id"
+        >
+          {{ problem.label }}
+        </button>
+      </div>
+
+      <div class="joc-choose-result" :class="`joc-choose-result--${selectedPackage.accent}`">
+        <div class="joc-choose-result__meta">
+          <span class="joc-choose-result__label">Recommended</span>
+          <span
+            class="joc-choose-result__status"
+            :class="
+              selectedPackage.status === 'live'
+                ? 'joc-choose-result__status--live'
+                : 'joc-choose-result__status--soon'
+            "
+          >
+            {{ selectedPackage.status === "live" ? "Live" : "Coming soon" }}
+          </span>
+        </div>
+        <h3 class="joc-choose-result__name">{{ selectedPackage.name }}</h3>
+        <p class="joc-choose-result__npm">{{ selectedPackage.npmName }}</p>
+        <p class="joc-muted">{{ selectedProblem.intent }}</p>
+        <ul class="joc-choose-result__caps" aria-label="Capabilities">
+          <li v-for="cap in selectedPackage.capabilities" :key="cap">{{ cap }}</li>
+        </ul>
+        <div class="joc-choose-result__actions">
+          <a class="joc-cta-primary" :href="docsHref(selectedPackage.docsLink)">View docs</a>
+          <a
+            v-if="selectedPackage.status === 'live'"
+            class="joc-cta-secondary"
+            :href="docsHref(`/playground/${selectedPackage.id}/`)"
+          >
+            Open playground
+          </a>
+          <a v-else class="joc-cta-secondary" :href="docsHref('/roadmap/')">See roadmap</a>
         </div>
       </div>
+    </section>
 
-      <div class="joc-eco-grid">
-        <a
+    <!-- Featured packages -->
+    <section id="ecosystem" class="joc-home-section" aria-labelledby="featured-title">
+      <span class="joc-kicker">Featured packages</span>
+      <h2 id="featured-title" class="joc-section-title">Focused tools. One ecosystem.</h2>
+      <p class="joc-muted joc-section-lead">
+        Live packages under <code>@jayoncode/*</code>. Each solves one problem well — and composes
+        when you need more.
+      </p>
+
+      <div class="joc-feature-pkgs">
+        <article
           v-for="pkg in featuredPackages"
           :key="pkg.id"
-          class="joc-eco-card"
-          :class="[
-            `joc-eco-card--${pkg.accent}`,
-            pkg.status === 'live' ? 'joc-eco-card--live' : 'joc-eco-card--soon',
-          ]"
-          :href="docsHref(pkg.docsLink)"
+          class="joc-feature-pkg"
+          :class="`joc-feature-pkg--${pkg.accent}`"
         >
-          <div class="joc-eco-card__head">
-            <span class="joc-eco-card__icon" aria-hidden="true">
+          <div class="joc-feature-pkg__head">
+            <span class="joc-feature-pkg__icon" aria-hidden="true">
               <PackageIcon :package-id="pkg.id" size="sm" />
             </span>
-            <span
-              class="joc-eco-card__status"
-              :class="
-                pkg.status === 'live' ? 'joc-eco-card__status--live' : 'joc-eco-card__status--soon'
-              "
-            >
-              {{ pkg.status === "live" ? "Live" : "Coming soon" }}
-            </span>
+            <span class="joc-feature-pkg__status">Live</span>
           </div>
-          <h3 class="joc-eco-card__name">{{ pkg.name }}</h3>
-          <p class="joc-eco-card__npm">{{ pkg.npmName }}</p>
-          <p class="joc-muted joc-eco-card__tagline">{{ pkg.tagline }}</p>
-          <span class="joc-eco-card__cta">
-            {{ pkg.status === "live" ? "Documentation" : "Preview" }}
-          </span>
-        </a>
-      </div>
-    </section>
-
-    <!-- Why choose JOC — problems -->
-    <section class="joc-home-section" aria-labelledby="why-choose">
-      <span class="joc-kicker">Why choose JOC</span>
-      <h2 id="why-choose" class="joc-section-title">Problems first. Packages second.</h2>
-      <div class="joc-table-wrap">
-        <table class="joc-home-table">
-          <thead>
-            <tr>
-              <th scope="col">Problem</th>
-              <th scope="col">JOC solution</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="pkg in featuredPackages" :key="`problem-${pkg.id}`">
-              <td>{{ pkg.problem }}</td>
-              <td>
-                <a :href="docsHref(pkg.docsLink)">{{ pkg.name }}</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- Design philosophy -->
-    <section class="joc-home-section joc-surface-band" aria-labelledby="philosophy">
-      <span class="joc-kicker">Design philosophy</span>
-      <h2 id="philosophy" class="joc-section-title">Learn once. Reuse everywhere.</h2>
-      <p class="joc-muted joc-section-lead">
-        Every JOC package follows the same architecture, API philosophy, documentation structure,
-        and development standards — so the second package feels familiar.
-      </p>
-      <div class="joc-philosophy-grid">
-        <article v-for="item in philosophy" :key="item.title" class="joc-philosophy-card">
-          <h3 class="joc-philosophy-card__title">{{ item.title }}</h3>
-          <p class="joc-muted">{{ item.detail }}</p>
+          <h3 class="joc-feature-pkg__name">
+            <a :href="docsHref(pkg.docsLink)">{{ pkg.name }}</a>
+          </h3>
+          <p class="joc-feature-pkg__npm">{{ pkg.npmName }}</p>
+          <p class="joc-muted joc-feature-pkg__tagline">{{ pkg.tagline }}</p>
+          <ul class="joc-feature-pkg__caps">
+            <li v-for="cap in pkg.capabilities" :key="cap">{{ cap }}</li>
+          </ul>
+          <a class="joc-feature-pkg__cta" :href="docsHref(pkg.docsLink)">View docs →</a>
         </article>
       </div>
     </section>
 
-    <!-- Architecture -->
-    <section class="joc-home-section" aria-labelledby="architecture">
-      <span class="joc-kicker">Architecture</span>
-      <h2 id="architecture" class="joc-section-title">Ecosystem layers</h2>
+    <!-- Real code -->
+    <section class="joc-home-section joc-surface-band" aria-labelledby="code-example">
+      <span class="joc-kicker">Quick start</span>
+      <h2 id="code-example" class="joc-section-title">Real code. One screen.</h2>
       <p class="joc-muted joc-section-lead">
-        Packages stay independent at the TypeScript core, then plug into any application layer.
+        Pause work when the tab hides, queue when offline, sync when the session resumes.
+      </p>
+
+      <div class="joc-code-panel joc-code-panel--wide" aria-label="Browser Lifecycle example">
+        <div class="joc-code-header">
+          <span>@jayoncode/browser-lifecycle</span>
+          <span class="joc-code-badge">Live</span>
+        </div>
+        <pre v-pre><code>import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
+
+const lifecycle = createBrowserLifecycle({ autoStart: true });
+
+lifecycle.on("page:hidden", () => {
+  analytics.pause();
+});
+
+lifecycle.on("connection:offline", () => {
+  queue.enableOfflineMode();
+});
+
+lifecycle.on("page:visible", () => {
+  syncPendingChanges();
+});
+
+// Teardown on unmount
+await lifecycle.dispose();</code></pre>
+        <p class="joc-home-links">
+          <a :href="docsHref('/packages/browser-lifecycle/')">Package docs</a>
+          <a :href="docsHref('/playground/browser-lifecycle/visibility')">Visibility playground</a>
+          <a :href="docsHref('/packages/form-intelligent/')">Form Intelligent example</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- Ecosystem map -->
+    <section class="joc-home-section" aria-labelledby="architecture">
+      <span class="joc-kicker">Ecosystem</span>
+      <h2 id="architecture" class="joc-section-title">How the pieces fit</h2>
+      <p class="joc-muted joc-section-lead">
+        Independent TypeScript cores, optional framework adapters, and shared docs — not a
+        monolithic SDK.
       </p>
       <div
         class="joc-arch"
@@ -160,7 +238,7 @@ const communityLinks = [
         aria-label="Applications over JOC packages over TypeScript core"
       >
         <div class="joc-arch__layer joc-arch__layer--apps">
-          <span class="joc-arch__label">Applications</span>
+          <span class="joc-arch__label">Your application</span>
           <div class="joc-arch__chips">
             <span>React</span>
             <span>Vue</span>
@@ -174,112 +252,38 @@ const communityLinks = [
           <span class="joc-arch__label">JOC packages</span>
           <div class="joc-arch__chips">
             <span v-for="pkg in featuredPackages" :key="`arch-${pkg.id}`">{{ pkg.name }}</span>
+            <span>Adapters</span>
           </div>
         </div>
         <div class="joc-arch__arrow" aria-hidden="true" />
         <div class="joc-arch__layer joc-arch__layer--core">
-          <span class="joc-arch__label">TypeScript core</span>
-          <p class="joc-muted joc-arch__note">Headless, typed, tree-shakeable modules</p>
+          <span class="joc-arch__label">Headless TypeScript cores</span>
+          <p class="joc-muted joc-arch__note">Typed · tree-shakeable · SSR-aware</p>
         </div>
       </div>
     </section>
 
-    <!-- Package comparison -->
-    <section class="joc-home-section joc-surface-band" aria-labelledby="comparison">
-      <span class="joc-kicker">Package comparison</span>
-      <h2 id="comparison" class="joc-section-title">Status at a glance</h2>
-      <div class="joc-table-wrap">
-        <table class="joc-home-table">
-          <thead>
-            <tr>
-              <th scope="col">Package</th>
-              <th scope="col">Purpose</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="pkg in featuredPackages" :key="`cmp-${pkg.id}`">
-              <td>
-                <a :href="docsHref(pkg.docsLink)">{{ pkg.name }}</a>
-              </td>
-              <td>{{ pkg.purpose }}</td>
-              <td>{{ pkg.statusLabel }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <!-- Learning path -->
+    <section class="joc-home-section joc-surface-band" aria-labelledby="learning-path">
+      <span class="joc-kicker">New here?</span>
+      <h2 id="learning-path" class="joc-section-title">Learning path</h2>
+      <ol class="joc-learn-path">
+        <li v-for="item in learningPath" :key="item.step" class="joc-learn-path__item">
+          <span class="joc-learn-path__step" aria-hidden="true">{{ item.step }}</span>
+          <a class="joc-learn-path__link" :href="docsHref(item.href)">{{ item.title }}</a>
+        </li>
+      </ol>
     </section>
 
-    <!-- Quick start -->
-    <section class="joc-home-section" aria-labelledby="quick-start">
-      <span class="joc-kicker">Quick start</span>
-      <h2 id="quick-start" class="joc-section-title">Install a package. Start building.</h2>
-      <p class="joc-muted joc-section-lead">
-        Pick any live package — the install path is the same across the ecosystem.
-      </p>
-      <div class="joc-quick-grid">
-        <div class="joc-code-panel" aria-label="Browser Lifecycle install">
-          <div class="joc-code-header">
-            <span>browser-lifecycle</span>
-            <span class="joc-code-badge">Live</span>
-          </div>
-          <pre v-pre><code>pnpm add @jayoncode/browser-lifecycle
-
-import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
-
-const lifecycle = createBrowserLifecycle({ autoStart: true });</code></pre>
-          <p class="joc-home-links">
-            <a :href="docsHref('/packages/browser-lifecycle/')">Package docs</a>
-          </p>
-        </div>
-        <div class="joc-code-panel" aria-label="Form Intelligent install">
-          <div class="joc-code-header">
-            <span>form-intelligent</span>
-            <span class="joc-code-badge">Live</span>
-          </div>
-          <pre v-pre><code>pnpm add @jayoncode/form-intelligent
-
-import { createForm } from "@jayoncode/form-intelligent";
-
-const form = createForm({
-  initialValues: { email: "" },
-});</code></pre>
-          <p class="joc-home-links">
-            <a :href="docsHref('/packages/form-intelligent/')">Package docs</a>
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Package showcase -->
-    <section class="joc-home-section joc-surface-band" aria-labelledby="showcase">
-      <span class="joc-kicker">Package showcase</span>
-      <h2 id="showcase" class="joc-section-title">What each package covers</h2>
-      <div class="joc-showcase-grid">
-        <article
-          v-for="pkg in featuredPackages"
-          :key="`show-${pkg.id}`"
-          class="joc-show-card"
-          :class="`joc-show-card--${pkg.accent}`"
-        >
-          <h3 class="joc-show-card__name">{{ pkg.name }}</h3>
-          <ul class="joc-show-card__caps">
-            <li v-for="cap in pkg.capabilities" :key="cap">{{ cap }}</li>
-          </ul>
-          <a class="joc-show-card__link" :href="docsHref(pkg.docsLink)">Open docs</a>
-        </article>
-      </div>
-    </section>
-
-    <!-- Playground -->
+    <!-- Playground CTA -->
     <section class="joc-home-section joc-cta-section">
       <div class="joc-cta-band">
         <div>
           <span class="joc-kicker">Interactive playground</span>
-          <h2 class="joc-section-title">Try packages in the browser</h2>
+          <h2 class="joc-section-title">Try packages before you install</h2>
           <p class="joc-muted">
-            Explore live demos for Browser Lifecycle, Form Intelligent, Object Diff, and more —
-            without setting up a local project.
+            Explore Browser Lifecycle, Form Intelligent, and Object Diff live — hide the tab, edit a
+            form, or diff two objects in the browser.
           </p>
         </div>
         <div class="joc-cta-actions">
@@ -289,7 +293,7 @@ const form = createForm({
       </div>
     </section>
 
-    <!-- Documentation + community -->
+    <!-- Docs + community -->
     <section class="joc-home-section joc-surface-band" aria-labelledby="docs-community">
       <div class="joc-link-columns">
         <div>
@@ -317,8 +321,8 @@ const form = createForm({
           </ul>
         </div>
         <div>
-          <span class="joc-kicker">Latest releases</span>
-          <h2 class="joc-section-title">On npm now</h2>
+          <span class="joc-kicker">On npm</span>
+          <h2 class="joc-section-title">Live packages</h2>
           <ul class="joc-release-list">
             <li v-for="pkg in livePackages" :key="`rel-${pkg.id}`">
               <a :href="docsHref(pkg.docsLink)">
@@ -331,10 +335,8 @@ const form = createForm({
       </div>
     </section>
 
-    <!-- Full catalog -->
     <HomePackageCatalog />
 
-    <!-- Footer band -->
     <section class="joc-home-section joc-home-footer-band" aria-label="License and attribution">
       <p class="joc-muted">
         MIT License · Built by

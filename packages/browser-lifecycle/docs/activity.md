@@ -4,6 +4,14 @@ Derive active / idle status from the core session (requires `idleTimeout` on the
 
 **Previous:** [Intelligence overview](./intelligence.md) · **Next:** [Presence](./presence.md)
 
+## Import path
+
+```ts
+import { createBrowserLifecycle, createActivityApi } from "@jayoncode/browser-lifecycle";
+```
+
+Main package only. Call `dispose()` on the underlying session when done.
+
 ## Usage
 
 ```ts

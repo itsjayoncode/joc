@@ -83,6 +83,20 @@ export class SubmissionOrchestrator<TValues extends Record<string, unknown>> {
     return this.controller.isActive;
   }
 
+  public get signal(): AbortSignal {
+    return this.controller.signal;
+  }
+
+  /** Begin (or reset) the abort scope for a submit attempt — shared with middleware. */
+  public begin(): AbortSignal {
+    return this.controller.begin();
+  }
+
+  public end(): void {
+    this.controller.end();
+    this.loading.end();
+  }
+
   public cancel(): void {
     this.controller.cancel();
     this.loading.end();
@@ -102,7 +116,7 @@ export class SubmissionOrchestrator<TValues extends Record<string, unknown>> {
 
     const retryPolicy = normalizeRetryPolicy(input.options?.retry);
     const maxAttempts = retryPolicy.maxAttempts ?? 1;
-    const signal = this.controller.begin();
+    const signal = this.controller.isActive ? this.controller.signal : this.controller.begin();
     this.loading.begin();
 
     let attempt = 0;

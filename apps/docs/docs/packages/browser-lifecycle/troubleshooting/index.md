@@ -8,7 +8,7 @@ Common issues and fixes when integrating Browser Lifecycle.
 
 **Cause:** Passing resolved configuration (for example output from a running session) into `mergeBrowserLifecycleConfig()`.
 
-**Fix:** Use input-shaped configuration objects. Validate in the [Configuration Playground](http://127.0.0.1:4273/configuration).
+**Fix:** Use input-shaped configuration objects. Validate in the [Configuration Playground](/playground/browser-lifecycle/configuration).
 
 ## Events never fire
 
@@ -19,7 +19,7 @@ Common issues and fixes when integrating Browser Lifecycle.
 1. Confirm the session is `running`
 2. Confirm the module is enabled in configuration
 3. Confirm the browser capability exists
-4. Inspect delivery in the [Event Explorer](http://127.0.0.1:4273/events)
+4. Inspect delivery in the [Event Explorer](/playground/browser-lifecycle/events)
 
 ## Memory leaks after route changes
 
@@ -33,7 +33,7 @@ Common issues and fixes when integrating Browser Lifecycle.
 
 **Checks:**
 
-1. Open the [Cross Tab Playground](http://127.0.0.1:4273/cross-tab)
+1. Open the [Cross Tab Playground](/playground/browser-lifecycle/cross-tab)
 2. Ensure only one session per tab
 3. Avoid custom leader logic competing with the module
 
@@ -47,4 +47,4 @@ Common issues and fixes when integrating Browser Lifecycle.
 
 - [FAQ](/packages/browser-lifecycle/faq/)
 - [Debugging Best Practices](/packages/browser-lifecycle/best-practices/debugging)
-- [GitHub Issues](https://github.com/JayOnCode/joc/issues)
+- [GitHub Issues](https://github.com/itsjayoncode/joc/issues)

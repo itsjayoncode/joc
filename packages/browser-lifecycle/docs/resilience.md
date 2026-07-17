@@ -4,6 +4,12 @@ Named helpers for reconnect / wake / restore workflows (canonical name **Resilie
 
 **Previous:** [Conditions](./conditions.md) · **Next:** [Adapters](./adapters.md)
 
+## Import path
+
+```ts
+import { createBrowserLifecycle, createResilienceApi } from "@jayoncode/browser-lifecycle";
+```
+
 ## Usage
 
 ```ts

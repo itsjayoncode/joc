@@ -1,4 +1,6 @@
 import type {
+  DevToolsPerformanceMark,
+  DevToolsPluginInfo,
   DevToolsValidationRecord,
   DevToolsWorkflowEvent,
   FormDevToolsInspector,
@@ -43,6 +45,8 @@ export function DevToolsPanel({
   const eventLog = resolvedFormId ? inspector.getEventLog(resolvedFormId) : [];
   const validationLog = resolvedFormId ? inspector.getValidationLog(resolvedFormId) : [];
   const workflowTimeline = resolvedFormId ? inspector.getWorkflowTimeline(resolvedFormId) : [];
+  const performanceMarks = resolvedFormId ? inspector.getPerformanceMarks(resolvedFormId) : [];
+  const plugins = resolvedFormId ? inspector.getPlugins(resolvedFormId) : [];
 
   const fieldRows =
     snapshot === null
@@ -107,6 +111,17 @@ export function DevToolsPanel({
             <CodeBlock code={JSON.stringify(snapshot, null, 2)} language="json" />
           </Card>
 
+          <Card description="form.listPlugins() via getPlugins(formId)." title="Plugins">
+            <PluginList entries={plugins} />
+          </Card>
+
+          <Card
+            description="validate / submit duration marks (getPerformanceMarks)."
+            title="Performance marks"
+          >
+            <PerformanceMarks entries={performanceMarks} />
+          </Card>
+
           <Card
             description="validate / validated phases with error snapshots."
             title="Validation log"
@@ -138,6 +153,43 @@ export function DevToolsPanel({
         </Card>
       )}
     </div>
+  );
+}
+
+function PluginList({ entries }: { readonly entries: readonly DevToolsPluginInfo[] }) {
+  if (entries.length === 0) {
+    return <p className={styles.empty}>No plugins registered.</p>;
+  }
+
+  return (
+    <ul className={styles.timeline}>
+      {entries.map((plugin) => (
+        <li className={styles.timelineEntry} key={plugin.name}>
+          <span className={styles.timelineLabel}>
+            {plugin.name}
+            {plugin.version ? ` @${plugin.version}` : ""}
+          </span>
+          <span className={styles.timelineDetail}>order {plugin.order}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function PerformanceMarks({ entries }: { readonly entries: readonly DevToolsPerformanceMark[] }) {
+  if (entries.length === 0) {
+    return <p className={styles.empty}>No performance marks yet — validate or submit.</p>;
+  }
+
+  return (
+    <ul className={styles.timeline}>
+      {[...entries].reverse().map((entry) => (
+        <li className={styles.timelineEntry} key={entry.id}>
+          <span className={styles.timelineLabel}>{entry.name}</span>
+          <span className={styles.timelineDetail}>{entry.durationMs.toFixed(2)} ms</span>
+        </li>
+      ))}
+    </ul>
   );
 }
 

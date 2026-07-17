@@ -1,17 +1,17 @@
 import {
-  creditCard,
+  formatCreditCard,
   creditCardParser,
-  currency,
+  formatCurrency,
   currencyParser,
-  lowercase,
+  formatLowercase,
   lowercaseParser,
-  phone,
+  formatPhone,
   phoneParser,
-  slug,
+  formatSlug,
   slugParser,
   trim,
   trimParser,
-  uppercase,
+  formatUppercase,
   uppercaseParser,
 } from "./formatters/index.js";
 
@@ -21,13 +21,13 @@ export type BuiltinFormatterName =
   "phone" | "currency" | "creditCard" | "uppercase" | "lowercase" | "trim" | "slug";
 
 const BUILTIN_FORMATTERS: Record<BuiltinFormatterName, FormatterDefinition> = {
-  phone: { format: phone, parse: phoneParser },
-  currency: { format: currency, parse: currencyParser },
-  creditCard: { format: creditCard, parse: creditCardParser },
-  uppercase: { format: uppercase, parse: uppercaseParser },
-  lowercase: { format: lowercase, parse: lowercaseParser },
+  phone: { format: formatPhone, parse: phoneParser },
+  currency: { format: formatCurrency, parse: currencyParser },
+  creditCard: { format: formatCreditCard, parse: creditCardParser },
+  uppercase: { format: formatUppercase, parse: uppercaseParser },
+  lowercase: { format: formatLowercase, parse: lowercaseParser },
   trim: { format: trim, parse: trimParser },
-  slug: { format: slug, parse: slugParser },
+  slug: { format: formatSlug, parse: slugParser },
 };
 
 export class FormatterRegistry {

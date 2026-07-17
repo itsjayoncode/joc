@@ -12,4 +12,4 @@ Subscribing to the full event feed in production unless you need diagnostics.
 
 ## Playground
 
-Benchmark observer overhead in the [Performance Playground](http://127.0.0.1:4273/performance).
+Benchmark observer overhead in the [Performance Playground](/playground/browser-lifecycle/performance).

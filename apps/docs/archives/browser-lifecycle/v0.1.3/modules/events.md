@@ -1,7 +1,7 @@
 ---
 title: Events
 description: Browser Lifecycle module documentation for Events.
-playground: "http://127.0.0.1:4273/event"
+playground: "/playground/browser-lifecycle/event"
 ---
 
 # Events

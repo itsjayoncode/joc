@@ -46,17 +46,30 @@ const PLAYGROUND_ROUTES = {
   "visibility-playground.md": { route: "/visibility", label: "Visibility Playground" },
 };
 
-const MODULE_PLAYGROUND_LINKS = {
-  "visibility.md": "/packages/browser-lifecycle/playground/visibility-playground",
-  "events.md": "/packages/browser-lifecycle/playground/event-explorer",
-  "session-core.md": "/packages/browser-lifecycle/playground/lifecycle-playground",
-  "core-infrastructure.md": "/packages/browser-lifecycle/playground/configuration-playground",
+/** Site-relative SPA routes (bundled into docs under /playground/<pkg>/). */
+const PLAYGROUND_SPA = {
+  browserLifecycle: "/playground/browser-lifecycle",
+  objectDiff: "/playground/object-diff",
+  formIntelligent: "/playground/form-intelligent",
 };
 
-const PLAYGROUND_BASE_URL = "http://127.0.0.1:4273";
-const OBJECT_DIFF_PLAYGROUND_BASE_URL = "http://127.0.0.1:4275";
-const FORM_INTELLIGENT_PLAYGROUND_BASE_URL = "http://127.0.0.1:4277";
+/** Module → SPA route (not the markdown playground guide page). */
+const MODULE_PLAYGROUND_ROUTES = {
+  "visibility.md": "/visibility",
+  "events.md": "/events",
+  "session-core.md": "/lifecycle",
+  "core-infrastructure.md": "/configuration",
+};
 
+const GITHUB_REPO = "https://github.com/itsjayoncode/joc";
+const GITHUB_TREE_MASTER = `${GITHUB_REPO}/tree/master`;
+
+function spaPlaygroundUrl(base, route = "/") {
+  if (!route || route === "/") {
+    return `${base}/`;
+  }
+  return `${base}${route.startsWith("/") ? route : `/${route}`}`;
+}
 function toTitle(fileName) {
   return fileName
     .replace(/\.md$/, "")
@@ -106,35 +119,39 @@ function withFrontmatter(fileName, body, extra = {}) {
 
   if (extra.playgroundUrl) {
     lines.push(`playground: ${yamlScalar(extra.playgroundUrl)}`);
-  } else if (extra.playgroundRoute) {
-    lines.push(`playground: ${yamlScalar(`${PLAYGROUND_BASE_URL}${extra.playgroundRoute}`)}`);
+  } else if (extra.playgroundRoute !== undefined) {
+    lines.push(
+      `playground: ${yamlScalar(
+        spaPlaygroundUrl(PLAYGROUND_SPA.browserLifecycle, extra.playgroundRoute),
+      )}`,
+    );
   }
 
   lines.push("---", "", body.trim(), "");
   return `${lines.join("\n")}\n`;
 }
 
-function appendPlaygroundLink(body, link, label) {
+function appendPlaygroundLink(body, spaPath, label) {
   if (
     body.includes("Open Playground") ||
-    body.includes(PLAYGROUND_BASE_URL) ||
+    body.includes("Open Visibility playground") ||
     body.includes("/playground/")
   ) {
     return body;
   }
 
-  return `${body.trim()}\n\n## Interactive Playground\n\nExplore this topic live in the [${label}](${PLAYGROUND_BASE_URL}${link}).\n`;
+  return `${body.trim()}\n\n## Interactive Playground\n\nExplore this topic live in the [${label}](${spaPath}).\n`;
 }
 
 function rewritePackageDocLinks(body) {
   return body
     .replace(
       /\]\(\.\.\/examples\/([^)]+)\)/g,
-      "](https://github.com/itsjayoncode/joc/tree/main/packages/browser-lifecycle/examples/$1)",
+      `](${GITHUB_TREE_MASTER}/packages/browser-lifecycle/examples/$1)`,
     )
     .replace(
       /\]\(\.\/engineering\/([^)]+)\)/g,
-      "](https://github.com/JayOnCode/joc/tree/main/packages/browser-lifecycle/engineering/$1)",
+      `](${GITHUB_TREE_MASTER}/packages/browser-lifecycle/engineering/$1)`,
     )
     .replace(/\]\(\.\/docs\/([^)]+)\)/g, "](/packages/browser-lifecycle/modules/$1)");
 }
@@ -224,12 +241,12 @@ function syncPackageModules() {
     sourceDir,
     targetDir,
     transform: (file, body) => {
-      const playgroundDoc = MODULE_PLAYGROUND_LINKS[file];
+      const spaRoute = MODULE_PLAYGROUND_ROUTES[file];
       const rewritten = rewriteBrowserLifecyclePackageDocLinks(rewritePackageDocLinks(body));
-      const enriched = playgroundDoc
+      const enriched = spaRoute
         ? appendPlaygroundLink(
             rewritten,
-            playgroundDoc.replace("/packages/browser-lifecycle/playground/", "/"),
+            spaPlaygroundUrl(PLAYGROUND_SPA.browserLifecycle, spaRoute),
             toTitle(file),
           )
         : rewritten;
@@ -237,12 +254,7 @@ function syncPackageModules() {
       return withFrontmatter(file, enriched, {
         title: toTitle(file),
         description: `Browser Lifecycle module documentation for ${toTitle(file)}.`,
-        playgroundRoute: playgroundDoc
-          ? playgroundDoc
-              .replace("/packages/browser-lifecycle/playground/", "/")
-              .replace(/-playground$/, "")
-              .replace(/-explorer$/, "")
-          : undefined,
+        playgroundRoute: spaRoute,
       });
     },
   });
@@ -257,7 +269,10 @@ function syncPlaygroundDocs() {
     targetDir,
     transform: (file, body) => {
       const route = PLAYGROUND_ROUTES[file];
-      const enriched = route ? appendPlaygroundLink(body, route.route, route.label) : body;
+      const spaPath = route
+        ? spaPlaygroundUrl(PLAYGROUND_SPA.browserLifecycle, route.route)
+        : undefined;
+      const enriched = spaPath ? appendPlaygroundLink(body, spaPath, route.label) : body;
 
       return withFrontmatter(file, enriched, {
         title: route?.label ?? toTitle(file),
@@ -282,7 +297,7 @@ function syncFrameworkExamplesIndex() {
       const readmePath = path.join(examplesDir, name, "README.md");
       const hasReadme = existsSync(readmePath);
       const label = name.charAt(0).toUpperCase() + name.slice(1);
-      const repoLink = `https://github.com/JayOnCode/joc/tree/main/examples/${name}`;
+      const repoLink = `${GITHUB_TREE_MASTER}/examples/${name}`;
       const status = hasReadme ? "Available" : "Planned";
       return `| [${label}](${repoLink}) | \`examples/${name}/\` | ${status} |`;
     })
@@ -392,7 +407,7 @@ function syncObjectDiffPlaygroundDocs() {
       withFrontmatter(file, body, {
         title: toTitle(file),
         description: `Object Diff playground documentation for ${toTitle(file)}.`,
-        playgroundUrl: OBJECT_DIFF_PLAYGROUND_BASE_URL,
+        playgroundUrl: spaPlaygroundUrl(PLAYGROUND_SPA.objectDiff),
       }),
   });
 }
@@ -491,7 +506,7 @@ function syncFormIntelligentPlaygroundDocs() {
       withFrontmatter(file, body, {
         title: toTitle(file),
         description: `Form Intelligent playground documentation for ${toTitle(file)}.`,
-        playgroundUrl: FORM_INTELLIGENT_PLAYGROUND_BASE_URL,
+        playgroundUrl: spaPlaygroundUrl(PLAYGROUND_SPA.formIntelligent),
       }),
   });
 }

@@ -8,6 +8,14 @@ The orchestration layer behind `createBrowserLifecycle()`.
 [Open Lifecycle playground →](/playground/browser-lifecycle/lifecycle) — inspect session phases and startup ordering.
 :::
 
+## Import path
+
+```ts
+import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
+```
+
+Session Core is reached only through the public factory — not a separate import path.
+
 ## Problem → approach
 
 | Without session orchestration                       | Session Core                                           |
@@ -20,6 +28,11 @@ The orchestration layer behind `createBrowserLifecycle()`.
 const snapshot = lifecycle.getSnapshot();
 console.log(snapshot.session.phase); // "running"
 ```
+
+## Pitfalls
+
+- After `dispose()`, the instance is dead — create a new session; do not call `start()` again.
+- One session per tab; sharing via context beats per-component factories.
 
 ---
 

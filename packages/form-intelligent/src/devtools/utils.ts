@@ -1,17 +1,12 @@
+// Intentional re-export of deprecated helper for migration.
+// eslint-disable-next-line @typescript-eslint/no-deprecated -- see ring-buffer.ts
+export { capLog } from "./ring-buffer.js";
+
 let eventCounter = 0;
 
 export function nextDevToolsEventId(prefix: string): string {
   eventCounter += 1;
   return `${prefix}_${String(eventCounter)}`;
-}
-
-export function capLog<T>(entries: T[], maxEntries: number, entry: T): T[] {
-  const next = [...entries, entry];
-  if (next.length <= maxEntries) {
-    return next;
-  }
-
-  return next.slice(next.length - maxEntries);
 }
 
 export function summarizeErrors(errors: Readonly<Record<string, string>>): Record<string, string> {

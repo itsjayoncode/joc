@@ -2,7 +2,7 @@
 
 import { describe, expect, it, vi } from "vitest";
 
-import { philippinePhone, resolveFormatPreset } from "../../src/format/index.js";
+import { formatPhilippinePhone, resolveFormatPreset } from "../../src/format/index.js";
 import { createForm } from "../../src/index.js";
 import { when } from "../../src/rules/index.js";
 
@@ -48,7 +48,7 @@ describe("form OS features", () => {
   });
 
   it("formats philippine-phone preset", () => {
-    expect(philippinePhone("09171234567")).toBe("0917 123 4567");
+    expect(formatPhilippinePhone("09171234567")).toBe("0917 123 4567");
     const preset = resolveFormatPreset("credit-card");
     expect(preset.format("4111111111111111")).toBe("4111 1111 1111 1111");
   });

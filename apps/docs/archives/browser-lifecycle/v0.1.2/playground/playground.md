@@ -1,7 +1,7 @@
 ---
 title: Playground Dashboard
 description: Interactive playground documentation for Playground Dashboard.
-playground: http://127.0.0.1:4273/
+playground: /playground/browser-lifecycle/
 ---
 
 # Playground Foundation
@@ -121,4 +121,4 @@ npx pnpm@10.13.1 --filter @jayoncode/browser-session-playground test
 
 ## Interactive Playground
 
-Explore this topic live in the [Playground Dashboard](http://127.0.0.1:4273/).
+Explore this topic live in the [Playground Dashboard](/playground/browser-lifecycle/).

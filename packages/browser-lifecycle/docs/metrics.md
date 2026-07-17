@@ -8,6 +8,12 @@ Live O(1) reducers over public events — session duration, focus/hidden/idle/sl
 Metrics never scans Timeline history (ADR A6).
 :::
 
+## Import path
+
+```ts
+import { createBrowserLifecycle, createMetricsApi } from "@jayoncode/browser-lifecycle";
+```
+
 ## Usage
 
 ```ts

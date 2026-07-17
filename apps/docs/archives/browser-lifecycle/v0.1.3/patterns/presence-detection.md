@@ -14,4 +14,4 @@ Distinguish active, idle, hidden, and offline users.
 
 ## Playground
 
-[State Explorer](http://127.0.0.1:4273/state)
+[State Explorer](/playground/browser-lifecycle/state)

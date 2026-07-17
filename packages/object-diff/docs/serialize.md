@@ -10,6 +10,15 @@ Export diff results for humans, logs, or downstream tools.
 
 Prefer `@jayoncode/object-diff/formatter` for formatting-focused apps (root still re-exports `serialize`).
 
+## Import path
+
+```ts
+import { serialize } from "@jayoncode/object-diff";
+// or: import { serialize, createSerializer } from "@jayoncode/object-diff/formatter";
+```
+
+[Engines](/packages/object-diff/modules/engines).
+
 ## Problem → approach
 
 | Typical pain                                        | `serialize()`                                  |

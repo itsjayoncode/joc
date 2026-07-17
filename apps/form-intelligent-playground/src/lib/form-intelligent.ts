@@ -6,12 +6,12 @@ import {
   getFormDevTools,
 } from "@jayoncode/form-intelligent/devtools";
 import {
-  creditCard,
+  formatCreditCard,
   creditCardParser,
-  currency,
-  phone,
-  philippinePhone,
-  slug,
+  formatCurrency,
+  formatPhone,
+  formatPhilippinePhone,
+  formatSlug,
 } from "@jayoncode/form-intelligent/format";
 import { when } from "@jayoncode/form-intelligent/rules";
 import { createBrowserLifecyclePlugin, createKeyboardPlugin, keyboard } from "@jayoncode/form-intelligent/plugins";
@@ -61,19 +61,19 @@ export {
   createAnalyticsPlugin,
   createBrowserLifecyclePlugin,
   createKeyboardPlugin,
-  creditCard,
+  formatCreditCard,
   creditCardParser,
-  currency,
+  formatCurrency,
   email,
   enableFormDevTools,
   getFormDevTools,
   keyboard,
   minLength,
-  phone,
-  philippinePhone,
+  formatPhone,
+  formatPhilippinePhone,
   regex,
   required,
-  slug,
+  formatSlug,
   when,
 };
 export type { FormInstance, FormPlugin };

@@ -8,6 +8,10 @@ Common Form Intelligent recipes — wizard, autosave, offline submit, plugins.
 Try [Workflow](/playground/form-intelligent/workflow), [Submission](/playground/form-intelligent/submission), and [Plugins](/playground/form-intelligent/plugins).
 :::
 
+## Import path
+
+Recipes below use `@jayoncode/form-intelligent` unless noted. Formatters → `/format`; lifecycle plugins → `/plugins`; schema packages → `@jayoncode/form-intelligent-zod` (etc.). [Entrypoints](/packages/form-intelligent/modules/entrypoints).
+
 ---
 
 ## Multi-step wizard
@@ -93,22 +97,28 @@ Pair with `createBrowserLifecyclePlugin({ flushOfflineQueueOnOnline: true })`.
 ## Plugin hooks
 
 ```ts
-form.use({
-  name: "audit",
-  setup(_form, api) {
-    api.on("beforeSubmit", () => {
-      if (!window.confirm("Submit?")) return false;
-    });
-    api.on("afterValidate", ({ valid }) => {
-      console.log("valid?", valid);
-    });
-    return {
-      onDestroy() {
-        console.log("cleanup");
+createForm({
+  initialValues: { email: "" },
+  plugins: [
+    {
+      name: "audit",
+      setup(_form, api) {
+        api.on("beforeSubmit", () => {
+          if (!window.confirm("Submit?")) return false;
+        });
+        api.on("afterValidate", ({ valid }) => {
+          console.log("valid?", valid);
+        });
+        return {
+          onDestroy() {
+            console.log("cleanup");
+          },
+        };
       },
-    };
-  },
+    },
+  ],
 });
+// Or later: form.use({ name: "audit", setup(...) { ... } });
 ```
 
 Hooks: `beforeValidate`, `afterValidate`, `beforeSubmit`, `afterSubmit`, `onAutosave`, `onDraftRestore`.

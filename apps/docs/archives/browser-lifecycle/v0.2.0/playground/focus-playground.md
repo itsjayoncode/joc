@@ -1,7 +1,7 @@
 ---
 title: Focus Playground
 description: Interactive playground documentation for Focus Playground.
-playground: "http://127.0.0.1:4273/focus"
+playground: "/playground/browser-lifecycle/focus"
 ---
 
 # Focus Playground
@@ -79,4 +79,4 @@ Copy-ready examples that use `createBrowserLifecycle()` for:
 
 ## Interactive Playground
 
-Explore this topic live in the [Focus Playground](http://127.0.0.1:4273/focus).
+Explore this topic live in the [Focus Playground](/playground/browser-lifecycle/focus).

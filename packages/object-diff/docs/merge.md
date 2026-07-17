@@ -4,13 +4,15 @@ Combine two (or three) object snapshots with explicit strategies and conflict ob
 
 **Previous:** [Engines](/packages/object-diff/modules/engines) · **Next:** [Query](/packages/object-diff/modules/query)
 
+## Import path
+
 ```ts
 import { merge } from "@jayoncode/object-diff/merge";
 ```
 
-Core never imports merge (tree-shake isolation).
+**Not** on the root entry — see [Engines](/packages/object-diff/modules/engines). Core never imports merge (tree-shake isolation).
 
-## Two-way
+## Quick example
 
 ```ts
 const result = merge(
@@ -59,3 +61,13 @@ merge(left, right, {
 ```
 
 Conflicts are never dropped silently — they always appear in `conflicts[]`.
+
+## Pitfalls
+
+- Do not `import { merge } from "@jayoncode/object-diff"` — use `/merge`.
+- Arrays are atomic leaves on conflict (not element-wise merge).
+- `custom` strategy requires `resolve`; omitting it is a configuration error.
+
+## Related
+
+- [Engines](/packages/object-diff/modules/engines) · [Query](/packages/object-diff/modules/query) · [Integrations](/packages/object-diff/modules/integrations)

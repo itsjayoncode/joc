@@ -37,7 +37,11 @@ export type {
   FormUiState,
   RuleContext,
   WizardConfig,
+  WizardGuardContext,
+  WizardNavigateValidation,
   WizardStep,
+  WizardStepGraph,
+  WizardStepGraphNode,
 } from "../engines/workflow/types.js";
 
 export type ValidationMode = "onChange" | "onBlur" | "onSubmit" | "onTouched" | "all";
@@ -64,7 +68,26 @@ export interface ValidationContext<TValues extends Record<string, unknown>> {
   readonly values: TValues;
   readonly path: FieldPath;
   readonly form: ValidationFormAccessor<TValues>;
+  /** Present when validation is tied to an in-flight async job (Phase 4A). */
+  readonly signal?: AbortSignal;
 }
+
+export type {
+  AsyncCachePolicy,
+  AsyncJob,
+  AsyncRetryPolicy,
+  AsyncValidatorOptions,
+  TtlInput,
+} from "./async-validation.js";
+export { ASYNC_VALIDATOR_OPTION_DEFAULTS } from "./async-validation.js";
+export type {
+  DependencyAction,
+  DependencyEdge,
+  DependencyEdgeConfig,
+  DependencyGraph,
+  DependencyMap,
+  DependencyNode,
+} from "../engines/dependency/types.js";
 
 export type BuiltInFieldType = "text" | "email" | "password" | "url";
 
@@ -117,6 +140,13 @@ export interface FieldOptions<TValues extends Record<string, unknown>> {
   readonly parse?: Parser;
   readonly formatOnDisplay?: boolean;
   readonly parseOnInput?: boolean;
+  /**
+   * Canonical inbound transforms (trim/normalize/sanitize/parse/stages).
+   * Distinct from display `format`/`parse` — see `/transform` and TRANSFORM_INBOUND_ORDER.
+   */
+  readonly transform?:
+    | readonly import("../engines/transform/types.js").TransformFn<TValues>[]
+    | import("../engines/transform/types.js").TransformPipelineOptions;
   readonly label?: string;
   readonly description?: string;
   readonly hidden?: boolean;
@@ -130,9 +160,22 @@ export interface FieldHandle<_TValues extends Record<string, unknown>> {
   readonly touched: boolean;
   readonly dirty: boolean;
   readonly visited: boolean;
+  /** Presentation flags for this path (defaults when missing from `fieldUi`). */
+  readonly ui: import("../engines/workflow/types.js").FieldUiState;
+  /** Field state + meta (controller surface). */
+  readonly meta: FieldState & FieldMetaState;
+  /**
+   * Accessibility snapshot + spread attributes.
+   * Register element ids via `setAriaIds` so `aria-describedby` can link errors/help.
+   */
+  readonly aria: import("../engines/accessibility/types.js").FieldAriaResult;
   setValue(value: unknown): void;
   setTouched(touched?: boolean): void;
   setVisited(visited?: boolean): void;
+  /** Register error/description element ids for `aria-describedby`. */
+  setAriaIds(ids: import("../engines/accessibility/types.js").FieldAriaIds): void;
+  onBlur(): void;
+  onFocus(): void;
   validate(): Promise<boolean>;
   bind(): FieldBinding;
 }
@@ -163,15 +206,80 @@ export interface DraftConfig {
   readonly onRestore?: (values: Record<string, unknown>) => void;
   readonly promptOnRestore?: boolean;
   readonly onRestorePrompt?: (values: Record<string, unknown>) => boolean;
+  /** Persist versioned envelopes (`DraftEnvelopeV1`) instead of raw values. */
+  readonly versioning?: boolean;
+  /** App schema id compared / migrated when envelopes are enabled. */
+  readonly schemaVersion?: string;
+  /** Migrate an envelope before restore; throw to reject restore. */
+  readonly migrateDraft?: (
+    envelope: import("../engines/draft/envelope.js").DraftEnvelopeV1,
+  ) => import("../engines/draft/envelope.js").DraftEnvelopeV1;
+}
+
+export interface RestoreDraftOptions {
+  /** Default false — if the form is dirty, no-op unless force (D-RESTORE-RACE). */
+  readonly force?: boolean;
+  /** Default false — if true, call `DraftConfig.onRestorePrompt` when set. */
+  readonly prompt?: boolean;
+  /** Default `overlay` — `{ ...defaults, ...draft }`. `replace` uses draft keys only. */
+  readonly merge?: "overlay" | "replace";
 }
 
 export interface AnalyticsConfig {
   readonly enabled?: boolean;
+  /**
+   * When set, only these paths appear in path-keyed metrics (deny-by-default for others).
+   * Values are never captured — paths only.
+   */
+  readonly includePaths?: readonly FieldPath[];
+  /** Paths omitted from path-keyed metrics. */
+  readonly excludePaths?: readonly FieldPath[];
+  /** Invoked whenever a snapshot is produced via `getAnalytics()`. */
+  readonly onSnapshot?: (snapshot: FormAnalyticsSnapshot) => void;
+}
+
+export interface FormAnalyticsSnapshot {
+  readonly startedAt: number;
+  readonly completedAt: number | null;
+  readonly errorCount: number;
+  readonly errorsByField: Readonly<Record<FieldPath, number>>;
+  readonly abandonedAt: number | null;
+  readonly currentStep: number;
+  readonly fieldViews: Readonly<Record<FieldPath, number>>;
+  readonly dropOffField: FieldPath | null;
+  readonly timeToCompleteMs: number | null;
+  readonly timeToFirstErrorMs: number | null;
 }
 
 export interface OfflineQueueConfig {
   readonly enabled?: boolean;
   readonly storageKey?: string;
+  /** Soft cap on queued items. */
+  readonly maxItems?: number;
+  /**
+   * Behavior when `maxItems` is exceeded.
+   * Default: `drop-oldest`.
+   */
+  readonly overflow?: import("../engines/offline/types.js").OfflineOverflowPolicy;
+  /** Deduplicate pending items with the same key (skip enqueue). */
+  readonly idempotencyKey?: (values: Record<string, unknown>) => string;
+  /**
+   * Called when a queued item fails during flush.
+   * - `keep` (default) — leave at head, stop flush
+   * - `drop` — discard and continue
+   * - `retry` — keep at head and continue attempting
+   */
+  readonly onConflict?: (
+    local: import("../engines/offline/types.js").QueuedSubmission<Record<string, unknown>>,
+    error: unknown,
+  ) =>
+    | import("../engines/offline/types.js").OfflineConflictAction
+    | void
+    | Promise<import("../engines/offline/types.js").OfflineConflictAction | void>;
+  readonly onOverflow?: (
+    dropped: import("../engines/offline/types.js").QueuedSubmission<Record<string, unknown>>,
+    policy: import("../engines/offline/types.js").OfflineOverflowPolicy,
+  ) => void;
 }
 
 export interface KeyboardShortcutConfig {
@@ -193,17 +301,6 @@ export interface SubmissionQueueState {
   readonly flushing: boolean;
 }
 
-export interface FormAnalyticsSnapshot {
-  readonly startedAt: number;
-  readonly completedAt: number | null;
-  readonly errorCount: number;
-  readonly errorsByField: Readonly<Record<FieldPath, number>>;
-  readonly abandonedAt: number | null;
-  readonly currentStep: number;
-  readonly fieldViews: Readonly<Record<FieldPath, number>>;
-  readonly dropOffField: FieldPath | null;
-}
-
 export interface SetValueOptions {
   readonly recordHistory?: boolean;
   readonly markDirty?: boolean;
@@ -214,6 +311,9 @@ export interface SubmitOptions {
   readonly includeDiff?: boolean;
   readonly retry?: import("../submission/retry.js").RetryPolicy | number;
 }
+
+/** Submit lifecycle phase (Phase 10). `isSubmitting` remains the boolean loading flag. */
+export type SubmitPhase = "idle" | "validating" | "submitting" | "success" | "error";
 
 export type FormChangeType = "added" | "removed" | "changed" | "unchanged" | "moved";
 
@@ -271,6 +371,11 @@ export interface FormConfig<TValues extends Record<string, unknown>> {
   readonly schema?: Partial<Record<FieldPath, FieldSchemaDefinition>> | SchemaAdapter;
   readonly onSubmit?: (values: TValues, meta?: SubmitMeta) => void | Promise<void>;
   readonly onSubmitError?: (error: unknown) => void;
+  /**
+   * Receives isolated plugin/hook failures (setup, hooks, destroy).
+   * Does not rethrow — form continues per Phase 15 isolation policy.
+   */
+  readonly onPluginError?: import("../plugins/compat.js").PluginErrorHandler;
   readonly validateOn?: ValidationMode;
   readonly validators?: Partial<
     Record<FieldPath, Validator<TValues> | readonly Validator<TValues>[]>
@@ -281,6 +386,20 @@ export interface FormConfig<TValues extends Record<string, unknown>> {
   readonly autoSave?: AutosaveConfig & { readonly every?: string };
   readonly wizard?: boolean | WizardConfig;
   readonly rules?: readonly FormRuleDefinition<TValues>[];
+  /**
+   * Plugins registered at create time (same as calling `form.use(plugin)` for each entry, in order).
+   * Prefer this for declarative setup; use `form.use()` later for conditional or late registration.
+   */
+  readonly plugins?: readonly FormPlugin<TValues>[];
+  /**
+   * Explicit dependency map: child → parent(s).
+   * Cycles throw `ConfigurationError` at registration (ADR-007).
+   */
+  readonly dependencies?: import("../engines/dependency/types.js").DependencyMap;
+  /** Per-child action overrides for `dependencies` (default `["clear","revalidate"]`). */
+  readonly dependencyActions?: Partial<
+    Record<FieldPath, readonly import("../engines/dependency/types.js").DependencyAction[]>
+  >;
 }
 
 export interface FieldState {
@@ -303,6 +422,8 @@ export interface FormState<TValues extends Record<string, unknown>> {
   readonly isDirty: boolean;
   readonly isChanged: boolean;
   readonly submitCount: number;
+  /** Last / current submit lifecycle phase. */
+  readonly submitPhase: SubmitPhase;
   readonly workflow: WorkflowState;
   readonly fieldUi: FieldUiMap;
   readonly formUi: FormUiState;
@@ -325,15 +446,54 @@ export type FormSelector<TValues extends Record<string, unknown>, TSelected> = (
   state: FormState<TValues>,
 ) => TSelected;
 
+/** Durable form checkpoint — distinct from `getSnapshot()` (external-store identity). */
+export interface FormCheckpoint<TValues extends Record<string, unknown> = Record<string, unknown>> {
+  readonly version: 1;
+  readonly kind: "checkpoint";
+  readonly capturedAt: number;
+  readonly values: TValues;
+  readonly errors?: Readonly<Record<FieldPath, string>>;
+  readonly touched?: Readonly<Record<FieldPath, boolean>>;
+  readonly dirty?: Readonly<Record<FieldPath, boolean>>;
+  readonly visited?: Readonly<Record<FieldPath, boolean>>;
+  readonly fieldUi?: FieldUiMap;
+  readonly workflow?: { readonly currentStep: number };
+}
+
+export interface CreateCheckpointOptions {
+  readonly include?: readonly (
+    "values" | "errors" | "touched" | "dirty" | "visited" | "fieldUi" | "workflow"
+  )[];
+}
+
+export interface RestoreCheckpointOptions {
+  readonly recordHistory?: boolean;
+  readonly restoreMeta?: boolean;
+}
+
 export interface FormInstance<TValues extends Record<string, unknown>> {
   readonly id: string;
   readonly ref: FormRef;
   field(path: FieldPath, options?: FieldOptions<TValues>): FieldHandle<TValues>;
+  /** First path with a non-empty error (stable key order). */
+  firstInvalidPath(): FieldPath | undefined;
+  /**
+   * Focus first invalid control when `document` exists; SSR-safe no-op.
+   * Returns the focused path or `undefined`.
+   */
+  focusFirstInvalid(): FieldPath | undefined;
   pushField(arrayPath: FieldPath, item?: unknown): FieldPath;
   removeField(arrayPath: FieldPath, index: number): void;
   insertField(arrayPath: FieldPath, index: number, item?: unknown): FieldPath;
   submit(options?: SubmitOptions): Promise<boolean>;
   cancelSubmit(): void;
+  /**
+   * Register onion middleware for submit/validate phases.
+   * Same stack as plugin hooks — see `MIDDLEWARE_HOOK_MAP`.
+   */
+  useMiddleware(
+    middleware: import("../plugins/middleware.js").MiddlewareInput<TValues>,
+  ): () => void;
   reset(options?: ResetOptions<TValues>): void;
   validate(options?: ValidateOptions): Promise<boolean>;
   values(): TValues;
@@ -348,8 +508,15 @@ export interface FormInstance<TValues extends Record<string, unknown>> {
   /** Current form snapshot — same as `getFormState()`. */
   readonly state: FormState<TValues>;
   getFormState(): FormState<TValues>;
-  /** For `useSyncExternalStore(form.subscribe, form.getSnapshot)`. */
+  /** For `useSyncExternalStore(form.subscribe, form.getSnapshot)`. Not a durable checkpoint. */
   getSnapshot(): FormState<TValues>;
+  /** Per-path presentation (field UI + options + form UI). */
+  getPresentation(path: FieldPath): import("../engines/presentation/resolve.js").PresentationState;
+  /** Full presentation maps (same sources as `state.fieldUi` / `formUi` / `fieldOptions`). */
+  getPresentation(): import("../engines/presentation/resolve.js").PresentationSnapshot;
+  /** Durable checkpoint for undo/restore flows — see `restoreCheckpoint`. */
+  createCheckpoint(options?: CreateCheckpointOptions): FormCheckpoint<TValues>;
+  restoreCheckpoint(checkpoint: FormCheckpoint<TValues>, options?: RestoreCheckpointOptions): void;
   getValues(): TValues;
   getErrors(): Readonly<Record<FieldPath, string>>;
   isValid(): boolean;
@@ -360,17 +527,41 @@ export interface FormInstance<TValues extends Record<string, unknown>> {
   diffFromDefaults(options?: FormDiffOptions): Promise<FormDiffResult>;
   diffFrom(baseline: Record<string, unknown>, options?: FormDiffOptions): Promise<FormDiffResult>;
   when(field: FieldPath): WhenRuleBuilder<TValues>;
+  /** Register explicit dependency map (fail-fast on cycles). */
+  dependencies(map: import("../engines/dependency/types.js").DependencyMap): void;
+  /** Fluent dependency registrar + `inspect()`. */
+  dependencies(): import("../engines/dependency/registrar.js").DependencyRegistrar<TValues>;
+  /** Fluent derived field: `form.calculate("total").from("price","qty").compute(...)`. */
+  calculate(path: FieldPath): import("../engines/calculation/index.js").CalculationBuilder<TValues>;
   calculate(
     path: FieldPath,
     options: CalculateOptions<TValues> | ((context: { values: TValues }) => unknown),
   ): void;
+  /** Register inbound transform stages for a path. */
+  transform(path: FieldPath): import("../engines/transform/types.js").TransformPipelineHandle;
+  transform(
+    path: FieldPath,
+    stages: readonly import("../engines/transform/types.js").TransformFn<TValues>[],
+  ): void;
   saveDraft(): void;
+  /**
+   * Restore persisted draft into the live form (after mount).
+   * Returns `true` when values were applied; `false` when skipped
+   * (disabled / empty / declined / dirty without `force` / corrupt).
+   */
+  restoreDraft(options?: RestoreDraftOptions): Promise<boolean>;
   undo(): boolean;
   redo(): boolean;
   getAnalytics(): FormAnalyticsSnapshot;
   flushOfflineQueue(): Promise<{ flushed: number; failed: number }>;
   use(plugin: FormPlugin<TValues>): void;
   use<TSelected>(selector: FormSelector<TValues, TSelected>): TSelected;
+  /** Registered plugins (name / order / version) for DevTools introspection. */
+  listPlugins(): readonly {
+    readonly name: string;
+    readonly order: number;
+    readonly version?: string;
+  }[];
   /** Advanced: reactive UI updates. Framework adapters call this internally. */
   subscribe(listener: () => void): () => void;
   on(event: FormEvent, listener: () => void): () => void;
@@ -379,7 +570,12 @@ export interface FormInstance<TValues extends Record<string, unknown>> {
   workflow: {
     next(): Promise<boolean>;
     prev(): void;
-    goTo(step: number): Promise<boolean>;
+    goTo(
+      step: number | string,
+      options?: import("../workflow/wizard.js").GoToOptions,
+    ): Promise<boolean>;
+    getStepGraph(): import("../engines/workflow/types.js").WizardStepGraph;
+    visibleSteps(values?: TValues): readonly string[];
   };
 }
 
@@ -389,6 +585,13 @@ export interface FormPluginSetupResult {
 
 export interface FormPlugin<TValues extends Record<string, unknown> = Record<string, unknown>> {
   readonly name: string;
+  /** Plugin package/semver label (metadata only). */
+  readonly version?: string;
+  /**
+   * Semver range against `@jayoncode/form-intelligent`
+   * (`>=3.1.0`, `^3.1.0`, or exact). Checked at `register`/`use`.
+   */
+  readonly engines?: string;
   readonly order?: number;
   setup(
     form: FormInstance<TValues>,

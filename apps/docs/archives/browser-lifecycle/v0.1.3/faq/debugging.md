@@ -2,9 +2,9 @@
 
 ## Which tools should I use first?
 
-1. [Event Explorer](http://127.0.0.1:4273/events)
-2. [State Explorer](http://127.0.0.1:4273/state)
-3. [Developer Tools](http://127.0.0.1:4273/developer-tools)
+1. [Event Explorer](/playground/browser-lifecycle/events)
+2. [State Explorer](/playground/browser-lifecycle/state)
+3. [Developer Tools](/playground/browser-lifecycle/developer-tools)
 
 ## Related
 

@@ -3,7 +3,6 @@
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { when } from "@jayoncode/form-intelligent/rules";
 import { useForm } from "@jayoncode/form-intelligent-react";
 
 function RegisterForm({
@@ -117,24 +116,39 @@ describe("useForm", () => {
     expect(onSubmit).not.toHaveBeenCalled();
   });
 
-  it("disables submit when formUi.submitDisabled is true", async () => {
-    function LoanForm() {
+  it("exposes controller + aria-invalid after validation failure", async () => {
+    function AriaForm() {
       const form = useForm({
-        initialValues: { loanAmount: 600_000 },
-        rules: [when("loanAmount").greaterThan(500_000).disableSubmit()],
+        schema: { email: "email" },
+        onSubmit: vi.fn(),
       });
+      const emailAria = form.fieldController("email").aria.aria;
 
       return (
         <form {...form.form()}>
-          <input {...form.field("loanAmount")} aria-label="Amount" />
-          <button {...form.submitButton()}>Submit</button>
+          <input {...form.field("email")} aria-label="Email" />
+          <span data-testid="has-controller">{String(Boolean(form.controller))}</span>
+          <span data-testid="aria-invalid">{String(emailAria.ariaInvalid)}</span>
+          <output aria-label="Error">{form.state.errors.email ?? ""}</output>
+          <button
+            type="button"
+            onClick={() => {
+              void form.instance.validate();
+            }}
+          >
+            Check
+          </button>
         </form>
       );
     }
 
-    render(<LoanForm />);
+    render(<AriaForm />);
+    expect(screen.getByTestId("has-controller").textContent).toBe("true");
+    fireEvent.click(screen.getByRole("button", { name: "Check" }));
+
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: "Submit" }).disabled).toBe(true);
+      expect(screen.getByLabelText("Error").textContent).toContain("required");
+      expect(screen.getByTestId("aria-invalid").textContent).toBe("true");
     });
   });
 });

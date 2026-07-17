@@ -2,6 +2,25 @@
 
 Typed deep comparison, change records, JSON Patch, and optional engines for merge, query, and stats.
 
+## When to use
+
+- Dirty checks, audit trails, optimistic UI sync, RFC 6902 patches between clients
+- Collaborative drafts that need conflict-aware merge (`/merge`)
+- Filtering or summarizing an existing `DiffResult` (`/query`, `/stats`)
+
+## When not to use
+
+- Shallow equality on primitives or a single known key (`===` / lodash `isEqual` may be enough)
+- Full CRDT / OT collaboration runtimes — this is snapshot merge + patch, not a live sync protocol
+- Binary / stream diffs — plain JSON-like objects and arrays only
+
+## Features
+
+- `diff` / `hasChanges` / `compare` with typed change records and paths
+- RFC 6902 `patch` / `applyPatch` (root or `/patch`)
+- `serialize` to JSON, Markdown, table, HTML, console, human
+- Opt-in engines: `/merge`, `/query`, `/stats`, `/view`, `/plugins`, `/formatter`
+
 ## Install
 
 ```bash
@@ -60,6 +79,8 @@ Object Diff compares plain objects and arrays, emits structured **change records
 | `serialize(diff, format)` | JSON, Markdown, table, and more            |
 
 Optional engines: `/merge`, `/query`, `/stats`, `/formatter`, `/plugins`, `/view` — see [Engines](/packages/object-diff/modules/engines).
+
+Root import of merge/query/stats/plugins/view is **not** supported — use the subpath.
 
 ## Documentation path
 

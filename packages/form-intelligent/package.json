@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/form-intelligent",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "private": false,
   "description": "Form Intelligent — Typed, framework-agnostic headless form engine for validation, submission, state, drafts, wizards, and plugins. Works with native HTML or any UI framework.",
   "license": "MIT",
@@ -78,6 +78,26 @@
     "./adapters": {
       "types": "./dist/adapters/index.d.ts",
       "import": "./dist/adapters/index.js"
+    },
+    "./dependency": {
+      "types": "./dist/dependency/index.d.ts",
+      "import": "./dist/dependency/index.js"
+    },
+    "./transform": {
+      "types": "./dist/transform/index.d.ts",
+      "import": "./dist/transform/index.js"
+    },
+    "./presentation": {
+      "types": "./dist/presentation/index.d.ts",
+      "import": "./dist/presentation/index.js"
+    },
+    "./middleware": {
+      "types": "./dist/middleware/index.d.ts",
+      "import": "./dist/middleware/index.js"
+    },
+    "./accessibility": {
+      "types": "./dist/engines/accessibility/index.d.ts",
+      "import": "./dist/engines/accessibility/index.js"
     }
   },
   "repository": {
@@ -91,6 +111,7 @@
   },
   "scripts": {
     "test": "pnpm -w exec vitest run packages/form-intelligent/tests",
+    "test:ssr": "pnpm -w exec vitest run packages/form-intelligent/tests/ssr",
     "test:coverage": "pnpm -w exec vitest run --coverage packages/form-intelligent/src packages/form-intelligent/tests",
     "typecheck:examples": "tsc -p tsconfig.examples.json --noEmit",
     "check:entry-sizes": "node ./scripts/check-entry-sizes.mjs",

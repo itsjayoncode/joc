@@ -4,11 +4,13 @@ Query helpers over an existing `DiffResult` (does not re-run `diff`).
 
 **Previous:** [Merge](/packages/object-diff/modules/merge) · **Next:** [DX](/packages/object-diff/modules/dx)
 
+## Import path
+
 ```ts
 import { find, filter, exclude, paths, summary, ofType, query } from "@jayoncode/object-diff/query";
 ```
 
-Root `added` / `removed` / `updated` / `unchanged` still take `(a, b)` — they are unchanged.
+**Not** on the root entry — [Engines](/packages/object-diff/modules/engines). Root `added` / `removed` / `updated` / `unchanged` still take `(a, b)` and re-diff.
 
 ## Free functions
 
@@ -33,7 +35,13 @@ query(result).added().summary();
 
 Pure — never mutates the input `DiffResult`.
 
+## Pitfalls
+
+- Query operates on an **existing** DiffResult; it does not call `diff` again.
+- For richer metrics use `/stats` → `statistics(result)`, not `summary` alone.
+
 ## Related
 
 - Richer metrics: `@jayoncode/object-diff/stats` → `statistics(result)`
 - Fluent + serialize/patch/stats: [DX / createDiffView](/packages/object-diff/modules/dx)
+- [Engines](/packages/object-diff/modules/engines)

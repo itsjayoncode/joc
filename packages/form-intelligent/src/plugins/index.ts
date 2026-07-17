@@ -14,9 +14,22 @@ export type {
   ValidateHookContext,
 } from "./hooks.js";
 export { composeMiddleware, runMiddlewareChain } from "./middleware.js";
-export type { PluginMiddleware } from "./middleware.js";
+export type {
+  FormMiddleware,
+  MiddlewareContext,
+  MiddlewareInput,
+  MiddlewareNext,
+  MiddlewarePhase,
+  MiddlewareRegistration,
+  MiddlewareRunResult,
+  PluginMiddleware,
+} from "./middleware.js";
+export { MIDDLEWARE_HOOK_MAP, MIDDLEWARE_ONLY_PHASES, MiddlewarePipeline } from "./middleware.js";
 export { PluginRegistry } from "./registry.js";
 export { invokePluginSetup, resolvePluginCleanup, createNoopPluginApi } from "./setup.js";
+export { PLUGIN_PIPELINE_STAGES, satisfiesEnginesRange } from "./compat.js";
+export type { PluginErrorHandler, PluginErrorReport, PluginPipelineStage } from "./compat.js";
+export { FORM_INTELLIGENT_VERSION } from "../version.js";
 export { FormModuleRegistry } from "../core/module-registry.js";
 export { FormModuleHost, pluginAsModule } from "../core/form-module-host.js";
 export {

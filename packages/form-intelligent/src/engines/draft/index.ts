@@ -6,6 +6,14 @@ export {
   saveDraftAsync,
 } from "./indexed-db-storage.js";
 export { createDraftStorage, resolveDraftStorage } from "./storage-adapter.js";
+export {
+  applyDraftRestore,
+  isDraftEnvelopeV1,
+  parseDraftPayload,
+  resolveDraftValuesFromPayload,
+  wrapDraftEnvelope,
+} from "./envelope.js";
+export { mergeDraftValues, sanitizeDraftRecord } from "./merge.js";
 export type {
   AsyncDraftStorageAdapter,
   DraftConfigStorageSource,
@@ -14,3 +22,10 @@ export type {
   DraftStorageOptions,
 } from "./storage-adapter.js";
 export type { IndexedDbDraftStorageOptions } from "./indexed-db-storage.js";
+export type {
+  DraftEnvelopeOptions,
+  DraftEnvelopeV1,
+  DraftMigrateFn,
+  ParsedDraftPayload,
+} from "./envelope.js";
+export type { DraftMergeMode } from "./merge.js";

@@ -15,7 +15,7 @@ Applications should bundle Browser Lifecycle with their existing toolchain (Vite
 
 ## Observability
 
-Use `getRuntimeDiagnostics()` and the [Developer Tools Playground](http://127.0.0.1:4273/developer-tools) during development to inspect listener counts and event throughput.
+Use `getRuntimeDiagnostics()` and the [Developer Tools Playground](/playground/browser-lifecycle/developer-tools) during development to inspect listener counts and event throughput.
 
 ## Versioning
 
@@ -24,4 +24,4 @@ Pin `@jayoncode/browser-lifecycle` to a specific version in production. Review [
 ## Related documentation
 
 - [Best Practices](/packages/browser-lifecycle/best-practices/)
-- [Performance Playground](http://127.0.0.1:4273/performance)
+- [Performance Playground](/playground/browser-lifecycle/performance)

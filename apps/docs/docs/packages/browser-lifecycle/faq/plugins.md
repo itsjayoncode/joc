@@ -9,4 +9,4 @@ lifecycle.getPluginHookLog();
 
 ## Playground
 
-[Plugin Playground](http://127.0.0.1:4273/plugins)
+[Plugin Playground](/playground/browser-lifecycle/plugins)

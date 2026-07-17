@@ -1,7 +1,7 @@
 ---
 title: State Explorer
 description: Interactive playground documentation for State Explorer.
-playground: http://127.0.0.1:4273/state
+playground: /playground/browser-lifecycle/state
 ---
 
 # State Explorer
@@ -26,4 +26,4 @@ The page subscribes to the public event feed and polls session snapshots so modu
 
 ## Interactive Playground
 
-Explore this topic live in the [State Explorer](http://127.0.0.1:4273/state).
+Explore this topic live in the [State Explorer](/playground/browser-lifecycle/state).

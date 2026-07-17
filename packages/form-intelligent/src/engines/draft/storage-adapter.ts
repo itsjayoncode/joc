@@ -1,3 +1,5 @@
+import { DraftStorageError, isQuotaExceededError } from "../../errors/index.js";
+
 import type { SyncPersistenceAdapter } from "../../adapters/persistence-adapter.js";
 
 export type DraftStorageKind = "localStorage" | "sessionStorage";
@@ -27,7 +29,11 @@ function readJsonRecord(raw: string | null): Record<string, unknown> | null {
   }
 
   try {
-    return JSON.parse(raw) as Record<string, unknown>;
+    const parsed: unknown = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      return null;
+    }
+    return parsed as Record<string, unknown>;
   } catch {
     return null;
   }
@@ -49,7 +55,17 @@ function createSyncWebStorage(getStorage: () => Storage | undefined): DraftStora
         return;
       }
 
-      storage.setItem(key, JSON.stringify(values));
+      try {
+        storage.setItem(key, JSON.stringify(values));
+      } catch (error) {
+        if (isQuotaExceededError(error)) {
+          throw new DraftStorageError("Draft storage quota exceeded.", {
+            cause: error,
+            details: { reason: "quota" },
+          });
+        }
+        throw error;
+      }
     },
     clear(key) {
       const storage = getStorage();

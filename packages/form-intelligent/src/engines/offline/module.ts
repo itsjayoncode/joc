@@ -1,13 +1,18 @@
 import { OfflineSubmitQueue } from "./offline-queue.js";
 
+import type { OfflineQueueRuntimeOptions } from "./types.js";
+
 export class OfflineService<TValues extends Record<string, unknown>> {
   private queue: OfflineSubmitQueue<TValues> | null = null;
 
-  public constructor(private readonly storageKey: string) {}
+  public constructor(
+    private readonly storageKey: string,
+    private readonly options: OfflineQueueRuntimeOptions<TValues> = {},
+  ) {}
 
   public ensure(): OfflineSubmitQueue<TValues> {
     if (!this.queue) {
-      this.queue = new OfflineSubmitQueue<TValues>(this.storageKey);
+      this.queue = new OfflineSubmitQueue<TValues>(this.storageKey, this.options);
     }
 
     return this.queue;

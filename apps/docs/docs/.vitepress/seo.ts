@@ -6,7 +6,7 @@ export const docsPlaygroundUrl = process.env.VITE_DOCS_PLAYGROUND_URL ?? DEFAULT
 
 export const siteName = "JOC by JayOnCode";
 export const siteTagline =
-  "Modern TypeScript libraries for high-quality web apps — lightweight, type-safe, framework-agnostic packages under @jayoncode/*.";
+  "An open-source ecosystem of headless TypeScript libraries — lightweight, type-safe, and framework-agnostic under @jayoncode/*.";
 
 export const defaultKeywords = [
   "JOC",

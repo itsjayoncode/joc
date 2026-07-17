@@ -1,7 +1,7 @@
 ---
 title: Plugin Playground
 description: Interactive playground documentation for Plugin Playground.
-playground: "http://127.0.0.1:4273/plugins"
+playground: "/playground/browser-lifecycle/plugins"
 ---
 
 # Plugin Playground
@@ -29,4 +29,4 @@ Plugins are registered through `createBrowserLifecycle()` and `lifecycle.use()` 
 
 ## Interactive Playground
 
-Explore this topic live in the [Plugin Playground](http://127.0.0.1:4273/plugins).
+Explore this topic live in the [Plugin Playground](/playground/browser-lifecycle/plugins).

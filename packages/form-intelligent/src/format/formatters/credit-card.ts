@@ -1,6 +1,6 @@
 import type { Formatter, Parser } from "../types.js";
 
-export const creditCard: Formatter = (value) => {
+export const formatCreditCard: Formatter = (value) => {
   if (typeof value !== "string") {
     return value;
   }

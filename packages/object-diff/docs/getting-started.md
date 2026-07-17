@@ -1,6 +1,6 @@
 # Tutorial — your first diff
 
-Install, compare snapshots, check dirty state, and apply a patch.
+Install, compare snapshots, check dirty state, and apply a patch. Progressive path: **Basic** (this page) → [Concepts](/packages/object-diff/modules/concepts) → [Diffing](/packages/object-diff/modules/diff) / [Patching](/packages/object-diff/modules/patch) → engines.
 
 **Previous:** [Core concepts](/packages/object-diff/modules/concepts) · **Next:** [Diffing](/packages/object-diff/modules/diff)
 
@@ -9,6 +9,14 @@ Install, compare snapshots, check dirty state, and apply a patch.
 :::
 
 **Prerequisites:** Node 20+, ESM or TypeScript project.
+
+### Learning path
+
+| Level        | Doc                                                                                                 | Playground                                                                    |
+| ------------ | --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Basic        | This tutorial                                                                                       | [Diff](/playground/object-diff/diff)                                          |
+| Intermediate | [Patch](/packages/object-diff/modules/patch) · [Serialize](/packages/object-diff/modules/serialize) | [Patch](/playground/object-diff/patch) · [JSON](/playground/object-diff/json) |
+| Engines      | [Engines](/packages/object-diff/modules/engines) · [Merge](/packages/object-diff/modules/merge)     | [Examples](/playground/object-diff/examples)                                  |
 
 ---
 

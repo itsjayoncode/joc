@@ -53,8 +53,14 @@ jobs:
       - name: Run tests with coverage
         run: pnpm test:coverage
 
+      - name: Form Intelligent SSR smoke
+        run: pnpm --filter @jayoncode/form-intelligent test:ssr
+
       - name: Build typed workspace packages
         run: pnpm build
+
+      - name: Form Intelligent size budgets
+        run: pnpm --filter @jayoncode/form-intelligent check:size
 
       - name: Verify package integrity
         run: pnpm package:integrity
@@ -87,7 +93,9 @@ jobs:
             echo "- ESLint"
             echo "- Prettier"
             echo "- Vitest with coverage"
+            echo "- Form Intelligent SSR smoke"
             echo "- Typed package build"
+            echo "- Form Intelligent size budgets"
             echo "- Package integrity"
             echo "- Release readiness"
             echo "- Package blueprint"

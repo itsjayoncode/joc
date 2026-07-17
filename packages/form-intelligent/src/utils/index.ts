@@ -43,8 +43,6 @@ export function getIn(values: Record<string, unknown>, path: FieldPath): unknown
   return current;
 }
 
-const UNSAFE_PATH_KEYS = new Set(["__proto__", "constructor", "prototype"]);
-
 export function setIn(
   values: Record<string, unknown>,
   path: FieldPath,
@@ -55,29 +53,47 @@ export function setIn(
     return values;
   }
 
+  for (const segment of segments) {
+    // Explicit checks (not a Set lookup) so static analysis sees the guard.
+    if (segment === "__proto__" || segment === "constructor" || segment === "prototype") {
+      return values;
+    }
+  }
+
   const next = cloneValue(values);
   let current: Record<string, unknown> = next;
 
   for (let index = 0; index < segments.length - 1; index += 1) {
     const segment = segments[index];
-    if (segment === undefined || UNSAFE_PATH_KEYS.has(segment)) {
+    if (segment === undefined) {
       return values;
     }
 
     const existing = current[segment];
     if (!isPlainObject(existing) && !Array.isArray(existing)) {
-      current[segment] = {};
+      const child = Object.create(null) as Record<string, unknown>;
+      Object.defineProperty(current, segment, {
+        value: child,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
     }
 
     current = current[segment] as Record<string, unknown>;
   }
 
   const last = segments[segments.length - 1];
-  if (last === undefined || UNSAFE_PATH_KEYS.has(last)) {
+  if (last === undefined) {
     return values;
   }
 
-  current[last] = value;
+  Object.defineProperty(current, last, {
+    value,
+    writable: true,
+    enumerable: true,
+    configurable: true,
+  });
   return next;
 }
 

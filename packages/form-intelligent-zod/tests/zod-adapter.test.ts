@@ -1,11 +1,28 @@
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
 
-import { createForm } from "@jayoncode/form-intelligent";
+import { createForm, isSchemaAdapter } from "@jayoncode/form-intelligent";
 
+import { runSchemaAdapterContract } from "../../form-intelligent/tests/contracts/schema-adapter.contract.js";
 import { zodAdapter } from "../src/index.js";
 
 describe("zodAdapter", () => {
+  it("satisfies SchemaAdapter contract harness", async () => {
+    const schema = z.object({
+      email: z.string().email("Invalid email"),
+    });
+    const adapter = zodAdapter(schema);
+    expect(isSchemaAdapter(adapter)).toBe(true);
+
+    await runSchemaAdapterContract({
+      name: "zod",
+      adapter,
+      validValues: { email: "user@example.com" },
+      invalidValues: { email: "bad" },
+      expectedInvalidPath: "email",
+    });
+  });
+
   it("maps Zod field errors to form paths", async () => {
     const schema = z.object({
       email: z.string().email("Invalid email"),

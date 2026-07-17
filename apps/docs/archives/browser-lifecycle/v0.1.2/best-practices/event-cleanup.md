@@ -4,7 +4,7 @@
 
 Prefer named event subscriptions that return unsubscribe functions.
 
-Use the [Event Explorer](http://127.0.0.1:4273/events) to confirm listeners are removed after cleanup.
+Use the [Event Explorer](/playground/browser-lifecycle/events) to confirm listeners are removed after cleanup.
 
 ## Common mistake
 

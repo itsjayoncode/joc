@@ -2,11 +2,11 @@
 
 ## Application
 
-| Issue                                  | Impact                          | Workaround                                                   |
-| -------------------------------------- | ------------------------------- | ------------------------------------------------------------ |
-| Support route disabled                 | `/support` is not routable      | Use [GitHub Issues](https://github.com/JayOnCode/joc/issues) |
-| No automated E2E suite                 | Browser flows require manual QA | Follow [QA_CHECKLIST.md](./QA_CHECKLIST.md)                  |
-| Configuration requires session restart | Config changes do not hot-apply | Dispose and recreate session via Configuration page          |
+| Issue                                  | Impact                          | Workaround                                                      |
+| -------------------------------------- | ------------------------------- | --------------------------------------------------------------- |
+| Support route disabled                 | `/support` is not routable      | Use [GitHub Issues](https://github.com/itsjayoncode/joc/issues) |
+| No automated E2E suite                 | Browser flows require manual QA | Follow [QA_CHECKLIST.md](./QA_CHECKLIST.md)                     |
+| Configuration requires session restart | Config changes do not hot-apply | Dispose and recreate session via Configuration page             |
 
 ## Object Diff integration
 
@@ -30,4 +30,4 @@
 
 ## Reporting
 
-File new issues at https://github.com/JayOnCode/joc/issues with the `object-diff-playground` label.
+File new issues at https://github.com/itsjayoncode/joc/issues with the `object-diff-playground` label.

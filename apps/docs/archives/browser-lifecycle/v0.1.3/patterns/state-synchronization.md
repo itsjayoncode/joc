@@ -10,4 +10,4 @@ Share readonly snapshot fields across tabs with explicit messages.
 
 ## Playground
 
-[State Explorer](http://127.0.0.1:4273/state) · [Cross Tab Playground](http://127.0.0.1:4273/cross-tab)
+[State Explorer](/playground/browser-lifecycle/state) · [Cross Tab Playground](/playground/browser-lifecycle/cross-tab)

@@ -39,4 +39,4 @@ Production guidance for Browser Lifecycle adoption.
 
 ## Playground
 
-Validate recommendations interactively at [http://127.0.0.1:4273](http://127.0.0.1:4273).
+Validate recommendations interactively at [/playground/browser-lifecycle](/playground/browser-lifecycle).

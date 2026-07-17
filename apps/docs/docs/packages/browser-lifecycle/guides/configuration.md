@@ -42,7 +42,7 @@ Configuration is fixed for the lifetime of a running session. To apply new setti
 1. `dispose()` the current session
 2. Create a new session with updated configuration
 
-Validate changes interactively in the [Configuration Playground](http://127.0.0.1:4273/configuration).
+Validate changes interactively in the [Configuration Playground](/playground/browser-lifecycle/configuration).
 
 ## Related APIs
 

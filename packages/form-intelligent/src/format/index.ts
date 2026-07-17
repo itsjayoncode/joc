@@ -16,24 +16,24 @@ export {
 } from "./registry.js";
 export type { BuiltinFormatterName } from "./registry.js";
 export {
-  creditCard,
+  formatCreditCard,
   creditCardParser,
-  currency,
+  formatCurrency,
   currencyParser,
-  custom,
+  formatCustom,
   customFormatter,
   customParser,
-  lowercase,
+  formatLowercase,
   lowercaseParser,
-  philippinePhone,
+  formatPhilippinePhone,
   philippinePhoneParser,
-  phone,
+  formatPhone,
   phoneParser,
-  slug,
+  formatSlug,
   slugParser,
   trim,
   trimParser,
-  uppercase,
+  formatUppercase,
   uppercaseParser,
 } from "./formatters/index.js";
 export { resolveFormatPreset } from "./presets.js";

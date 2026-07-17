@@ -122,6 +122,8 @@ export default tseslint.config(
       "packages/form-intelligent*/**/*.{test,spec}.tsx",
       "packages/form-intelligent*/**/*.browser.test.ts",
       "packages/form-intelligent*/**/*.browser.test.tsx",
+      "packages/form-intelligent*/**/tests/contracts/**/*.ts",
+      "packages/**/*.contract.ts",
       "tests/**/*.{ts,tsx}",
       "test-utils/**/*.{ts,tsx}",
       "scripts/doc-versioning-policy.ts",

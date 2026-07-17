@@ -1,7 +1,7 @@
 ---
 title: Playground Dashboard
 description: Interactive playground documentation for Playground Dashboard.
-playground: "http://127.0.0.1:4273/"
+playground: "/playground/browser-lifecycle/"
 ---
 
 # Browser Lifecycle Playground

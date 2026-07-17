@@ -8,6 +8,16 @@ Browser session, keyboard shortcuts, analytics, and DevTools — attach with plu
 [Integrations →](/playground/form-intelligent/integrations) · [Plugins →](/playground/form-intelligent/plugins) · [DevTools →](/playground/form-intelligent/devtools)
 :::
 
+## Import path
+
+| Feature                               | Import                                                                  |
+| ------------------------------------- | ----------------------------------------------------------------------- |
+| Lifecycle + keyboard plugins          | `@jayoncode/form-intelligent/plugins`                                   |
+| DevTools inspector                    | `@jayoncode/form-intelligent/devtools` only                             |
+| Analytics / offline / history helpers | Prefer `workflow` config; optional `/analytics`, `/offline`, `/history` |
+
+Canonical table: [Entrypoints & subpaths](/packages/form-intelligent/modules/entrypoints).
+
 ## Browser lifecycle (draft on hide)
 
 Optional peer: `@jayoncode/browser-lifecycle`.
@@ -21,14 +31,14 @@ const form = createForm({
   workflow: {
     draft: { enabled: true, storageKey: "editor-draft" },
   },
+  plugins: [
+    createBrowserLifecyclePlugin({
+      saveDraftOnHidden: true,
+      flushOfflineQueueOnOnline: true,
+    }),
+  ],
 });
-
-form.use(
-  createBrowserLifecyclePlugin({
-    saveDraftOnHidden: true,
-    flushOfflineQueueOnOnline: true,
-  }),
-);
+// Or after create: form.use(createBrowserLifecyclePlugin({ ... }));
 ```
 
 When the tab is hidden, the plugin calls `form.saveDraft()`. When connectivity returns, it can flush `workflow.offlineQueue`.
@@ -73,20 +83,27 @@ form.use(
 
 ## Analytics
 
+Form UX metrics only — **not** a product analytics SDK (no pageviews, funnels-as-a-service, or vendor lock-in). Snapshots never include field **values**.
+
 ```ts
 createForm({
-  initialValues: { email: "" },
+  initialValues: { email: "", ssn: "" },
   workflow: {
-    analytics: { enabled: true },
+    analytics: {
+      enabled: true,
+      excludePaths: ["ssn"], // path denylist
+      // includePaths: ["email"], // deny-by-default allowlist
+    },
   },
 });
 
 const snap = form.getAnalytics();
 // startedAt, completedAt, errorCount, errorsByField,
-// fieldViews, dropOffField, abandonedAt, currentStep
+// fieldViews, dropOffField, abandonedAt, currentStep,
+// timeToCompleteMs, timeToFirstErrorMs
 ```
 
-Use for drop-off diagnosis and field-level error heatmaps — not a replacement for product analytics SDKs.
+Use for drop-off diagnosis and field-level error heatmaps. Export to Segment/GA yourself if needed — scrub paths before network.
 
 ---
 
@@ -97,16 +114,37 @@ import {
   connectFormDevToolsToGlobal,
   enableFormDevTools,
   getFormDevTools,
+  redactFormStateSnapshot,
 } from "@jayoncode/form-intelligent/devtools";
 
 enableFormDevTools(form);
 connectFormDevToolsToGlobal();
 
-getFormDevTools().getActiveForms();
-getFormDevTools().getStateSnapshot(form.id);
+const inspector = getFormDevTools();
+inspector.getActiveForms();
+inspector.getStateSnapshot(form.id);
+inspector.getPlugins(form.id);
+inspector.getPerformanceMarks(form.id);
 ```
 
-Playground DevTools mirrors this inspector: event log, validation log, workflow timeline, export/import state.
+Playground DevTools (`/playground/form-intelligent/devtools`) consumes this inspector: event log, validation log, workflow timeline, plugins, performance marks, export/import state.
+
+### Production redaction
+
+- **Never** enable DevTools by default in production builds — opt in explicitly (local, staging, or a feature flag).
+- Import only `@jayoncode/form-intelligent/devtools` (optional subpath). Core `createForm` does not pull it into the login bundle.
+- Prefer metadata-only recording (`captureStateOnWorkflowEvents` defaults to `false`).
+- When capturing state, `redactValues` defaults to `true` (values become `***`).
+- For exports/logs use `redactFormStateSnapshot` / `redactValuesRecord` before sending anywhere.
+
+```ts
+enableFormDevTools(form, {
+  captureStateOnWorkflowEvents: true, // opt-in
+  redactValues: true, // default
+});
+
+const safe = redactFormStateSnapshot(form.getFormState());
+```
 
 A dedicated browser extension is planned (Phase 5.4.8).
 
@@ -114,13 +152,6 @@ A dedicated browser extension is planned (Phase 5.4.8).
 
 ## Subpath imports
 
-| Subpath                                 | Use for                                                                                                                                                            |
-| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `@jayoncode/form-intelligent/plugins`   | Lifecycle + keyboard plugins                                                                                                                                       |
-| `@jayoncode/form-intelligent/devtools`  | Inspector API                                                                                                                                                      |
-| `@jayoncode/form-intelligent/analytics` | Analytics helpers                                                                                                                                                  |
-| `@jayoncode/form-intelligent/offline`   | Offline queue primitives                                                                                                                                           |
-| `@jayoncode/form-intelligent/history`   | Undo/redo primitives                                                                                                                                               |
-| `@jayoncode/form-intelligent/rules`     | `when` + rule helpers — use when you want an explicit rules entry (see [Rules → Which import](/packages/form-intelligent/modules/rules#which-import-should-i-use)) |
+For the complete main-vs-subpath map (including `/format`, `/middleware`, `/presentation`, …), see [Entrypoints & subpaths](/packages/form-intelligent/modules/entrypoints). Rules dual-export notes: [Rules → Which import](/packages/form-intelligent/modules/rules#which-import-should-i-use).
 
 **Next:** [Adapters](/packages/form-intelligent/modules/adapters) — React, Vue, Zod, and core interfaces.

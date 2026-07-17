@@ -10,7 +10,7 @@ No. Use input-shaped configuration objects. Passing resolved configuration can t
 
 ## Playground
 
-[Configuration Playground](http://127.0.0.1:4273/configuration)
+[Configuration Playground](/playground/browser-lifecycle/configuration)
 
 ## Related guide
 

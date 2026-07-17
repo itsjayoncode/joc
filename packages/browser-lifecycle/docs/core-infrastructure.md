@@ -8,6 +8,18 @@ Configuration, capability detection, and SSR-safe utilities.
 [Open Configuration playground →](/playground/browser-lifecycle/configuration) — tweak options and inspect capabilities.
 :::
 
+## Import path
+
+```ts
+import {
+  createBrowserLifecycle,
+  createBrowserLifecycleConfig,
+  supportsVisibility,
+} from "@jayoncode/browser-lifecycle";
+```
+
+Single entry. SSR: probe capabilities and construct the session on the client.
+
 ## Problem → approach
 
 | Typical pain                          | Core infrastructure                                         |

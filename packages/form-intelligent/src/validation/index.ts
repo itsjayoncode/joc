@@ -15,6 +15,7 @@ export {
   custom,
   asyncValidator,
   isAsyncValidator,
+  getAsyncValidatorOptions,
   normalizeValidatorResult,
   runValidator,
   runFieldValidators,
@@ -22,6 +23,7 @@ export {
 } from "./validators/index.js";
 export type {
   AsyncValidator,
+  AsyncValidatorWithOptions,
   NumberValidatorOptions,
   DateValidatorOptions,
   CurrencyValidatorOptions,
@@ -35,6 +37,12 @@ export {
 } from "./pipeline.js";
 export type { ValidationPipelineInput } from "./pipeline.js";
 export { AsyncValidationManager } from "./async-validator.js";
+export {
+  parseTtl,
+  clearSharedValidationCaches,
+  resolveAsyncDebounceMs,
+  defaultAsyncCacheKey,
+} from "./async/index.js";
 export {
   matchesField,
   requiredWhen,
