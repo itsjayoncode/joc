@@ -93,6 +93,10 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      # Required for npm Trusted Publishing (OIDC). Configure each package on npmjs.com:
+      # Package → Settings → Trusted Publisher → GitHub Actions
+      # org/user: itsjayoncode · repo: joc · workflow: ci.yml
+      id-token: write
 
     steps:
       - name: Checkout repository
@@ -108,7 +112,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # Trusted Publishing needs Node >= 22.14 and npm >= 11.5.1.
+          node-version: 22
           cache: pnpm
           registry-url: https://registry.npmjs.org
 
@@ -124,7 +129,8 @@ jobs:
           title: "chore(release): version packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Optional fallback while migrating to Trusted Publishing.
+          # Granular token must have "Bypass two-factor authentication" enabled
+          # or CI will fail with EOTP.
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          # setup-node registry-url auth reads NODE_AUTH_TOKEN (not NPM_TOKEN).
-          # Missing this causes misleading E404 on scoped package publish.
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
