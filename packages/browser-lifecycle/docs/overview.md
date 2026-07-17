@@ -2,6 +2,29 @@
 
 Typed browser session lifecycle — visibility, focus, connectivity, idle detection, cross-tab sync, and plugins in one headless API.
 
+## When to use
+
+- Pause media/polling when the tab hides; resume on visible
+- Idle / session-timeout UX, connectivity-aware sync, cross-tab leadership
+- One shared session instead of scattered `document` / `window` listeners
+
+## When not to use
+
+- You only need a one-off `visibilitychange` in a tiny page (raw API may be enough)
+- Server-only Node services with no browser globals — create the session in the client bootstrap
+- Full product analytics SDKs — this normalizes lifecycle signals; export metrics yourself
+
+## Features
+
+- Visibility, focus, connectivity, idle, and cross-tab modules behind one session
+- Typed `on()` events + readonly `getSnapshot()`
+- SSR-safe capability detection before modules attach
+- Plugins and opt-in intelligence modules (activity, presence, timeline, …)
+
+## Single entrypoint
+
+Everything imports from `@jayoncode/browser-lifecycle` (no feature subpaths). Tree-shaking still applies to unused exports.
+
 ## Install
 
 ```bash
@@ -64,6 +87,14 @@ One instance per tab replaces scattered `document` / `window` listeners with typ
 | Diagnostics | `getRuntimeDiagnostics()` for development |
 
 Designed for SSR-safe capability detection and framework-agnostic integration (React, Vue, vanilla, etc.).
+
+::: warning Always dispose
+Call `await lifecycle.dispose()` on route unmount or app shutdown. Disposed sessions must not be reused — create a new instance.
+:::
+
+::: tip SSR
+Construct and `start()` only in the browser (or after hydration). Capability detection avoids crashing when `document` / `window` are missing; listeners still need a client environment.
+:::
 
 ## Documentation path
 

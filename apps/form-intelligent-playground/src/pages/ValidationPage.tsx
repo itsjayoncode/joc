@@ -13,10 +13,10 @@ import { useEventLog } from "../hooks/useEventLog.js";
 import { useFormSnapshot } from "../hooks/useFormSnapshot.js";
 import {
   createForm,
-  currency,
+  formatCurrency,
   email,
   minLength,
-  phone,
+  formatPhone,
   regex,
   required,
 } from "../lib/form-intelligent.js";
@@ -81,7 +81,7 @@ export function ValidationPage() {
       <ExplainPanel title="What you are testing">
         <ul className={styles.logList}>
           <li>Built-in validators: required, email, minLength, currency</li>
-          <li>Phone formatting via field().format(phone)</li>
+          <li>Phone formatting via field format: formatPhone</li>
           <li>Async username availability (simulated API delay)</li>
           <li>Cross-field confirm password rule</li>
           <li>Validation timing: onChange, onBlur, or onSubmit</li>
@@ -142,7 +142,7 @@ export function ValidationPage() {
                 <input
                   className={styles.textInput}
                   onChange={(event) => {
-                    form.field("phone", { format: phone }).setValue(event.target.value);
+                    form.field("phone", { format: formatPhone }).setValue(event.target.value);
                     push("change phone");
                   }}
                   value={toInputValue(form.values("phone"))}
@@ -157,7 +157,7 @@ export function ValidationPage() {
                 <input
                   className={styles.textInput}
                   onChange={(event) => {
-                    form.field("amount", { format: currency }).setValue(event.target.value);
+                    form.field("amount", { format: formatCurrency }).setValue(event.target.value);
                     push("change amount");
                   }}
                   value={toInputValue(form.values("amount"))}

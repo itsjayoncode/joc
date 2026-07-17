@@ -5,6 +5,7 @@ export {
   when,
   WhenRuleBuilder,
   WorkflowError,
+  RULE_EVALUATION_ORDER,
 } from "../engines/workflow/index.js";
 export type {
   CalculateOptions,
@@ -15,6 +16,7 @@ export type {
   FormRuleDefinition,
   FormUiState,
   RuleContext,
+  RuleEvaluationOrder,
 } from "../engines/workflow/index.js";
 
 import { evaluateFormRules } from "../engines/workflow/index.js";

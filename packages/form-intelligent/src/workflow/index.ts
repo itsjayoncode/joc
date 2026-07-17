@@ -3,7 +3,15 @@ export type { AutosaveHooks } from "./autosave.js";
 export { clearDraft, DraftManager, loadDraft, resolveDraftStorage, saveDraft } from "./drafts.js";
 export type { DraftRestoreResult } from "./drafts.js";
 export { assertStepIndex, getStepFields, resolveWizardState, WizardNavigator } from "./wizard.js";
-export type { WizardNavigatorOptions } from "./wizard.js";
+export type { WizardNavigatorOptions, GoToOptions } from "./wizard.js";
+export type {
+  WizardConfig,
+  WizardStep,
+  WizardGuardContext,
+  WizardNavigateValidation,
+  WizardStepGraph,
+  WizardStepGraphNode,
+} from "../engines/workflow/types.js";
 export {
   evaluateConditionalUi,
   evaluateFormRules,
@@ -12,6 +20,7 @@ export {
   when,
   WhenRuleBuilder,
   WorkflowError,
+  RULE_EVALUATION_ORDER,
 } from "./conditional.js";
 export type {
   CalculateOptions,
@@ -23,6 +32,7 @@ export type {
   FormRuleDefinition,
   FormUiState,
   RuleContext,
+  RuleEvaluationOrder,
 } from "./conditional.js";
 export {
   buildFieldDependencyGraph,
@@ -38,7 +48,4 @@ export {
   UndoRedoController,
   ValueHistoryStack,
 } from "./undo-redo.js";
-export { createBrowserLifecyclePlugin } from "../integrations/browser-lifecycle.js";
-export { createBrowserLifecyclePlugin as browserLifecycleWorkflowPlugin } from "../integrations/browser-lifecycle.js";
-export type { BrowserLifecycleIntegrationOptions } from "../integrations/browser-lifecycle.js";
-export type { WizardConfig, WizardStep } from "../engines/workflow/types.js";
+// browser-lifecycle plugin lives on `/plugins` — do not re-export here (keeps core-login tree-shakeable).

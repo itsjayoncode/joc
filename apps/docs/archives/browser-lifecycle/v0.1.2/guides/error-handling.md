@@ -25,7 +25,7 @@ lifecycle.on("plugin:error", (event) => {
 
 ## Listener errors
 
-Typed event infrastructure isolates listener failures. Use the [Event Explorer](http://127.0.0.1:4273/events) to confirm delivery order when debugging.
+Typed event infrastructure isolates listener failures. Use the [Event Explorer](/playground/browser-lifecycle/events) to confirm delivery order when debugging.
 
 ## Production recommendations
 

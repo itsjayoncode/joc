@@ -4,23 +4,23 @@ Form Intelligent follows the same packaging model as **Browser Lifecycle**: one 
 
 ## Package family
 
-| Package                                  | Role                                                                              | Status                |
-| ---------------------------------------- | --------------------------------------------------------------------------------- | --------------------- |
-| `@jayoncode/form-intelligent`            | Core engine — `createForm`, schema, DOM enhancer, validation, submit, module host | **Shipped**           |
-| `@jayoncode/form-intelligent/validation` | Subpath — validators + pipeline                                                   | **Shipped** (subpath) |
-| `@jayoncode/form-intelligent/rules`      | Subpath — `when()`, rule evaluation                                               | **Shipped** (subpath) |
-| `@jayoncode/form-intelligent/format`     | Subpath — formatters + presets                                                    | **Shipped** (subpath) |
-| `@jayoncode/form-intelligent/offline`    | Subpath — offline queue module                                                    | **Shipped** (subpath) |
-| `@jayoncode/form-intelligent/analytics`  | Subpath — analytics module                                                        | **Shipped** (subpath) |
-| `@jayoncode/form-intelligent-react`      | React — `useForm()`, `form.form()`, `form.field()`, `form.submit()`               | **Shipped**           |
-| `@jayoncode/form-intelligent-zod`        | Zod — `zodAdapter()` schema bridge                                                | **Shipped**           |
-| `@jayoncode/form-intelligent-yup`        | Yup — `yupAdapter()` schema bridge                                                | **Shipped**           |
-| `@jayoncode/form-intelligent-valibot`    | Valibot — `valibotAdapter()` schema bridge                                        | **Shipped**           |
-| `@jayoncode/form-intelligent-ajv`        | AJV — `ajvAdapter()` JSON Schema bridge                                           | **Shipped**           |
-| `@jayoncode/form-intelligent-vue`        | Vue — composables (`useForm`, `provideForm`, `useField`)                          | **Shipped**           |
-| `@jayoncode/form-intelligent-angular`    | Angular — `FormService`, signals, `fiForm` / `fiField` directives                 | **Shipped**           |
+| Package                                  | Role                                                                              | Status                                 |
+| ---------------------------------------- | --------------------------------------------------------------------------------- | -------------------------------------- |
+| `@jayoncode/form-intelligent`            | Core engine — `createForm`, schema, DOM enhancer, validation, submit, module host | **Shipped**                            |
+| `@jayoncode/form-intelligent/validation` | Subpath — validators + pipeline                                                   | **Shipped** (subpath)                  |
+| `@jayoncode/form-intelligent/rules`      | Subpath — `when()`, rule evaluation                                               | **Shipped** (subpath)                  |
+| `@jayoncode/form-intelligent/format`     | Subpath — formatters + presets                                                    | **Shipped** (subpath)                  |
+| `@jayoncode/form-intelligent/offline`    | Subpath — offline queue module                                                    | **Shipped** (subpath)                  |
+| `@jayoncode/form-intelligent/analytics`  | Subpath — analytics module                                                        | **Shipped** (subpath)                  |
+| `@jayoncode/form-intelligent-react`      | React — `useForm()`, `form.form()`, `form.field()`, `form.submit()`               | **Shipped**                            |
+| `@jayoncode/form-intelligent-zod`        | Zod — `zodAdapter()` schema bridge                                                | **Shipped**                            |
+| `@jayoncode/form-intelligent-yup`        | Yup — `yupAdapter()` schema bridge                                                | **Shipped**                            |
+| `@jayoncode/form-intelligent-valibot`    | Valibot — `valibotAdapter()` schema bridge                                        | **Shipped**                            |
+| `@jayoncode/form-intelligent-ajv`        | AJV — `ajvAdapter()` JSON Schema bridge                                           | **Shipped**                            |
+| `@jayoncode/form-intelligent-vue`        | Vue — composables (`useForm`, `provideForm`, `useField`)                          | **PARTIAL** (aria/controllers pending) |
+| `@jayoncode/form-intelligent-angular`    | Angular — `FormService`, signals, `fiForm` / `fiField` directives                 | **PARTIAL** (aria/controllers pending) |
 
-Schema bridges (Zod, Yup, Valibot, AJV) and devtools ship as separate optional packages — same pattern as Browser Lifecycle plugins.
+Schema bridges (Zod, Yup, Valibot, AJV) ship as satellite packages. **DevTools** is an optional **subpath** of core (`@jayoncode/form-intelligent/devtools`) — not a separate npm package.
 
 ## Dependency rules
 

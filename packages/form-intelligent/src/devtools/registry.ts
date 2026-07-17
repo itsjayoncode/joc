@@ -2,6 +2,8 @@ import { FormDevToolsSession } from "./session.js";
 
 import type {
   DevToolsEventRecord,
+  DevToolsPerformanceMark,
+  DevToolsPluginInfo,
   DevToolsValidationRecord,
   DevToolsWorkflowEvent,
   FormDevToolsInspector,
@@ -63,6 +65,14 @@ export class FormDevToolsRegistry implements FormDevToolsInspector {
 
   public getWorkflowTimeline(formId: string): readonly DevToolsWorkflowEvent[] {
     return this.sessions.get(formId)?.getWorkflowTimeline() ?? [];
+  }
+
+  public getPerformanceMarks(formId: string): readonly DevToolsPerformanceMark[] {
+    return this.sessions.get(formId)?.getPerformanceMarks() ?? [];
+  }
+
+  public getPlugins(formId: string): readonly DevToolsPluginInfo[] {
+    return this.sessions.get(formId)?.getPlugins() ?? [];
   }
 
   public getStateSnapshot(formId: string): FormState<Record<string, unknown>> | null {

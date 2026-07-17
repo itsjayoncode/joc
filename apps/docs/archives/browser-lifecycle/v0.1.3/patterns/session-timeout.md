@@ -17,4 +17,4 @@ Reset the warning when the user interacts; do not rely on idle alone for securit
 
 ## Playground
 
-[Idle Playground](http://127.0.0.1:4273/idle)
+[Idle Playground](/playground/browser-lifecycle/idle)

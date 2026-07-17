@@ -4,6 +4,12 @@ Thin event DSL for declarative reactions. Handler errors are isolated from the s
 
 **Previous:** [Wait helpers](./wait.md) · **Next:** [Resilience](./resilience.md)
 
+## Import path
+
+```ts
+import { createBrowserLifecycle, createConditionsApi } from "@jayoncode/browser-lifecycle";
+```
+
 ## Usage
 
 ```ts

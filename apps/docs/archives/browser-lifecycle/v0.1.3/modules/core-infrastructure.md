@@ -1,7 +1,7 @@
 ---
 title: Core Infrastructure
 description: Browser Lifecycle module documentation for Core Infrastructure.
-playground: "http://127.0.0.1:4273/configuration"
+playground: "/playground/browser-lifecycle/configuration"
 ---
 
 # Core Infrastructure

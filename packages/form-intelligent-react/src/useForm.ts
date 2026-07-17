@@ -1,6 +1,6 @@
 import { useEffect, useRef, useSyncExternalStore } from "react";
 
-import { createForm } from "@jayoncode/form-intelligent";
+import { createForm, createFormController } from "@jayoncode/form-intelligent";
 import type { FieldPath } from "@jayoncode/form-intelligent";
 
 import type { UseFormConfig, UseFormReturn } from "./types.js";
@@ -15,6 +15,7 @@ export function useForm<TValues extends Record<string, unknown>>(
   }
 
   const instance = instanceRef.current;
+  const controller = createFormController(instance);
   const state = useSyncExternalStore(
     (listener) => instance.subscribe(listener),
     () => instance.getSnapshot(),
@@ -30,26 +31,40 @@ export function useForm<TValues extends Record<string, unknown>>(
 
   return {
     instance,
+    controller,
     state,
     ref: instance.ref,
     form: () => ({
       ref: instance.ref,
       noValidate: true,
     }),
-    field: (path: FieldPath) => ({
-      name: path,
-    }),
+    field: (path: FieldPath) => {
+      const handle = instance.field(path);
+      const attrs = handle.aria.attributes;
+      return {
+        name: path,
+        "aria-invalid": attrs["aria-invalid"],
+        ...(attrs["aria-required"] === undefined
+          ? {}
+          : { "aria-required": attrs["aria-required"] }),
+        ...(attrs["aria-describedby"] === undefined
+          ? {}
+          : { "aria-describedby": attrs["aria-describedby"] }),
+      };
+    },
+    fieldController: (path: FieldPath) => instance.field(path),
     submit: () => ({
-      type: "submit",
+      type: "submit" as const,
       ...(state.isSubmitting || state.formUi.submitDisabled
-        ? { disabled: true, ...(state.isSubmitting ? { "aria-busy": true } : {}) }
+        ? { disabled: true, ...(state.isSubmitting ? { "aria-busy": true as const } : {}) }
         : {}),
     }),
     submitButton: () => ({
-      type: "submit",
+      type: "submit" as const,
       ...(state.isSubmitting || state.formUi.submitDisabled
-        ? { disabled: true, ...(state.isSubmitting ? { "aria-busy": true } : {}) }
+        ? { disabled: true, ...(state.isSubmitting ? { "aria-busy": true as const } : {}) }
         : {}),
     }),
+    focusFirstInvalid: () => instance.focusFirstInvalid(),
   };
 }

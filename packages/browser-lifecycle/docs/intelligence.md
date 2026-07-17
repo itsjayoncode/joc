@@ -12,6 +12,10 @@ createActivityApi(lifecycle); // cost starts here
 
 Nothing allocates on `createBrowserLifecycle()` until you call a factory. That keeps the default session lean (ADR: zero cost when disabled).
 
+## Import path
+
+All intelligence factories export from `@jayoncode/browser-lifecycle` (single entry). Always `dispose()` the core session; factories do not replace teardown.
+
 ## Map
 
 | Layer        | Factory                   | Purpose                           |

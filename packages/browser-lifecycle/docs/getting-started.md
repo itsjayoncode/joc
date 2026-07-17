@@ -1,6 +1,6 @@
 # Tutorial — your first session
 
-Install, start a session, subscribe to events, read snapshot state, dispose.
+Install, start a session, subscribe to events, read snapshot state, dispose. Progressive path: **Basic** (this page) → [Concepts](/packages/browser-lifecycle/modules/concepts) → [Visibility](/packages/browser-lifecycle/modules/visibility) / [Events](/packages/browser-lifecycle/modules/events).
 
 **Previous:** [Core concepts](/packages/browser-lifecycle/modules/concepts) · **Next:** [Visibility](/packages/browser-lifecycle/modules/visibility)
 
@@ -9,6 +9,14 @@ Install, start a session, subscribe to events, read snapshot state, dispose.
 :::
 
 **Prerequisites:** Node 20+, browser or SSR-aware bootstrap.
+
+### Learning path
+
+| Level        | Doc                                                                                                                                | Playground                                                                                            |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Basic        | This tutorial                                                                                                                      | [Visibility](/playground/browser-lifecycle/visibility)                                                |
+| Intermediate | [Events](/packages/browser-lifecycle/modules/events) · [Session core](/packages/browser-lifecycle/modules/session-core)            | [Events](/playground/browser-lifecycle/events) · [Lifecycle](/playground/browser-lifecycle/lifecycle) |
+| Production   | [Core infrastructure](/packages/browser-lifecycle/modules/core-infrastructure) · [Usage](/packages/browser-lifecycle/guides/usage) | [Configuration](/playground/browser-lifecycle/configuration)                                          |
 
 ---
 

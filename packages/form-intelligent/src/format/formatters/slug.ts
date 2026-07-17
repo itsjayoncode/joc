@@ -1,6 +1,6 @@
 import type { Formatter } from "../types.js";
 
-export const slug: Formatter = (value) =>
+export const formatSlug: Formatter = (value) =>
   typeof value === "string"
     ? value
         .trim()
@@ -9,4 +9,4 @@ export const slug: Formatter = (value) =>
         .replace(/^-+|-+$/g, "")
     : value;
 
-export const slugParser: Formatter = slug;
+export const slugParser: Formatter = formatSlug;

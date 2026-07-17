@@ -22,4 +22,4 @@ Creating a new session on every render or route change without disposing the pre
 
 ## Playground
 
-Inspect phase transitions in the [Lifecycle Playground](http://127.0.0.1:4273/lifecycle).
+Inspect phase transitions in the [Lifecycle Playground](/playground/browser-lifecycle/lifecycle).

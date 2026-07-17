@@ -1,6 +1,6 @@
 import type { Formatter, Parser } from "../types.js";
 
-export const phone: Formatter = (value) => {
+export const formatPhone: Formatter = (value) => {
   if (typeof value !== "string") {
     return value;
   }

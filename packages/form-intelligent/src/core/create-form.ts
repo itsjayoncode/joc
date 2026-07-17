@@ -17,21 +17,52 @@ import { isSchemaAdapter } from "../adapters/is-schema-adapter.js";
 import { discoverFieldNames } from "../dom/discover-fields.js";
 import { attachDomEnhancer } from "../dom/enhance-form.js";
 import { readNamedFieldValue } from "../dom/field-value.js";
+import {
+  CalculationBuilderImpl,
+  detectCalculationCycles,
+  MAX_CALCULATION_PASSES,
+  runCalculations as runCalculationPass,
+  type CalculationDefinition,
+} from "../engines/calculation/index.js";
+import {
+  createDependencyRegistrar,
+  DependencyEngine,
+  type DependencyMap,
+  type DependencyRegistrar,
+} from "../engines/dependency/index.js";
+import {
+  buildPresentationState,
+  resolveFieldUi,
+  type PresentationSnapshot,
+  type PresentationState,
+} from "../engines/presentation/index.js";
+import {
+  runTransformInbound,
+  TransformEngine,
+  type TransformFn,
+  type TransformPipelineHandle,
+} from "../engines/transform/index.js";
 import { WhenRuleBuilder } from "../engines/workflow/when.js";
+import { ConfigurationError } from "../errors/index.js";
+import { createFieldHandle } from "../fields/field-handle.js";
 import { formatFieldValue as runFieldFormatPipeline } from "../format/pipeline.js";
 import { registerConfiguredModules } from "../modules/register-configured.js";
 import { resolveHookResult } from "../plugins/hooks.js";
+import { MiddlewarePipeline } from "../plugins/middleware.js";
 import { PluginRegistry } from "../plugins/registry.js";
 import { compileSchema } from "../schema/compiler.js";
 import { FormStateStore } from "../state/store.js";
 import { SubmissionOrchestrator } from "../submission/submit.js";
+import { ASYNC_VALIDATOR_OPTION_DEFAULTS } from "../types/async-validation.js";
 import { cloneValue, createId, getIn, setIn } from "../utils/index.js";
+import { resolveAsyncDebounceMs } from "../validation/async/run-with-options.js";
 import { AsyncValidationManager } from "../validation/async-validator.js";
 import {
   listAllPaths,
   mergePathValidationErrors,
   runValidationPipeline,
 } from "../validation/pipeline.js";
+import { getAsyncValidatorOptions } from "../validation/validators/custom.js";
 import {
   AutosaveScheduler,
   buildWorkflowProgress,
@@ -42,20 +73,21 @@ import {
 } from "../workflow/index.js";
 
 import type { ResolvedFormConfig } from "./options.js";
-import type { CalculationDefinition } from "../engines/workflow/calculations.js";
 import type {
   FieldUiMap,
   FormRuleDefinition,
   FormUiState,
   FieldOption,
 } from "../engines/workflow/types.js";
+import type { MiddlewareInput } from "../plugins/middleware.js";
 import type { FormCoreState } from "../state/store.js";
 import type {
-  FieldBinding,
+  CreateCheckpointOptions,
   FieldHandle,
   FieldOptions,
   FieldPath,
   FieldState,
+  FormCheckpoint,
   FormConfig,
   FormEvent,
   FormInstance,
@@ -64,8 +96,11 @@ import type {
   FormSelector,
   FormState,
   ResetOptions,
+  RestoreCheckpointOptions,
   SetValueOptions,
   SubmitOptions,
+  SubmitPhase,
+  RestoreDraftOptions,
   ValidateOptions,
   Validator,
   WorkflowState,
@@ -98,9 +133,19 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
   private formUi: FormUiState = { submitDisabled: false };
   private fieldOptionsState: Record<FieldPath, readonly FieldOption[]> = {};
   private readonly calculations: CalculationDefinition<TValues>[] = [];
+  private readonly calculationMemo = new Map<FieldPath, string>();
+  private readonly transformEngine = new TransformEngine();
   private readonly asyncValidation = new AsyncValidationManager(300);
+  private readonly dependencyEngine = new DependencyEngine();
+  private readonly populateGenerations = new Map<FieldPath, number>();
   private readonly submission = new SubmissionOrchestrator<TValues>();
-  private readonly pluginRegistry = new PluginRegistry<TValues>();
+  private readonly pluginRegistry: PluginRegistry<TValues>;
+  private readonly middleware = new MiddlewarePipeline<TValues>();
+  private readonly ariaIds = new Map<
+    FieldPath,
+    import("../engines/accessibility/types.js").FieldAriaIds
+  >();
+  private submitPhase: SubmitPhase = "idle";
   private readonly runtimeRules: FormRuleDefinition<TValues>[] = [];
   private readonly baseRules: readonly FormRuleDefinition<TValues>[];
   private workflowEnginePromise: ReturnType<typeof loadWorkflowEngine> | null = null;
@@ -133,6 +178,9 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
   ) {
     this.id = createId("form");
     this.config = normalizeFormConfig(config);
+    this.pluginRegistry = new PluginRegistry<TValues>(
+      this.config.onPluginError ? { onPluginError: this.config.onPluginError } : {},
+    );
     this.offlineStorageKey = this.config.workflow?.offlineQueue?.storageKey ?? `${this.id}:offline`;
     this.moduleHost = new FormModuleHost(this, this.config, this.events, this.pluginRegistry);
     this.baseRules = (config.rules ?? []).map((rule) =>
@@ -147,14 +195,17 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
 
     const draftKey = this.config.workflow?.draft?.storageKey ?? `${this.id}:draft`;
     const draftConfig = this.config.workflow?.draft;
-    this.draftManager = new DraftManager(draftConfig, draftKey);
-    const { values: initialValues, restored: draftRestored } =
-      this.draftManager.resolveInitialValues(cloneValue(this.config.initialValues));
+    this.draftManager = new DraftManager(draftConfig, draftKey, { formId: this.id });
+    const {
+      values: initialValues,
+      restored: draftRestored,
+      workflow: draftWorkflow,
+    } = this.draftManager.resolveInitialValues(cloneValue(this.config.initialValues));
 
     this.store = new FormStateStore({
       values: initialValues,
       defaultValues: cloneValue(this.config.initialValues),
-      currentStep: this.config.workflow?.wizard?.initialStep ?? 0,
+      currentStep: draftWorkflow?.currentStep ?? this.config.workflow?.wizard?.initialStep ?? 0,
     });
 
     this.wizardNavigator = new WizardNavigator({
@@ -163,6 +214,7 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
       setStep: (step) => {
         this.patchState({ currentStep: step });
       },
+      getValues: () => this.core.values,
       validate: (options) => this.validate(options),
     });
 
@@ -189,6 +241,9 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
       },
     );
     this.moduleHost.start();
+    for (const plugin of config.plugins ?? []) {
+      this.registerPlugin(plugin);
+    }
     if (draftRestored) {
       void this.pluginRegistry.hookBus.runOnDraftRestore({
         values: cloneValue(initialValues),
@@ -197,10 +252,60 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     this.asyncValidation.setOnValidatingChange(() => {
       this.notify();
     });
+    this.syncAsyncValidatorPathPolicies();
+    if (this.config.dependencies) {
+      this.dependencyEngine.registerMap(this.config.dependencies, {
+        ...(this.config.dependencyActions ? { actionsByChild: this.config.dependencyActions } : {}),
+      });
+    }
+    this.dependencyEngine.syncInferredFromFields(this.fieldOptions);
     this.cachedSnapshot = this.buildFormState();
 
     if (options.domTarget) {
       this.attachElement(options.domTarget, options.fieldPaths);
+    }
+  }
+
+  /** Apply per-path debounce / abortPrevious from `asyncValidator({ … })` options. */
+  private syncAsyncValidatorPathPolicies(): void {
+    const paths = new Set<FieldPath>([
+      ...this.fieldValidators.keys(),
+      ...Object.keys(this.config.validators ?? {}),
+    ]);
+
+    for (const path of paths) {
+      const configValidator = this.config.validators?.[path];
+      const fromConfig = configValidator
+        ? Array.isArray(configValidator)
+          ? [...configValidator]
+          : [configValidator]
+        : [];
+      const validators = [...(this.fieldValidators.get(path) ?? []), ...fromConfig];
+
+      let debounceMs: number | undefined;
+      let abortPrevious: boolean = ASYNC_VALIDATOR_OPTION_DEFAULTS.abortPrevious;
+      let sawOptions = false;
+
+      for (const validator of validators) {
+        const asyncOptions = getAsyncValidatorOptions(validator);
+        if (!asyncOptions) {
+          continue;
+        }
+        sawOptions = true;
+        const resolved = resolveAsyncDebounceMs(asyncOptions);
+        debounceMs = debounceMs === undefined ? resolved : Math.max(debounceMs, resolved);
+        if (asyncOptions.abortPrevious === false) {
+          abortPrevious = false;
+        }
+      }
+
+      if (sawOptions) {
+        this.asyncValidation.setPathDebounceMs(
+          path,
+          debounceMs ?? ASYNC_VALIDATOR_OPTION_DEFAULTS.debounce,
+        );
+        this.asyncValidation.setPathAbortPrevious(path, abortPrevious);
+      }
     }
   }
 
@@ -250,88 +355,76 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     this.fieldOptions.set(path, options);
     if (options.validators) {
       this.fieldValidators.set(path, options.validators);
+      this.syncAsyncValidatorPathPolicies();
     }
+    this.dependencyEngine.syncInferredFromFields(this.fieldOptions);
 
     if (getIn(this.core.values, path) === undefined && options.defaultValue !== undefined) {
       this.patchValues(path, options.defaultValue);
     }
 
-    const readValue = (): unknown => this.values(path);
-    const readError = (): string | undefined => this.errors(path) as string | undefined;
-    const readTouched = (): boolean => Boolean(this.core.touched[path]);
-    const readDirty = (): boolean => Boolean(this.core.dirty[path]);
-    const readVisited = (): boolean => Boolean(this.core.visited[path]);
-    const writeValue = (value: unknown): void => {
-      this.setValue(path, value);
-    };
-    const writeTouched = (touched = true): void => {
-      this.patchMeta(path, { touched });
-    };
-    const writeVisited = (visited = true): void => {
-      this.patchMeta(path, { visited });
-    };
-    const validateField = async (): Promise<boolean> => this.validate({ paths: [path] });
-    const emitBlur = (): void => {
-      this.events.emit("blur");
-    };
-    const emitFocus = (): void => {
-      this.events.emit("focus");
-    };
-    const validateOnBlur = (): void => {
-      void this.validate({ paths: [path], mode: "onBlur" });
-    };
-
-    return {
+    return createFieldHandle({
       path,
-      get value() {
-        return readValue();
+      getValue: () => this.values(path),
+      getError: () => this.errors(path) as string | undefined,
+      getTouched: () => Boolean(this.core.touched[path]),
+      getDirty: () => Boolean(this.core.dirty[path]),
+      getVisited: () => Boolean(this.core.visited[path]),
+      getUi: () =>
+        resolveFieldUi(path, this.fieldUi, {
+          ...(this.asyncValidation.isFieldValidating(path) ? { busy: true } : {}),
+        }),
+      getMeta: () => this.getFieldMeta(path),
+      getFieldState: () => this.getFieldState(path),
+      getAriaIds: () => this.ariaIds.get(path),
+      setAriaIds: (ids) => {
+        this.ariaIds.set(path, ids);
       },
-      get error() {
-        return readError();
+      setValue: (value) => {
+        this.setValue(path, value);
       },
-      get touched() {
-        return readTouched();
+      setTouched: (touched = true) => {
+        this.patchMeta(path, { touched });
       },
-      get dirty() {
-        return readDirty();
+      setVisited: (visited = true) => {
+        this.patchMeta(path, { visited });
       },
-      get visited() {
-        return readVisited();
+      validateField: async () => this.validate({ paths: [path] }),
+      emitBlur: () => {
+        this.events.emit("blur");
       },
-      setValue(value: unknown) {
-        writeValue(value);
+      emitFocus: () => {
+        this.events.emit("focus");
       },
-      setTouched(touched = true) {
-        writeTouched(touched);
+      validateOnBlur: () => {
+        void this.validate({ paths: [path], mode: "onBlur" });
       },
-      setVisited(visited = true) {
-        writeVisited(visited);
-      },
-      async validate() {
-        return validateField();
-      },
-      bind(): FieldBinding {
-        return {
-          name: path,
-          get value() {
-            return readValue();
-          },
-          onChange: (value: unknown) => {
-            writeValue(value);
-          },
-          onBlur: () => {
-            writeTouched(true);
-            writeVisited(true);
-            emitBlur();
-            validateOnBlur();
-          },
-          onFocus: () => {
-            writeVisited(true);
-            emitFocus();
-          },
-        };
-      },
-    };
+    });
+  }
+
+  public firstInvalidPath(): FieldPath | undefined {
+    const errors = this.core.errors;
+    for (const path of Object.keys(errors)) {
+      if (errors[path]) {
+        return path;
+      }
+    }
+    return undefined;
+  }
+
+  public focusFirstInvalid(): FieldPath | undefined {
+    const path = this.firstInvalidPath();
+    if (!path || typeof document === "undefined") {
+      return path;
+    }
+
+    const escaped =
+      typeof CSS !== "undefined" && typeof CSS.escape === "function"
+        ? CSS.escape(path)
+        : path.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+    const control = document.querySelector<HTMLElement>(`[name="${escaped}"]`);
+    control?.focus?.();
+    return path;
   }
 
   public pushField(arrayPath: FieldPath, item: unknown = {}): FieldPath {
@@ -364,15 +457,10 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
   }
 
   public async submit(options?: SubmitOptions): Promise<boolean> {
-    const preventDoubleSubmit = options?.preventDoubleSubmit !== false;
+    // Pending autosave must not race with submit persistence.
+    this.autosave.cancel();
 
-    const valid = await this.validate({ mode: "onSubmit" });
-    if (!valid) {
-      for (const path of Object.keys(this.core.errors)) {
-        this.patchMeta(path, { touched: true });
-      }
-      return false;
-    }
+    const preventDoubleSubmit = options?.preventDoubleSubmit !== false;
 
     if (preventDoubleSubmit && (this.submitInFlight || this.submission.isActive)) {
       return false;
@@ -382,96 +470,154 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
       this.submitInFlight = true;
     }
 
-    const releaseSubmitInFlight = (): void => {
-      if (preventDoubleSubmit) {
-        this.submitInFlight = false;
-      }
-    };
-
     const submitContext = {
       values: this.core.values,
       ...(options ? { options } : {}),
       success: false,
     };
 
-    if (this.config.workflow?.offlineQueue?.enabled && isNavigatorOffline()) {
-      const offline = await this.ensureOfflineService();
-      offline.ensure().enqueue(cloneValue(this.core.values));
-      this.notify();
-      submitContext.success = true;
-      await this.pluginRegistry.hookBus.runAfterSubmit(submitContext);
-      releaseSubmitInFlight();
-      return true;
-    }
-
-    if (!(await resolveHookResult(this.pluginRegistry.hookBus.runBeforeSubmit(submitContext)))) {
-      releaseSubmitInFlight();
-      return false;
-    }
-
-    this.patchState({ isSubmitting: true });
-
-    const meta = options?.includeDiff
-      ? {
-          changedFields: this.changedFields(),
-          diff: await this.diffFromDefaults(),
-        }
-      : undefined;
-
-    this.events.emit("submit");
+    this.setSubmitPhase("validating");
+    const signal = this.submission.begin();
 
     try {
-      const result = await this.submission.execute({
-        values: this.core.values,
-        submitCount: this.core.submitCount,
-        ...(meta ? { meta } : {}),
-        ...(this.config.onSubmit ? { onSubmit: this.config.onSubmit } : {}),
-        ...(this.config.onSubmitError ? { onSubmitError: this.config.onSubmitError } : {}),
-        ...(options ? { options } : {}),
-      });
-
-      if (result.cancelled) {
-        this.patchState({ isSubmitting: false });
-        releaseSubmitInFlight();
-        return false;
-      }
-
-      if (result.fieldErrors) {
-        for (const [path, message] of Object.entries(result.fieldErrors)) {
-          this.setError(path, message);
+      const valid = await this.validate({ mode: "onSubmit" });
+      if (!valid) {
+        for (const path of Object.keys(this.core.errors)) {
+          this.patchMeta(path, { touched: true });
         }
-      }
-
-      if (result.formError) {
-        this.setError("_form", result.formError);
-      }
-
-      if (!result.ok) {
-        this.patchState({ isSubmitting: false });
-        releaseSubmitInFlight();
+        this.setSubmitPhase("idle");
         return false;
       }
 
-      if (this.config.workflow?.analytics?.enabled) {
-        (await this.ensureAnalyticsService()).recordSubmitSuccess();
+      if (signal.aborted) {
+        this.setSubmitPhase("idle");
+        return false;
       }
-      this.patchState({ submitCount: result.submitCount, isSubmitting: false });
-      this.store.markSubmitted();
-      submitContext.success = true;
-      return true;
+
+      if (this.config.workflow?.offlineQueue?.enabled && isNavigatorOffline()) {
+        const offline = await this.ensureOfflineService();
+        try {
+          offline.ensure().enqueue(cloneValue(this.core.values));
+        } catch (error) {
+          this.config.onSubmitError?.(error);
+          this.setSubmitPhase("error");
+          return false;
+        }
+        this.notify();
+        submitContext.success = true;
+        await this.runAfterSubmitPipeline(submitContext, signal);
+        this.setSubmitPhase("success");
+        return true;
+      }
+
+      const beforeMw = await this.middleware.run({
+        form: this,
+        phase: "beforeSubmit",
+        signal,
+        meta: options ? { options } : {},
+      });
+      if (beforeMw.halted || signal.aborted) {
+        this.setSubmitPhase("idle");
+        return false;
+      }
+
+      if (!(await resolveHookResult(this.pluginRegistry.hookBus.runBeforeSubmit(submitContext)))) {
+        this.setSubmitPhase("idle");
+        return false;
+      }
+
+      this.setSubmitPhase("submitting");
+      this.patchState({ isSubmitting: true });
+
+      const meta = options?.includeDiff
+        ? {
+            changedFields: this.changedFields(),
+            diff: await this.diffFromDefaults(),
+          }
+        : undefined;
+
+      this.events.emit("submit");
+
+      try {
+        const result = await this.submission.execute({
+          values: this.core.values,
+          submitCount: this.core.submitCount,
+          ...(meta ? { meta } : {}),
+          ...(this.config.onSubmit ? { onSubmit: this.config.onSubmit } : {}),
+          ...(this.config.onSubmitError ? { onSubmitError: this.config.onSubmitError } : {}),
+          ...(options ? { options } : {}),
+        });
+
+        if (result.cancelled) {
+          this.patchState({ isSubmitting: false });
+          this.setSubmitPhase("idle");
+          return false;
+        }
+
+        if (result.fieldErrors) {
+          for (const [path, message] of Object.entries(result.fieldErrors)) {
+            this.setError(path, message);
+          }
+        }
+
+        if (result.formError) {
+          this.setError("_form", result.formError);
+        }
+
+        if (!result.ok) {
+          this.patchState({ isSubmitting: false });
+          this.setSubmitPhase("error");
+          await this.middleware.run({
+            form: this,
+            phase: "submitError",
+            signal,
+            meta: { fieldErrors: result.fieldErrors, formError: result.formError },
+          });
+          return false;
+        }
+
+        if (this.config.workflow?.analytics?.enabled) {
+          (await this.ensureAnalyticsService()).recordSubmitSuccess();
+        }
+        this.patchState({ submitCount: result.submitCount, isSubmitting: false });
+        this.store.markSubmitted();
+        this.draftManager.clear();
+        submitContext.success = true;
+        this.setSubmitPhase("success");
+        return true;
+      } catch (error) {
+        this.patchState({ isSubmitting: false });
+        this.setSubmitPhase("error");
+        await this.middleware.run({
+          form: this,
+          phase: "submitError",
+          signal,
+          meta: { error },
+        });
+        return false;
+      } finally {
+        await this.runAfterSubmitPipeline(submitContext, signal);
+      }
     } catch {
       this.patchState({ isSubmitting: false });
-      releaseSubmitInFlight();
+      this.setSubmitPhase("error");
       return false;
     } finally {
-      releaseSubmitInFlight();
-      await this.pluginRegistry.hookBus.runAfterSubmit(submitContext);
+      this.submission.end();
+      if (preventDoubleSubmit) {
+        this.submitInFlight = false;
+      }
     }
   }
 
   public cancelSubmit(): void {
     this.submission.cancel();
     this.patchState({ isSubmitting: false });
+    this.setSubmitPhase("idle");
+  }
+
+  public useMiddleware(middleware: MiddlewareInput<TValues>): () => void {
+    return this.middleware.use(middleware);
   }
 
   public reset(options: ResetOptions<TValues> = {}): void {
@@ -500,22 +646,55 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
       valid: false,
     };
 
-    const before = this.pluginRegistry.hookBus.runBeforeValidate(hookContext);
-    if (before === false) {
-      return Promise.resolve(false);
+    const signal = this.submission.isActive ? this.submission.signal : new AbortController().signal;
+    const usesDebouncedSchedule = targetPaths.length === 1 && mode === "onChange";
+
+    // UX: flip per-field isValidating before middleware/hook microtasks (ADR-005).
+    if (!usesDebouncedSchedule && targetPaths.length > 0) {
+      this.asyncValidation.setFieldsValidating(targetPaths, true);
+      this.patchState({ isValidating: true });
     }
 
-    if (before instanceof Promise) {
-      return before.then((allowed) => {
-        if (!allowed) {
+    const clearPrefetch = (): void => {
+      if (!usesDebouncedSchedule && targetPaths.length > 0) {
+        this.asyncValidation.setFieldsValidating(targetPaths, false);
+        this.patchState({ isValidating: false });
+      }
+    };
+
+    return this.middleware
+      .run({
+        form: this,
+        phase: "beforeValidate",
+        signal,
+        meta: { paths: targetPaths, mode },
+      })
+      .then(async (beforeMw) => {
+        if (beforeMw.halted) {
+          clearPrefetch();
           return false;
         }
 
-        return this.finishValidate(targetPaths, mode, hookContext);
-      });
-    }
+        const before = await resolveHookResult(
+          this.pluginRegistry.hookBus.runBeforeValidate(hookContext),
+        );
+        if (!before) {
+          clearPrefetch();
+          return false;
+        }
 
-    return this.finishValidate(targetPaths, mode, hookContext);
+        return this.finishValidate(targetPaths, mode, hookContext, signal);
+      })
+      .catch((error: unknown) => {
+        clearPrefetch();
+        if (
+          (error instanceof DOMException || error instanceof Error) &&
+          error.name === "AbortError"
+        ) {
+          return false;
+        }
+        throw error;
+      });
   }
 
   private finishValidate(
@@ -527,90 +706,127 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
       values: TValues;
       valid: boolean;
     },
+    signal: AbortSignal = new AbortController().signal,
   ): Promise<boolean> {
     return this.runValidatePaths(targetPaths, mode).then(async (ok) => {
       await this.pluginRegistry.hookBus.runAfterValidate({ ...hookContext, valid: ok });
+      await this.middleware.run({
+        form: this,
+        phase: "afterValidate",
+        signal,
+        meta: { paths: targetPaths, mode, valid: ok },
+      });
       return ok;
     });
+  }
+
+  private async runAfterSubmitPipeline(
+    submitContext: {
+      values: TValues;
+      options?: SubmitOptions;
+      success: boolean;
+    },
+    signal: AbortSignal,
+  ): Promise<void> {
+    await this.pluginRegistry.hookBus.runAfterSubmit(submitContext);
+    await this.middleware.run({
+      form: this,
+      phase: "afterSubmit",
+      signal,
+      meta: { success: submitContext.success },
+    });
+  }
+
+  private setSubmitPhase(phase: SubmitPhase): void {
+    if (this.submitPhase === phase) {
+      return;
+    }
+    this.submitPhase = phase;
+    this.notify();
   }
 
   private async runValidatePaths(
     targetPaths: readonly FieldPath[],
     mode: import("../types/index.js").ValidationMode,
   ): Promise<boolean> {
-    const run = async (
+    const execute = async (
       validatePathsInput: readonly FieldPath[],
-      signal?: AbortSignal,
+      signal: AbortSignal,
     ): Promise<boolean> => {
-      return this.asyncValidation.track(validatePathsInput, async () => {
-        this.patchState({ isValidating: true });
-        this.events.emit("validate");
+      if (signal.aborted || this.store.isDestroyed()) {
+        return false;
+      }
 
-        const fieldErrors = await runValidationPipeline({
-          values: this.core.values,
-          paths: validatePathsInput,
-          fieldValidators: this.fieldValidators,
-          configValidators: this.config.validators ?? {},
-          ...(this.config.crossFieldValidators
-            ? { crossFieldRules: this.config.crossFieldValidators }
-            : {}),
-          ...(this.config.formValidators ? { formValidators: this.config.formValidators } : {}),
-          ...(signal ? { signal } : {}),
-        });
+      this.patchState({ isValidating: true });
+      this.events.emit("validate");
 
-        const errors = { ...fieldErrors };
+      const settleAborted = (): false => {
+        this.patchState({ isValidating: false });
+        return false;
+      };
 
-        if (this.schemaAdapter) {
-          const adapterErrors = await this.schemaAdapter.validate(this.core.values);
-          const includeAllAdapterErrors = validatePathsInput.length !== 1;
+      const fieldErrors = await runValidationPipeline({
+        values: this.core.values,
+        paths: validatePathsInput,
+        fieldValidators: this.fieldValidators,
+        configValidators: this.config.validators ?? {},
+        ...(this.config.crossFieldValidators
+          ? { crossFieldRules: this.config.crossFieldValidators }
+          : {}),
+        ...(this.config.formValidators ? { formValidators: this.config.formValidators } : {}),
+        signal,
+      });
 
-          for (const [path, message] of Object.entries(adapterErrors)) {
-            if (includeAllAdapterErrors || validatePathsInput.includes(path) || path === "_form") {
-              errors[path] = message;
-            }
+      if (signal.aborted || this.store.isDestroyed()) {
+        return settleAborted();
+      }
+
+      const errors = { ...fieldErrors };
+
+      if (this.schemaAdapter) {
+        const adapterErrors = await this.schemaAdapter.validate(this.core.values);
+        if (signal.aborted || this.store.isDestroyed()) {
+          return settleAborted();
+        }
+
+        const includeAllAdapterErrors = validatePathsInput.length !== 1;
+
+        for (const [path, message] of Object.entries(adapterErrors)) {
+          if (includeAllAdapterErrors || validatePathsInput.includes(path) || path === "_form") {
+            errors[path] = message;
           }
         }
+      }
 
-        if (signal?.aborted) {
-          return false;
-        }
+      if (signal.aborted || this.store.isDestroyed()) {
+        return settleAborted();
+      }
 
-        const mergedErrors = mergePathValidationErrors(
-          this.core.errors,
-          errors,
-          validatePathsInput,
-        );
+      const mergedErrors = mergePathValidationErrors(this.core.errors, errors, validatePathsInput);
 
-        this.patchState({ errors: mergedErrors, isValidating: false });
-        this.events.emit("validated");
-        return Object.keys(mergedErrors).length === 0;
-      });
+      this.patchState({ errors: mergedErrors, isValidating: false });
+      this.events.emit("validated");
+      return Object.keys(mergedErrors).length === 0;
     };
 
     if (targetPaths.length === 1) {
       const path = targetPaths[0];
       if (!path) {
-        return run(targetPaths);
+        return this.asyncValidation.track(targetPaths, (signal) => execute(targetPaths, signal));
       }
 
       if (mode === "onChange") {
-        return new Promise((resolve) => {
-          this.asyncValidation.schedule(path, async (scheduledPaths, signal) => {
-            if (signal.aborted) {
-              return;
-            }
-            const ok = await run(scheduledPaths, signal);
-            if (!signal.aborted) {
-              resolve(ok);
-            }
-          });
+        // schedule owns AbortController — do not wrap with track (avoids double-abort).
+        return this.asyncValidation.schedule(path, async (scheduledPaths, signal) => {
+          if (signal.aborted) {
+            return false;
+          }
+          return execute(scheduledPaths, signal);
         });
       }
-
-      return run(targetPaths);
     }
 
-    return run(targetPaths);
+    return this.asyncValidation.track(targetPaths, (signal) => execute(targetPaths, signal));
   }
 
   public values(): TValues;
@@ -673,11 +889,23 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
   }
 
   private buildFormState(): FormState<TValues> {
+    const metaPaths = new Set<FieldPath>([
+      ...listAllPaths(this.core.values),
+      ...this.fieldOptions.keys(),
+    ]);
     const fieldMeta = Object.fromEntries(
-      listAllPaths(this.core.values).map((path) => [
-        path,
-        { isValidating: this.asyncValidation.isFieldValidating(path) },
-      ]),
+      [...metaPaths].map((path) => {
+        const options = this.fieldOptions.get(path);
+        return [
+          path,
+          {
+            isValidating: this.asyncValidation.isFieldValidating(path),
+            ...(options?.label === undefined ? {} : { label: options.label }),
+            ...(options?.description === undefined ? {} : { description: options.description }),
+            ...(options?.hidden === undefined ? {} : { hidden: options.hidden }),
+          },
+        ];
+      }),
     );
 
     return {
@@ -693,6 +921,7 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
       isDirty: this.store.isDirty(),
       isChanged: this.store.isChanged(),
       submitCount: this.core.submitCount,
+      submitPhase: this.submitPhase,
       workflow: this.getWorkflowState(),
       fieldUi: this.fieldUi,
       formUi: this.formUi,
@@ -714,6 +943,77 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
 
   public getSnapshot(): FormState<TValues> {
     return this.cachedSnapshot;
+  }
+
+  public getPresentation(path: FieldPath): PresentationState;
+  public getPresentation(): PresentationSnapshot;
+  public getPresentation(path?: FieldPath): PresentationState | PresentationSnapshot {
+    const snapshot: PresentationSnapshot = {
+      fieldUi: this.fieldUi,
+      formUi: this.formUi,
+      fieldOptions: { ...this.fieldOptionsState },
+    };
+    if (path === undefined) {
+      return snapshot;
+    }
+    return buildPresentationState(path, snapshot, {
+      ...(this.asyncValidation.isFieldValidating(path) ? { busy: true } : {}),
+    });
+  }
+
+  public createCheckpoint(options: CreateCheckpointOptions = {}): FormCheckpoint<TValues> {
+    const include = new Set(options.include ?? (["values"] as const));
+    const checkpoint: FormCheckpoint<TValues> = {
+      version: 1,
+      kind: "checkpoint",
+      capturedAt: Date.now(),
+      values: cloneValue(this.core.values),
+    };
+
+    const withMeta = {
+      ...checkpoint,
+      ...(include.has("errors") ? { errors: { ...this.core.errors } } : {}),
+      ...(include.has("touched") ? { touched: { ...this.core.touched } } : {}),
+      ...(include.has("dirty") ? { dirty: { ...this.core.dirty } } : {}),
+      ...(include.has("visited") ? { visited: { ...this.core.visited } } : {}),
+      ...(include.has("fieldUi") ? { fieldUi: { ...this.fieldUi } } : {}),
+      ...(include.has("workflow") ? { workflow: { currentStep: this.core.currentStep } } : {}),
+    };
+
+    return withMeta;
+  }
+
+  public restoreCheckpoint(
+    checkpoint: FormCheckpoint<TValues>,
+    options: RestoreCheckpointOptions = {},
+  ): void {
+    if (checkpoint.kind !== "checkpoint" || checkpoint.version !== 1) {
+      throw new ConfigurationError("Invalid form checkpoint.");
+    }
+
+    const restoreMeta = options.restoreMeta !== false;
+    const nextValues = cloneValue(checkpoint.values);
+
+    this.store.replaceValues(nextValues);
+    this.store.patchCore({
+      ...(restoreMeta && checkpoint.errors ? { errors: { ...checkpoint.errors } } : {}),
+      ...(restoreMeta && checkpoint.touched ? { touched: { ...checkpoint.touched } } : {}),
+      ...(restoreMeta && checkpoint.dirty ? { dirty: { ...checkpoint.dirty } } : {}),
+      ...(restoreMeta && checkpoint.visited ? { visited: { ...checkpoint.visited } } : {}),
+      ...(checkpoint.workflow ? { currentStep: checkpoint.workflow.currentStep } : {}),
+    });
+
+    if (restoreMeta && checkpoint.fieldUi) {
+      this.fieldUi = { ...checkpoint.fieldUi };
+    }
+
+    if (options.recordHistory) {
+      this.undoRedo.record(cloneValue(nextValues));
+    }
+
+    this.recomputeFieldUi();
+    this.notify();
+    this.events.emit("reset");
   }
 
   public getValues(): TValues {
@@ -769,28 +1069,119 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     });
   }
 
+  public dependencies(map: DependencyMap): void;
+  public dependencies(): DependencyRegistrar<TValues>;
+  public dependencies(map?: DependencyMap): void | DependencyRegistrar<TValues> {
+    if (map) {
+      this.dependencyEngine.registerMap(map, {
+        ...(this.config.dependencyActions ? { actionsByChild: this.config.dependencyActions } : {}),
+      });
+      return;
+    }
+    return createDependencyRegistrar<TValues>(this.dependencyEngine, {
+      ...(this.config.dependencyActions ? { actionsByChild: this.config.dependencyActions } : {}),
+    });
+  }
+
+  public calculate(path: FieldPath): CalculationBuilderImpl<TValues>;
   public calculate(
     path: FieldPath,
     options: CalculateOptions<TValues> | ((context: { values: TValues }) => unknown),
-  ): void {
-    const resolved = typeof options === "function" ? { compute: options } : options;
+  ): void;
+  public calculate(
+    path: FieldPath,
+    options?: CalculateOptions<TValues> | ((context: { values: TValues }) => unknown),
+  ): void | CalculationBuilderImpl<TValues> {
+    if (options === undefined) {
+      return new CalculationBuilderImpl<TValues>(path)._attachRegister((definition) => {
+        this.registerCalculation(definition);
+      });
+    }
 
-    this.calculations.push({
+    const resolved = typeof options === "function" ? { compute: options } : options;
+    this.registerCalculation({
       path,
-      compute: resolved.compute,
+      compute: (ctx) => resolved.compute({ values: ctx.values }),
       ...(resolved.deps === undefined ? {} : { deps: resolved.deps }),
       ...(resolved.markDirty === undefined ? {} : { markDirty: resolved.markDirty }),
+      ...(resolved.lazy === undefined ? {} : { lazy: resolved.lazy }),
+      ...(resolved.memoized === undefined ? {} : { memoized: resolved.memoized }),
     });
-    const hadWorkflowEngine = this.workflowEngine !== null;
-    this.applyCalculations(path);
-    if (hadWorkflowEngine) {
-      this.notify();
+  }
+
+  private registerCalculation(definition: CalculationDefinition<TValues>): void {
+    const next = [...this.calculations, definition];
+    const cycles = detectCalculationCycles(next);
+    if (cycles.length > 0) {
+      throw new ConfigurationError(
+        `Calculation cycle detected: ${cycles.map((cycle) => cycle.join(" → ")).join("; ")}`,
+        { details: { cycles: cycles.map((cycle) => [...cycle]) } },
+      );
     }
+
+    this.calculations.push(definition);
+    this.applyCalculations(undefined, { initial: true });
+    this.notify();
+  }
+
+  public transform(path: FieldPath): TransformPipelineHandle;
+  public transform(path: FieldPath, stages: readonly TransformFn<TValues>[]): void;
+  public transform(
+    path: FieldPath,
+    stages?: readonly TransformFn<TValues>[],
+  ): void | TransformPipelineHandle {
+    if (stages) {
+      this.transformEngine.set(path, stages as readonly TransformFn[]);
+      return;
+    }
+    return this.transformEngine.handle(path);
   }
 
   public saveDraft(): void {
-    this.draftManager.save(this.core.values);
+    const persistStep = this.config.workflow?.wizard?.persistStepInDraft === true;
+    this.draftManager.save(
+      this.core.values,
+      persistStep ? { currentStep: this.core.currentStep, persistWorkflow: true } : {},
+    );
     this.events.emit("draft");
+  }
+
+  public async restoreDraft(options: RestoreDraftOptions = {}): Promise<boolean> {
+    if (!this.draftManager.enabled) {
+      return false;
+    }
+
+    if (this.store.isDirty() && options.force !== true) {
+      return false;
+    }
+
+    const defaults = cloneValue(this.core.defaultValues) as TValues;
+    const result = this.draftManager.applyLoadedDraft(defaults, {
+      ...(options.merge ? { merge: options.merge } : {}),
+      ...(options.prompt === undefined ? { prompt: false } : { prompt: options.prompt }),
+    });
+
+    if (!result.restored) {
+      return false;
+    }
+
+    // D-RESTORE-RACE: re-check dirty after async tick boundary (sync today; keep guard).
+    if (this.store.isDirty() && options.force !== true) {
+      return false;
+    }
+
+    this.store.replaceValues(cloneValue(result.values));
+    if (result.workflow?.currentStep !== undefined) {
+      this.store.patchCore({ currentStep: result.workflow.currentStep });
+    }
+    this.recomputeFieldUi();
+    this.applyCalculations(undefined, { initial: true });
+    this.notify();
+    this.events.emit("change");
+    await this.pluginRegistry.hookBus.runOnDraftRestore({
+      values: cloneValue(result.values),
+    });
+    return true;
   }
 
   public undo(): boolean {
@@ -830,6 +1221,8 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
         currentStep: 0,
         fieldViews: {},
         dropOffField: null,
+        timeToCompleteMs: null,
+        timeToFirstErrorMs: null,
       };
     }
 
@@ -893,9 +1286,12 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
 
     this.detachElement();
     this.submission.cancel();
+    this.middleware.clear();
+    this.ariaIds.clear();
     this.autosave.destroy();
     this.undoRedo.destroy();
     this.asyncValidation.destroy();
+    this.transformEngine.destroy();
     this.moduleHost.destroy();
     this.events.clear();
     this.store.destroy();
@@ -906,17 +1302,33 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     prev: () => {
       this.wizardNavigator.prev();
     },
-    goTo: (step: number) => this.wizardNavigator.goTo(step),
+    goTo: (step: number | string, options?: import("../workflow/wizard.js").GoToOptions) =>
+      this.wizardNavigator.goTo(step, options),
+    getStepGraph: () => this.wizardNavigator.getStepGraph(),
+    visibleSteps: (values?: TValues) => this.wizardNavigator.visibleSteps(values),
   };
 
   public registerPlugin(plugin: FormPlugin<TValues>): void {
     this.moduleHost.registerPlugin(plugin);
   }
 
+  public listPlugins(): readonly {
+    readonly name: string;
+    readonly order: number;
+    readonly version?: string;
+  }[] {
+    return this.pluginRegistry.list().map((plugin) => ({
+      name: plugin.name,
+      order: plugin.order ?? 100,
+      ...(plugin.version ? { version: plugin.version } : {}),
+    }));
+  }
+
   private getWorkflowState(): WorkflowState {
     return buildWorkflowProgress({
       currentStep: this.core.currentStep,
       wizard: this.config.workflow?.wizard,
+      values: this.core.values,
       isAutosaving: this.core.isAutosaving,
       lastAutosaveAt: this.core.lastAutosaveAt,
     });
@@ -926,7 +1338,11 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     Awaited<ReturnType<typeof ensureOfflineService<TValues>>>
   > {
     if (!this.offlineService) {
-      this.offlineService = await ensureOfflineService<TValues>(this.offlineStorageKey);
+      const { toOfflineQueueRuntimeOptions } = await import("../engines/offline/config.js");
+      this.offlineService = await ensureOfflineService<TValues>(
+        this.offlineStorageKey,
+        toOfflineQueueRuntimeOptions<TValues>(this.config.workflow?.offlineQueue),
+      );
     }
 
     return this.offlineService;
@@ -936,7 +1352,10 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     Awaited<ReturnType<typeof ensureAnalyticsService>>
   > {
     if (!this.analyticsService) {
-      this.analyticsService = await ensureAnalyticsService();
+      const { toAnalyticsRuntimeOptions } = await import("../engines/analytics/config.js");
+      this.analyticsService = await ensureAnalyticsService(
+        toAnalyticsRuntimeOptions(this.config.workflow?.analytics),
+      );
     }
 
     return this.analyticsService;
@@ -960,7 +1379,11 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
       },
       persistDraft: () => {
         if (this.config.workflow?.draft?.enabled) {
-          this.draftManager.save(this.core.values);
+          const persistStep = this.config.workflow?.wizard?.persistStepInDraft === true;
+          this.draftManager.save(
+            this.core.values,
+            persistStep ? { currentStep: this.core.currentStep, persistWorkflow: true } : {},
+          );
           this.events.emit("draft");
         }
       },
@@ -968,6 +1391,9 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
   }
 
   private scheduleAutosave(): void {
+    if (this.submitInFlight || this.submission.isActive || this.store.isDestroyed()) {
+      return;
+    }
     this.autosave.schedule();
   }
 
@@ -995,39 +1421,85 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     );
   }
 
-  private applyCalculations(changedPath?: FieldPath): void {
-    if (this.calculations.length === 0) {
+  private applyCalculations(
+    changedPath?: FieldPath,
+    options?: { readonly initial?: boolean },
+  ): void {
+    if (this.calculations.length === 0 || this.store.isDestroyed()) {
       return;
     }
 
-    this.runWithWorkflowEngine(
-      (engine) => {
-        const updates = engine.runCalculations({
-          calculations: this.calculations,
-          values: this.core.values,
-          ...(changedPath === undefined ? {} : { changedPath }),
-        });
+    let seed: FieldPath | undefined = changedPath;
+    const byPath = new Map(this.calculations.map((calc) => [calc.path, calc]));
 
-        for (const [path, value] of Object.entries(updates)) {
-          this.patchValuesSilent(path, value, { markDirty: false, recordHistory: false });
+    for (let pass = 0; pass < MAX_CALCULATION_PASSES; pass += 1) {
+      const updates = runCalculationPass({
+        calculations: this.calculations,
+        values: this.core.values,
+        memo: this.calculationMemo,
+        ...(seed === undefined ? {} : { changedPath: seed }),
+        ...(options?.initial && pass === 0 ? { initial: true } : {}),
+      });
+
+      const entries = Object.entries(updates);
+      if (entries.length === 0) {
+        return;
+      }
+
+      for (const [path, value] of entries) {
+        const calc = byPath.get(path);
+        this.patchValuesSilent(path, value, {
+          markDirty: calc?.markDirty === true,
+          recordHistory: false,
+        });
+      }
+
+      // Next pass: any calc that depends on paths we just wrote.
+      const written = entries.map(([path]) => path);
+      const triggered = this.calculations.some((calc) => {
+        const deps = calc.deps;
+        if (!deps) {
+          return written.length > 0;
         }
-      },
-      { notify: false },
+        return written.some((path) => deps.includes(path));
+      });
+      if (!triggered) {
+        return;
+      }
+      // Re-run all calcs that might chain (omit changedPath filter).
+      seed = undefined;
+      options = undefined;
+    }
+
+    throw new ConfigurationError(
+      `Calculation loop exceeded ${MAX_CALCULATION_PASSES} passes — check for circular derived fields.`,
     );
   }
 
   private async runDependencyRules(changedPath: FieldPath): Promise<void> {
-    if (!this.hasWorkflowRules()) {
+    if (!this.hasWorkflowRules() || this.store.isDestroyed()) {
       return;
     }
 
+    const generation = (this.populateGenerations.get(changedPath) ?? 0) + 1;
+    this.populateGenerations.set(changedPath, generation);
+
     const engine = this.workflowEngine ?? (await this.getWorkflowEngine());
+    if (this.store.isDestroyed() || this.populateGenerations.get(changedPath) !== generation) {
+      return;
+    }
+
     this.workflowEngine = engine;
+    const valuesSnapshot = cloneValue(this.core.values);
     const updates = await engine.runDependencyRules({
       rules: [...this.baseRules, ...this.runtimeRules],
       changedPath,
-      values: this.core.values,
+      values: valuesSnapshot,
     });
+
+    if (this.store.isDestroyed() || this.populateGenerations.get(changedPath) !== generation) {
+      return;
+    }
 
     for (const [path, options] of Object.entries(updates)) {
       if (!options) {
@@ -1118,19 +1590,29 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
 
   private applyFieldFormatting(
     value: unknown,
-    fieldOptions?: {
-      readonly format?: import("../format/types.js").Formatter;
-      readonly parse?: import("../format/types.js").Parser;
-      readonly formatOnDisplay?: boolean;
-      readonly parseOnInput?: boolean;
-    },
+    path: FieldPath,
+    fieldOptions?: FieldOptions<TValues>,
   ): unknown {
-    return runFieldFormatPipeline(value, fieldOptions);
+    const ctx = {
+      path,
+      values: this.core.values,
+    };
+
+    const registered = this.transformEngine.get(path);
+    let next = value;
+    if (registered.length > 0) {
+      next = runTransformInbound(next, registered, ctx);
+    }
+    if (fieldOptions?.transform) {
+      next = runTransformInbound(next, fieldOptions.transform, ctx);
+    }
+
+    return runFieldFormatPipeline(next, fieldOptions);
   }
 
   private patchValuesSilent(path: FieldPath, value: unknown, options?: SetValueOptions): void {
     const fieldOptions = this.fieldOptions.get(path);
-    const formatted = this.applyFieldFormatting(value, fieldOptions);
+    const formatted = this.applyFieldFormatting(value, path, fieldOptions);
     const previous = getIn(this.core.values, path);
     if (previous === formatted) {
       return;
@@ -1152,7 +1634,7 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
 
   private patchValues(path: FieldPath, value: unknown, options?: SetValueOptions): void {
     const fieldOpts = this.fieldOptions.get(path);
-    const formatted = this.applyFieldFormatting(value, fieldOpts);
+    const formatted = this.applyFieldFormatting(value, path, fieldOpts);
     const previous = getIn(this.core.values, path);
     if (previous === formatted) {
       return;
@@ -1168,15 +1650,30 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     }
     this.events.emit("change");
 
+    const cascade = this.dependencyEngine.onParentChange(path);
+    for (const clear of cascade.clears) {
+      this.patchValuesSilent(clear.path, clear.clearValue, {
+        markDirty: false,
+        recordHistory: false,
+      });
+    }
+
     const mode = fieldOpts?.validateOn ?? this.config.validateOn;
-    const dependentPaths = this.collectDependentFieldPaths(path);
+    const dependentPaths = [
+      ...new Set([...this.collectDependentFieldPaths(path), ...cascade.revalidate]),
+    ];
     if (mode === "onChange") {
       void this.validate({ paths: [path, ...dependentPaths], mode: "onChange" });
+    } else if (cascade.revalidate.length > 0) {
+      void this.validate({ paths: cascade.revalidate, mode: "onChange" });
     }
 
     this.scheduleAutosave();
     this.recomputeFieldUi();
     this.applyCalculations(path);
+    for (const recomputePath of cascade.recompute) {
+      this.applyCalculations(recomputePath);
+    }
     void this.runDependencyRules(path);
     this.notify();
   }
@@ -1189,15 +1686,14 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
   }
 
   private collectDependentFieldPaths(changedPath: FieldPath): FieldPath[] {
-    const targets: FieldPath[] = [];
-
-    for (const [fieldPath, options] of this.fieldOptions) {
-      if (options.dependsOn?.includes(changedPath)) {
-        targets.push(fieldPath);
-      }
-    }
-
-    return targets;
+    return [
+      ...new Set([
+        ...this.dependencyEngine.getDependents(changedPath),
+        ...[...this.fieldOptions.entries()]
+          .filter(([, options]) => options.dependsOn?.includes(changedPath))
+          .map(([fieldPath]) => fieldPath),
+      ]),
+    ];
   }
 
   private remapIndexedFieldRecord<T>(

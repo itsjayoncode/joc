@@ -12,7 +12,7 @@ lifecycle.on("page:hidden", () => console.log("hidden"));
 
 ## Playground
 
-[Visibility Playground](http://127.0.0.1:4273/visibility)
+[Visibility Playground](/playground/browser-lifecycle/visibility)
 
 ## Module docs
 

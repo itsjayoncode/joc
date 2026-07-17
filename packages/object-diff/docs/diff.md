@@ -8,6 +8,15 @@ Get structured change records from two object snapshots.
 [Open Diff explorer →](/playground/object-diff/diff) — edit before/after JSON and inspect change records live.
 :::
 
+## Import path
+
+```ts
+import { diff, hasChanges, compare } from "@jayoncode/object-diff";
+// Slim (no patch/serialize): import { diff, hasChanges } from "@jayoncode/object-diff/core";
+```
+
+Subpath map: [Engines](/packages/object-diff/modules/engines).
+
 ## Problem → approach
 
 | Without structured diff                             | With `diff()`                                               |

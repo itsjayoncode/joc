@@ -2,6 +2,13 @@ import { cloneValue } from "../utils/index.js";
 
 import type { FieldPath } from "../types/index.js";
 
+/**
+ * `getSnapshot()` on the form returns a **cached** `FormState` identity that is
+ * stable between notifications (for `useSyncExternalStore`).
+ *
+ * Durable restore points use `createCheckpoint()` / `restoreCheckpoint()` —
+ * never overload `getSnapshot` for that purpose (API_SIGNATURE_FREEZE).
+ */
 export interface FormCoreSnapshot<TValues extends Record<string, unknown>> {
   readonly values: TValues;
   readonly defaultValues: TValues;

@@ -8,6 +8,14 @@ Page-local availability: is this tab present for interactive work?
 This is **not** chat/collab “who is online”. It answers whether _this page_ is visible, focused, and online.
 :::
 
+## Import path
+
+```ts
+import { createBrowserLifecycle, createPresenceApi } from "@jayoncode/browser-lifecycle";
+```
+
+Main package only.
+
 ## Usage
 
 ```ts

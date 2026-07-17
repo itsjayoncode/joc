@@ -8,6 +8,14 @@ Subscribe to typed lifecycle events with a small, framework-agnostic API.
 [Open Event explorer →](/playground/browser-lifecycle/events) — watch the live event feed as you interact.
 :::
 
+## Import path
+
+```ts
+import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
+```
+
+Main package only. Prefer `lifecycle.on()` / returned `unsub()` over holding raw emitters in app code.
+
 ## Problem → approach
 
 | Typical pain                                               | Event API                                                |
@@ -20,6 +28,11 @@ Subscribe to typed lifecycle events with a small, framework-agnostic API.
 const unsub = lifecycle.on("page:visible", () => console.log("visible"));
 // later: unsub();
 ```
+
+## Pitfalls
+
+- Forgetting `unsub()` **or** `dispose()` leaks handlers across SPA routes.
+- Do not subscribe before `start()` / `autoStart` if you expect immediate browser signals.
 
 ---
 

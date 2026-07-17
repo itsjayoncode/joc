@@ -4,6 +4,17 @@ Turn Metrics (and optional Timeline evidence) into an on-demand session summary.
 
 **Previous:** [Metrics](./metrics.md) · **Next:** [Wait helpers](./wait.md)
 
+## Import path
+
+```ts
+import {
+  createBrowserLifecycle,
+  createMetricsApi,
+  createReportsApi,
+  createTimelineApi,
+} from "@jayoncode/browser-lifecycle";
+```
+
 ## Usage
 
 ```ts

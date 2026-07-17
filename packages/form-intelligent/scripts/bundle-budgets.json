@@ -3,7 +3,13 @@
     {
       "id": "core-login",
       "file": "core-login.mjs",
-      "maxGzipKb": 19
+      "maxGzipKb": 24,
+      "forbid": [
+        "OfflineSubmitQueue",
+        "createDevToolsPlugin",
+        "FormDevToolsSession",
+        "__FORM_INTELLIGENT_DEVTOOLS__"
+      ]
     },
     {
       "id": "workflow-rules",

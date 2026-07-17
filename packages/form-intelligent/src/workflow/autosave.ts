@@ -11,6 +11,7 @@ export class AutosaveScheduler<TValues extends Record<string, unknown>> {
   private config: AutosaveConfig | undefined;
   private timer: ReturnType<typeof setTimeout> | undefined;
   private running = false;
+  private destroyed = false;
   private getValues: (() => TValues) | undefined;
   private hooks: AutosaveHooks | undefined;
 
@@ -25,7 +26,7 @@ export class AutosaveScheduler<TValues extends Record<string, unknown>> {
   }
 
   public schedule(): void {
-    if (!this.config?.enabled || !this.getValues || !this.hooks) {
+    if (this.destroyed || !this.config?.enabled || !this.getValues || !this.hooks) {
       return;
     }
 
@@ -39,6 +40,7 @@ export class AutosaveScheduler<TValues extends Record<string, unknown>> {
     }, this.config.debounceMs ?? 400);
   }
 
+  /** Cancel a pending debounced save (does not abort an in-flight `onSave`). */
   public cancel(): void {
     if (this.timer !== undefined) {
       clearTimeout(this.timer);
@@ -47,7 +49,7 @@ export class AutosaveScheduler<TValues extends Record<string, unknown>> {
   }
 
   public async run(): Promise<void> {
-    if (!this.config?.enabled || !this.getValues || !this.hooks || this.running) {
+    if (this.destroyed || !this.config?.enabled || !this.getValues || !this.hooks || this.running) {
       return;
     }
 
@@ -55,17 +57,26 @@ export class AutosaveScheduler<TValues extends Record<string, unknown>> {
     this.hooks.onStart();
 
     try {
-      await this.config.onSave(this.getValues());
-      this.hooks.onSuccess(Date.now());
-      this.hooks.persistDraft?.();
+      const values = this.getValues();
+      await this.config.onSave(values);
+      if (this.destroyed) {
+        return;
+      }
+      await this.hooks.onSuccess(Date.now());
+      if (!this.destroyed) {
+        this.hooks.persistDraft?.();
+      }
     } catch {
-      this.hooks.onError();
+      if (!this.destroyed) {
+        this.hooks.onError();
+      }
     } finally {
       this.running = false;
     }
   }
 
   public destroy(): void {
+    this.destroyed = true;
     this.cancel();
     this.config = undefined;
     this.getValues = undefined;

@@ -1,6 +1,8 @@
 import type {
+  FieldController,
   FieldPath,
   FormConfig,
+  FormController,
   FormInstance,
   FormSelector,
   FormState,
@@ -11,8 +13,12 @@ export interface FormElementProps {
   readonly noValidate: true;
 }
 
+/** Native-friendly props: `name` + `aria-*` (DOM enhancer owns values when using `form.ref`). */
 export interface FieldElementProps {
   readonly name: FieldPath;
+  readonly "aria-invalid"?: boolean;
+  readonly "aria-required"?: boolean;
+  readonly "aria-describedby"?: string;
 }
 
 export interface SubmitButtonProps {
@@ -23,12 +29,18 @@ export interface SubmitButtonProps {
 
 export interface UseFormReturn<TValues extends Record<string, unknown>> {
   readonly instance: FormInstance<TValues>;
+  /** Thin FormController façade over the same instance. */
+  readonly controller: FormController<TValues>;
   readonly state: FormState<TValues>;
   readonly ref: FormInstance<TValues>["ref"];
   form(): FormElementProps;
+  /** Spread onto inputs — `name` + `aria-*` from FieldController. */
   field(path: FieldPath): FieldElementProps;
+  /** Full FieldController (`bind()`, `aria`, `setAriaIds`, …). */
+  fieldController(path: FieldPath): FieldController<TValues>;
   submit(): SubmitButtonProps;
   submitButton(): SubmitButtonProps;
+  focusFirstInvalid(): FieldPath | undefined;
 }
 
 export type UseFormConfig<TValues extends Record<string, unknown>> = FormConfig<TValues>;

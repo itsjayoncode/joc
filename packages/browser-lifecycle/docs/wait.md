@@ -4,6 +4,12 @@ Subscription-based promises for common lifecycle conditions — **no polling**.
 
 **Previous:** [Reports](./reports.md) · **Next:** [Conditions](./conditions.md)
 
+## Import path
+
+```ts
+import { createBrowserLifecycle, createWaitApi } from "@jayoncode/browser-lifecycle";
+```
+
 ## Usage
 
 ```ts

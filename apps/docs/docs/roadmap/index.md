@@ -12,4 +12,4 @@ Phase 1.6 introduces package engineering standards, a reusable package template,
 2. First publishable release candidate flow
 3. Ecosystem expansion after the first package proves the model
 
-For the repository-level roadmap, see the root [ROADMAP.md](https://github.com/JayOnCode/joc/blob/main/ROADMAP.md).
+For the repository-level roadmap, see the root [ROADMAP.md](https://github.com/itsjayoncode/joc/blob/master/ROADMAP.md).

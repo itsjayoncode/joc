@@ -1,6 +1,6 @@
 import type { Formatter, Parser } from "../types.js";
 
-export const currency: Formatter = (value) => {
+export const formatCurrency: Formatter = (value) => {
   if (typeof value === "number") {
     return value.toFixed(2);
   }

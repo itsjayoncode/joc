@@ -15,8 +15,8 @@ describe("submission engine", () => {
     const first = form.submit();
     const second = form.submit();
     expect(await second).toBe(false);
+    expect(await first).toBe(true);
     expect(onSubmit).toHaveBeenCalledTimes(1);
-    await first;
     form.destroy();
   });
 
@@ -38,27 +38,7 @@ describe("submission engine", () => {
     expect(onSubmit).toHaveBeenCalledTimes(2);
   });
 
-  it("maps server field errors onto form state", async () => {
-    const form = createForm({
-      initialValues: { email: "", password: "" },
-      onSubmit: async () => {
-        throw {
-          fieldErrors: {
-            email: "Email already exists.",
-          },
-          formError: "Signup failed.",
-        };
-      },
-    });
-
-    const ok = await form.submit();
-    expect(ok).toBe(false);
-    expect(form.errors("email")).toBe("Email already exists.");
-    expect(form.errors("_form")).toBe("Signup failed.");
-    form.destroy();
-  });
-
-  it("cancels in-flight submit", async () => {
+  it("cancels in-flight submit and returns to idle", async () => {
     const form = createForm({
       initialValues: { email: "a@b.com" },
       onSubmit: async (_values, meta) => {
@@ -79,6 +59,28 @@ describe("submission engine", () => {
     const pending = form.submit();
     form.cancelSubmit();
     expect(await pending).toBe(false);
+    expect(form.state.submitPhase).toBe("idle");
+    form.destroy();
+  });
+
+  it("maps server field errors onto form state", async () => {
+    const form = createForm({
+      initialValues: { email: "", password: "" },
+      onSubmit: async () => {
+        throw {
+          fieldErrors: {
+            email: "Email already exists.",
+          },
+          formError: "Signup failed.",
+        };
+      },
+    });
+
+    const ok = await form.submit();
+    expect(ok).toBe(false);
+    expect(form.errors("email")).toBe("Email already exists.");
+    expect(form.errors("_form")).toBe("Signup failed.");
+    expect(form.state.submitPhase).toBe("error");
     form.destroy();
   });
 

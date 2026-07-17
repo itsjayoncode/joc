@@ -1,9 +1,9 @@
 import {
-  creditCard,
+  formatCreditCard,
   creditCardParser,
-  philippinePhone,
+  formatPhilippinePhone,
   philippinePhoneParser,
-  slug,
+  formatSlug,
 } from "./formatters/index.js";
 import { resolveBuiltinFormatter } from "./registry.js";
 
@@ -14,18 +14,18 @@ export type FormatPreset = "philippine-phone" | "credit-card" | "phone" | "curre
 export function resolveFormatPreset(preset: FormatPreset): FormatterDefinition {
   switch (preset) {
     case "philippine-phone":
-      return { format: philippinePhone, parse: philippinePhoneParser };
+      return { format: formatPhilippinePhone, parse: philippinePhoneParser };
     case "credit-card":
-      return { format: creditCard, parse: creditCardParser };
+      return { format: formatCreditCard, parse: creditCardParser };
     case "phone":
-      return { format: philippinePhone, parse: philippinePhoneParser };
+      return { format: formatPhilippinePhone, parse: philippinePhoneParser };
     case "currency":
       return resolveBuiltinFormatter("currency");
     case "slug":
-      return { format: slug };
+      return { format: formatSlug };
     default:
       return { format: (value) => value };
   }
 }
 
-export { creditCard, creditCardParser, philippinePhone, philippinePhoneParser };
+export { formatCreditCard, creditCardParser, formatPhilippinePhone, philippinePhoneParser };

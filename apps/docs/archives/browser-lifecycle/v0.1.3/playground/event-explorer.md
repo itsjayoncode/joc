@@ -1,7 +1,7 @@
 ---
 title: Event Explorer
 description: Interactive playground documentation for Event Explorer.
-playground: "http://127.0.0.1:4273/events"
+playground: "/playground/browser-lifecycle/events"
 ---
 
 # Event Explorer
@@ -30,4 +30,4 @@ The explorer starts a full Browser Lifecycle session with visibility, focus, con
 
 ## Interactive Playground
 
-Explore this topic live in the [Event Explorer](http://127.0.0.1:4273/events).
+Explore this topic live in the [Event Explorer](/playground/browser-lifecycle/events).

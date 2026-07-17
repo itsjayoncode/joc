@@ -43,9 +43,10 @@ export const jocPackages: JocPackage[] = [
     id: "form-intelligent",
     name: "Form Intelligent",
     npmName: "@jayoncode/form-intelligent",
-    tagline: "Headless form workflow engine — validation, submission, and orchestration.",
+    tagline:
+      "Headless form workflows — conditional rules, drafts, wizards, submit without UI lock-in.",
     purpose: "Headless forms",
-    problem: "Form logic becomes complex as validation, drafts, and wizards grow",
+    problem: "Conditional fields, drafts, and submit races turn into effect spaghetti in every app",
     status: "live",
     statusLabel: "In development",
     docsLink: "/packages/form-intelligent/",

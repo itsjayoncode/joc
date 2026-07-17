@@ -8,6 +8,15 @@ Derived fields that update when dependencies change — no manual `onChange` wir
 [Calculations explorer →](/playground/form-intelligent/calculations)
 :::
 
+## Import path
+
+```ts
+import { createForm, calculate } from "@jayoncode/form-intelligent";
+// or instance API: form.calculate(...)
+```
+
+Main entry only for typical use. [Entrypoints](/packages/form-intelligent/modules/entrypoints).
+
 ## Problem → solution
 
 | Problem                               | Solution                            |
@@ -23,9 +32,15 @@ const form = createForm({
 });
 
 form.calculate("total", ({ values }) => Number(values.price) * Number(values.quantity));
+
+// Fluent (same registration)
+form
+  .calculate("total")
+  .from("price", "quantity")
+  .compute(({ values, get }) => Number(get("price")) * Number(values.quantity));
 ```
 
-When `price` or `quantity` changes, `total` is recalculated and written via `setValue`.
+When `price` or `quantity` changes, `total` is recalculated. Circular derived fields throw `ConfigurationError`.
 
 ---
 
@@ -105,6 +120,7 @@ Keep `total` out of user edits — update the `<output>` (or a read-only input) 
 ```ts
 form.calculate("path", ({ values }) => /* derived */);
 form.calculate("path", { deps: ["a", "b"], compute: ({ values }) => … });
+form.calculate("path").from("a", "b").markDirty().compute(({ get }) => …);
 form.values("total");
 ```
 

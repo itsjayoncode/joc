@@ -1,7 +1,7 @@
 ---
 title: Events
 description: Browser Lifecycle module documentation for Events.
-playground: http://127.0.0.1:4273/event
+playground: /playground/browser-lifecycle/event
 ---
 
 # Events
@@ -158,4 +158,4 @@ emitter.destroy();
 
 ## Interactive Playground
 
-Explore this topic live in the [Events](http://127.0.0.1:4273/event-explorer).
+Explore this topic live in the [Events](/playground/browser-lifecycle/event-explorer).

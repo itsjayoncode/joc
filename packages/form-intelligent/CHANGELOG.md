@@ -1,5 +1,49 @@
 # Changelog
 
+## 3.2.0
+
+### Minor Changes
+
+- Support `createForm({ plugins })` for declarative registration (same as sequential `form.use()`).
+- form-intelligent 3.2.0 — engines, plugins, a11y, format rename
+- Add Field/Form Controllers, `field.aria` / `setAriaIds`, `focusFirstInvalid`, and `/accessibility` helpers.
+- Add analytics path allow/deny, timing fields on snapshots, and privacy tests (values never captured).
+- Add `asyncValidator({ … })` options overload with cache, retry, timeout, debounce, and duplicate coalescing.
+- Add fluent `form.calculate(path).from(…).compute(…)`, markDirty/lazy/memoized options, and calculation loop guards.
+- Add createCheckpoint/restoreCheckpoint and richer fieldMeta (labels + isValidating) for durable state restore without overloading getSnapshot.
+- Add Dependency Engine: `dependencies()` map/registrar, cycle detection, and cascade clear/revalidate on parent change.
+- Add DevTools performance marks, plugin introspection, RingBuffer, and value redaction helpers.
+- Add `form.restoreDraft()`, optional draft envelopes/migrate, pollution-safe merge, and `DraftStorageError` for quota failures.
+- Harden offline queue: maxItems/overflow policies, OfflineQueueError, idempotency keys, and onConflict flush callbacks.
+- Add plugin error isolation, engines/version metadata, and documented pipeline stages (`PLUGIN_PIPELINE_STAGES`).
+- Add Presentation Engine accessors (`getPresentation`, `field.ui`), `/presentation` entry, and consistent DOM apply of UI flags.
+- Add submit phase machine, `form.useMiddleware` (shared with plugin hooks), and `/middleware` entry.
+- Add Transform Engine: inbound trim/normalize/sanitize/parse pipeline, `form.transform`, and `/transform` entry (Format stays display-only).
+- Add wizard branching MVP (`when`/`next`/guards), configurable `goTo` validation modes, step graph helpers, and optional `persistStepInDraft`.
+- Rename `/format` formatter exports to `format*` (`formatPhone`, `formatCurrency`, …); keep `trim`. Clarifies validators vs masks.
+
+### Patch Changes
+
+- Harden async validation: abort/debounce races, AbortSignal on ValidationContext, and no hung onChange schedules.
+- Sync Phase 20 docs: migration breaks, capabilities matrix, performance nav, and diagrams checklist.
+- Lock Phase 18 performance budgets (entry-chunk size), Vitest timing gates, and create/destroy leak stress.
+- Add shared adapter contract helpers, SSR/stress suites, and CI SSR + size budget steps.
+- Harden validation: catch throwing validators as field errors; expand built-in/mode/cross-field coverage and document normalized error shape.
+- Harden workflow: registration rule order, typed WorkflowError, populate race guards, and autosave cancel on submit/destroy.
+
+## Unreleased
+
+### Minor Changes
+
+- Phases 9–20: presentation, middleware, draft/wizard/offline/analytics harden, plugin isolation, controllers/`field.aria`, DevTools marks, performance budgets, testing contracts.
+
+### Patch / migration notes
+
+- DevTools: `captureStateOnWorkflowEvents` defaults to `false`; `redactValues` defaults to `true` when capturing.
+- `createBrowserLifecyclePlugin` is only exported from `/plugins` (removed from `/workflow` re-exports).
+- Accessibility subpath is `/accessibility` (not `/a11y`); use `createFormController` for controllers.
+- `core-login` entry-chunk gzip budget is 24 KB — see `docs/performance.md`.
+
 ## 3.1.0
 
 ### Minor Changes

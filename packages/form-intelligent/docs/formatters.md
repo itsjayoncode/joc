@@ -1,6 +1,6 @@
 # Formatters
 
-Clean up input as the user types — phone masks, currency decimals, URL slugs.
+Mask and clean values as the user types — phone numbers, currency, slugs — without hand-rolling `onChange` parsers.
 
 **Previous:** [Calculations](/packages/form-intelligent/modules/calculations) · **Next:** [Integrations](/packages/form-intelligent/modules/integrations)
 
@@ -8,58 +8,116 @@ Clean up input as the user types — phone masks, currency decimals, URL slugs.
 [Formatters explorer →](/playground/form-intelligent/formatters) — compare display value vs stored value.
 :::
 
-## Problem → solution
+## Import from `/format` (required)
 
-| Problem                                 | Solution                                             |
-| --------------------------------------- | ---------------------------------------------------- |
-| Mask / normalize in every input handler | Field `format` / `parse` options                     |
-| Display value ≠ stored value            | Built-in formatters (`phone`, `currency`, `slug`, …) |
-
-## Overview
-
-Formatters run on `setValue` and normalize stored values. They are separate from validators (validity checks).
+Formatter helpers live on the **`/format` subpath**. They are **not** on the main package entry.
 
 ```ts
-import { phone, currency, slug } from "@jayoncode/form-intelligent";
-
-form.field("phone", { format: phone }).setValue("5551234567");
-// stored: "(555) 123-4567"
+import {
+  formatPhone,
+  formatCurrency,
+  formatSlug,
+  formatCreditCard,
+  creditCardParser,
+  trim,
+  formatUppercase,
+  composeFormatters,
+} from "@jayoncode/form-intelligent/format";
 ```
+
+::: tip Naming
+Formatters use a `format*` prefix (`formatPhone`, `formatCurrency`, …) so they never clash with main-entry **validators** like `phone()` / `currency()`.  
+`trim` stays `trim` (shared cleanup helper).
+:::
+
+| Job      | Package entry                        | What you get                       | Typical use                                   |
+| -------- | ------------------------------------ | ---------------------------------- | --------------------------------------------- |
+| Validate | `@jayoncode/form-intelligent`        | `phone()`, `currency(opts?)`       | `validators: { mobile: [required, phone()] }` |
+| Mask     | `@jayoncode/form-intelligent/format` | `formatPhone`, `formatCurrency`, … | `field("mobile", { format: formatPhone })`    |
+
+```ts
+// ❌ Wrong for masking — these are validators from the main entry
+import { phone, currency } from "@jayoncode/form-intelligent";
+
+// ✅ Formatters (this page)
+import { formatPhone, formatCurrency } from "@jayoncode/form-intelligent/format";
+
+// ✅ Validators (validation guide)
+import { phone } from "@jayoncode/form-intelligent";
+validators: {
+  mobile: [phone()];
+}
+```
+
+Full validator docs: [Validation → built-ins](/packages/form-intelligent/modules/validation#basics--built-in-validators).
+
+---
+
+## Format vs transform (do not mix these up)
+
+|                     | **Format** (`format` / `parse`)          | **Transform** (`transform`)                               |
+| ------------------- | ---------------------------------------- | --------------------------------------------------------- |
+| Purpose             | Display ↔ store **masking**              | Clean value **before validation**                         |
+| Typical use         | `(555) 123-4567`, `42.50`, `hello-world` | Trim spaces, sanitize, normalize                          |
+| Import helpers from | `@jayoncode/form-intelligent/format`     | Field config / `@jayoncode/form-intelligent/transform`    |
+| Pipeline            | Per-field `parse` then `format`          | Fixed order: trim → normalize → sanitize → custom → parse |
+
+**Format example** (masking):
+
+```ts
+import { createForm } from "@jayoncode/form-intelligent";
+import { formatPhone } from "@jayoncode/form-intelligent/format";
+
+const form = createForm({ initialValues: { phone: "" } });
+
+form.field("phone", { format: formatPhone }).setValue("5551234567");
+// stored / displayed shape: "(555) 123-4567"
+```
+
+**Transform example** (canonical inbound — not a formatter):
+
+```ts
+form.field("email", {
+  transform: { trim: true, sanitize: true },
+});
+```
+
+Use **format** when the user should see a mask. Use **transform** when you need a clean value before validators run.
 
 ---
 
 ## Built-in formatters
 
-| Formatter                          | Example in → stored                        |
-| ---------------------------------- | ------------------------------------------ |
-| `phone`                            | `5551234567` → `(555) 123-4567`            |
-| `currency`                         | `42.5` → `42.50`                           |
-| `creditCard`                       | `4111111111111111` → `4111 1111 1111 1111` |
-| `slug`                             | `Hello World!` → `hello-world`             |
-| `trim` / `uppercase` / `lowercase` | String cleanup                             |
+| Formatter                                      | Example in → stored                        |
+| ---------------------------------------------- | ------------------------------------------ |
+| `formatPhone`                                  | `5551234567` → `(555) 123-4567`            |
+| `formatCurrency`                               | `42.5` → `42.50`                           |
+| `formatCreditCard`                             | `4111111111111111` → `4111 1111 1111 1111` |
+| `formatSlug`                                   | `Hello World!` → `hello-world`             |
+| `formatPhilippinePhone`                        | `09171234567` → `0917 123 4567`            |
+| `trim` / `formatUppercase` / `formatLowercase` | String cleanup                             |
 
 ```ts
 import {
-  phone,
-  currency,
-  slug,
-  creditCard,
+  formatPhone,
+  formatCurrency,
+  formatSlug,
+  formatCreditCard,
   creditCardParser,
 } from "@jayoncode/form-intelligent/format";
 
-form.field("amount", { format: currency }).setValue(rawInput);
-form.field("handle", { format: slug }).setValue(title);
-form.field("card", { format: creditCard, parse: creditCardParser }).setValue(input);
+form.field("phone", { format: formatPhone });
+form.field("amount", { format: formatCurrency });
+form.field("handle", { format: formatSlug });
+form.field("card", { format: formatCreditCard, parse: creditCardParser });
 ```
 
----
+### Format vs parse hooks
 
-## Format vs parse
-
-| Hook     | When                     | Use for               |
-| -------- | ------------------------ | --------------------- |
-| `parse`  | On input (before format) | Strip mask characters |
-| `format` | On display / store       | Display normalization |
+| Hook     | When                           | Use for                                  |
+| -------- | ------------------------------ | ---------------------------------------- |
+| `parse`  | On input (often before format) | Strip mask characters back to raw digits |
+| `format` | On display / store             | Apply the mask                           |
 
 Toggle with `parseOnInput` / `formatOnDisplay` on field options.
 
@@ -70,12 +128,12 @@ form.field("code", {
 });
 ```
 
-Compose chains:
+Compose:
 
 ```ts
-import { composeFormatters, trim, uppercase } from "@jayoncode/form-intelligent/format";
+import { composeFormatters, trim, formatUppercase } from "@jayoncode/form-intelligent/format";
 
-form.field("code", { format: composeFormatters(trim, uppercase) });
+form.field("code", { format: composeFormatters(trim, formatUppercase) });
 ```
 
 ---
@@ -83,9 +141,9 @@ form.field("code", { format: composeFormatters(trim, uppercase) });
 ## Custom formatter
 
 ```ts
-import { custom } from "@jayoncode/form-intelligent/format";
+import { formatCustom } from "@jayoncode/form-intelligent/format";
 
-const definition = custom(
+const definition = formatCustom(
   (value) => String(value).toUpperCase(),
   (value) => String(value).trim(),
 );
@@ -93,52 +151,43 @@ const definition = custom(
 form.field("code", definition);
 ```
 
-Schema presets: `format: "philippine-phone" | "credit-card" | "phone" | "currency" | "slug"`.
-
 ---
 
-## Element structure
+## Schema presets (no `/format` import needed)
 
-### Native HTML
-
-```html
-<form id="profile">
-  <label>
-    Phone
-    <input name="phone" inputmode="tel" autocomplete="tel" />
-  </label>
-  <label>
-    Card
-    <input name="card" inputmode="numeric" autocomplete="cc-number" />
-  </label>
-</form>
-```
+String presets resolve built-ins inside the engine — useful with `target` / schema:
 
 ```ts
 createForm({
   target: "#profile",
   schema: {
-    phone: { format: "philippine-phone" },
+    phone: { format: "phone" }, // or "philippine-phone" | "credit-card" | "currency" | "slug"
     card: { format: "credit-card" },
   },
 });
 ```
 
-### React JSX
-
-```tsx
-<label>
-  Phone
-  <input
-    {...form.field("phone")}
-    onChange={(event) => {
-      form.field("phone", { format: phone }).setValue(event.target.value);
-    }}
-    inputMode="tel"
-  />
-</label>
+```html
+<form id="profile">
+  <input name="phone" inputmode="tel" autocomplete="tel" />
+  <input name="card" inputmode="numeric" autocomplete="cc-number" />
+</form>
 ```
 
-Or rely on schema presets / field options registered once at create time, then `{...form.field("phone")}` alone is enough.
+When you pass **functions** (`format: formatPhone`), import them from `/format`. When you pass **preset strings** (`format: "phone"`), the main `createForm` path is enough.
+
+---
+
+## React
+
+Register format once (create options or first `field()` call), then bind:
+
+```tsx
+import { formatPhone } from "@jayoncode/form-intelligent/format";
+
+form.field("phone", { format: formatPhone });
+
+<input {...form.field("phone").bind()} inputMode="tel" />;
+```
 
 **Next:** [Integrations](/packages/form-intelligent/modules/integrations) — session, keyboard, analytics.

@@ -27,6 +27,21 @@ export interface DevToolsWorkflowEvent {
   readonly detail?: Readonly<Record<string, unknown>>;
 }
 
+export interface DevToolsPerformanceMark {
+  readonly id: string;
+  readonly formId: string;
+  readonly name: string;
+  readonly startTime: number;
+  readonly durationMs: number;
+  readonly detail?: Readonly<Record<string, unknown>>;
+}
+
+export interface DevToolsPluginInfo {
+  readonly name: string;
+  readonly order: number;
+  readonly version?: string;
+}
+
 export interface FormDevToolsSummary {
   readonly id: string;
   readonly isDirty: boolean;
@@ -42,6 +57,8 @@ export interface FormDevToolsInspector {
   getEventLog(formId: string): readonly DevToolsEventRecord[];
   getValidationLog(formId: string): readonly DevToolsValidationRecord[];
   getWorkflowTimeline(formId: string): readonly DevToolsWorkflowEvent[];
+  getPerformanceMarks(formId: string): readonly DevToolsPerformanceMark[];
+  getPlugins(formId: string): readonly DevToolsPluginInfo[];
   getStateSnapshot(formId: string): FormState<Record<string, unknown>> | null;
   clearLogs(formId?: string): void;
 }
@@ -50,7 +67,17 @@ export interface FormDevToolsPluginOptions {
   readonly maxEvents?: number;
   readonly maxValidationEntries?: number;
   readonly maxWorkflowEntries?: number;
+  readonly maxPerformanceMarks?: number;
+  /**
+   * When true, workflow timeline entries may include state detail.
+   * Default false — prefer metadata-only recording (Phase 17).
+   */
   readonly captureStateOnWorkflowEvents?: boolean;
+  /**
+   * When capturing state, redact `values` (default true).
+   * Set false only for trusted local debugging.
+   */
+  readonly redactValues?: boolean;
 }
 
 export interface FormDevToolsGlobalOptions extends FormDevToolsPluginOptions {

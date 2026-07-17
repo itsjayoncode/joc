@@ -37,6 +37,7 @@ export function createFormIntelligentSidebar(
       items: [
         { text: "Core concepts", link: `${base}/modules/concepts` },
         { text: "Capabilities", link: `${base}/modules/capabilities` },
+        { text: "Entrypoints", link: `${base}/modules/entrypoints` },
       ],
     },
     {
@@ -62,6 +63,7 @@ export function createFormIntelligentSidebar(
       text: "Advanced",
       items: [
         { text: "Plugins", link: `${base}/modules/plugins` },
+        { text: "Performance", link: `${base}/modules/performance` },
         { text: "Patterns", link: `${base}/modules/patterns` },
       ],
     },

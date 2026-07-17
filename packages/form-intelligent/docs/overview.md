@@ -2,6 +2,39 @@
 
 Headless form workflow engine — validation, submission, state, and multi-step orchestration without UI coupling.
 
+## The problem
+
+Real products do not ship “email + password” forever. They ship checkouts, applications, and onboarding flows where:
+
+| What breaks in DIY forms                         | What users feel                          |
+| ------------------------------------------------ | ---------------------------------------- |
+| Conditional fields via `useEffect` / change glue | Wrong fields shown; submit still enabled |
+| Autosave + draft restore hand-rolled             | Refresh kills a 10-minute form           |
+| `isSubmitting` / double-click races              | Duplicate charges or blank error states  |
+| Wizard step validation scattered                 | Users skip steps or get stuck            |
+
+Form Intelligent makes those workflows **declarative** on one `createForm()` instance — keep your markup or bind into any UI.
+
+## When to use
+
+- Multi-field forms with validation, async submit, and submit guards
+- Conditional fields (`when()`), drafts/autosave, wizards, or offline queue
+- Headless or multi-framework UI (native HTML, React, Vue, …)
+
+## When not to use
+
+- A single uncontrolled input with no validation workflow
+- You only need a UI component library (pick a design system; pair this for orchestration)
+- You need a full CMS / form builder product — this is an **engine**, not a builder UI
+
+## Features
+
+- Sync + async validation (including multiple async checks per field)
+- Declarative `when()` rules (show / require / populate / gate submit)
+- Autosave, draft restore, wizard steps, offline submit queue
+- Headless `bind()` + optional framework/schema adapters
+- Plugins, middleware, DevTools (opt-in subpaths)
+
 ## Install
 
 ```bash
@@ -21,6 +54,59 @@ React apps also need the adapter:
 ```bash
 npm install @jayoncode/form-intelligent @jayoncode/form-intelligent-react
 ```
+
+## Best example: SaaS checkout (rules + draft + submit)
+
+Enterprise plan reveals seats and company, drafts survive refresh, submit is async-safe — no effect spaghetti:
+
+```ts
+import { createForm, when } from "@jayoncode/form-intelligent";
+
+createForm({
+  target: "#checkout",
+  schema: {
+    plan: { required: true },
+    seatCount: { required: true },
+    companyName: { minLength: 2 },
+    email: "email",
+  },
+  rules: [
+    when("plan")
+      .equals("enterprise")
+      .show("seatCount", "companyName")
+      .require("seatCount", "companyName"),
+  ],
+  workflow: {
+    autosave: {
+      enabled: true,
+      debounceMs: 800,
+      onSave: (values) => api.saveDraft(values),
+    },
+    draft: {
+      enabled: true,
+      storageKey: "checkout:draft",
+    },
+  },
+  async onSubmit(values) {
+    await api.checkout(values);
+  },
+});
+```
+
+```html
+<form id="checkout">
+  <select name="plan">
+    <option value="starter">Starter</option>
+    <option value="enterprise">Enterprise</option>
+  </select>
+  <input name="seatCount" type="number" />
+  <input name="companyName" />
+  <input name="email" type="email" />
+  <button type="submit">Continue</button>
+</form>
+```
+
+[Try rules in the playground →](/playground/form-intelligent/rules) · [Workflow / drafts →](/playground/form-intelligent/workflow)
 
 ## Example: native HTML signup
 
@@ -97,11 +183,60 @@ The instance owns values, per-field errors, touched/dirty flags, and submit life
 
 [Run this flow in the playground →](/playground/form-intelligent/validation)
 
+## Example: multiple async checks on one field
+
+Username signup often needs more than one server round-trip. Stack sync rules, then several `asyncValidator`s — they run in order; the first error stops the chain:
+
+```ts
+import { createForm, required, minLength, asyncValidator } from "@jayoncode/form-intelligent";
+
+createForm({
+  initialValues: { username: "" },
+  validateOn: "onBlur",
+  validators: {
+    username: [
+      required,
+      minLength(3),
+      asyncValidator({
+        debounce: 300,
+        validate: async (value, { signal }) => {
+          const res = await fetch(`/api/usernames/reserved?u=${value}`, { signal });
+          return (await res.json()).reserved ? "Reserved username." : true;
+        },
+      }),
+      asyncValidator({
+        debounce: 400,
+        preventDuplicates: true,
+        validate: async (value, { signal }) => {
+          const res = await fetch(`/api/usernames/available?u=${value}`, { signal });
+          return (await res.json()).available ? true : "Already taken.";
+        },
+      }),
+      asyncValidator({
+        debounce: 500,
+        validate: async (value, { signal }) => {
+          const res = await fetch("/api/usernames/moderate", {
+            method: "POST",
+            body: JSON.stringify({ username: value }),
+            signal,
+          });
+          return (await res.json()).ok ? true : "Choose another username.";
+        },
+      }),
+    ],
+  },
+});
+```
+
+[Full async options →](/packages/form-intelligent/modules/validation#multiple-async-validators-on-one-field) · [Playground →](/playground/form-intelligent/validation)
+
 ## Problem → approach
 
 | Typical pain                                                                    | Form Intelligent                                                                     |
 | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
 | Validation, touched state, and submit guards duplicated in every form component | One `createForm()` instance owns values, errors, dirty/touched, and submit lifecycle |
+| Conditional fields and require rules via `useEffect`                            | `when().equals().show().require()` — declarative, testable                           |
+| Draft/autosave races and lost input on refresh                                  | Built-in autosave debounce + draft storage                                           |
 | `onSubmit` handlers mix fetch, error mapping, and UI flags                      | `onSubmit` is async-first; `isSubmitting` and duplicate-submit guard are built in    |
 | Framework form libs own too much UI or too little workflow                      | Headless `bind()` + `form.state`; `subscribe()` only for manual UI                   |
 
@@ -121,6 +256,19 @@ The instance owns values, per-field errors, touched/dirty flags, and submit life
 
 Form Intelligent complements field-registration libraries (React Hook Form, etc.): it focuses on **workflow orchestration**, not component libraries.
 
+## Entrypoints
+
+Optional engines use tree-shakeable subpaths. Formatters and DevTools are **not** on the main entry.
+
+See the full map: [Entrypoints & subpaths](/packages/form-intelligent/modules/entrypoints).
+
+| Goal                     | Prefer                                 |
+| ------------------------ | -------------------------------------- |
+| Create a form            | `@jayoncode/form-intelligent`          |
+| Mask phone / slug / card | `@jayoncode/form-intelligent/format`   |
+| Enable DevTools          | `@jayoncode/form-intelligent/devtools` |
+| Browser session plugin   | `@jayoncode/form-intelligent/plugins`  |
+
 ## Documentation path
 
 Work through the journey groups below. Each guide links to a playground route.
@@ -137,6 +285,7 @@ Work through the journey groups below. Each guide links to a playground route.
 | --------------------------------------------------------------- | ----------------------------------- | ------------------------------------------- |
 | [Core concepts](/packages/form-intelligent/modules/concepts)    | Instance model, flags, architecture | [State](/playground/form-intelligent/state) |
 | [Capabilities](/packages/form-intelligent/modules/capabilities) | Form OS feature map and status      | [Dashboard](/playground/form-intelligent/)  |
+| [Entrypoints](/packages/form-intelligent/modules/entrypoints)   | Main vs `/format`, `/devtools`, …   | [Dashboard](/playground/form-intelligent/)  |
 
 ### Guides
 
@@ -159,11 +308,12 @@ Work through the journey groups below. Each guide links to a playground route.
 
 ### Advanced and Support
 
-| Guide                                                     | Topics                   | Playground                                        |
-| --------------------------------------------------------- | ------------------------ | ------------------------------------------------- |
-| [Plugins](/packages/form-intelligent/modules/plugins)     | Lifecycle hooks          | [Plugins](/playground/form-intelligent/plugins)   |
-| [Patterns](/packages/form-intelligent/modules/patterns)   | Wizard, offline, recipes | [Dashboard](/playground/form-intelligent/)        |
-| [Migration](/packages/form-intelligent/modules/migration) | From DIY autosave        | [Workflow](/playground/form-intelligent/workflow) |
+| Guide                                                         | Topics                        | Playground                                              |
+| ------------------------------------------------------------- | ----------------------------- | ------------------------------------------------------- |
+| [Plugins](/packages/form-intelligent/modules/plugins)         | Lifecycle hooks + middleware  | [Plugins](/playground/form-intelligent/plugins)         |
+| [Performance](/packages/form-intelligent/modules/performance) | Bundle + timing budgets       | [Performance](/playground/form-intelligent/performance) |
+| [Patterns](/packages/form-intelligent/modules/patterns)       | Wizard, offline, recipes      | [Dashboard](/playground/form-intelligent/)              |
+| [Migration](/packages/form-intelligent/modules/migration)     | DIY autosave + breaking notes | [Workflow](/playground/form-intelligent/workflow)       |
 
 ## Package fit
 

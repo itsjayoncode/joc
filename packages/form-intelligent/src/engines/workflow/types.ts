@@ -4,6 +4,10 @@ export interface FieldUiState {
   visible: boolean;
   disabled: boolean;
   required: boolean | undefined;
+  /** Additive — when true, controls should be non-editable but still focusable. */
+  readOnly?: boolean;
+  /** Additive — e.g. async option load / validating. */
+  busy?: boolean;
 }
 
 export interface FormUiState {
@@ -54,18 +58,51 @@ export interface FormRuleDefinition<
 export type FieldUiMap = Readonly<Record<string, FieldUiState>>;
 
 export interface WizardStep {
-  readonly id: string;
+  readonly id?: string;
   readonly fields?: readonly FieldPath[];
   readonly validate?: boolean;
+  /** Skip this step when predicate returns false (conditional steps MVP). */
+  readonly when?: (values: Record<string, unknown>) => boolean;
+  /** Explicit next step id, or resolver from values. */
+  readonly next?: string | ((values: Record<string, unknown>) => string | undefined);
+  readonly canLeave?: (ctx: WizardGuardContext) => boolean | Promise<boolean>;
+  readonly canEnter?: (ctx: WizardGuardContext) => boolean | Promise<boolean>;
 }
+
+export interface WizardGuardContext<
+  TValues extends Record<string, unknown> = Record<string, unknown>,
+> {
+  readonly values: TValues;
+  readonly fromStepId: string | undefined;
+  readonly toStepId: string;
+  readonly signal: AbortSignal;
+}
+
+/** Validation scope for `workflow.goTo`. Default `"all"` preserves SHIPPED behavior. */
+export type WizardNavigateValidation = "step" | "all" | "none";
+
+export type { CalculateOptions } from "../calculation/index.js";
 
 export interface WizardConfig {
   readonly steps: readonly WizardStep[];
   readonly initialStep?: number;
+  /**
+   * Default validation for `goTo`.
+   * - `all` — validate entire form (SHIPPED default)
+   * - `step` — validate current step fields only
+   * - `none` — skip validation
+   */
+  readonly goToValidation?: WizardNavigateValidation;
+  /** When true, draft save/restore includes `currentStep`. */
+  readonly persistStepInDraft?: boolean;
 }
 
-export interface CalculateOptions<TValues extends Record<string, unknown>> {
-  readonly deps?: readonly FieldPath[];
-  readonly markDirty?: boolean;
-  readonly compute: (context: { values: TValues }) => unknown;
+export interface WizardStepGraphNode {
+  readonly id: string;
+  readonly index: number;
+  readonly nextIds: readonly string[];
+}
+
+export interface WizardStepGraph {
+  readonly nodes: readonly WizardStepGraphNode[];
 }

@@ -4,6 +4,12 @@ Record a bounded history of public lifecycle events (Session Timeline / Event Ti
 
 **Previous:** [Presence](./presence.md) · **Next:** [Metrics](./metrics.md)
 
+## Import path
+
+```ts
+import { createBrowserLifecycle, createTimelineApi } from "@jayoncode/browser-lifecycle";
+```
+
 ## Usage
 
 ```ts

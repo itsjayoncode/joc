@@ -1,7 +1,7 @@
 ---
 title: Cross Tab Playground
 description: Interactive playground documentation for Cross Tab Playground.
-playground: http://127.0.0.1:4273/cross-tab
+playground: /playground/browser-lifecycle/cross-tab
 ---
 
 # Cross Tab Playground
@@ -17,4 +17,4 @@ Demonstrates cross-tab coordination via `src/lib/playground-cross-tab.ts`.
 
 ## Interactive Playground
 
-Explore this topic live in the [Cross Tab Playground](http://127.0.0.1:4273/cross-tab).
+Explore this topic live in the [Cross Tab Playground](/playground/browser-lifecycle/cross-tab).

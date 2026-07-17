@@ -1,7 +1,7 @@
 ---
 title: Session Core
 description: Browser Lifecycle module documentation for Session Core.
-playground: "http://127.0.0.1:4273/lifecycle"
+playground: "/playground/browser-lifecycle/lifecycle"
 ---
 
 # Session Core

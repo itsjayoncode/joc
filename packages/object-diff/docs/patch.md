@@ -8,6 +8,15 @@ Generate RFC 6902 JSON Patch operations and apply them to targets.
 [Open Patch explorer →](/playground/object-diff/patch) — generate ops from a diff and apply them interactively.
 :::
 
+## Import path
+
+```ts
+import { diff, patch, applyPatch } from "@jayoncode/object-diff";
+// Patch-only entry: import { patch, applyPatch } from "@jayoncode/object-diff/patch";
+```
+
+Full map: [Engines](/packages/object-diff/modules/engines).
+
 ## Problem → approach
 
 | Typical pain                                | Patch pipeline                                      |

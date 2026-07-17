@@ -35,7 +35,7 @@ const lifecycle = createBrowserLifecycle({
 });
 ```
 
-Configuration changes require a session restart. Validate pending configuration in the [Configuration Playground](http://127.0.0.1:4273/configuration).
+Configuration changes require a session restart. Validate pending configuration in the [Configuration Playground](/playground/browser-lifecycle/configuration).
 
 ## Lifecycle control
 
@@ -67,7 +67,7 @@ lifecycle.onEvent((event) => {
 });
 ```
 
-Explore event ordering in the [Event Explorer](http://127.0.0.1:4273/events).
+Explore event ordering in the [Event Explorer](/playground/browser-lifecycle/events).
 
 ## Cleanup
 

@@ -1,6 +1,6 @@
 import { FormAnalyticsTracker, createAnalyticsPlugin, type AnalyticsFormLike } from "./tracker.js";
 
-import type { FormAnalyticsSnapshot } from "./types.js";
+import type { AnalyticsRuntimeOptions, FormAnalyticsSnapshot } from "./types.js";
 
 export const EMPTY_ANALYTICS_SNAPSHOT: FormAnalyticsSnapshot = {
   startedAt: 0,
@@ -11,14 +11,18 @@ export const EMPTY_ANALYTICS_SNAPSHOT: FormAnalyticsSnapshot = {
   currentStep: 0,
   fieldViews: {},
   dropOffField: null,
+  timeToCompleteMs: null,
+  timeToFirstErrorMs: null,
 };
 
 export class AnalyticsService {
   private tracker: FormAnalyticsTracker | null = null;
 
+  public constructor(private readonly options: AnalyticsRuntimeOptions = {}) {}
+
   public ensure(): FormAnalyticsTracker {
     if (!this.tracker) {
-      this.tracker = new FormAnalyticsTracker();
+      this.tracker = new FormAnalyticsTracker(this.options);
     }
 
     return this.tracker;

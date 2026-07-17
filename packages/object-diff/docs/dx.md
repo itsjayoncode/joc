@@ -4,6 +4,15 @@ Fluent helpers, docs, and playground polish for shipped engines.
 
 **Previous:** [Performance](/packages/object-diff/modules/performance) · **Back to:** [Overview](/packages/object-diff/overview)
 
+## Import path
+
+```ts
+import { diff } from "@jayoncode/object-diff";
+import { createDiffView } from "@jayoncode/object-diff/view";
+```
+
+`createDiffView` is **`/view` only** (not on root). Canonical map: [Engines](/packages/object-diff/modules/engines).
+
 ## Fluent API (ADR 0006)
 
 ```ts
@@ -23,19 +32,18 @@ view.statistics();
 
 ## Subpath map
 
-| Import                             | Use                                                   |
-| ---------------------------------- | ----------------------------------------------------- |
-| `@jayoncode/object-diff`           | Core compare/diff/patch/serialize (compat)            |
-| `@jayoncode/object-diff/core`      | Slim `diff` / `compare` / `hasChanges`                |
-| `@jayoncode/object-diff/patch`     | Patch generate / apply / validate / optimize          |
-| `@jayoncode/object-diff/formatter` | `serialize` + `createSerializer`                      |
-| `@jayoncode/object-diff/merge`     | Merge engine                                          |
-| `@jayoncode/object-diff/query`     | `find` / `filter` / `exclude` / `summary` / `query()` |
-| `@jayoncode/object-diff/stats`     | `statistics`                                          |
-| `@jayoncode/object-diff/plugins`   | `createEngine`                                        |
-| `@jayoncode/object-diff/view`      | `createDiffView`                                      |
+Prefer linking here rather than duplicating forever — canonical table: [Engines](/packages/object-diff/modules/engines).
 
-Full map: [Engines](/packages/object-diff/modules/engines).
+| Import                         | Use                           |
+| ------------------------------ | ----------------------------- |
+| `@jayoncode/object-diff/view`  | `createDiffView`              |
+| `@jayoncode/object-diff/stats` | `statistics`                  |
+| `@jayoncode/object-diff/query` | `find` / `filter` / `query()` |
+
+## Pitfalls
+
+- Do not expect `createDiffView` on the root entry.
+- Free functions remain canonical; the view does not mutate DiffResults.
 
 ## Errors
 

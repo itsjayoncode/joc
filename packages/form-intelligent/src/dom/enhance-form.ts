@@ -153,6 +153,9 @@ function applyFieldUi(
       control instanceof HTMLButtonElement
     ) {
       control.disabled = disabled;
+      if (control instanceof HTMLInputElement || control instanceof HTMLTextAreaElement) {
+        control.readOnly = ui?.readOnly === true;
+      }
     }
 
     const required = ui?.required;
@@ -173,10 +176,9 @@ function syncFieldUi<TValues extends Record<string, unknown>>(
   formElement: HTMLFormElement,
   fieldPaths: readonly FieldPath[],
 ): void {
-  const { fieldUi } = form.state;
-
   for (const path of fieldPaths) {
-    applyFieldUi(formElement, path, fieldUi[path]);
+    const presentation = form.getPresentation(path);
+    applyFieldUi(formElement, path, presentation.field);
   }
 }
 
@@ -265,13 +267,13 @@ export function attachDomEnhancer<TValues extends Record<string, unknown>>(
     syncErrors();
     syncFieldUi(form, formElement, fieldPaths);
     for (const path of fieldPaths) {
-      syncFieldOptions(formElement, path, form.state.fieldOptions[path]);
+      syncFieldOptions(formElement, path, form.getPresentation(path).options);
       syncValidatingState(form, formElement, path);
     }
     syncSubmitButtons(
       formElement,
       form.getFormState().isSubmitting,
-      form.state.formUi.submitDisabled,
+      form.getPresentation().formUi.submitDisabled,
     );
   });
 
@@ -279,13 +281,13 @@ export function attachDomEnhancer<TValues extends Record<string, unknown>>(
   syncErrors();
   syncFieldUi(form, formElement, fieldPaths);
   for (const path of fieldPaths) {
-    syncFieldOptions(formElement, path, form.state.fieldOptions[path]);
+    syncFieldOptions(formElement, path, form.getPresentation(path).options);
     syncValidatingState(form, formElement, path);
   }
   syncSubmitButtons(
     formElement,
     form.getFormState().isSubmitting,
-    form.state.formUi.submitDisabled,
+    form.getPresentation().formUi.submitDisabled,
   );
 
   return () => {

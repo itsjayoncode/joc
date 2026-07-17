@@ -1,3 +1,4 @@
+import type { PluginErrorHandler } from "./compat.js";
 import type { FieldPath, SubmitOptions, ValidationMode } from "../types/index.js";
 
 export type PluginHookName =
@@ -90,6 +91,11 @@ interface RegisteredHook<THandler> {
   readonly order: number;
   readonly registrationIndex: number;
   readonly handler: THandler;
+  readonly plugin?: string;
+}
+
+export interface PluginHookBusOptions {
+  readonly onPluginError?: PluginErrorHandler;
 }
 
 export class PluginHookBus<TValues extends Record<string, unknown>> {
@@ -100,10 +106,16 @@ export class PluginHookBus<TValues extends Record<string, unknown>> {
   private readonly afterSubmit = new Set<RegisteredHook<AfterSubmitHandler<TValues>>>();
   private readonly onAutosave = new Set<RegisteredHook<AutosaveHandler<TValues>>>();
   private readonly onDraftRestore = new Set<RegisteredHook<DraftRestoreHandler>>();
+  private readonly onPluginError: PluginErrorHandler | undefined;
 
-  public createApi(): FormPluginApi<TValues> {
+  public constructor(options: PluginHookBusOptions = {}) {
+    this.onPluginError = options.onPluginError;
+  }
+
+  public createApi(pluginName?: string): FormPluginApi<TValues> {
     return {
-      on: (hook, handler, options) => this.addHook(hook, handler, options?.order ?? 100),
+      on: (hook, handler, options) =>
+        this.addHook(hook, handler, options?.order ?? 100, pluginName),
       off: (hook, handler) => {
         this.removeHook(hook, handler);
       },
@@ -115,7 +127,12 @@ export class PluginHookBus<TValues extends Record<string, unknown>> {
       return true;
     }
 
-    return runGuardHooks(this.getOrdered(this.beforeValidate), context);
+    return runGuardHooks(
+      this.getOrdered(this.beforeValidate),
+      context,
+      "beforeValidate",
+      this.onPluginError,
+    );
   }
 
   public async runAfterValidate(context: ValidateHookContext<TValues>): Promise<void> {
@@ -123,7 +140,12 @@ export class PluginHookBus<TValues extends Record<string, unknown>> {
       return;
     }
 
-    await runSequentialHooks(this.getOrdered(this.afterValidate), context);
+    await runSequentialHooks(
+      this.getOrdered(this.afterValidate),
+      context,
+      "afterValidate",
+      this.onPluginError,
+    );
   }
 
   public runBeforeSubmit(context: SubmitHookContext<TValues>): boolean | Promise<boolean> {
@@ -131,7 +153,12 @@ export class PluginHookBus<TValues extends Record<string, unknown>> {
       return true;
     }
 
-    return runGuardHooks(this.getOrdered(this.beforeSubmit), context);
+    return runGuardHooks(
+      this.getOrdered(this.beforeSubmit),
+      context,
+      "beforeSubmit",
+      this.onPluginError,
+    );
   }
 
   public async runAfterSubmit(context: SubmitHookContext<TValues>): Promise<void> {
@@ -139,7 +166,12 @@ export class PluginHookBus<TValues extends Record<string, unknown>> {
       return;
     }
 
-    await runSequentialHooks(this.getOrdered(this.afterSubmit), context);
+    await runSequentialHooks(
+      this.getOrdered(this.afterSubmit),
+      context,
+      "afterSubmit",
+      this.onPluginError,
+    );
   }
 
   public async runOnAutosave(context: AutosaveHookContext<TValues>): Promise<void> {
@@ -147,7 +179,12 @@ export class PluginHookBus<TValues extends Record<string, unknown>> {
       return;
     }
 
-    await runSequentialHooks(this.getOrdered(this.onAutosave), context);
+    await runSequentialHooks(
+      this.getOrdered(this.onAutosave),
+      context,
+      "onAutosave",
+      this.onPluginError,
+    );
   }
 
   public async runOnDraftRestore(context: DraftRestoreHookContext): Promise<void> {
@@ -155,7 +192,12 @@ export class PluginHookBus<TValues extends Record<string, unknown>> {
       return;
     }
 
-    await runSequentialHooks(this.getOrdered(this.onDraftRestore), context);
+    await runSequentialHooks(
+      this.getOrdered(this.onDraftRestore),
+      context,
+      "onDraftRestore",
+      this.onPluginError,
+    );
   }
 
   public clear(): void {
@@ -172,11 +214,13 @@ export class PluginHookBus<TValues extends Record<string, unknown>> {
     hook: PluginHookName,
     handler: (...args: never[]) => unknown,
     order: number,
+    pluginName?: string,
   ): () => void {
     const entry = {
       order,
       registrationIndex: this.nextRegistrationIndex,
       handler,
+      ...(pluginName ? { plugin: pluginName } : {}),
     } as RegisteredHook<never>;
     this.nextRegistrationIndex += 1;
     this.getHookSet(hook).add(entry);
@@ -228,10 +272,18 @@ export class PluginHookBus<TValues extends Record<string, unknown>> {
 async function runGuardHooks<TContext>(
   hooks: readonly RegisteredHook<(context: TContext) => boolean | void | Promise<boolean | void>>[],
   context: TContext,
+  hook: PluginHookName,
+  onPluginError: PluginErrorHandler | undefined,
 ): Promise<boolean> {
   for (const entry of hooks) {
-    const result = await entry.handler(context);
-    if (result === false) {
+    try {
+      const result = await entry.handler(context);
+      if (result === false) {
+        return false;
+      }
+    } catch (error) {
+      reportPluginHookError(onPluginError, entry.plugin, hook, error);
+      // Guard throw cancels the phase without bricking the form.
       return false;
     }
   }
@@ -242,10 +294,31 @@ async function runGuardHooks<TContext>(
 async function runSequentialHooks<TContext>(
   hooks: readonly RegisteredHook<(context: TContext) => void | Promise<void>>[],
   context: TContext,
+  hook: PluginHookName,
+  onPluginError: PluginErrorHandler | undefined,
 ): Promise<void> {
   for (const entry of hooks) {
-    await entry.handler(context);
+    try {
+      await entry.handler(context);
+    } catch (error) {
+      reportPluginHookError(onPluginError, entry.plugin, hook, error);
+      // Observer throw is isolated — continue remaining handlers.
+    }
   }
+}
+
+function reportPluginHookError(
+  onPluginError: PluginErrorHandler | undefined,
+  plugin: string | undefined,
+  hook: PluginHookName,
+  error: unknown,
+): void {
+  onPluginError?.({
+    ...(plugin ? { plugin } : {}),
+    hook,
+    phase: hook,
+    error,
+  });
 }
 
 export async function resolveHookResult(result: boolean | Promise<boolean>): Promise<boolean> {

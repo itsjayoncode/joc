@@ -8,6 +8,14 @@ Autosave, drafts, wizards, progress, and related workflow config.
 [Workflow explorer →](/playground/form-intelligent/workflow) — autosave debounce, draft restore, wizard steps.
 :::
 
+## Import path
+
+Configure via `createForm({ workflow })` on the **main** entry. Subpaths `/workflow`, `/draft`, `/wizard` are low-level internals — prefer config + instance methods. [Entrypoints](/packages/form-intelligent/modules/entrypoints).
+
+```ts
+import { createForm } from "@jayoncode/form-intelligent";
+```
+
 ## Problem → solution
 
 | Problem                                   | Solution            |
@@ -48,6 +56,8 @@ createForm({
 });
 ```
 
+Pending autosave is **canceled** on `submit()` and `destroy()` so saves do not race with submit or teardown.
+
 Status: `form.state.workflow.isAutosaving`, `form.state.workflow.lastAutosaveAt`.
 
 Plugin hook: `api.on("onAutosave", …)` — see [Plugins](/packages/form-intelligent/modules/plugins).
@@ -66,11 +76,26 @@ workflow: {
     onRestore: (values) => console.log("Welcome back!", values),
     // promptOnRestore: true,
     // onRestorePrompt: (values) => window.confirm("Restore draft?"),
+    // versioning: true,
+    // schemaVersion: "2",
+    // migrateDraft: (envelope) => ({ ...envelope, schemaVersion: "2" }),
   },
 },
 ```
 
-Manual: `form.saveDraft()`.
+Manual:
+
+```ts
+form.saveDraft();
+await form.restoreDraft(); // after mount
+await form.restoreDraft({ force: true }); // overwrite dirty values
+await form.restoreDraft({ prompt: true }); // honor onRestorePrompt
+await form.restoreDraft({ merge: "replace" });
+```
+
+Successful `submit()` clears the stored draft. Quota failures throw `DraftStorageError` (`code: "draft_error"`).
+
+**Multi-tab:** last-write-wins today; conflict strategies are deferred (not Phase 11).
 
 ::: info Try it
 Fill fields in the [Workflow playground](/playground/form-intelligent/workflow), reload — the draft comes back.
@@ -80,15 +105,22 @@ Fill fields in the [Workflow playground](/playground/form-intelligent/workflow),
 
 ## Multi-step wizard
 
-Each step needs a string `id` and the fields to validate on `next()`:
+Each step may include an `id`, fields to validate on `next()`, and optional branching:
 
 ```ts
 workflow: {
   wizard: {
     initialStep: 0,
+    goToValidation: "step", // default "all" — validate entire form on goTo
+    persistStepInDraft: true, // restore currentStep with drafts
     steps: [
       { id: "profile", fields: ["name", "email"] },
-      { id: "details", fields: ["bio"] },
+      {
+        id: "business",
+        fields: ["company"],
+        when: (values) => values.kind === "business",
+      },
+      { id: "review", fields: ["bio"] },
     ],
   },
 },
@@ -97,10 +129,15 @@ workflow: {
 Navigate:
 
 ```ts
-await form.workflow.next(); // validates current step first
+await form.workflow.next();
 form.workflow.prev();
-await form.workflow.goTo(1);
+await form.workflow.goTo("review");
+await form.workflow.goTo(2, { validate: "none" });
+form.workflow.visibleSteps();
+form.workflow.getStepGraph();
 ```
+
+Progress (`state.workflow.progress` / `totalSteps` / `canGoNext`) counts **visible** steps only.
 
 Progress UI:
 

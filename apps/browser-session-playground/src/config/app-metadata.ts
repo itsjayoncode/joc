@@ -35,7 +35,7 @@ export function getPlaygroundMetadata(): PlaygroundMetadata {
           : "development",
       supportLabel: import.meta.env.VITE_PLAYGROUND_SUPPORT_LABEL ?? "Report an issue on GitHub",
       supportUrl:
-        import.meta.env.VITE_PLAYGROUND_SUPPORT_URL ?? "https://github.com/JayOnCode/joc/issues",
+        import.meta.env.VITE_PLAYGROUND_SUPPORT_URL ?? "https://github.com/itsjayoncode/joc/issues",
     },
     versions: {
       browserLifecycle: __BROWSER_LIFECYCLE_VERSION__,

@@ -1,7 +1,7 @@
 ---
 title: Lifecycle Playground
 description: Interactive playground documentation for Lifecycle Playground.
-playground: http://127.0.0.1:4273/lifecycle
+playground: /playground/browser-lifecycle/lifecycle
 ---
 
 # Lifecycle Playground
@@ -16,4 +16,4 @@ Demonstrates page lifecycle normalization via `src/lib/playground-lifecycle.ts`.
 
 ## Interactive Playground
 
-Explore this topic live in the [Lifecycle Playground](http://127.0.0.1:4273/lifecycle).
+Explore this topic live in the [Lifecycle Playground](/playground/browser-lifecycle/lifecycle).

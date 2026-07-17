@@ -8,6 +8,17 @@ Use Form Intelligent with your existing UI stack — native HTML, React, or head
 [Adapters explorer →](/playground/form-intelligent/adapters) — current integrations and planned bridges.
 :::
 
+## Import path
+
+| Layer                         | Package                                                        |
+| ----------------------------- | -------------------------------------------------------------- |
+| Core + `createFormController` | `@jayoncode/form-intelligent` (controller also on `/adapters`) |
+| React / Vue / Angular         | `@jayoncode/form-intelligent-react` (etc.)                     |
+| Schema adapters               | `@jayoncode/form-intelligent-zod`, `-yup`, `-valibot`, `-ajv`  |
+| Adapter types                 | `@jayoncode/form-intelligent/adapters`                         |
+
+[Entrypoints](/packages/form-intelligent/modules/entrypoints) for core subpaths.
+
 ## Overview
 
 Adapters connect `createForm()` to framework-specific lifecycle and field bindings. The core package (`@jayoncode/form-intelligent`) remains framework-agnostic; each adapter ships as its own npm package.
@@ -68,7 +79,9 @@ return (
 );
 ```
 
-`useForm` owns instance lifecycle (StrictMode-safe). The core engine owns validation, submit, and loading state. Read `form.state` in JSX — never `subscribe()` in application code.
+`useForm` owns instance lifecycle (StrictMode-safe). `form.field(path)` spreads `name` + `aria-*`. Use `form.fieldController(path)` / `form.controller` for the full Phase 16 controller surface (`bind`, `setAriaIds`, `focusFirstInvalid`).
+
+Read `form.state` in JSX — never `subscribe()` in application code.
 
 Internally the adapter uses:
 
@@ -81,9 +94,42 @@ useSyncExternalStore(form.subscribe, () => form.state);
 ## Headless bindings (any framework)
 
 ```ts
-const binding = form.field("email").bind();
+const email = form.field("email");
+const binding = email.bind();
 // { name, value, onChange, onBlur, onFocus }
+
+email.setAriaIds({ errorId: "email-error", descriptionId: "email-help" });
+const { attributes } = email.aria;
+// { "aria-invalid", "aria-required"?, "aria-describedby"? }
 ```
+
+Prefer **Field / Form Controllers** for design-system binding:
+
+```ts
+import { createFormController } from "@jayoncode/form-intelligent";
+
+const controller = createFormController(form);
+const field = controller.field("email");
+field.setAriaIds({ errorId: "email-err" });
+<input {...field.bind()} {...field.aria.attributes} />
+
+await form.submit();
+if (!form.isValid()) {
+  controller.focusFirstInvalid(); // SSR-safe; focuses `[name=…]` when document exists
+}
+```
+
+---
+
+## Accessibility (`field.aria`)
+
+Pure computation from error / required UI / registered ids (`computeFieldAria`, `/accessibility`):
+
+| Flag              | Source                                                      |
+| ----------------- | ----------------------------------------------------------- |
+| `ariaInvalid`     | Non-empty field error                                       |
+| `ariaRequired`    | Presentation `required === true`                            |
+| `ariaDescribedBy` | `descriptionId` then `errorId` (error id only when invalid) |
 
 ---
 
@@ -194,6 +240,8 @@ Pass a pre-compiled `ValidateFunction` when reusing a configured `Ajv` instance 
 
 ## Vue — `@jayoncode/form-intelligent-vue`
 
+**Status: PARTIAL** — package ships composables; maturity behind React (controllers/`field.aria` parity pending).
+
 ```bash
 npm install @jayoncode/form-intelligent @jayoncode/form-intelligent-vue vue
 ```
@@ -221,6 +269,8 @@ Use `provideForm()` in a parent and `useField('path')` in children for deep tree
 ---
 
 ## Angular — `@jayoncode/form-intelligent-angular`
+
+**Status: PARTIAL** — package ships directives/service; maturity behind React (controllers/`field.aria` parity pending).
 
 ```bash
 npm install @jayoncode/form-intelligent @jayoncode/form-intelligent-angular
@@ -266,9 +316,15 @@ export class LoginComponent {
 
 ---
 
-## Schema adapter (advanced)
+## Schema adapter contract matrix
 
-Bridge any validation library via `SchemaAdapter`:
+| Package                           | Contract tests                      | Status                                          |
+| --------------------------------- | ----------------------------------- | ----------------------------------------------- |
+| Core `SchemaAdapter` fixture      | Unit (sync + async)                 | **SHIPPED**                                     |
+| `@jayoncode/form-intelligent-zod` | Field errors, async refine, success | **SHIPPED**                                     |
+| Yup / Valibot / AJV               | Same contract shape                 | **PARTIAL** — deepen when packages cut releases |
+
+Bridge any library:
 
 ```ts
 import type { SchemaAdapter } from "@jayoncode/form-intelligent/adapters";
@@ -281,7 +337,7 @@ const adapter: SchemaAdapter = {
 };
 ```
 
-Core also exports `PersistenceAdapter`, `FrameworkAdapter`, and `SubmitTransportAdapter` — see `@jayoncode/form-intelligent/adapters`.
+Core also exports `PersistenceAdapter`, `FrameworkAdapter`, `SubmitTransportAdapter`, and `createFormController` — see `@jayoncode/form-intelligent/adapters`.
 
 **Next:** [Plugins](/packages/form-intelligent/modules/plugins) — lifecycle hooks · [Patterns](/packages/form-intelligent/modules/patterns)
 

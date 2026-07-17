@@ -1,7 +1,7 @@
 ---
 title: Connectivity Playground
 description: Interactive playground documentation for Connectivity Playground.
-playground: http://127.0.0.1:4273/connectivity
+playground: /playground/browser-lifecycle/connectivity
 ---
 
 # Connectivity Playground
@@ -69,4 +69,4 @@ Copy-ready examples that use `createBrowserLifecycle()` for polling pause, retry
 
 ## Interactive Playground
 
-Explore this topic live in the [Connectivity Playground](http://127.0.0.1:4273/connectivity).
+Explore this topic live in the [Connectivity Playground](/playground/browser-lifecycle/connectivity).

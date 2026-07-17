@@ -6,10 +6,10 @@ import PackageIcon from "./PackageIcon.vue";
 
 <template>
   <section id="packages" class="joc-home-section joc-package-catalog joc-surface-band">
-    <span class="joc-kicker">Packages</span>
+    <span class="joc-kicker">Package catalog</span>
     <h2 class="joc-section-title">Available now</h2>
     <p class="joc-muted joc-section-lead">
-      Three live packages on npm today. More libraries are on the
+      Three live packages on npm. More libraries are on the
       <a :href="docsHref('/roadmap/')">roadmap</a>.
     </p>
 

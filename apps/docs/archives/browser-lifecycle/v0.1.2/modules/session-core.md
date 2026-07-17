@@ -1,7 +1,7 @@
 ---
 title: Session Core
 description: Browser Lifecycle module documentation for Session Core.
-playground: http://127.0.0.1:4273/lifecycle
+playground: /playground/browser-lifecycle/lifecycle
 ---
 
 # Session Core
@@ -165,4 +165,4 @@ Browser APIs remain deferred to future browser-specific modules.
 
 ## Interactive Playground
 
-Explore this topic live in the [Session Core](http://127.0.0.1:4273/lifecycle-playground).
+Explore this topic live in the [Session Core](/playground/browser-lifecycle/lifecycle-playground).
