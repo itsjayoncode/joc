@@ -92,7 +92,8 @@ export class BrowserLifecycleSession implements BrowserLifecycle {
     [];
   private lastOfflineAt: number | undefined;
   private initialized = false;
-  private readonly pluginRuntime: PluginRuntime;
+  /** Created only when plugins are configured or `use()` is called. */
+  private pluginRuntime: PluginRuntime | undefined;
 
   public constructor(
     config: BrowserLifecycleConfig = {},
@@ -173,23 +174,8 @@ export class BrowserLifecycleSession implements BrowserLifecycle {
       }),
     );
 
-    this.pluginRuntime = new PluginRuntime(
-      {
-        capabilities: this.capabilities,
-        configuration: this.resolvedConfig,
-        getSnapshot: (): Readonly<BrowserLifecycleSnapshot> => this.state.getSnapshot(),
-      },
-      (event, payload) => {
-        this.publicEvents.emit(event, payload);
-        for (const subscriber of this.subscribers) {
-          subscriber(payload, this.state.getSnapshot());
-        }
-      },
-      this.timeProvider,
-    );
-
     for (const plugin of this.resolvedConfig.plugins) {
-      this.pluginRuntime.register(plugin);
+      this.ensurePluginRuntime().register(plugin);
     }
 
     if (this.resolvedConfig.autoStart) {
@@ -219,7 +205,7 @@ export class BrowserLifecycleSession implements BrowserLifecycle {
     }
 
     this.modules.stopAll(this.context);
-    this.pluginRuntime.stopAll("manual-stop");
+    this.pluginRuntime?.stopAll("manual-stop");
 
     const timestamp = this.timeProvider();
     const { previousPhase, snapshot } = this.state.transitionPhase("stopped", timestamp);
@@ -250,7 +236,7 @@ export class BrowserLifecycleSession implements BrowserLifecycle {
 
     if (phase === "running") {
       this.modules.stopAll(this.context);
-      this.pluginRuntime.stopAll("dispose");
+      this.pluginRuntime?.stopAll("dispose");
 
       const stoppedTimestamp = this.timeProvider();
       this.emitPublicEvent("session:stopped", {
@@ -267,7 +253,8 @@ export class BrowserLifecycleSession implements BrowserLifecycle {
     }
 
     this.modules.destroyAll(this.context);
-    this.pluginRuntime.destroyAll();
+    this.pluginRuntime?.destroyAll();
+    this.pluginRuntime = undefined;
 
     const timestamp = this.timeProvider();
     const { previousPhase, snapshot } = this.state.transitionPhase("disposed", timestamp);
@@ -376,11 +363,13 @@ export class BrowserLifecycleSession implements BrowserLifecycle {
       throw new PluginError("Plugins must be registered before BrowserLifecycle starts.");
     }
 
-    if (this.pluginRuntime.has(plugin.id)) {
+    const runtime = this.ensurePluginRuntime();
+
+    if (runtime.has(plugin.id)) {
       throw new PluginError(`A plugin with id "${plugin.id}" is already registered.`);
     }
 
-    this.pluginRuntime.register(plugin);
+    runtime.register(plugin);
   }
 
   /**
@@ -456,27 +445,31 @@ export class BrowserLifecycleSession implements BrowserLifecycle {
    * Returns the registered plugin ids for diagnostics and tests.
    */
   public getPluginIds(): readonly string[] {
-    return this.pluginRuntime.getPluginIds();
+    return this.pluginRuntime?.getPluginIds() ?? [];
   }
 
   /**
    * Returns plugin diagnostics for debugging and playground tooling.
    */
   public getPlugins(): ReturnType<PluginRuntime["getDiagnostics"]> {
-    return this.pluginRuntime.getDiagnostics();
+    return this.pluginRuntime?.getDiagnostics() ?? [];
   }
 
   /**
    * Returns recorded plugin hook executions.
    */
   public getPluginHookLog(): ReturnType<PluginRuntime["getHookLog"]> {
-    return this.pluginRuntime.getHookLog();
+    return this.pluginRuntime?.getHookLog() ?? [];
   }
 
   /**
    * Enables or disables plugin event hooks at runtime.
    */
   public setPluginEnabled(pluginId: string, enabled: boolean): void {
+    if (!this.pluginRuntime) {
+      throw new PluginError(`Plugin "${pluginId}" is not registered.`);
+    }
+
     this.pluginRuntime.setEnabled(pluginId, enabled);
   }
 
@@ -512,6 +505,29 @@ export class BrowserLifecycleSession implements BrowserLifecycle {
     };
   }
 
+  private ensurePluginRuntime(): PluginRuntime {
+    if (this.pluginRuntime) {
+      return this.pluginRuntime;
+    }
+
+    this.pluginRuntime = new PluginRuntime(
+      {
+        capabilities: this.capabilities,
+        configuration: this.resolvedConfig,
+        getSnapshot: (): Readonly<BrowserLifecycleSnapshot> => this.state.getSnapshot(),
+      },
+      (event, payload) => {
+        this.publicEvents.emit(event, payload);
+        for (const subscriber of this.subscribers) {
+          subscriber(payload, this.state.getSnapshot());
+        }
+      },
+      this.timeProvider,
+    );
+
+    return this.pluginRuntime;
+  }
+
   private emitInternalLifecycleTransition(
     previousPhase: BrowserLifecycleSnapshot["phase"],
     nextPhase: BrowserLifecycleSnapshot["phase"],
@@ -535,7 +551,7 @@ export class BrowserLifecycleSession implements BrowserLifecycle {
     }
 
     if (!event.startsWith("plugin:")) {
-      this.pluginRuntime.dispatchEvent(event, payload);
+      this.pluginRuntime?.dispatchEvent(event, payload);
     }
   }
 
@@ -567,12 +583,12 @@ export class BrowserLifecycleSession implements BrowserLifecycle {
     try {
       if (!this.initialized) {
         this.modules.initializeAll(this.context);
-        this.pluginRuntime.initializeAll();
+        this.pluginRuntime?.initializeAll();
         this.initialized = true;
       }
 
       this.modules.startAll(this.context);
-      this.pluginRuntime.startAll();
+      this.pluginRuntime?.startAll();
     } catch (error) {
       throw new InitializationError("Failed to start BrowserLifecycle.", {
         cause: error,

@@ -4,6 +4,11 @@
   "files": [],
   "references": [
     { "path": "./packages/browser-lifecycle" },
+    { "path": "./packages/browser-lifecycle-react" },
+    { "path": "./packages/browser-lifecycle-vue" },
+    { "path": "./packages/browser-lifecycle-svelte" },
+    { "path": "./packages/browser-lifecycle-solid" },
+    { "path": "./packages/browser-lifecycle-angular" },
     { "path": "./packages/object-diff" },
     { "path": "./packages/form-intelligent" },
     { "path": "./packages/form-intelligent-zod" },

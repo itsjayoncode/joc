@@ -239,6 +239,22 @@ describe("BrowserLifecycleSession", () => {
     }).toThrow(PluginError);
   });
 
+  it("does not allocate plugin runtime until plugins are used", () => {
+    const session = createBrowserLifecycle({
+      autoStart: true,
+    });
+
+    expect(session.getPluginIds()).toEqual([]);
+    expect(session.getPlugins()).toEqual([]);
+    expect(session.getPluginHookLog()).toEqual([]);
+    expect(session.getRuntimeDiagnostics().pluginCount).toBe(0);
+    expect(() => {
+      session.setPluginEnabled("missing", false);
+    }).toThrow(PluginError);
+
+    session.dispose();
+  });
+
   it("wraps module startup failures as initialization errors", () => {
     const session = new BrowserLifecycleSession({
       autoStart: false,

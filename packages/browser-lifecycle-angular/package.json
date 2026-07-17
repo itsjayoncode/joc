@@ -1,0 +1,53 @@
+{
+  "name": "@jayoncode/browser-lifecycle-angular",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Angular adapter for @jayoncode/browser-lifecycle — provide/inject and signal snapshots.",
+  "license": "MIT",
+  "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itsjayoncode/joc.git",
+    "directory": "packages/browser-lifecycle-angular"
+  },
+  "homepage": "https://itsjayoncode.github.io/joc/packages/browser-lifecycle-angular/",
+  "bugs": {
+    "url": "https://github.com/itsjayoncode/joc/issues"
+  },
+  "keywords": [
+    "browser-lifecycle",
+    "angular",
+    "signals",
+    "typescript",
+    "jayoncode",
+    "joc"
+  ],
+  "peerDependencies": {
+    "@angular/core": ">=17.0.0",
+    "@jayoncode/browser-lifecycle": "workspace:^"
+  },
+  "devDependencies": {
+    "@angular/core": "^18.2.13",
+    "@angular/platform-browser": "^18.2.13",
+    "@jayoncode/browser-lifecycle": "workspace:*",
+    "zone.js": "^0.14.10"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

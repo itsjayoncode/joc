@@ -157,6 +157,68 @@ Related documents:
 - Future impact:
   - the core package stays lean and reusable across environments
 
+## ADR 011: Remain a product, not a composition platform
+
+- Status: accepted
+- Decision: keep `createBrowserLifecycle()` batteries-included for the six core observers; do not require `withVisibility()`-style installers for core
+- Reason:
+  - the six observers define what “browser lifecycle” means
+  - ~11 kB gzip with zero dependencies is already lean
+  - product DX beats premature platform complexity
+- Alternatives considered:
+  - TanStack-style module composition for every observer
+- Tradeoffs:
+  - unused observers still ship in the factory graph today
+  - runtime gating still prevents listener/timer work when disabled
+- Future impact:
+  - optional intelligence (Timeline, Metrics, …) uses separate boundaries; core stays one product until proven too large
+
+## ADR 012: Core observes; optional modules interpret
+
+- Status: accepted
+- Decision: core attaches browser listeners and normalizes snapshot/events; optional layers only derive from that state
+- Reason:
+  - prevents analytics/BI creep in core
+  - keeps performance predictable
+  - gives a durable place for Activity facade, Timeline, Metrics, Reports, Wait, Resilience
+- Alternatives considered:
+  - growing session with always-on Timeline/Metrics
+- Tradeoffs:
+  - some features require an opt-in step
+- Future impact:
+  - every proposal must answer: observe vs derive?
+
+## ADR 013: Lazy plugin runtime
+
+- Status: accepted
+- Decision: allocate `PluginRuntime` only when plugins are configured or `use()` is called
+- Reason:
+  - default `createBrowserLifecycle()` should not pay plugin bookkeeping
+  - cleaner lifecycle and tests when plugins are unused
+- Alternatives considered:
+  - always construct an empty plugin manager
+- Tradeoffs:
+  - slightly more null-checks in session coordination
+- Future impact:
+  - same public plugin API; better default runtime cost
+
+## ADR 014: Local presence naming; no second Snapshot module
+
+- Status: accepted
+- Decision:
+  - evolve `getSnapshot()` in place; never add a parallel Snapshot module
+  - any future presence feature means **local page availability**, not multi-user presence
+- Reason:
+  - snapshot is already core
+  - multi-user presence is an explicit non-goal
+- Alternatives considered:
+  - Snapshot as a future milestone; “Presence” as collaboration feature
+- Tradeoffs:
+  - naming must stay careful in docs and APIs
+- Future impact:
+  - clearer roadmap and fewer semantic collisions
+
 ## Review
 
-These decisions form a coherent design philosophy: honest browser semantics, small public surface, layered capability use, and strict scope control. The biggest future improvement area is validating the cross-tab and lifecycle decisions against real browser behavior during implementation, but the chosen direction is appropriately conservative for a long-lived package.
+These decisions form a coherent design philosophy: honest browser semantics, small public surface, layered capability use, and strict scope control. Core is frozen as a product. Growth happens in optional interpret layers that must not tax browsers or bundles by default.
+
