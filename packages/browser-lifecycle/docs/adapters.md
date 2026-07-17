@@ -4,6 +4,15 @@ Thin wrappers over the public core API. Each framework ships as a **separate pac
 
 **Previous:** [Resilience](./resilience.md) · **Next:** [Overview](/packages/browser-lifecycle/overview)
 
+## Import path
+
+| Layer           | Package                                     |
+| --------------- | ------------------------------------------- |
+| Core session    | `@jayoncode/browser-lifecycle`              |
+| React / Vue / … | `@jayoncode/browser-lifecycle-react` (etc.) |
+
+Adapters must still dispose the underlying session on unmount. Prefer client-only creation for SSR apps.
+
 ## Packages
 
 | Package                                | Status                   |

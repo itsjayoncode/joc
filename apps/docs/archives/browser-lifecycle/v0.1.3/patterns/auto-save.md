@@ -24,4 +24,4 @@ Debounce saves and avoid writing on every keystroke.
 
 ## Playground
 
-[Idle Playground](http://127.0.0.1:4273/idle) · [Visibility Playground](http://127.0.0.1:4273/visibility)
+[Idle Playground](/playground/browser-lifecycle/idle) · [Visibility Playground](/playground/browser-lifecycle/visibility)

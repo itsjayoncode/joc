@@ -4,6 +4,17 @@ Terminology and data flow for `@jayoncode/object-diff`.
 
 **Previous:** [Overview](/packages/object-diff/overview) · **Next:** [Tutorial](/packages/object-diff/modules/getting-started)
 
+## Glossary
+
+| Term           | Meaning                                                               |
+| -------------- | --------------------------------------------------------------------- |
+| **Change**     | One typed record from `diff()` (`path`, `type`, values)               |
+| **DiffResult** | `{ changes, metadata }` returned by `diff`                            |
+| **Patch**      | RFC 6902 operations derived from a DiffResult (`patch()`)             |
+| **Merge**      | Combine two/three snapshots with strategy + conflicts (`/merge`)      |
+| **Query**      | Filter/summarize an existing DiffResult without re-diffing (`/query`) |
+| **View**       | Fluent wrapper over a DiffResult (`createDiffView` on `/view`)        |
+
 ## Problem → approach
 
 | Manual comparison                                                                  | With Object Diff                                    |

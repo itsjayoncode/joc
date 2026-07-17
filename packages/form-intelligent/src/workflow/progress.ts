@@ -5,12 +5,13 @@ import type { WizardConfig, WorkflowState } from "../types/index.js";
 export interface WorkflowProgressInput {
   readonly currentStep: number;
   readonly wizard?: WizardConfig | undefined;
+  readonly values?: Record<string, unknown>;
   readonly isAutosaving: boolean;
   readonly lastAutosaveAt: number | null;
 }
 
 export function buildWorkflowProgress(input: WorkflowProgressInput): WorkflowState {
-  const wizard = resolveWizardState(input.currentStep, input.wizard);
+  const wizard = resolveWizardState(input.currentStep, input.wizard, input.values ?? {});
   return {
     currentStep: wizard.currentStep,
     totalSteps: wizard.totalSteps,

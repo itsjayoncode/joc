@@ -15,4 +15,4 @@ JOC welcomes early contributions, especially in documentation, architecture, and
 - add release or publishing logic early
 - introduce new tools that the roadmap has not justified yet
 
-For repository-wide expectations, also read the root [CONTRIBUTING.md](https://github.com/JayOnCode/joc/blob/main/CONTRIBUTING.md).
+For repository-wide expectations, also read the root [CONTRIBUTING.md](https://github.com/itsjayoncode/joc/blob/master/CONTRIBUTING.md).

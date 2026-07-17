@@ -2,9 +2,9 @@
 
 ## Recommended tools
 
-- [Event Explorer](http://127.0.0.1:4273/events)
-- [State Explorer](http://127.0.0.1:4273/state)
-- [Developer Tools](http://127.0.0.1:4273/developer-tools)
+- [Event Explorer](/playground/browser-lifecycle/events)
+- [State Explorer](/playground/browser-lifecycle/state)
+- [Developer Tools](/playground/browser-lifecycle/developer-tools)
 - `getRuntimeDiagnostics()`
 - `getPluginHookLog()`
 

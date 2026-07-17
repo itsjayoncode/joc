@@ -1,10 +1,10 @@
 export {
   applyFormatter,
   applyParser,
-  currency,
-  lowercase,
-  phone,
-  slug,
+  formatCurrency,
+  formatLowercase,
+  formatPhone,
+  formatSlug,
   trim,
-  uppercase,
+  formatUppercase,
 } from "../../format/index.js";

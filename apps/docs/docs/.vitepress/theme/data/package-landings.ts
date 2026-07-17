@@ -82,38 +82,47 @@ lifecycle.on("connection:reconnect", () => {
     name: "Form Intelligent",
     npmName: "@jayoncode/form-intelligent",
     accent: "amber",
-    headline: "Headless forms with real workflow power",
+    headline: "Stop rebuilding form workflows in every app",
     description:
-      "Validation, submission, drafts, wizards, and rules — without owning your UI. Keep the markup; let the engine own the lifecycle.",
+      "Conditional fields, draft recovery, and submit races usually mean effects and flags everywhere. One headless createForm() owns validation, when() rules, autosave, and submit — your UI just binds.",
     getStartedLink: "/packages/form-intelligent/overview",
     playgroundLink: "/playground/form-intelligent/",
     overviewLink: "/packages/form-intelligent/overview",
     highlights: [
       {
-        title: "Headless bind()",
-        detail: "Wire any input layer — native HTML, React, or your own components.",
+        title: "when() instead of useEffect",
+        detail:
+          "Plan === enterprise? Show seats, require company, gate submit — declarative chains, not effect soup.",
       },
       {
-        title: "Workflow built in",
-        detail: "Autosave, drafts, offline queue, and multi-step wizards as first-class APIs.",
+        title: "Drafts that survive refresh",
+        detail:
+          "Debounced autosave and local draft restore so long checkouts and applications do not evaporate.",
       },
       {
-        title: "when() rules",
-        detail: "Show, hide, require, and populate fields from declarative conditions.",
+        title: "Submit without race bugs",
+        detail:
+          "Async onSubmit with isSubmitting, duplicate-submit guard, cancel, and optional offline queue.",
       },
       {
-        title: "Async-first submit",
-        detail: "Loading, cancel, retry, and duplicate-submit guards without boilerplate.",
+        title: "Keep your markup",
+        detail:
+          "Progressive enhance a native <form>, or bind() into React / Vue / your own inputs — same engine.",
       },
     ],
-    sampleTitle: "Conditional fields without useEffect",
+    sampleTitle: "SaaS checkout: conditional fields + draft autosave",
     sampleCode: `import { createForm, when } from "@jayoncode/form-intelligent";
+
+// Pain: enterprise fields, autosave, and submit guards
+// usually mean 4 effects and a race on every keystroke.
 
 createForm({
   target: "#checkout",
   schema: {
     plan: { required: true },
+    seatCount: { required: true },
     companyName: { minLength: 2 },
+    email: "email",
   },
   rules: [
     when("plan")
@@ -127,9 +136,13 @@ createForm({
       debounceMs: 800,
       onSave: (values) => api.saveDraft(values),
     },
+    draft: {
+      enabled: true,
+      storageKey: "checkout:draft",
+    },
   },
   async onSubmit(values) {
-    await api.checkout(values);
+    await api.checkout(values); // isSubmitting + double-submit guard built in
   },
 });`,
   },

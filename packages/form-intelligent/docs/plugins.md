@@ -8,9 +8,40 @@ Add cross-cutting behavior — analytics, guards, or integrations — without fo
 [Plugins explorer →](/playground/form-intelligent/plugins) — register hooks and inspect the event log.
 :::
 
+## Import path
+
+| Need                                                       | Import                                   |
+| ---------------------------------------------------------- | ---------------------------------------- |
+| `FormPlugin` type, `form.use()`, `createForm({ plugins })` | `@jayoncode/form-intelligent`            |
+| Browser lifecycle / keyboard factories                     | `@jayoncode/form-intelligent/plugins`    |
+| Middleware stage maps                                      | `@jayoncode/form-intelligent/middleware` |
+
+Full map: [Entrypoints](/packages/form-intelligent/modules/entrypoints).
+
+## Problem → solution
+
+| Problem                                        | Solution                                        |
+| ---------------------------------------------- | ----------------------------------------------- |
+| Cross-cutting behavior scattered in app code   | `form.use(plugin)` or `createForm({ plugins })` |
+| Need lifecycle + keyboard without forking core | `/plugins` factories                            |
+
 ## Overview
 
 Plugins receive the form instance and a typed hook API. Return a cleanup function or `{ onDestroy }` for teardown.
+
+Register at create time (convenient, same as sequential `form.use`):
+
+```ts
+import { createForm } from "@jayoncode/form-intelligent";
+import { createBrowserLifecyclePlugin } from "@jayoncode/form-intelligent/plugins";
+
+const form = createForm({
+  initialValues: { notes: "" },
+  plugins: [createBrowserLifecyclePlugin({ saveDraftOnHidden: true })],
+});
+```
+
+Or after construction:
 
 ```ts
 import type { FormPlugin } from "@jayoncode/form-intelligent";
@@ -34,6 +65,8 @@ form.use(audit);
 // or form.registerPlugin(audit);
 ```
 
+`plugins: [a, b]` is equivalent to `form.use(a); form.use(b);` in array order (after core setup, before the initial draft-restore hook when a draft was restored).
+
 ---
 
 ## Lifecycle hooks
@@ -51,6 +84,72 @@ form.use(audit);
 api.on("beforeSubmit", () => false); // block submit
 api.on("afterValidate", ({ valid, paths }) => {
   console.log(paths, valid);
+});
+```
+
+### Middleware ↔ hooks (same stack)
+
+`form.useMiddleware` and plugin hooks share one interceptor pipeline (`MIDDLEWARE_HOOK_MAP` / `PLUGIN_PIPELINE_STAGES`):
+
+| Stage / hook     | Role                               |
+| ---------------- | ---------------------------------- |
+| `beforeValidate` | Guard validation                   |
+| `validate`       | Core validation (documented stage) |
+| `afterValidate`  | Observe validation                 |
+| `beforeSubmit`   | Guard submit                       |
+| `submit`         | Transport (documented stage)       |
+| `afterSubmit`    | Observe submit                     |
+| `submitError`    | Middleware-only error phase        |
+
+Middleware-only phases: `submitError`, `beforeSetValue`, `afterSetValue`.
+
+Per phase, onion middleware runs first (lower `order` = outer), then plugin hooks. `ctx.halt()` (or skipping `next()` on guard phases) cancels like returning `false` from a hook.
+
+```ts
+import {
+  MIDDLEWARE_HOOK_MAP,
+  PLUGIN_PIPELINE_STAGES,
+} from "@jayoncode/form-intelligent/middleware";
+
+form.useMiddleware({
+  name: "audit",
+  order: 0,
+  phases: ["beforeSubmit"],
+  run: async (ctx, next) => {
+    console.log("submit", ctx.form.values());
+    await next();
+  },
+});
+```
+
+### Error isolation (Phase 15)
+
+Plugin and middleware failures are isolated so one bad extension cannot brick the form:
+
+| Failure                                         | Behavior                                               |
+| ----------------------------------------------- | ------------------------------------------------------ |
+| `setup` throw                                   | Reported via `onPluginError`; plugin is not registered |
+| Guard hook / middleware throw (`before*`)       | Cancels the phase; form stays usable                   |
+| Observer hook throw (`after*`, autosave, draft) | Reported; remaining handlers still run                 |
+| Incompatible `engines`                          | Throws `ConfigurationError` at register time           |
+
+```ts
+const form = createForm({
+  initialValues: { email: "" },
+  onPluginError: ({ plugin, hook, phase, error }) => {
+    console.warn(plugin, hook ?? phase, error);
+  },
+});
+
+form.use({
+  name: "audit",
+  version: "1.0.0",
+  engines: ">=3.1.0",
+  setup(form, api) {
+    api.on("afterSubmit", () => {
+      /* … */
+    });
+  },
 });
 ```
 
@@ -86,9 +185,14 @@ import {
   keyboard,
 } from "@jayoncode/form-intelligent/plugins";
 
-form.use(createBrowserLifecyclePlugin({ saveDraftOnHidden: true }));
-form.use(createDevToolsPlugin());
-form.use(createKeyboardPlugin([keyboard.shortcut("mod+s", (f) => f.saveDraft())]));
+const form = createForm({
+  initialValues: { notes: "" },
+  plugins: [
+    createBrowserLifecyclePlugin({ saveDraftOnHidden: true }),
+    createDevToolsPlugin(),
+    createKeyboardPlugin([keyboard.shortcut("mod+s", (f) => f.saveDraft())]),
+  ],
+});
 ```
 
 Aliases: `browserLifecyclePlugin`, `devtoolsPlugin`.

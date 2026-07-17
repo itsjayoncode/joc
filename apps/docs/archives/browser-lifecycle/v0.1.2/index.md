@@ -49,7 +49,7 @@ lifecycle.on("page:hidden", () => {
 | Configuration      | [Configuration](/packages/browser-lifecycle/guides/configuration)      |
 | Modules            | [Module docs](/packages/browser-lifecycle/modules/core-infrastructure) |
 | API Reference      | [Generated API](/packages/browser-lifecycle/api/)                      |
-| Playground         | [Interactive docs](http://127.0.0.1:4273)                              |
+| Playground         | [Interactive docs](/playground/browser-lifecycle)                      |
 | Framework examples | [Examples](/packages/browser-lifecycle/examples/)                      |
 | Best practices     | [Best Practices](/packages/browser-lifecycle/best-practices/)          |
 | Patterns           | [Common Patterns](/packages/browser-lifecycle/patterns/)               |
@@ -59,18 +59,18 @@ lifecycle.on("page:hidden", () => {
 
 Every major module has a matching playground page:
 
-- [Visibility](http://127.0.0.1:4273/visibility)
-- [Focus](http://127.0.0.1:4273/focus)
-- [Connectivity](http://127.0.0.1:4273/connectivity)
-- [Idle](http://127.0.0.1:4273/idle)
-- [Lifecycle](http://127.0.0.1:4273/lifecycle)
-- [Cross Tab](http://127.0.0.1:4273/cross-tab)
-- [Plugins](http://127.0.0.1:4273/plugins)
-- [Events](http://127.0.0.1:4273/events)
-- [State](http://127.0.0.1:4273/state)
-- [Configuration](http://127.0.0.1:4273/configuration)
-- [Performance](http://127.0.0.1:4273/performance)
-- [Developer Tools](http://127.0.0.1:4273/developer-tools)
+- [Visibility](/playground/browser-lifecycle/visibility)
+- [Focus](/playground/browser-lifecycle/focus)
+- [Connectivity](/playground/browser-lifecycle/connectivity)
+- [Idle](/playground/browser-lifecycle/idle)
+- [Lifecycle](/playground/browser-lifecycle/lifecycle)
+- [Cross Tab](/playground/browser-lifecycle/cross-tab)
+- [Plugins](/playground/browser-lifecycle/plugins)
+- [Events](/playground/browser-lifecycle/events)
+- [State](/playground/browser-lifecycle/state)
+- [Configuration](/playground/browser-lifecycle/configuration)
+- [Performance](/playground/browser-lifecycle/performance)
+- [Developer Tools](/playground/browser-lifecycle/developer-tools)
 
 ## Version
 

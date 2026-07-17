@@ -67,8 +67,8 @@ await lifecycle.start();
 
 ## Explore further
 
-- [Idle Playground](http://127.0.0.1:4273/idle)
-- [Plugin Playground](http://127.0.0.1:4273/plugins)
+- [Idle Playground](/playground/browser-lifecycle/idle)
+- [Plugin Playground](/playground/browser-lifecycle/plugins)
 - [Pattern — Visibility Pause](/packages/browser-lifecycle/patterns/visibility-pause)
 
 ## Next tutorial

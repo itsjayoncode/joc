@@ -8,6 +8,14 @@ React when the user switches tabs or minimizes the window.
 [Open Visibility playground →](/playground/browser-lifecycle/visibility) — switch tabs and watch `page:visible` / `page:hidden` events.
 :::
 
+## Import path
+
+Single package entry — no subpaths:
+
+```ts
+import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
+```
+
 ## Problem → approach
 
 | Without visibility module                              | With visibility events                                       |
@@ -20,6 +28,11 @@ React when the user switches tabs or minimizes the window.
 lifecycle.on("page:hidden", () => pauseVideo());
 lifecycle.on("page:visible", () => resumeVideo());
 ```
+
+## Pitfalls
+
+- Always `dispose()` the session (or unsubscribe) on unmount — visibility listeners are held by the session.
+- On SSR, create/start the session only in the browser; capability detection alone does not attach listeners.
 
 ---
 

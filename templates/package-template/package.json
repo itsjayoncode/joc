@@ -6,12 +6,12 @@
   "author": "JayOnCode",
   "repository": {
     "type": "git",
-    "url": "https://github.com/JayOnCode/joc.git",
+    "url": "https://github.com/itsjayoncode/joc.git",
     "directory": "packages/package-name"
   },
-  "homepage": "https://github.com/JayOnCode/joc/tree/main/packages/package-name",
+  "homepage": "https://github.com/itsjayoncode/joc/tree/master/packages/package-name",
   "bugs": {
-    "url": "https://github.com/JayOnCode/joc/issues"
+    "url": "https://github.com/itsjayoncode/joc/issues"
   },
   "keywords": [
     "joc",

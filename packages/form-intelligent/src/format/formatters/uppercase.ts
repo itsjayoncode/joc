@@ -1,6 +1,6 @@
 import type { Formatter } from "../types.js";
 
-export const uppercase: Formatter = (value) =>
+export const formatUppercase: Formatter = (value) =>
   typeof value === "string" ? value.toUpperCase() : value;
 
-export const uppercaseParser: Formatter = uppercase;
+export const uppercaseParser: Formatter = formatUppercase;

@@ -51,7 +51,7 @@ Use the session API exposed by the cross-tab module to publish messages from the
 
 - Open two tabs locally and verify only one receives `tab:primary`
 - Close the primary tab and confirm promotion
-- Use the [Cross Tab Playground](http://127.0.0.1:4273/cross-tab)
+- Use the [Cross Tab Playground](/playground/browser-lifecycle/cross-tab)
 
 ## Related patterns
 

@@ -1,3 +1,6 @@
+import { runAsyncValidatorOptions } from "../async/run-with-options.js";
+
+import type { AsyncValidatorOptions } from "../../types/async-validation.js";
 import type {
   CustomFieldValidator,
   FieldPath,
@@ -15,11 +18,40 @@ export function custom<TValues extends Record<string, unknown>>(
 export type AsyncValidator<TValues extends Record<string, unknown> = Record<string, unknown>> =
   Validator<TValues> & { readonly __async: true };
 
-export function asyncValidator<TValues extends Record<string, unknown>>(
-  fn: Validator<TValues>,
-): AsyncValidator<TValues> {
-  const validator = fn as AsyncValidator<TValues>;
+export type AsyncValidatorWithOptions<
+  TValues extends Record<string, unknown> = Record<string, unknown>,
+> = AsyncValidator<TValues> & {
+  readonly __asyncOptions: AsyncValidatorOptions<TValues>;
+};
+
+export function asyncValidator<TValues extends Record<string, unknown> = Record<string, unknown>>(
+  validate: Validator<TValues>,
+): AsyncValidator<TValues>;
+export function asyncValidator<TValues extends Record<string, unknown> = Record<string, unknown>>(
+  options: AsyncValidatorOptions<TValues>,
+): AsyncValidatorWithOptions<TValues>;
+export function asyncValidator<TValues extends Record<string, unknown> = Record<string, unknown>>(
+  fnOrOptions: Validator<TValues> | AsyncValidatorOptions<TValues>,
+): AsyncValidator<TValues> | AsyncValidatorWithOptions<TValues> {
+  if (typeof fnOrOptions === "function") {
+    const validator = fnOrOptions as AsyncValidator<TValues>;
+    Object.defineProperty(validator, "__async", { value: true });
+    return validator;
+  }
+
+  const options = fnOrOptions;
+  const validator = ((value: unknown, context: ValidationContext<TValues>) => {
+    // Pipeline prefers runValidator → runAsyncValidatorOptions; this path is a fallback.
+    const signal = context.signal ?? new AbortController().signal;
+    return options.validate(value, { ...context, signal });
+  }) as AsyncValidatorWithOptions<TValues>;
+
   Object.defineProperty(validator, "__async", { value: true });
+  Object.defineProperty(validator, "__asyncOptions", {
+    value: options,
+    enumerable: false,
+    configurable: false,
+  });
   return validator;
 }
 
@@ -27,6 +59,12 @@ export function isAsyncValidator<TValues extends Record<string, unknown>>(
   validator: Validator<TValues>,
 ): validator is AsyncValidator<TValues> {
   return (validator as AsyncValidator<TValues>).__async;
+}
+
+export function getAsyncValidatorOptions<TValues extends Record<string, unknown>>(
+  validator: Validator<TValues>,
+): AsyncValidatorOptions<TValues> | undefined {
+  return (validator as AsyncValidatorWithOptions<TValues>).__asyncOptions;
 }
 
 export function normalizeValidatorResult(result: ValidatorResult): string | undefined {
@@ -41,6 +79,18 @@ export function normalizeValidatorResult(result: ValidatorResult): string | unde
   return result;
 }
 
+/** Per-validator cache owner so private caches do not collide across validators. */
+const optionsCacheOwners = new WeakMap<object, object>();
+
+function cacheOwnerFor(validator: object): object {
+  let owner = optionsCacheOwners.get(validator);
+  if (!owner) {
+    owner = {};
+    optionsCacheOwners.set(validator, owner);
+  }
+  return owner;
+}
+
 export async function runValidator<TValues extends Record<string, unknown>>(
   validator: Validator<TValues>,
   value: unknown,
@@ -51,14 +101,38 @@ export async function runValidator<TValues extends Record<string, unknown>>(
     return undefined;
   }
 
-  const result: ValidatorResult | Promise<ValidatorResult> = validator(value, context);
-  const resolved = await Promise.resolve(result);
-
-  if (signal?.aborted) {
-    return undefined;
+  const options = getAsyncValidatorOptions(validator);
+  if (options) {
+    const activeSignal = signal ?? context.signal ?? new AbortController().signal;
+    return runAsyncValidatorOptions(
+      options,
+      value,
+      context,
+      activeSignal,
+      cacheOwnerFor(validator),
+    );
   }
 
-  return normalizeValidatorResult(resolved);
+  try {
+    const result: ValidatorResult | Promise<ValidatorResult> = validator(value, context);
+    const resolved = await Promise.resolve(result);
+
+    if (signal?.aborted) {
+      return undefined;
+    }
+
+    return normalizeValidatorResult(resolved);
+  } catch (error) {
+    if (signal?.aborted) {
+      return undefined;
+    }
+
+    if (error instanceof Error && error.name === "AbortError") {
+      return undefined;
+    }
+
+    return error instanceof Error && error.message ? error.message : "Validation failed.";
+  }
 }
 
 export function collectValidators<TValues extends Record<string, unknown>>(

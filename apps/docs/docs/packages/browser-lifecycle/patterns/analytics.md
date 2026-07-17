@@ -15,4 +15,4 @@ function track(name: string, payload: Record<string, unknown>) {
 
 ## Playground
 
-[Visibility Playground](http://127.0.0.1:4273/visibility) · [Idle Playground](http://127.0.0.1:4273/idle)
+[Visibility Playground](/playground/browser-lifecycle/visibility) · [Idle Playground](/playground/browser-lifecycle/idle)

@@ -1,5 +1,4 @@
 import { createHistoryModule, type HistoryService } from "./history/module.js";
-import { createBrowserSessionModule, createKeyboardModule } from "./integrations/module.js";
 
 import type { FormModuleHost } from "../core/form-module-host.js";
 import type { ResolvedFormConfig } from "../core/options.js";
@@ -21,11 +20,16 @@ export function registerConfiguredModules<TValues extends Record<string, unknown
   host.register(createHistoryModule(services.history));
 
   if (config.workflow?.offlineQueue?.enabled) {
-    const storageKey = config.workflow.offlineQueue.storageKey ?? options.formId;
+    const queueConfig = config.workflow.offlineQueue;
+    const storageKey = queueConfig.storageKey ?? options.formId;
     const offlinePromise =
       services.offline ??
-      import("../core/lazy-engines.js").then(({ ensureOfflineService }) =>
-        ensureOfflineService<TValues>(storageKey),
+      Promise.all([import("../core/lazy-engines.js"), import("../engines/offline/config.js")]).then(
+        ([{ ensureOfflineService }, { toOfflineQueueRuntimeOptions }]) =>
+          ensureOfflineService<TValues>(
+            storageKey,
+            toOfflineQueueRuntimeOptions<TValues>(queueConfig),
+          ),
       );
 
     void offlinePromise.then(async (offline) => {
@@ -42,8 +46,11 @@ export function registerConfiguredModules<TValues extends Record<string, unknown
   if (config.workflow?.analytics?.enabled) {
     const analyticsPromise =
       services.analytics ??
-      import("../core/lazy-engines.js").then(({ ensureAnalyticsService }) =>
-        ensureAnalyticsService(),
+      Promise.all([
+        import("../core/lazy-engines.js"),
+        import("../engines/analytics/config.js"),
+      ]).then(([{ ensureAnalyticsService }, { toAnalyticsRuntimeOptions }]) =>
+        ensureAnalyticsService(toAnalyticsRuntimeOptions(config.workflow?.analytics)),
       );
 
     void analyticsPromise.then(async (analytics) => {
@@ -54,11 +61,15 @@ export function registerConfiguredModules<TValues extends Record<string, unknown
 
   const keyboardShortcuts = config.workflow?.keyboard ?? [];
   if (keyboardShortcuts.length > 0) {
-    host.register(createKeyboardModule(keyboardShortcuts));
+    void import("./integrations/module.js").then(({ createKeyboardModule }) => {
+      host.register(createKeyboardModule(keyboardShortcuts));
+    });
   }
 
   if (config.workflow?.draft?.enabled) {
-    host.register(createBrowserSessionModule());
+    void import("./integrations/module.js").then(({ createBrowserSessionModule }) => {
+      host.register(createBrowserSessionModule());
+    });
   }
 }
 

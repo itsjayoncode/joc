@@ -42,6 +42,7 @@ export async function runValidationPipeline<TValues extends Record<string, unkno
         get: (fieldPath) => getIn(input.values, fieldPath),
         values: () => input.values,
       },
+      ...(input.signal ? { signal: input.signal } : {}),
     };
 
     const value = getIn(input.values, path);

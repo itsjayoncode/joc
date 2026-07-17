@@ -4,6 +4,17 @@ Terminology and session model for `@jayoncode/browser-lifecycle`.
 
 **Previous:** [Overview](/packages/browser-lifecycle/overview) · **Next:** [Tutorial](/packages/browser-lifecycle/modules/getting-started)
 
+## Glossary
+
+| Term           | Meaning                                                         |
+| -------------- | --------------------------------------------------------------- |
+| **Session**    | Instance from `createBrowserLifecycle()` — one per tab          |
+| **Visibility** | Page Visibility API → `page:visible` / `page:hidden`            |
+| **Idle**       | No user activity past a threshold → idle / active events        |
+| **Snapshot**   | Readonly consolidated state from `getSnapshot()`                |
+| **Dispose**    | Teardown listeners, timers, plugins — session becomes unusable  |
+| **SSR-safe**   | Missing browser APIs detected; modules no-op until client start |
+
 ## Problem → approach
 
 | Scattered browser listeners                                         | With Browser Lifecycle                                   |
@@ -39,6 +50,10 @@ One instance per browser tab. Share it via app context — do not create one per
 | `running`  | Active listeners           |
 | `stopped`  | Paused                     |
 | `disposed` | Torn down — do not reuse   |
+
+::: warning Dispose on unmount
+Leaked listeners on SPA navigations are the most common footgun. Always `dispose()` in the same scope that created the session.
+:::
 
 ## Next steps
 

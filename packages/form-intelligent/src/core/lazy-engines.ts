@@ -33,14 +33,17 @@ export function loadWorkflowEngine(): Promise<typeof import("../engines/workflow
 
 export async function ensureOfflineService<TValues extends Record<string, unknown>>(
   storageKey: string,
+  options?: import("../engines/offline/types.js").OfflineQueueRuntimeOptions<TValues>,
 ): Promise<OfflineServiceInstance<TValues>> {
   const { OfflineService } = await loadOfflineModule();
-  return new OfflineService<TValues>(storageKey);
+  return new OfflineService<TValues>(storageKey, options);
 }
 
-export async function ensureAnalyticsService(): Promise<AnalyticsServiceInstance> {
+export async function ensureAnalyticsService(
+  options?: import("../engines/analytics/types.js").AnalyticsRuntimeOptions,
+): Promise<AnalyticsServiceInstance> {
   const { AnalyticsService } = await analyticsImport();
-  return new AnalyticsService();
+  return new AnalyticsService(options);
 }
 
 export function readOfflineQueueState(storageKey: string): { pending: number; flushing: boolean } {

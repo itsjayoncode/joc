@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.0
+
+### Minor Changes
+
+- Expose FormController, fieldController, aria props on field(), and focusFirstInvalid.
+
 ## 2.0.0
 
 ### Patch Changes

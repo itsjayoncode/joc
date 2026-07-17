@@ -2,7 +2,7 @@
 
 ## How do I measure observer overhead?
 
-Use `getRuntimeDiagnostics()` and the [Performance Playground](http://127.0.0.1:4273/performance).
+Use `getRuntimeDiagnostics()` and the [Performance Playground](/playground/browser-lifecycle/performance).
 
 ## Best practices
 

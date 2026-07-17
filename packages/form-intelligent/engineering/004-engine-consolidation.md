@@ -2,7 +2,7 @@
 
 Fold the four Phase B satellite packages back into `@jayoncode/form-intelligent` as domain engines. After this, consumers install **one package** and import optional engines via subpaths.
 
-**Status:** Planned  
+**Status:** Complete (B′/C consolidated — engines live under `src/engines/` + subpath shims)  
 **Depends on:** Phase A complete, Phase B satellites shipped (workspace only)  
 **Outcome:** No `dependencies` on `@jayoncode/form-intelligent-*` in core `package.json`
 

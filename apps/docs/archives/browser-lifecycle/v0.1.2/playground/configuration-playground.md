@@ -1,7 +1,7 @@
 ---
 title: Configuration Playground
 description: Interactive playground documentation for Configuration Playground.
-playground: http://127.0.0.1:4273/configuration
+playground: /playground/browser-lifecycle/configuration
 ---
 
 # Configuration Playground
@@ -27,4 +27,4 @@ Configuration is validated with `validateBrowserLifecycleConfig()` and applied b
 
 ## Interactive Playground
 
-Explore this topic live in the [Configuration Playground](http://127.0.0.1:4273/configuration).
+Explore this topic live in the [Configuration Playground](/playground/browser-lifecycle/configuration).

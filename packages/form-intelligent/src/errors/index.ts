@@ -1,7 +1,13 @@
 import type { PlainObject } from "../types/internal.js";
 
 export type FormErrorCode =
-  "validation_error" | "submit_error" | "workflow_error" | "configuration_error";
+  | "validation_error"
+  | "submit_error"
+  | "workflow_error"
+  | "configuration_error"
+  | "draft_error"
+  | "offline_error"
+  | "plugin_error";
 
 export interface FormErrorOptions {
   readonly cause?: unknown;
@@ -46,4 +52,42 @@ export class ConfigurationError extends FormIntelligentError {
     super(message, "configuration_error", options);
     this.name = "ConfigurationError";
   }
+}
+
+/** Recoverable draft persistence failures (quota, corrupt payload). */
+export class DraftStorageError extends FormIntelligentError {
+  public constructor(message: string, options: FormErrorOptions = {}) {
+    super(message, "draft_error", options);
+    this.name = "DraftStorageError";
+  }
+}
+
+/** Offline queue failures (quota, overflow reject). */
+export class OfflineQueueError extends FormIntelligentError {
+  public constructor(message: string, options: FormErrorOptions = {}) {
+    super(message, "offline_error", options);
+    this.name = "OfflineQueueError";
+  }
+}
+
+/** Isolated plugin/middleware failures (setup or hook throw). */
+export class PluginError extends FormIntelligentError {
+  public constructor(message: string, options: FormErrorOptions = {}) {
+    super(message, "plugin_error", options);
+    this.name = "PluginError";
+  }
+}
+
+export function isQuotaExceededError(error: unknown): boolean {
+  if (!error || typeof error !== "object") {
+    return false;
+  }
+  const name = "name" in error ? String((error as { name?: unknown }).name) : "";
+  const code = "code" in error ? (error as { code?: unknown }).code : undefined;
+  return (
+    name === "QuotaExceededError" ||
+    name === "NS_ERROR_DOM_QUOTA_REACHED" ||
+    code === 22 ||
+    code === 1014
+  );
 }

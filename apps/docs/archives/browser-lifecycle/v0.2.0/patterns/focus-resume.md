@@ -11,4 +11,4 @@ lifecycle.on("window:blur", () => cancelTooltips());
 
 ## Playground
 
-[Focus Playground](http://127.0.0.1:4273/focus)
+[Focus Playground](/playground/browser-lifecycle/focus)

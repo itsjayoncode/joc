@@ -8,6 +8,14 @@ One snapshot for values, errors, field flags, workflow progress, and UI rules �
 [State explorer →](/playground/form-intelligent/state) · [DevTools →](/playground/form-intelligent/devtools)
 :::
 
+## Import path
+
+Use `form.state` / `form.subscribe()` from the main package. Store primitives: `@jayoncode/form-intelligent/state`. History: prefer `form.undo()` / `form.redo()` over `/history` unless you need low-level stacks. [Entrypoints](/packages/form-intelligent/modules/entrypoints).
+
+```ts
+import { createForm } from "@jayoncode/form-intelligent";
+```
+
 ## Problem → solution
 
 | Problem                        | Solution                                                 |

@@ -10,6 +10,7 @@ import { navPackageLabel } from "./nav-package-label.js";
 import { objectDiffMeta } from "./object-diff-meta.js";
 import { createObjectDiffSidebarMap } from "./object-diff-sidebar.js";
 import { objectDiffDocVersions } from "./object-diff-versions.js";
+import { resolveGithubEditUrl } from "./resolve-github-edit-url.js";
 import {
   buildOrganizationJsonLd,
   buildSoftwarePackageJsonLd,
@@ -216,7 +217,9 @@ gtag('config', '${docsGaId}');`,
     },
     socialLinks: [{ icon: "github", link: "https://github.com/itsjayoncode/joc" }],
     editLink: {
-      pattern: "https://github.com/itsjayoncode/joc/edit/master/apps/docs/docs/:path",
+      // Self-contained resolver (no outer closures) so VitePress client
+      // serialization via Function.toString keeps the mapping working.
+      pattern: resolveGithubEditUrl,
       text: "Edit this page on GitHub",
     },
     footer: {

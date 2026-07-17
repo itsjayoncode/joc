@@ -22,4 +22,4 @@ lifecycle.on("page:hidden", stopPolling);
 
 ## Playground
 
-[Visibility Playground](http://127.0.0.1:4273/visibility)
+[Visibility Playground](/playground/browser-lifecycle/visibility)

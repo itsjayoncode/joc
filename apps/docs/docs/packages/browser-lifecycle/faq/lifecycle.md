@@ -10,4 +10,4 @@ No. `dispose()` is terminal.
 
 ## Playground
 
-[Lifecycle Playground](http://127.0.0.1:4273/lifecycle)
+[Lifecycle Playground](/playground/browser-lifecycle/lifecycle)

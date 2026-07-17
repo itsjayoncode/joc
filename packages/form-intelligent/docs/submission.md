@@ -8,6 +8,14 @@ Send valid data to your API — with loading state, cancel, retries, and offline
 [Submission explorer →](/playground/form-intelligent/submission) — flaky API, offline queue, double-submit guard, cancel.
 :::
 
+## Import path
+
+Prefer the **instance API** (`form.submit()`, `workflow.offlineQueue`). Low-level classes live on `@jayoncode/form-intelligent/submission` and `/offline` — see [Entrypoints](/packages/form-intelligent/modules/entrypoints).
+
+```ts
+import { createForm } from "@jayoncode/form-intelligent";
+```
+
 ## Problem → solution
 
 | Problem                                 | Solution                                                  |
@@ -43,8 +51,18 @@ Loading UI:
 
 ```ts
 form.state.isSubmitting;
+form.state.submitPhase; // "idle" | "validating" | "submitting" | "success" | "error"
 // or form.isSubmitting()
 ```
+
+Submit pipeline (Phase 10):
+
+1. Guard concurrent submits (`preventDoubleSubmit`)
+2. `submitPhase = "validating"` → validate
+3. Onion `useMiddleware` (`beforeSubmit`) then plugin `beforeSubmit` hooks
+4. `submitPhase = "submitting"` → `onSubmit` (with retry / cancel)
+5. Plugin `afterSubmit` hooks then middleware `afterSubmit`
+6. Settle `submitPhase` to `success` / `error` / `idle` (cancel)
 
 ---
 
@@ -148,6 +166,14 @@ createForm({
     offlineQueue: {
       enabled: true,
       storageKey: "signup:offline",
+      maxItems: 50,
+      overflow: "drop-oldest", // or "drop-newest" | "reject"
+      idempotencyKey: (values) => values.email,
+      onConflict: (local, error) => {
+        // Flush failure: keep (default), drop, or retry
+        console.warn("offline conflict", local.id, error);
+        return "keep";
+      },
     },
   },
   onSubmit: async (values) => api.register(values),
@@ -158,6 +184,10 @@ form.state.submissionQueue.flushing;
 
 await form.flushOfflineQueue();
 ```
+
+Overflow `reject` and storage quota throw `OfflineQueueError` (`code: "offline_error"`).
+
+Storage format remains a JSON array of `{ id, values, enqueuedAt, attempt?, idempotencyKey? }` — older payloads without the new fields still load.
 
 Pair with `createBrowserLifecyclePlugin({ flushOfflineQueueOnOnline: true })` — see [Integrations](/packages/form-intelligent/modules/integrations).
 

@@ -13,12 +13,13 @@ export {
   custom,
   asyncValidator,
   isAsyncValidator,
+  getAsyncValidatorOptions,
   normalizeValidatorResult,
   runValidator,
   runFieldValidators,
   collectValidators,
 } from "./custom.js";
-export type { AsyncValidator } from "./custom.js";
+export type { AsyncValidator, AsyncValidatorWithOptions } from "./custom.js";
 export type { NumberValidatorOptions } from "./number.js";
 export type { DateValidatorOptions } from "./date.js";
 export type { CurrencyValidatorOptions } from "./currency.js";

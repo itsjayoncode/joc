@@ -30,7 +30,7 @@ lifecycle.on("page:hidden", () => {
 });
 ```
 
-Switch browser tabs to trigger events. Try the [Visibility Playground](http://127.0.0.1:4273/visibility) to inspect ordering and metadata.
+Switch browser tabs to trigger events. Try the [Visibility Playground](/playground/browser-lifecycle/visibility) to inspect ordering and metadata.
 
 ## 4. Read snapshot state
 

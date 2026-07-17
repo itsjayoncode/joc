@@ -13,7 +13,7 @@ The Browser Session Playground is the interactive engineering console for `@jayo
 
 1. Check the [FAQ](apps/docs/docs/packages/browser-lifecycle/faq/) in the documentation site
 2. Review [troubleshooting](apps/docs/docs/packages/browser-lifecycle/troubleshooting/)
-3. Search [existing issues](https://github.com/JayOnCode/joc/issues)
+3. Search [existing issues](https://github.com/itsjayoncode/joc/issues)
 4. Open a new issue with reproduction steps
 
 ## Bug reports

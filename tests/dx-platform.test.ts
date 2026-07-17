@@ -114,6 +114,23 @@ describe("developer experience platform", () => {
     expect(apiScript).toContain("form-intelligent");
   });
 
+  it("maps Edit on GitHub for synced modules to package source docs", () => {
+    const config = readText("apps/docs/docs/.vitepress/config.ts");
+    const helper = readText("apps/docs/docs/.vitepress/resolve-github-edit-url.ts");
+    expect(config).toContain("resolveGithubEditUrl");
+    expect(config).toContain("Edit this page on GitHub");
+    expect(helper).toContain(
+      'GITHUB_EDIT_BASE = "https://github.com/itsjayoncode/joc/edit/master"',
+    );
+    expect(helper).toContain("packages/${match[1]}/docs/");
+    expect(existsSync(path.join(rootDir, "packages/browser-lifecycle/docs/session-core.md"))).toBe(
+      true,
+    );
+    expect(existsSync(path.join(rootDir, "packages/form-intelligent/docs/validation.md"))).toBe(
+      true,
+    );
+  });
+
   it("includes object-diff documentation integration wiring", () => {
     const config = readText("apps/docs/docs/.vitepress/config.ts");
     const syncScript = readText("scripts/sync-documentation.mjs");

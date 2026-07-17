@@ -1,5 +1,9 @@
-import { phone, currency, resolveFormatPreset } from "@jayoncode/form-intelligent/format";
+import {
+  formatPhone,
+  formatCurrency,
+  resolveFormatPreset,
+} from "@jayoncode/form-intelligent/format";
 
-void phone("09171234567");
-void currency("1000");
+void formatPhone("09171234567");
+void formatCurrency("1000");
 void resolveFormatPreset("credit-card");

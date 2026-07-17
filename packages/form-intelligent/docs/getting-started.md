@@ -1,6 +1,6 @@
 # Tutorial — integrate your first form
 
-Wire a field, observe state, and submit in a few minutes.
+Wire a field, observe state, and submit in a few minutes. Progressive path: **Basic** (this page) → [Concepts](/packages/form-intelligent/modules/concepts) → feature guides → [Playground](/playground/form-intelligent/).
 
 **Previous:** [Overview](/packages/form-intelligent/overview) · **Next:** [Core concepts](/packages/form-intelligent/modules/concepts)
 
@@ -9,6 +9,14 @@ Use the [Validation explorer](/playground/form-intelligent/validation) to mirror
 :::
 
 **Prerequisites:** Node 20+, TypeScript or JavaScript ESM project. Copy-paste install commands live on the [Overview](/packages/form-intelligent/#install).
+
+### Learning path
+
+| Level        | Doc                                                                                                                               | Playground                                                                                      |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Basic        | This tutorial                                                                                                                     | [Validation](/playground/form-intelligent/validation)                                           |
+| Intermediate | [Rules (`when()`)](/packages/form-intelligent/modules/rules) · [Workflow / autosave](/packages/form-intelligent/modules/workflow) | [Rules](/playground/form-intelligent/rules) · [Workflow](/playground/form-intelligent/workflow) |
+| Advanced     | [Plugins](/packages/form-intelligent/modules/plugins) · [Performance](/packages/form-intelligent/modules/performance)             | [Dashboard](/playground/form-intelligent/)                                                      |
 
 ---
 

@@ -59,12 +59,16 @@ describe("createForm", () => {
     });
 
     const first = form.submit();
+    await vi.waitFor(() => {
+      expect(onSubmit).toHaveBeenCalledTimes(1);
+    });
     const second = await form.submit();
     expect(second).toBe(false);
 
     resolveSubmit?.();
     await first;
     expect(onSubmit).toHaveBeenCalledTimes(1);
+    form.destroy();
   });
 
   it("supports wizard navigation with step validation", async () => {

@@ -84,6 +84,17 @@ Presets: `philippine-phone`, `credit-card`, plus custom `format` / `parse` hooks
 
 [Formatters →](/packages/form-intelligent/modules/formatters)
 
+### 5b. Transform pipeline — **SHIPPED**
+
+Inbound stages before validation (trim / normalize / sanitize / parse):
+
+```ts
+form.field("name", { transform: { trim: true, normalize: true } });
+form.transform("code").pipe((v) => String(v).toUpperCase());
+```
+
+Import helpers from `@jayoncode/form-intelligent/transform`.
+
 ---
 
 ## Conditional logic and rules
@@ -110,6 +121,16 @@ Wrap fields for DOM hide/show:
 </div>
 ```
 
+Read presentation without digging into snapshots:
+
+```ts
+form.getPresentation("companyName").field.visible;
+form.field("companyName").ui.visible;
+form.getPresentation().formUi.submitDisabled;
+```
+
+Import helpers from `@jayoncode/form-intelligent/presentation` when needed.
+
 [Rules guide →](/packages/form-intelligent/modules/rules)
 
 ### 7. Enable / disable — **SHIPPED**
@@ -128,14 +149,24 @@ when("customerType").equals("Business").require("taxNumber");
 
 ```ts
 when("country").changes(loadProvinces).populate("province");
+
+// Structural cascade (clear children on parent change)
+createForm({
+  dependencies: { province: ["country"], city: ["province"] },
+});
 ```
 
-[Dependencies playground →](/playground/form-intelligent/dependencies)
+[Dependencies playground →](/playground/form-intelligent/dependencies) · [Rules guide →](/packages/form-intelligent/modules/rules)
 
 ### 10. Calculations — **SHIPPED**
 
 ```ts
 form.calculate("total", ({ values }) => values.price * values.quantity);
+
+form
+  .calculate("total")
+  .from("price", "quantity")
+  .compute(({ get }) => Number(get("price")) * Number(get("quantity")));
 ```
 
 [Calculations guide →](/packages/form-intelligent/modules/calculations) · [Playground →](/playground/form-intelligent/calculations)
@@ -161,7 +192,7 @@ form
 
 ### 11. Wizard — **SHIPPED**
 
-Multi-step forms with per-step validation.
+Multi-step forms with per-step validation, branching (`when` / `next` / `canLeave` / `canEnter`), `goTo` modes, and optional `persistStepInDraft`.
 
 [Workflow guide →](/packages/form-intelligent/modules/workflow)
 
@@ -177,11 +208,11 @@ workflow: { autosave: { enabled: true, debounceMs: 5000, onSave } }
 
 ### 14. Draft recovery — **SHIPPED**
 
-`form.saveDraft()`, restore on reload, optional `promptOnRestore` + `onRestorePrompt`.
+`form.saveDraft()`, `form.restoreDraft({ force?, prompt?, merge? })`, restore on reload, optional `promptOnRestore` + envelopes/`migrateDraft`.
 
 ### 15. Offline queue — **SHIPPED**
 
-`workflow.offlineQueue` — queue while offline, `form.flushOfflineQueue()` on reconnect.
+`workflow.offlineQueue` — `maxItems` / overflow, `idempotencyKey`, `onConflict`, `form.flushOfflineQueue()` on reconnect.
 
 [Submission playground →](/playground/form-intelligent/submission)
 
@@ -191,7 +222,7 @@ workflow: { autosave: { enabled: true, debounceMs: 5000, onSave } }
 
 ### 16. Submission engine — **SHIPPED**
 
-Validate → loading → disable button → API → success/error → re-enable.
+Validate → loading → disable button → API → success/error → re-enable. `submitPhase` machine + `form.useMiddleware` onion (same stack as plugin hooks).
 
 [Submission guide →](/packages/form-intelligent/modules/submission)
 
@@ -215,7 +246,13 @@ Validate → loading → disable button → API → success/error → re-enable.
 
 ### 20. Browser session — **SHIPPED**
 
-`form.use(createBrowserLifecyclePlugin())` — saves draft when tab is hidden.
+```ts
+import { createBrowserLifecyclePlugin } from "@jayoncode/form-intelligent/plugins";
+
+form.use(createBrowserLifecyclePlugin({ saveDraftOnHidden: true }));
+```
+
+Saves draft when the tab is hidden.
 
 ### 21. Keyboard shortcuts — **SHIPPED**
 
@@ -225,11 +262,11 @@ Validate → loading → disable button → API → success/error → re-enable.
 
 ### 22. Analytics — **SHIPPED**
 
-`form.getAnalytics()` — errors by field, field views, drop-off field.
+`form.getAnalytics()` — errors by field, field views, drop-off, timings. Path allow/deny; never snapshots values. Not a product analytics SDK.
 
 ### 23. Plugin system — **SHIPPED**
 
-`form.use(plugin)` alias for `registerPlugin()`.
+`createForm({ plugins })` / `form.use(plugin)` / `registerPlugin()`, hook bus, error isolation (`onPluginError`), `version` / `engines` metadata, `PLUGIN_PIPELINE_STAGES`.
 
 [Plugins guide →](/packages/form-intelligent/modules/plugins)
 
@@ -239,9 +276,26 @@ Validate → loading → disable button → API → success/error → re-enable.
 import { useForm } from "@jayoncode/form-intelligent-react";
 
 const form = useForm({ schema: { email: "email" } });
+// form.controller · form.fieldController · aria on form.field()
 ```
 
+Vue / Angular packages exist as **PARTIAL** (controller/`field.aria` parity pending).
+
 [Adapters guide →](/packages/form-intelligent/modules/adapters)
+
+### 26. Controllers + accessibility — **SHIPPED**
+
+`createFormController(form)`, `field.aria` / `setAriaIds`, `focusFirstInvalid`, `@jayoncode/form-intelligent/accessibility`.
+
+### 27. DevTools — **SHIPPED** (optional subpath)
+
+```ts
+import { enableFormDevTools, getFormDevTools } from "@jayoncode/form-intelligent/devtools";
+```
+
+Inspector: events, validation, workflow, plugins, performance marks. Not pulled into the core-login bundle.
+
+[Integrations →](/packages/form-intelligent/modules/integrations) · [Playground →](/playground/form-intelligent/devtools)
 
 ---
 
@@ -261,4 +315,6 @@ USER TYPES → State Updates → Validation / Formatting / Rules
 | Derived values      | [Calculations](/packages/form-intelligent/modules/calculations)                                                                               |
 | Snapshots / undo    | [State](/packages/form-intelligent/modules/state)                                                                                             |
 | Session / keyboard  | [Integrations](/packages/form-intelligent/modules/integrations)                                                                               |
+| Controllers / a11y  | [Adapters](/packages/form-intelligent/modules/adapters)                                                                                       |
+| Bundle / timing     | [Performance](/packages/form-intelligent/modules/performance)                                                                                 |
 | Engineering roadmap | [002-form-os-capabilities](https://github.com/itsjayoncode/joc/blob/master/packages/form-intelligent/engineering/002-form-os-capabilities.md) |

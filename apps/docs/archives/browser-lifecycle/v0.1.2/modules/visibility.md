@@ -1,7 +1,7 @@
 ---
 title: Visibility
 description: Browser Lifecycle module documentation for Visibility.
-playground: http://127.0.0.1:4273/visibility
+playground: /playground/browser-lifecycle/visibility
 ---
 
 # Visibility
@@ -115,8 +115,8 @@ When that capability is unavailable:
 
 See:
 
-- [examples/visibility/README.md](https://github.com/itsjayoncode/joc/tree/main/packages/browser-lifecycle/examples/visibility/README.md)
+- [examples/visibility/README.md](https://github.com/itsjayoncode/joc/tree/master/packages/browser-lifecycle/examples/visibility/README.md)
 
 ## Interactive Playground
 
-Explore this topic live in the [Visibility](http://127.0.0.1:4273/visibility-playground).
+Explore this topic live in the [Visibility](/playground/browser-lifecycle/visibility-playground).

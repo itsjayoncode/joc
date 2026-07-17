@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { createForm } from "../../src/index.js";
+import { asyncValidator, createForm } from "../../src/index.js";
 import {
   FormStateStore,
   createCoreSnapshot,
@@ -55,6 +55,43 @@ describe("FormStateStore", () => {
     store.patchMeta("name", { touched: true });
     expect(listener).toHaveBeenCalledTimes(1);
   });
+
+  it("keeps getSnapshot referential identity until patched", () => {
+    const store = new FormStateStore({
+      values: { email: "" },
+      defaultValues: { email: "" },
+    });
+
+    const a = store.getSnapshot();
+    const b = store.getSnapshot();
+    expect(a).toBe(b);
+
+    store.patchCore({ isSubmitting: true });
+    expect(store.getSnapshot()).not.toBe(a);
+  });
+});
+
+describe("form getSnapshot identity", () => {
+  it("returns the same FormState reference between notifies", () => {
+    const form = createForm({
+      initialValues: { email: "" },
+      validateOn: "onSubmit",
+    });
+
+    const first = form.getSnapshot();
+    const second = form.getSnapshot();
+    expect(first).toBe(second);
+    expect(form.state).toBe(first);
+
+    const listener = vi.fn();
+    form.subscribe(listener);
+    form.setValue("email", "a@b.co");
+    expect(listener).toHaveBeenCalled();
+    expect(form.getSnapshot()).not.toBe(first);
+    expect(form.getSnapshot()).toBe(form.state);
+
+    form.destroy();
+  });
 });
 
 describe("state selectors", () => {
@@ -75,6 +112,76 @@ describe("state selectors", () => {
       visited: false,
       changed: true,
     });
+    form.destroy();
+  });
+});
+
+describe("field meta completeness", () => {
+  it("exposes label/description/hidden and isValidating on fieldMeta", async () => {
+    let resolveCheck!: (ok: boolean) => void;
+    const pending = new Promise<boolean>((resolve) => {
+      resolveCheck = resolve;
+    });
+
+    const form = createForm({
+      initialValues: { username: "" },
+      validateOn: "onSubmit",
+      validators: {
+        username: [
+          asyncValidator(async () => {
+            const ok = await pending;
+            return ok || "taken";
+          }),
+        ],
+      },
+    });
+
+    form.field("username", {
+      label: "Username",
+      description: "Public handle",
+      hidden: false,
+    });
+
+    const validatePromise = form.validate({ paths: ["username"], mode: "onBlur" });
+    await Promise.resolve();
+    expect(form.getFieldMeta("username").isValidating).toBe(true);
+    expect(form.getSnapshot().fieldMeta.username?.isValidating).toBe(true);
+    expect(form.getSnapshot().fieldMeta.username?.label).toBe("Username");
+    expect(form.getSnapshot().fieldMeta.username?.description).toBe("Public handle");
+
+    resolveCheck(true);
+    await validatePromise;
+    expect(form.getFieldMeta("username").isValidating).toBe(false);
+    form.destroy();
+  });
+});
+
+describe("createCheckpoint / restoreCheckpoint", () => {
+  it("round-trips values and optional meta without clashing with getSnapshot", () => {
+    const form = createForm({
+      initialValues: { email: "", note: "" },
+      validateOn: "onSubmit",
+    });
+
+    form.setValue("email", "user@example.com");
+    form.setError("email", "fix");
+    const live = form.getSnapshot();
+
+    const checkpoint = form.createCheckpoint({
+      include: ["values", "errors", "touched", "dirty", "visited", "workflow"],
+    });
+    expect(checkpoint.kind).toBe("checkpoint");
+    expect(checkpoint.version).toBe(1);
+    expect(checkpoint.values.email).toBe("user@example.com");
+    expect(checkpoint.errors?.email).toBe("fix");
+
+    form.setValue("email", "other@example.com");
+    form.clearErrors("email");
+    expect(form.getSnapshot()).not.toBe(live);
+
+    form.restoreCheckpoint(checkpoint);
+    expect(form.values("email")).toBe("user@example.com");
+    expect(form.errors("email")).toBe("fix");
     form.destroy();
   });
 });

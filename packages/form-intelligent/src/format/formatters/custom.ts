@@ -1,6 +1,6 @@
 import type { Formatter, FormatterDefinition, Parser } from "../types.js";
 
-export function custom(format: Formatter, parse?: Parser): FormatterDefinition {
+export function formatCustom(format: Formatter, parse?: Parser): FormatterDefinition {
   return parse === undefined ? { format } : { format, parse };
 }
 

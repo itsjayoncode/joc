@@ -8,6 +8,15 @@ Declarative conditional logic — show, hide, require, enable, populate, and gat
 [Rules explorer →](/playground/form-intelligent/rules) · [Dependencies →](/playground/form-intelligent/dependencies)
 :::
 
+## Import path
+
+`when` and `dependencies` are on the **main** entry; `/rules` and `/dependency` are optional explicit entries. [Entrypoints](/packages/form-intelligent/modules/entrypoints).
+
+```ts
+import { createForm, when, dependencies } from "@jayoncode/form-intelligent";
+// or: import { when } from "@jayoncode/form-intelligent/rules";
+```
+
 ## Problem → solution
 
 | Problem                                      | Solution                                        |
@@ -34,6 +43,8 @@ createForm({
 ```
 
 Rules evaluate when watched values change. Results land in `form.state.fieldUi` and `form.state.ui` (submit disabled flag).
+
+**Evaluation order:** rules run in **registration order** (config `rules`, then `form.when(…)` commits). For the same UI key, **later rules win**.
 
 ---
 
@@ -104,15 +115,20 @@ when("loanAmount")
 
 ## Reading UI state
 
+Prefer the presentation accessors (Phase 9):
+
 ```ts
-form.state.fieldUi.companyName?.visible;
-form.state.fieldUi.taxNumber?.required;
-form.state.fieldUi.province?.disabled;
-form.state.fieldUi.province?.options;
-form.state.ui.submitDisabled;
+form.getPresentation("companyName").field.visible;
+form.getPresentation("taxNumber").field.required;
+form.getPresentation("province").field.disabled;
+form.getPresentation("province").options;
+form.getPresentation().formUi.submitDisabled;
+
+// Per-field handle
+form.field("companyName").ui.visible;
 ```
 
-Headless UIs should honor `fieldUi`. With DOM enhancement, wrap fields:
+`form.state.fieldUi` / `form.state.formUi` remain available. Headless UIs should honor presentation flags. With DOM enhancement, wrap fields:
 
 ```html
 <div data-form-intelligent-field="companyName">
@@ -121,7 +137,7 @@ Headless UIs should honor `fieldUi`. With DOM enhancement, wrap fields:
 </div>
 ```
 
-The enhancer applies `hidden`, `disabled`, and `required` from `fieldUi`.
+The enhancer applies `hidden`, `disabled`, `required`, and `readOnly` from `getPresentation`.
 
 ### React JSX structure
 
@@ -186,6 +202,26 @@ createForm({
 ```
 
 When `country` changes, the loader runs and options appear on `form.state.fieldUi.province.options` / `form.state.fieldOptions.province`.
+
+Populate respects rule predicates (`equals` / `notEquals` / …). Concurrent edits drop **stale** loader results so an older response cannot overwrite a newer field’s options. Thrown loaders surface as `WorkflowError`.
+
+### Structural graph (`dependencies`)
+
+For cascading clears (country → province → city), declare a dependency map:
+
+```ts
+import { createForm, dependencies } from "@jayoncode/form-intelligent";
+
+createForm({
+  initialValues: { country: "", province: "", city: "" },
+  dependencies: dependencies({
+    province: "country",
+    city: ["province"],
+  }),
+});
+```
+
+Parent changes **clear** children and can **revalidate** them (default). Cycles in this map throw `ConfigurationError`. `field(..., { dependsOn })` still works for revalidate-only inferred edges.
 
 [Dependencies playground →](/playground/form-intelligent/dependencies)
 

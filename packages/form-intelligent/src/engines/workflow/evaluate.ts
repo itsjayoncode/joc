@@ -1,4 +1,5 @@
 import { getIn } from "./utils.js";
+import { WorkflowError } from "../../errors/index.js";
 
 import type { FieldPath } from "./types.js";
 import type {
@@ -12,6 +13,17 @@ import type {
 
 const DEFAULT_UI: FieldUiState = { visible: true, disabled: false, required: undefined };
 const DEFAULT_FORM_UI: FormUiState = { submitDisabled: false };
+
+/**
+ * Deterministic rule evaluation order (Phase 5).
+ *
+ * Rules run in **registration order** (config `rules` first, then runtime
+ * `form.when(…).…` commits). For the same `fieldUi` / `formUi` key, **later
+ * rules win**. Priority / conflict policies remain PLANNED.
+ */
+export const RULE_EVALUATION_ORDER = "registration" as const;
+
+export type RuleEvaluationOrder = typeof RULE_EVALUATION_ORDER;
 
 function matchesRule<TValues extends Record<string, unknown>>(
   rule: FormRuleDefinition<TValues>,
@@ -47,7 +59,8 @@ function matchesRule<TValues extends Record<string, unknown>>(
     rule.greaterThan !== undefined ||
     rule.lessThan !== undefined ||
     rule.then !== undefined ||
-    rule.disableSubmit === true
+    rule.disableSubmit === true ||
+    (rule.changes !== undefined && rule.populate !== undefined)
   );
 }
 
@@ -66,6 +79,27 @@ function ensureField(ui: Record<FieldPath, FieldUiState>, path: FieldPath): Fiel
   return ui[path];
 }
 
+function runThen<TValues extends Record<string, unknown>>(
+  rule: FormRuleDefinition<TValues>,
+  context: RuleContext<TValues>,
+): void {
+  if (!rule.then) {
+    return;
+  }
+
+  try {
+    rule.then(context);
+  } catch (error) {
+    if (error instanceof WorkflowError) {
+      throw error;
+    }
+    throw new WorkflowError(
+      error instanceof Error ? error.message : "Workflow rule `then` handler failed.",
+      { cause: error },
+    );
+  }
+}
+
 export function evaluateFormRules<TValues extends Record<string, unknown>>(options: {
   readonly rules: readonly FormRuleDefinition<TValues>[];
   readonly values: TValues;
@@ -77,6 +111,7 @@ export function evaluateFormRules<TValues extends Record<string, unknown>>(optio
   ) as Record<FieldPath, FieldUiState>;
   let formUi: FormUiState = { ...DEFAULT_FORM_UI };
 
+  // Registration order — later rules overwrite earlier UI patches.
   for (const rule of options.rules) {
     const matches = matchesRule(rule, options.values);
     const working = cloneUiMap(ui);
@@ -145,7 +180,7 @@ export function evaluateFormRules<TValues extends Record<string, unknown>>(optio
         context.disableSubmit();
       }
 
-      rule.then?.(context);
+      runThen(rule, context);
     } else {
       for (const path of rule.show ?? []) {
         ensureField(working, path).visible = false;
@@ -173,17 +208,42 @@ export async function runDependencyRules<TValues extends Record<string, unknown>
   readonly rules: readonly FormRuleDefinition<TValues>[];
   readonly changedPath: FieldPath;
   readonly values: TValues;
+  readonly signal?: AbortSignal;
 }): Promise<Partial<Record<FieldPath, readonly FieldOption[]>>> {
   const updates: Partial<Record<FieldPath, readonly FieldOption[]>> = {};
 
   for (const rule of input.rules) {
+    if (input.signal?.aborted) {
+      return updates;
+    }
+
     if (rule.watch !== input.changedPath || !rule.changes || !rule.populate) {
       continue;
     }
 
-    const current = getIn(input.values, rule.watch);
-    const options = await rule.changes(current, input.values);
-    updates[rule.populate] = options;
+    if (!matchesRule(rule, input.values)) {
+      continue;
+    }
+
+    try {
+      const current = getIn(input.values, rule.watch);
+      const options = await rule.changes(current, input.values);
+      if (input.signal?.aborted) {
+        return updates;
+      }
+      updates[rule.populate] = options;
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") {
+        return updates;
+      }
+      if (error instanceof WorkflowError) {
+        throw error;
+      }
+      throw new WorkflowError(
+        error instanceof Error ? error.message : `Workflow populate for "${rule.populate}" failed.`,
+        { cause: error },
+      );
+    }
   }
 
   return updates;

@@ -52,7 +52,7 @@ await lifecycle.dispose();
 
 ## Try it live
 
-Open the [Visibility Playground](http://127.0.0.1:4273/visibility).
+Open the [Visibility Playground](/playground/browser-lifecycle/visibility).
 
 ## Next tutorial
 

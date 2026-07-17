@@ -1,8 +1,8 @@
 export type { FormatPreset } from "../../format/presets.js";
 export {
-  creditCard,
+  formatCreditCard,
   creditCardParser,
-  philippinePhone,
+  formatPhilippinePhone,
   philippinePhoneParser,
   resolveFormatPreset,
 } from "../../format/presets.js";

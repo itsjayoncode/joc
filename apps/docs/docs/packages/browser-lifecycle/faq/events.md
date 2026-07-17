@@ -10,7 +10,7 @@ const unsubscribe = lifecycle.on("page:visible", (event) => {
 
 ## How do I inspect all events?
 
-Use `lifecycle.onEvent()` for the full feed or open the [Event Explorer](http://127.0.0.1:4273/events).
+Use `lifecycle.onEvent()` for the full feed or open the [Event Explorer](/playground/browser-lifecycle/events).
 
 ## Related documentation
 

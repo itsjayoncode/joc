@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   composeFormatters,
   composeParsers,
-  custom,
+  formatCustom,
   defaultFormatterRegistry,
   formatFieldValue,
   formatForDisplay,
@@ -11,7 +11,7 @@ import {
   resolveBuiltinFormatter,
   roundTripFormat,
   trimParser,
-  uppercase,
+  formatUppercase,
   uppercaseParser,
 } from "../../src/format/index.js";
 
@@ -78,7 +78,7 @@ describe("formatter engine", () => {
   });
 
   it("supports custom formatter definitions", () => {
-    const definition = custom(
+    const definition = formatCustom(
       (value) => `fmt:${String(value)}`,
       (value) => String(value).replace(/^raw:/, ""),
     );
@@ -88,7 +88,7 @@ describe("formatter engine", () => {
 
   it("composes formatter chains", () => {
     const trim = resolveBuiltinFormatter("trim").format;
-    const format = composeFormatters(trim, uppercase);
+    const format = composeFormatters(trim, formatUppercase);
     const parse = composeParsers(trimParser, uppercaseParser);
 
     expect(format("  hello  ")).toBe("HELLO");
@@ -122,7 +122,7 @@ describe("formatter engine", () => {
     const form = createForm({ initialValues: { code: "" } });
 
     form.field("code", {
-      format: uppercase,
+      format: formatUppercase,
       parse: uppercaseParser,
     });
 

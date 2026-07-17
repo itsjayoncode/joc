@@ -10,25 +10,25 @@ Each example demonstrates installation, initialization, configuration, event sub
 
 ## Examples
 
-| Framework                                                                                  | Location                      | Status    |
-| ------------------------------------------------------------------------------------------ | ----------------------------- | --------- |
-| [Angular](https://github.com/JayOnCode/joc/tree/main/examples/angular)                     | `examples/angular/`           | Available |
-| [Browser-lifecycle](https://github.com/JayOnCode/joc/tree/main/examples/browser-lifecycle) | `examples/browser-lifecycle/` | Available |
-| [Electron](https://github.com/JayOnCode/joc/tree/main/examples/electron)                   | `examples/electron/`          | Available |
-| [Forms](https://github.com/JayOnCode/joc/tree/main/examples/forms)                         | `examples/forms/`             | Available |
-| [Nextjs](https://github.com/JayOnCode/joc/tree/main/examples/nextjs)                       | `examples/nextjs/`            | Available |
-| [Pwa](https://github.com/JayOnCode/joc/tree/main/examples/pwa)                             | `examples/pwa/`               | Available |
-| [React](https://github.com/JayOnCode/joc/tree/main/examples/react)                         | `examples/react/`             | Available |
-| [Request](https://github.com/JayOnCode/joc/tree/main/examples/request)                     | `examples/request/`           | Available |
-| [Scroll](https://github.com/JayOnCode/joc/tree/main/examples/scroll)                       | `examples/scroll/`            | Available |
-| [Svelte](https://github.com/JayOnCode/joc/tree/main/examples/svelte)                       | `examples/svelte/`            | Available |
-| [Theme](https://github.com/JayOnCode/joc/tree/main/examples/theme)                         | `examples/theme/`             | Available |
-| [Vanilla](https://github.com/JayOnCode/joc/tree/main/examples/vanilla)                     | `examples/vanilla/`           | Available |
-| [Vue](https://github.com/JayOnCode/joc/tree/main/examples/vue)                             | `examples/vue/`               | Available |
+| Framework                                                                                       | Location                      | Status    |
+| ----------------------------------------------------------------------------------------------- | ----------------------------- | --------- |
+| [Angular](https://github.com/itsjayoncode/joc/tree/master/examples/angular)                     | `examples/angular/`           | Available |
+| [Browser-lifecycle](https://github.com/itsjayoncode/joc/tree/master/examples/browser-lifecycle) | `examples/browser-lifecycle/` | Available |
+| [Electron](https://github.com/itsjayoncode/joc/tree/master/examples/electron)                   | `examples/electron/`          | Available |
+| [Forms](https://github.com/itsjayoncode/joc/tree/master/examples/forms)                         | `examples/forms/`             | Available |
+| [Nextjs](https://github.com/itsjayoncode/joc/tree/master/examples/nextjs)                       | `examples/nextjs/`            | Available |
+| [Pwa](https://github.com/itsjayoncode/joc/tree/master/examples/pwa)                             | `examples/pwa/`               | Available |
+| [React](https://github.com/itsjayoncode/joc/tree/master/examples/react)                         | `examples/react/`             | Available |
+| [Request](https://github.com/itsjayoncode/joc/tree/master/examples/request)                     | `examples/request/`           | Available |
+| [Scroll](https://github.com/itsjayoncode/joc/tree/master/examples/scroll)                       | `examples/scroll/`            | Available |
+| [Svelte](https://github.com/itsjayoncode/joc/tree/master/examples/svelte)                       | `examples/svelte/`            | Available |
+| [Theme](https://github.com/itsjayoncode/joc/tree/master/examples/theme)                         | `examples/theme/`             | Available |
+| [Vanilla](https://github.com/itsjayoncode/joc/tree/master/examples/vanilla)                     | `examples/vanilla/`           | Available |
+| [Vue](https://github.com/itsjayoncode/joc/tree/master/examples/vue)                             | `examples/vue/`               | Available |
 
 ## Related Documentation
 
 - [Usage Guide](/packages/browser-lifecycle/guides/usage)
 - [Best Practices](/packages/browser-lifecycle/best-practices/)
 - [Common Patterns](/packages/browser-lifecycle/patterns/)
-- [Playground](http://127.0.0.1:4273)
+- [Playground](/playground/browser-lifecycle)
