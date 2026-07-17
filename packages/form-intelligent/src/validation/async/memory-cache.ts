@@ -11,26 +11,6 @@ export interface ValidationCache {
   clear(): void;
 }
 
-/**
- * FNV-1a 64-bit hex digest. Session storage must never persist raw field values
- * in keys (`path:JSON(value)` can include passwords / PII).
- */
-function digestCacheKey(key: string): string {
-  let hash = 0xcbf29ce484222325n;
-  for (let index = 0; index < key.length; index += 1) {
-    hash ^= BigInt(key.charCodeAt(index));
-    hash = BigInt.asUintN(64, hash * 0x100000001b3n);
-  }
-  return hash.toString(16).padStart(16, "0");
-}
-
-/** Paths that must not be mirrored to sessionStorage even as hashed keys. */
-function isSensitiveCacheKey(key: string): boolean {
-  const separator = key.indexOf(":");
-  const path = separator === -1 ? key : key.slice(0, separator);
-  return /password|passwd|secret|token|cvv|ssn|\bpin\b|credit.?card/i.test(path);
-}
-
 class MemoryValidationCache implements ValidationCache {
   private readonly entries = new Map<string, CacheEntry>();
   private readonly maxEntries: number;
@@ -73,109 +53,6 @@ class MemoryValidationCache implements ValidationCache {
   }
 }
 
-class SessionValidationCache implements ValidationCache {
-  private readonly prefix: string;
-  private readonly maxEntries: number;
-  private readonly memory = new MemoryValidationCache(256);
-
-  public constructor(namespace: string, maxEntries = 256) {
-    this.prefix = `fi:async-cache:${namespace}:`;
-    this.maxEntries = maxEntries;
-  }
-
-  private sessionKey(logicalKey: string): string {
-    return this.prefix + digestCacheKey(logicalKey);
-  }
-
-  public get(key: string): CacheEntry | undefined {
-    const memoryHit = this.memory.get(key);
-    if (memoryHit) {
-      return memoryHit;
-    }
-
-    if (typeof sessionStorage === "undefined" || isSensitiveCacheKey(key)) {
-      return undefined;
-    }
-
-    try {
-      const raw = sessionStorage.getItem(this.sessionKey(key));
-      if (!raw) {
-        return undefined;
-      }
-      const parsed = JSON.parse(raw) as { readonly ok: boolean; readonly expiresAt: number };
-      if (Date.now() >= parsed.expiresAt) {
-        sessionStorage.removeItem(this.sessionKey(key));
-        return undefined;
-      }
-      // Session only stores validity — never message text (may be tainted / sensitive).
-      const result = parsed.ok ? undefined : "Invalid value.";
-      this.memory.set(key, result, Math.max(0, parsed.expiresAt - Date.now()));
-      return { result, expiresAt: parsed.expiresAt };
-    } catch {
-      return undefined;
-    }
-  }
-
-  public set(key: string, result: string | undefined, ttlMs: number): void {
-    this.memory.set(key, result, ttlMs);
-    // Memory-only for sensitive paths. Session persists only a boolean `ok` flag
-    // under a hashed key — never field values or validator messages
-    // (CodeQL js/clear-text-storage-of-sensitive-data).
-    if (typeof sessionStorage === "undefined" || isSensitiveCacheKey(key)) {
-      return;
-    }
-    try {
-      this.evictSessionIfNeeded();
-      sessionStorage.setItem(
-        this.sessionKey(key),
-        JSON.stringify({
-          ok: result === undefined,
-          expiresAt: Date.now() + ttlMs,
-        }),
-      );
-    } catch {
-      // Quota / private mode — memory cache still works.
-    }
-  }
-
-  public clear(): void {
-    this.memory.clear();
-    if (typeof sessionStorage === "undefined") {
-      return;
-    }
-    try {
-      const toRemove: string[] = [];
-      for (let i = 0; i < sessionStorage.length; i += 1) {
-        const storageKey = sessionStorage.key(i);
-        if (storageKey?.startsWith(this.prefix)) {
-          toRemove.push(storageKey);
-        }
-      }
-      for (const storageKey of toRemove) {
-        sessionStorage.removeItem(storageKey);
-      }
-    } catch {
-      // ignore
-    }
-  }
-
-  private evictSessionIfNeeded(): void {
-    const keys: string[] = [];
-    for (let i = 0; i < sessionStorage.length; i += 1) {
-      const storageKey = sessionStorage.key(i);
-      if (storageKey?.startsWith(this.prefix)) {
-        keys.push(storageKey);
-      }
-    }
-    while (keys.length >= this.maxEntries) {
-      const oldest = keys.shift();
-      if (oldest) {
-        sessionStorage.removeItem(oldest);
-      }
-    }
-  }
-}
-
 const privateCaches = new WeakMap<object, ValidationCache>();
 const sharedCaches = new Map<string, ValidationCache>();
 
@@ -197,6 +74,11 @@ export function getValidationCache(
   policy: AsyncCachePolicy,
 ): ValidationCache {
   const maxEntries = policy.maxEntries ?? 256;
+  // `"session"` is accepted for API compatibility but intentionally maps to
+  // in-memory only. Persisting validator outcomes (even booleans) to
+  // sessionStorage is cleartext storage of sensitive data under CodeQL
+  // (js/clear-text-storage-of-sensitive-data) when password/matchesField
+  // results flow into the cache.
   const storage = policy.storage ?? "memory";
 
   if (sharedCache) {
@@ -204,10 +86,7 @@ export function getValidationCache(
     const sharedKey = `${storage}:${namespace}`;
     let cache = sharedCaches.get(sharedKey);
     if (!cache) {
-      cache =
-        storage === "session"
-          ? new SessionValidationCache(namespace, maxEntries)
-          : new MemoryValidationCache(maxEntries);
+      cache = new MemoryValidationCache(maxEntries);
       sharedCaches.set(sharedKey, cache);
     }
     return cache;
@@ -215,10 +94,7 @@ export function getValidationCache(
 
   let cache = privateCaches.get(owner);
   if (!cache) {
-    cache =
-      storage === "session"
-        ? new SessionValidationCache("local", maxEntries)
-        : new MemoryValidationCache(maxEntries);
+    cache = new MemoryValidationCache(maxEntries);
     privateCaches.set(owner, cache);
   }
   return cache;
