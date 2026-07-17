@@ -1,5 +1,7 @@
+import { coalesceMoves } from "./detect-moves.js";
 import { normalizeDiffOptions, normalizeCompareOptions } from "../../core/options.js";
 import { joinPath } from "../../utils/index.js";
+import { isChangePathAllowed, shouldVisitPath } from "../../utils/path-filter.js";
 import { compareValues } from "../comparison/compare-values.js";
 import { walkPair } from "../traversal/walk-pair.js";
 
@@ -9,11 +11,14 @@ interface CollectState {
   readonly changes: DiffRecord[];
   readonly includeUnchanged: boolean;
   readonly treatUndefinedAsMissing: boolean;
+  readonly ignore: readonly string[] | undefined;
+  readonly include: readonly string[] | undefined;
   readonly compareOptions: ReturnType<typeof normalizeCompareOptions>;
   addedCount: number;
   removedCount: number;
   changedCount: number;
   unchangedCount: number;
+  movedCount: number;
 }
 
 function isMissing(value: unknown, treatUndefinedAsMissing: boolean): boolean {
@@ -27,13 +32,19 @@ function pushChange(
   previous?: unknown,
   current?: unknown,
 ): void {
+  const displayPath = joinPath(path);
+
+  if (type !== "unchanged" && !isChangePathAllowed(displayPath, state.ignore, state.include)) {
+    return;
+  }
+
   if (type === "unchanged" && !state.includeUnchanged) {
     state.unchangedCount += 1;
     return;
   }
 
   state.changes.push({
-    path: joinPath(path),
+    path: displayPath,
     type,
     ...(previous !== undefined ? { previous } : {}),
     ...(current !== undefined ? { current } : {}),
@@ -51,6 +62,9 @@ function pushChange(
       break;
     case "unchanged":
       state.unchangedCount += 1;
+      break;
+    case "moved":
+      state.movedCount += 1;
       break;
     default:
       break;
@@ -77,6 +91,14 @@ function isLeafChange(a: unknown, b: unknown): boolean {
   return false;
 }
 
+function walkOptionsFrom(options: ReturnType<typeof normalizeDiffOptions>) {
+  return {
+    ...(options.identityKey ? { identityKey: options.identityKey } : {}),
+    shouldVisit: (path: readonly (string | number)[]) =>
+      shouldVisitPath(path, options.ignore, options.include),
+  };
+}
+
 function collectDiff(
   a: unknown,
   b: unknown,
@@ -87,6 +109,8 @@ function collectDiff(
     changes: [],
     includeUnchanged: options.includeUnchanged,
     treatUndefinedAsMissing: options.treatUndefinedAsMissing,
+    ignore: options.ignore,
+    include: options.include,
     compareOptions: normalizeCompareOptions({
       maxDepth: options.maxDepth,
       circular: options.circular,
@@ -96,6 +120,7 @@ function collectDiff(
     removedCount: 0,
     changedCount: 0,
     unchangedCount: 0,
+    movedCount: 0,
   };
 
   if (compareValues(a, b, state.compareOptions)) {
@@ -158,10 +183,48 @@ function collectDiff(
     },
     options.maxDepth,
     options.circular,
+    walkOptionsFrom(options),
   );
 
-  if (state.changes.length === 0) {
+  if (
+    state.changes.length === 0 &&
+    !(options.ignore && options.ignore.length > 0) &&
+    !(options.include && options.include.length > 0)
+  ) {
     pushChange(state, [], "changed", a, b);
+  }
+
+  if (options.detectMoves) {
+    const coalesced = coalesceMoves(state.changes, state.compareOptions);
+    state.changes.length = 0;
+    state.addedCount = 0;
+    state.removedCount = 0;
+    state.changedCount = 0;
+    state.unchangedCount = 0;
+    state.movedCount = 0;
+
+    for (const change of coalesced) {
+      state.changes.push(change);
+      switch (change.type) {
+        case "added":
+          state.addedCount += 1;
+          break;
+        case "removed":
+          state.removedCount += 1;
+          break;
+        case "changed":
+          state.changedCount += 1;
+          break;
+        case "unchanged":
+          state.unchangedCount += 1;
+          break;
+        case "moved":
+          state.movedCount += 1;
+          break;
+        default:
+          break;
+      }
+    }
   }
 
   return buildResult(state, started);
@@ -181,6 +244,7 @@ function buildResult(state: CollectState, started: number): DiffResult {
       removedCount: state.removedCount,
       changedCount: state.changedCount,
       unchangedCount: state.unchangedCount,
+      movedCount: state.movedCount,
     },
   };
 }
@@ -194,17 +258,24 @@ export function diff(a: unknown, b: unknown, options?: DiffOptions): DiffResult 
 
 /**
  * Fast boolean check for whether two values differ.
+ * Avoids allocating a DiffResult unless `identityKey` requires full collection.
  */
 export function hasChanges(a: unknown, b: unknown, options?: DiffOptions): boolean {
   const resolved = normalizeDiffOptions(options);
+
+  // Identity matching can reorder array pairing — reuse collectDiff for correctness.
+  if (resolved.identityKey) {
+    return collectDiff(a, b, resolved).metadata.changeCount > 0;
+  }
+
   const compareOptions = normalizeCompareOptions({
     maxDepth: resolved.maxDepth,
     circular: resolved.circular,
     ...(resolved.customComparator ? { customComparator: resolved.customComparator } : {}),
   });
 
-  if (compareValues(a, b, compareOptions)) {
-    return false;
+  if (!resolved.ignore?.length && !resolved.include?.length) {
+    return !compareValues(a, b, compareOptions);
   }
 
   let found = false;
@@ -212,16 +283,35 @@ export function hasChanges(a: unknown, b: unknown, options?: DiffOptions): boole
   walkPair(
     a,
     b,
-    (left, right) => {
+    (left, right, _key, context) => {
+      if (resolved.customComparator) {
+        const custom = resolved.customComparator(left, right, context.path);
+
+        if (custom !== undefined) {
+          if (!custom) {
+            found = true;
+            return true;
+          }
+
+          return undefined;
+        }
+      }
+
       if (!compareValues(left, right, compareOptions)) {
-        found = true;
-        return true;
+        // Only count differences on paths that would emit changes.
+        if (isChangePathAllowed(joinPath(context.path), resolved.ignore, resolved.include)) {
+          found = true;
+          return true;
+        }
       }
 
       return undefined;
     },
     resolved.maxDepth,
     resolved.circular,
+    {
+      shouldVisit: (path) => shouldVisitPath(path, resolved.ignore, resolved.include),
+    },
   );
 
   return found;

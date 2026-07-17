@@ -15,6 +15,14 @@ const EXAMPLES = [
     title: "Patch round-trip",
     code: `import { diff, patch, applyPatch } from "@jayoncode/object-diff";\n\nconst result = diff(before, after);\nconst next = applyPatch(before, patch(result));`,
   },
+  {
+    title: "Fluent view",
+    code: `import { diff } from "@jayoncode/object-diff";\nimport { createDiffView } from "@jayoncode/object-diff/view";\n\nconst md = createDiffView(diff(before, after))\n  .exclude(["password"])\n  .serialize("markdown");`,
+  },
+  {
+    title: "Three-way merge",
+    code: `import { merge } from "@jayoncode/object-diff/merge";\n\nconst result = merge(local, remote, { base, strategy: "latest-wins" });`,
+  },
 ];
 
 export function ExamplesPage() {

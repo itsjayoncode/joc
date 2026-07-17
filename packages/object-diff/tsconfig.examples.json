@@ -3,8 +3,20 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "lib": ["ES2022"],
-    "rootDir": "./examples",
-    "noEmit": true
+    "noEmit": true,
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false,
+    "incremental": false,
+    "paths": {
+      "@jayoncode/object-diff": ["packages/object-diff/src/index.ts"],
+      "@jayoncode/object-diff/merge": ["packages/object-diff/src/merge/index.ts"],
+      "@jayoncode/object-diff/formatter": ["packages/object-diff/src/formatter/index.ts"],
+      "@jayoncode/object-diff/query": ["packages/object-diff/src/query/index.ts"],
+      "@jayoncode/object-diff/stats": ["packages/object-diff/src/stats/index.ts"],
+      "@jayoncode/object-diff/plugins": ["packages/object-diff/src/plugins/index.ts"],
+      "@jayoncode/object-diff/view": ["packages/object-diff/src/view/index.ts"]
+    }
   },
   "include": ["examples/**/*.ts"]
 }

@@ -1,10 +1,15 @@
 import {
   childContext,
   createTraversalContext,
+  type CreateTraversalContextOptions,
   type PairVisitor,
   type TraversalContext,
 } from "./context.js";
-import { CircularReferenceError, MaxDepthExceededError } from "../../errors/index.js";
+import {
+  CircularReferenceError,
+  InvalidOptionsError,
+  MaxDepthExceededError,
+} from "../../errors/index.js";
 import {
   getValueKind,
   isMap,
@@ -14,7 +19,7 @@ import {
   valuesEqualPrimitives,
 } from "../../utils/index.js";
 
-import type { Path } from "../../types/index.js";
+import type { IdentityKey, Path } from "../../types/index.js";
 
 function trackCircular(
   value: object,
@@ -64,12 +69,35 @@ function ensureDepth(context: TraversalContext): void {
   }
 }
 
+function resolveIdentity(
+  item: unknown,
+  path: Path,
+  identityKey: IdentityKey,
+): string | number | undefined {
+  if (typeof identityKey === "string") {
+    if (item !== null && typeof item === "object" && identityKey in item) {
+      const value = (item as Record<string, unknown>)[identityKey];
+      if (typeof value === "string" || typeof value === "number") {
+        return value;
+      }
+    }
+
+    return undefined;
+  }
+
+  return identityKey(item, path);
+}
+
 function walkPairValue(
   a: unknown,
   b: unknown,
   context: TraversalContext,
   visitor: PairVisitor,
 ): boolean | undefined {
+  if (context.shouldVisit && !context.shouldVisit(context.path)) {
+    return undefined;
+  }
+
   ensureDepth(context);
 
   if (valuesEqualPrimitives(a, b)) {
@@ -116,11 +144,123 @@ function walkArrayPair(
   context: TraversalContext,
   visitor: PairVisitor,
 ): boolean | undefined {
+  if (context.identityKey) {
+    return walkArrayPairByIdentity(a, b, context, visitor, context.identityKey);
+  }
+
   const maxLength = Math.max(a.length, b.length);
 
   for (let index = 0; index < maxLength; index += 1) {
     const child = childContext(context, index);
+    if (context.shouldVisit && !context.shouldVisit(child.path)) {
+      continue;
+    }
+
     const result = walkPairValue(a[index], b[index], child, visitor);
+    if (result === true) {
+      return true;
+    }
+  }
+
+  return undefined;
+}
+
+function walkArrayPairByIdentity(
+  a: unknown[],
+  b: unknown[],
+  context: TraversalContext,
+  visitor: PairVisitor,
+  identityKey: IdentityKey,
+): boolean | undefined {
+  const leftById = new Map<string | number, { index: number; value: unknown }>();
+  const rightById = new Map<string | number, { index: number; value: unknown }>();
+  const leftNoId: Array<{ index: number; value: unknown }> = [];
+  const rightNoId: Array<{ index: number; value: unknown }> = [];
+
+  for (let index = 0; index < a.length; index += 1) {
+    const value = a[index];
+    const id = resolveIdentity(value, [...context.path, index], identityKey);
+    if (id === undefined) {
+      leftNoId.push({ index, value });
+      continue;
+    }
+
+    if (leftById.has(id)) {
+      throw new InvalidOptionsError(
+        `Duplicate identity key "${String(id)}" in left array at path "${formatPath(context.path)}".`,
+        { details: { path: formatPath(context.path), id } },
+      );
+    }
+
+    leftById.set(id, { index, value });
+  }
+
+  for (let index = 0; index < b.length; index += 1) {
+    const value = b[index];
+    const id = resolveIdentity(value, [...context.path, index], identityKey);
+    if (id === undefined) {
+      rightNoId.push({ index, value });
+      continue;
+    }
+
+    if (rightById.has(id)) {
+      throw new InvalidOptionsError(
+        `Duplicate identity key "${String(id)}" in right array at path "${formatPath(context.path)}".`,
+        { details: { path: formatPath(context.path), id } },
+      );
+    }
+
+    rightById.set(id, { index, value });
+  }
+
+  for (const [id, right] of rightById) {
+    const left = leftById.get(id);
+    const child = childContext(context, right.index);
+    if (context.shouldVisit && !context.shouldVisit(child.path)) {
+      continue;
+    }
+
+    if (!left) {
+      const result = visitor(undefined, right.value, right.index, child);
+      if (result === true) {
+        return true;
+      }
+      continue;
+    }
+
+    const result = walkPairValue(left.value, right.value, child, visitor);
+    if (result === true) {
+      return true;
+    }
+  }
+
+  for (const [id, left] of leftById) {
+    if (rightById.has(id)) {
+      continue;
+    }
+
+    const child = childContext(context, left.index);
+    if (context.shouldVisit && !context.shouldVisit(child.path)) {
+      continue;
+    }
+
+    const result = visitor(left.value, undefined, left.index, child);
+    if (result === true) {
+      return true;
+    }
+  }
+
+  const leftover = Math.max(leftNoId.length, rightNoId.length);
+  for (let i = 0; i < leftover; i += 1) {
+    const left = leftNoId[i];
+    const right = rightNoId[i];
+    const index = right?.index ?? left?.index ?? i;
+    const child = childContext(context, index);
+    if (context.shouldVisit && !context.shouldVisit(child.path)) {
+      continue;
+    }
+
+    const result = walkPairValue(left?.value, right?.value, child, visitor);
     if (result === true) {
       return true;
     }
@@ -147,6 +287,10 @@ function walkObjectPair(
 
   for (const key of keys) {
     const child = childContext(context, key);
+    if (context.shouldVisit && !context.shouldVisit(child.path)) {
+      continue;
+    }
+
     const aHas = Object.prototype.hasOwnProperty.call(a, key);
     const bHas = Object.prototype.hasOwnProperty.call(b, key);
     const left = aHas ? a[key] : undefined;
@@ -195,6 +339,10 @@ function walkMapPair(
 
   for (const key of keys) {
     const child = childContext(context, String(key));
+    if (context.shouldVisit && !context.shouldVisit(child.path)) {
+      continue;
+    }
+
     const result = walkPairValue(a.get(key), b.get(key), child, visitor);
     if (result === true) {
       return true;
@@ -222,6 +370,10 @@ function walkSetPair(
 
   for (const value of values) {
     const child = childContext(context, String(value));
+    if (context.shouldVisit && !context.shouldVisit(child.path)) {
+      continue;
+    }
+
     const result = walkPairValue(
       a.has(value) ? value : undefined,
       b.has(value) ? value : undefined,
@@ -253,8 +405,9 @@ export function walkPair(
   visitor: PairVisitor,
   maxDepth: number,
   circular: "error" | "skip",
+  options: CreateTraversalContextOptions = {},
 ): boolean | undefined {
-  const context = createTraversalContext(maxDepth, circular);
+  const context = createTraversalContext(maxDepth, circular, options);
   return walkPairValue(a, b, context, visitor);
 }
 

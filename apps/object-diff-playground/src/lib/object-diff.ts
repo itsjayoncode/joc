@@ -27,7 +27,7 @@ export function getObjectDiffIntegrationSummary() {
   return {
     packageName: "@jayoncode/object-diff",
     entryPoint: "src/lib/object-diff.ts",
-    capabilities: ["diff", "compare", "hasChanges", "patch", "applyPatch", "serialize"],
+    capabilities: ["diff", "compare", "hasChanges", "patch", "applyPatch", "serialize", "view", "merge", "query", "stats", "plugins"],
   };
 }
 

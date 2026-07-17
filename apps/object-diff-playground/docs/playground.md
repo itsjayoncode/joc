@@ -8,15 +8,17 @@ Learn the API by **doing** — compare objects, generate patches, and run benchm
 
 Follow the [learning path](/packages/object-diff/) in docs, then try each topic live:
 
-| Docs guide                                                | Playground route                                    | What to try             |
-| --------------------------------------------------------- | --------------------------------------------------- | ----------------------- |
-| [Tutorial](/packages/object-diff/modules/getting-started) | [/](/playground/object-diff/)                       | Dashboard + sample diff |
-| [Concepts](/packages/object-diff/modules/concepts)        | [/diff](/playground/object-diff/diff)               | Edit before/after JSON  |
-| [Diffing](/packages/object-diff/modules/diff)             | [/diff](/playground/object-diff/diff)               | Inspect change records  |
-| [Patching](/packages/object-diff/modules/patch)           | [/patch](/playground/object-diff/patch)             | Generate & apply ops    |
-| [Serialization](/packages/object-diff/modules/serialize)  | [/json](/playground/object-diff/json)               | Export formats          |
-| Performance                                               | [/performance](/playground/object-diff/performance) | Large object benchmarks |
-| Snippets                                                  | [/examples](/playground/object-diff/examples)       | Copy-paste code         |
+| Docs guide                                                 | Playground route                                    | What to try             |
+| ---------------------------------------------------------- | --------------------------------------------------- | ----------------------- |
+| [Tutorial](/packages/object-diff/modules/getting-started)  | [/](/playground/object-diff/)                       | Dashboard + sample diff |
+| [Concepts](/packages/object-diff/modules/concepts)         | [/diff](/playground/object-diff/diff)               | Edit before/after JSON  |
+| [Diffing](/packages/object-diff/modules/diff)              | [/diff](/playground/object-diff/diff)               | Inspect change records  |
+| [Patching](/packages/object-diff/modules/patch)            | [/patch](/playground/object-diff/patch)             | Generate & apply ops    |
+| [Serialization](/packages/object-diff/modules/serialize)   | [/json](/playground/object-diff/json)               | Export formats          |
+| [Integrations](/packages/object-diff/modules/integrations) | [/examples](/playground/object-diff/examples)       | Consumer patterns       |
+| [Performance](/packages/object-diff/modules/performance)   | [/performance](/playground/object-diff/performance) | Large object benchmarks |
+| [DX / fluent view](/packages/object-diff/modules/dx)       | [/examples](/playground/object-diff/examples)       | `createDiffView`        |
+| Snippets                                                   | [/examples](/playground/object-diff/examples)       | Copy-paste code         |
 
 ## How each page works
 

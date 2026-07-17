@@ -1,0 +1,77 @@
+{
+  "measuredAt": "2026-07-17T14:48:54.139Z",
+  "measured": {
+    ".": {
+      "minified": 22821,
+      "gzip": 6888,
+      "budget": {
+        "minified": 32000,
+        "gzip": 10000
+      }
+    },
+    "./core": {
+      "minified": 13075,
+      "gzip": 3944,
+      "budget": {
+        "minified": 22000,
+        "gzip": 7000
+      }
+    },
+    "./patch": {
+      "minified": 13728,
+      "gzip": 4210,
+      "budget": {
+        "minified": 28000,
+        "gzip": 9000
+      }
+    },
+    "./merge": {
+      "minified": 13430,
+      "gzip": 4142,
+      "budget": {
+        "minified": 20000,
+        "gzip": 7000
+      }
+    },
+    "./formatter": {
+      "minified": 4264,
+      "gzip": 1638,
+      "budget": {
+        "minified": 8000,
+        "gzip": 3000
+      }
+    },
+    "./query": {
+      "minified": 1946,
+      "gzip": 775,
+      "budget": {
+        "minified": 4000,
+        "gzip": 2000
+      }
+    },
+    "./stats": {
+      "minified": 1420,
+      "gzip": 755,
+      "budget": {
+        "minified": 4000,
+        "gzip": 2000
+      }
+    },
+    "./plugins": {
+      "minified": 25834,
+      "gzip": 7854,
+      "budget": {
+        "minified": 35000,
+        "gzip": 11000
+      }
+    },
+    "./view": {
+      "minified": 8222,
+      "gzip": 3012,
+      "budget": {
+        "minified": 12000,
+        "gzip": 4000
+      }
+    }
+  }
+}

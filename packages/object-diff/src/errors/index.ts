@@ -5,7 +5,10 @@ export type ObjectDiffErrorCode =
   | "max_depth_exceeded"
   | "invalid_patch"
   | "patch_apply_error"
-  | "unsupported_type";
+  | "unsupported_type"
+  | "not_implemented"
+  | "invalid_options"
+  | "plugin_error";
 
 export interface ObjectDiffErrorOptions {
   readonly cause?: unknown;
@@ -60,5 +63,26 @@ export class UnsupportedTypeError extends ObjectDiffError {
   public constructor(message: string, options: ObjectDiffErrorOptions = {}) {
     super(message, "unsupported_type", options);
     this.name = "UnsupportedTypeError";
+  }
+}
+
+export class NotImplementedError extends ObjectDiffError {
+  public constructor(message: string, options: ObjectDiffErrorOptions = {}) {
+    super(message, "not_implemented", options);
+    this.name = "NotImplementedError";
+  }
+}
+
+export class InvalidOptionsError extends ObjectDiffError {
+  public constructor(message: string, options: ObjectDiffErrorOptions = {}) {
+    super(message, "invalid_options", options);
+    this.name = "InvalidOptionsError";
+  }
+}
+
+export class PluginError extends ObjectDiffError {
+  public constructor(message: string, options: ObjectDiffErrorOptions = {}) {
+    super(message, "plugin_error", options);
+    this.name = "PluginError";
   }
 }

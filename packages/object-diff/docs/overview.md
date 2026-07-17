@@ -72,12 +72,14 @@ Object Diff compares plain objects and arrays, emits structured **change records
 | 3   | [Diffing](/packages/object-diff/modules/diff)   | Options, filtering, helpers | [Diff](/playground/object-diff/diff)   |
 | 4   | [Patching](/packages/object-diff/modules/patch) | Apply, revert, edge cases   | [Patch](/playground/object-diff/patch) |
 
-### Output and performance
+### Output, integrations, and performance
 
-| #   | Guide                                                    | Topics                  | Playground                                        |
-| --- | -------------------------------------------------------- | ----------------------- | ------------------------------------------------- |
-| 5   | [Serialization](/packages/object-diff/modules/serialize) | Export formats          | [JSON](/playground/object-diff/json)              |
-| 6   | Performance                                              | Large-object benchmarks | [Benchmarks](/playground/object-diff/performance) |
+| #   | Guide                                                      | Topics                  | Playground                                        |
+| --- | ---------------------------------------------------------- | ----------------------- | ------------------------------------------------- |
+| 5   | [Serialization](/packages/object-diff/modules/serialize)   | Export formats          | [JSON](/playground/object-diff/json)              |
+| 6   | [Integrations](/packages/object-diff/modules/integrations) | Forms, session, audit   | [Examples](/playground/object-diff/examples)      |
+| 7   | [Performance](/packages/object-diff/modules/performance)   | Complexity, budgets     | [Benchmarks](/playground/object-diff/performance) |
+| 8   | [DX](/packages/object-diff/modules/dx)                     | Fluent `createDiffView` | [Examples](/playground/object-diff/examples)      |
 
 ## Package fit
 

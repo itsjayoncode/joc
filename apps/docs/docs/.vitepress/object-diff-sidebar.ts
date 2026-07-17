@@ -25,6 +25,9 @@ export function createObjectDiffSidebar(
         { text: "1. Diffing", link: `${base}/modules/diff` },
         { text: "2. Patching", link: `${base}/modules/patch` },
         { text: "3. Serialization", link: `${base}/modules/serialize` },
+        { text: "4. Integrations", link: `${base}/modules/integrations` },
+        { text: "5. Performance", link: `${base}/modules/performance` },
+        { text: "6. DX", link: `${base}/modules/dx` },
       ],
     },
     {
