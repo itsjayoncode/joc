@@ -215,7 +215,9 @@ describe("asyncValidator options overload (Phase 4B)", () => {
       ),
     );
     expect(stored).not.toContain("secret-user");
+    expect(stored).not.toContain("taken");
     expect(stored).toMatch(/fi:async-cache:session-hash-test:[0-9a-f]{16}/);
+    expect(stored).toContain('\\"ok\\"');
     form.destroy();
     sessionStorage.clear();
   });

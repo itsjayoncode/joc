@@ -16,7 +16,7 @@ export interface AsyncRetryPolicy {
 
 export interface AsyncCachePolicy {
   readonly ttl: TtlInput;
-  /** Default `"memory"`. `"session"` uses sessionStorage with **hashed** keys only (never raw field values). Sensitive paths (`password`, `token`, …) stay memory-only. */
+  /** Default `"memory"`. `"session"` uses sessionStorage with hashed keys and a boolean ok flag only (no field values or error messages). Sensitive paths stay memory-only. */
   readonly storage?: "memory" | "session";
   /** Default 256. */
   readonly maxEntries?: number;

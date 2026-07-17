@@ -102,13 +102,15 @@ class SessionValidationCache implements ValidationCache {
       if (!raw) {
         return undefined;
       }
-      const parsed = JSON.parse(raw) as CacheEntry;
+      const parsed = JSON.parse(raw) as { readonly ok: boolean; readonly expiresAt: number };
       if (Date.now() >= parsed.expiresAt) {
         sessionStorage.removeItem(this.sessionKey(key));
         return undefined;
       }
-      this.memory.set(key, parsed.result, Math.max(0, parsed.expiresAt - Date.now()));
-      return parsed;
+      // Session only stores validity — never message text (may be tainted / sensitive).
+      const result = parsed.ok ? undefined : "Invalid value.";
+      this.memory.set(key, result, Math.max(0, parsed.expiresAt - Date.now()));
+      return { result, expiresAt: parsed.expiresAt };
     } catch {
       return undefined;
     }
@@ -116,8 +118,9 @@ class SessionValidationCache implements ValidationCache {
 
   public set(key: string, result: string | undefined, ttlMs: number): void {
     this.memory.set(key, result, ttlMs);
-    // Memory-only for sensitive paths; hashed keys for everything else so
-    // sessionStorage never holds cleartext field values (CodeQL js/clear-text-storage-of-sensitive-data).
+    // Memory-only for sensitive paths. Session persists only a boolean `ok` flag
+    // under a hashed key — never field values or validator messages
+    // (CodeQL js/clear-text-storage-of-sensitive-data).
     if (typeof sessionStorage === "undefined" || isSensitiveCacheKey(key)) {
       return;
     }
@@ -126,9 +129,9 @@ class SessionValidationCache implements ValidationCache {
       sessionStorage.setItem(
         this.sessionKey(key),
         JSON.stringify({
-          result,
+          ok: result === undefined,
           expiresAt: Date.now() + ttlMs,
-        } satisfies CacheEntry),
+        }),
       );
     } catch {
       // Quota / private mode — memory cache still works.

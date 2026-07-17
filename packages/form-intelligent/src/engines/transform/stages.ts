@@ -46,6 +46,32 @@ function resolveSanitizeOptions(sanitize: boolean | SanitizeOptions): SanitizeOp
   };
 }
 
+function stripHtmlMarkup(value: string): string {
+  // Character walk — avoids incomplete tag regex sanitizers that CodeQL flags.
+  let output = "";
+  let index = 0;
+  while (index < value.length) {
+    const char = value.charAt(index);
+    if (char === "<") {
+      const close = value.indexOf(">", index + 1);
+      if (close === -1) {
+        // Drop incomplete tag opener; do not emit residual `<`.
+        index += 1;
+        continue;
+      }
+      index = close + 1;
+      continue;
+    }
+    if (char === ">") {
+      index += 1;
+      continue;
+    }
+    output += char;
+    index += 1;
+  }
+  return output;
+}
+
 export function createSanitizeStage(
   sanitize: boolean | SanitizeOptions | undefined,
 ): TransformFn | undefined {
@@ -66,10 +92,7 @@ export function createSanitizeStage(
       next = next.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "");
     }
     if (options.stripHtml) {
-      // Strip well-formed tags, then neutralize residual angle brackets so
-      // incomplete markup (e.g. `<script`) cannot survive (CodeQL js/incomplete-sanitization).
-      next = next.replace(/<\/?[^>]+>/g, "");
-      next = next.replace(/[<>]/g, "");
+      next = stripHtmlMarkup(next);
     }
     return next;
   };

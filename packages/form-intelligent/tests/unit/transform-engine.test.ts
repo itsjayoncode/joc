@@ -32,8 +32,8 @@ describe("transform stage order", () => {
   it("neutralizes incomplete HTML tags when stripHtml is on", () => {
     const pipeline = createTransformPipeline({ sanitize: { stripHtml: true } });
     expect(pipeline.inbound("<script alert(1)", { path: "x", values: {} })).toBe("script alert(1)");
-    expect(pipeline.inbound("hello<img src=x onerror=alert(1)", { path: "x", values: {} })).toBe(
-      "helloimg src=x onerror=alert(1)",
+    expect(pipeline.inbound("hello<img src=x onerror=alert(1)>", { path: "x", values: {} })).toBe(
+      "hello",
     );
   });
 

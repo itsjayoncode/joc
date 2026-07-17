@@ -6,7 +6,8 @@ export const formatSlug: Formatter = (value) =>
         .trim()
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "")
+        .replace(/^-/, "")
+        .replace(/-$/, "")
     : value;
 
 export const slugParser: Formatter = formatSlug;
