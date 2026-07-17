@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.1.0
+
+### Minor Changes
+
+- Fixed. DiffType gained "moved", which broke form-intelligent’s narrower FormChangeType.
+
 ## 3.0.0
 
 ### Minor Changes
