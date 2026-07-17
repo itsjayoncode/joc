@@ -18,14 +18,24 @@ export const APP_NAVIGATION_GROUPS: readonly NavigationGroup[] = [
     order: 10,
     items: [
       {
-        description: "Package philosophy, versions, and quick links to every explorer.",
+        description: "Interactive developer sandbox — configure, inspect, and debug forms live.",
         groupId: "overview",
         icon: DashboardIcon,
+        id: "sandbox",
+        intent: "current",
+        keywords: ["sandbox", "lab", "devtools", "playground", "home"],
+        label: "Sandbox",
+        path: "/",
+      },
+      {
+        description: "Package philosophy, versions, and quick links to every explorer.",
+        groupId: "overview",
+        icon: InfoIcon,
         id: "dashboard",
         intent: "current",
-        keywords: ["overview", "home"],
+        keywords: ["overview", "dashboard"],
         label: "Dashboard",
-        path: "/",
+        path: "/dashboard",
       },
     ],
   },
@@ -116,7 +126,7 @@ export const APP_NAVIGATION_GROUPS: readonly NavigationGroup[] = [
         path: "/performance",
       },
       {
-        description: "Headless HTML today; React, Zod, and bridge adapters planned.",
+        description: "HTML binding today; React adapter live; Zod and other bridges mapped.",
         groupId: "modules",
         icon: InfoIcon,
         id: "adapters",
@@ -126,7 +136,7 @@ export const APP_NAVIGATION_GROUPS: readonly NavigationGroup[] = [
         path: "/adapters",
       },
       {
-        description: "when() show/hide/require and business-rule submit disable.",
+        description: "when() show/hide/require and disableSubmit — inspect fieldUi live.",
         groupId: "modules",
         icon: CompassIcon,
         id: "rules",
@@ -136,7 +146,7 @@ export const APP_NAVIGATION_GROUPS: readonly NavigationGroup[] = [
         path: "/rules",
       },
       {
-        description: "Country → province populate via when().changes().",
+        description: "Country → province populate via when().changes() (async options).",
         groupId: "modules",
         icon: PerformanceIcon,
         id: "dependencies",
@@ -146,7 +156,7 @@ export const APP_NAVIGATION_GROUPS: readonly NavigationGroup[] = [
         path: "/dependencies",
       },
       {
-        description: "form.calculate() derived totals without manual events.",
+        description: "form.calculate() derived totals — watch recomputes in the inspector.",
         groupId: "modules",
         icon: ToolsIcon,
         id: "calculations",
@@ -156,7 +166,7 @@ export const APP_NAVIGATION_GROUPS: readonly NavigationGroup[] = [
         path: "/calculations",
       },
       {
-        description: "Browser session draft save, keyboard shortcuts, analytics.",
+        description: "Draft save, keyboard shortcuts, browser lifecycle, analytics snapshot.",
         groupId: "modules",
         icon: EventsIcon,
         id: "integrations",
@@ -166,7 +176,7 @@ export const APP_NAVIGATION_GROUPS: readonly NavigationGroup[] = [
         path: "/integrations",
       },
       {
-        description: "Copy-paste integration snippets for common patterns.",
+        description: "Copy-paste snippets; prefer Sandbox Generated Code for live configs.",
         groupId: "modules",
         icon: InfoIcon,
         id: "examples",

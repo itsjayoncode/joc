@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import styles from "./Pages.module.css";
 import { ExplainPanel } from "../components/playground/ExplainPanel.js";
 import { Card } from "../components/primitives/Card.js";
@@ -104,11 +106,11 @@ await form.flushOfflineQueue();`,
   },
   {
     title: "Custom plugin",
-    description: "Subscribe to lifecycle events and return cleanup.",
+    description: "Register with form.use() or createForm({ plugins }).",
     code: `form.use({
   name: "analytics",
-  setup(instance) {
-    return instance.on("submit", () => track("form_submit"));
+  setup(form, api) {
+    return api.on("submit", () => track("form_submit"));
   },
 });`,
   },
@@ -117,14 +119,22 @@ await form.flushOfflineQueue();`,
 export function ExamplesPage() {
   return (
     <PageContainer
+      compact
       description="Copy-paste patterns for headless forms, validation, submission, and workflow orchestration."
       eyebrow="Examples"
       title="Usage snippets"
     >
       <ExplainPanel
-        body="These snippets mirror the interactive explorers in this playground. Open Validation, Submission, or Workflow to see each pattern running live with inspectors."
+        body="Start in the Sandbox for live config → generated code. Use these snippets as copy-paste references, then open the matching explorer (Validation, Submission, Workflow, Rules…) to inspect behavior."
         title="How to use these examples"
       />
+      <p className={styles.sandboxCue}>
+        <Link className={styles.sandboxCueLink} to="/">
+          Open Sandbox
+        </Link>
+        <span aria-hidden="true"> · </span>
+        Prefer the Generated Code tab for the exact createForm() of your current experiment.
+      </p>
 
       <div className={styles.cardGrid}>
         {EXAMPLES.map((example) => (

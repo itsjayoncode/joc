@@ -8,7 +8,15 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../.
 
 /**
  * Publishable packages with versioned documentation archives + version switcher.
+ *
+ * REQUIRED BY DEFAULT for every package that owns a `/packages/<id>/` docs section —
+ * including new packages. Do not ship a docs section without registering here,
+ * creating `apps/docs/doc-versions/<id>.json`, wiring VitePress versions meta /
+ * the version switcher, and bootstrapping archives on first release
+ * (`pnpm docs:archive -- --package <id> --bootstrap`).
+ *
  * Keep in sync with scripts/doc-versioning-policy.ts for shared pure helpers.
+ * Policy: engineering/014-versioning-policy.md
  */
 export const DOC_VERSIONED_PACKAGES = [
   {

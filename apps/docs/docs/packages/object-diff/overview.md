@@ -60,7 +60,7 @@ Use `diff()` for audit trails and inspectors; `hasChanges()` for dirty checks; `
 
 Slim entry: `@jayoncode/object-diff/core` (compare/diff only). Patch domain: `@jayoncode/object-diff/patch`.
 
-[Inspect changes interactively →](/playground/object-diff/diff)
+[Inspect changes interactively →](/playground/object-diff/)
 
 ## Problem → approach
 
@@ -91,25 +91,25 @@ Root import of merge/query/stats/plugins/view is **not** supported — use the s
 
 ### Foundation
 
-| #   | Guide                                                     | Topics                      | Playground                            |
-| --- | --------------------------------------------------------- | --------------------------- | ------------------------------------- |
-| 1   | [Tutorial](/packages/object-diff/modules/getting-started) | Install, first diff         | [Dashboard](/playground/object-diff/) |
-| 2   | [Core concepts](/packages/object-diff/modules/concepts)   | Snapshots, changes, patches | [Diff](/playground/object-diff/diff)  |
+| #   | Guide                                                     | Topics                      | Playground                                                             |
+| --- | --------------------------------------------------------- | --------------------------- | ---------------------------------------------------------------------- |
+| 1   | [Tutorial](/packages/object-diff/modules/getting-started) | Install, first diff         | [Lab](/playground/object-diff/)                                        |
+| 2   | [Core concepts](/packages/object-diff/modules/concepts)   | Snapshots, changes, patches | [Lab](/playground/object-diff/) / [Diff](/playground/object-diff/diff) |
 
 ### Core APIs
 
-| #   | Guide                                                    | Topics                       | Playground                             |
-| --- | -------------------------------------------------------- | ---------------------------- | -------------------------------------- |
-| 3   | [Diffing](/packages/object-diff/modules/diff)            | Options, moves, filters      | [Diff](/playground/object-diff/diff)   |
-| 4   | [Patching](/packages/object-diff/modules/patch)          | RFC ops, validate, optimize  | [Patch](/playground/object-diff/patch) |
-| 5   | [Serialization](/packages/object-diff/modules/serialize) | Formats + custom serializers | [JSON](/playground/object-diff/json)   |
+| #   | Guide                                                    | Topics                       | Playground                                                               |
+| --- | -------------------------------------------------------- | ---------------------------- | ------------------------------------------------------------------------ |
+| 3   | [Diffing](/packages/object-diff/modules/diff)            | Options, moves, filters      | [Lab](/playground/object-diff/) / [Diff](/playground/object-diff/diff)   |
+| 4   | [Patching](/packages/object-diff/modules/patch)          | RFC ops, validate, optimize  | [Lab](/playground/object-diff/) / [Patch](/playground/object-diff/patch) |
+| 5   | [Serialization](/packages/object-diff/modules/serialize) | Formats + custom serializers | [Lab](/playground/object-diff/) / [JSON](/playground/object-diff/json)   |
 
 ### Engines
 
 | #   | Guide                                                      | Topics                      | Playground                                        |
 | --- | ---------------------------------------------------------- | --------------------------- | ------------------------------------------------- |
 | 6   | [Engines](/packages/object-diff/modules/engines)           | Subpath map                 | —                                                 |
-| 7   | [Merge](/packages/object-diff/modules/merge)               | Two-/three-way strategies   | —                                                 |
+| 7   | [Merge](/packages/object-diff/modules/merge)               | Two-/three-way strategies   | [Lab](/playground/object-diff/) Merge tab         |
 | 8   | [Query](/packages/object-diff/modules/query)               | Filter existing DiffResults | —                                                 |
 | 9   | [Integrations](/packages/object-diff/modules/integrations) | Forms, session, audit       | [Examples](/playground/object-diff/examples)      |
 | 10  | [Performance](/packages/object-diff/modules/performance)   | Complexity, budgets         | [Benchmarks](/playground/object-diff/performance) |

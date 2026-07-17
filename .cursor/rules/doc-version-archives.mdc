@@ -1,0 +1,25 @@
+---
+description: Versioned package docs archives are required by default for every docs site package
+globs:
+  - apps/docs/**
+  - packages/*/docs/**
+  - scripts/lib/doc-versioning.mjs
+  - scripts/archive-package-docs.mjs
+  - engineering/014-versioning-policy.md
+  - engineering/017-package-doc-learning-path.md
+alwaysApply: false
+---
+
+# Versioned documentation archives (default)
+
+Any package that owns a `/packages/<id>/` docs section **must** have versioned documentation archives enabled. This is required by default for current and new packages — not opt-in.
+
+When adding a new package docs section:
+
+1. Register in `DOC_VERSIONED_PACKAGES` (`scripts/lib/doc-versioning.mjs`)
+2. Create `apps/docs/doc-versions/<id>.json` with `archivePolicy: "minor"` and `archives: []`
+3. Wire versions meta into VitePress config, sidebar map, `DocsVersionSwitcher`, and `ArchivedDocsBanner`
+4. Gitignore `apps/docs/docs/packages/<id>/v*/` and `.vitepress/<id>-versions.ts`
+5. Bootstrap on first publish: `pnpm docs:archive -- --package <id> --bootstrap`
+
+Policy: `engineering/014-versioning-policy.md`. Checklist: `engineering/017-package-doc-learning-path.md`.

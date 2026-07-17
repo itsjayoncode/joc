@@ -85,3 +85,5 @@ Use `resolvePlaygroundPath()` in sidebars. In markdown, link with `/playground/<
 - [ ] Playground `docs/playground.md` with route map
 - [ ] Entry in `apps/docs/docs/packages/index.md`
 - [ ] Wired in `sync-documentation.mjs`
+- [ ] **Versioned docs archives enabled by default** — register in `scripts/lib/doc-versioning.mjs` (`DOC_VERSIONED_PACKAGES`), add `apps/docs/doc-versions/<id>.json`, wire versions meta into VitePress config + `DocsVersionSwitcher` / `ArchivedDocsBanner`, gitignore `v*/` + `*-versions.ts`
+- [ ] Bootstrap archives on first publish: `pnpm docs:archive -- --package <id> --bootstrap`

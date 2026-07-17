@@ -1,4 +1,12 @@
-import { createForm, email, minLength, regex, required } from "@jayoncode/form-intelligent";
+import {
+  asyncValidator,
+  createForm,
+  email,
+  matchesField,
+  minLength,
+  regex,
+  required,
+} from "@jayoncode/form-intelligent";
 import { createAnalyticsPlugin } from "@jayoncode/form-intelligent/analytics";
 import {
   connectFormDevToolsToGlobal,
@@ -16,7 +24,7 @@ import {
 import { when } from "@jayoncode/form-intelligent/rules";
 import { createBrowserLifecyclePlugin, createKeyboardPlugin, keyboard } from "@jayoncode/form-intelligent/plugins";
 
-import type { FormInstance, FormPlugin } from "@jayoncode/form-intelligent";
+import type { FormInstance, FormPlugin, ValidationMode } from "@jayoncode/form-intelligent";
 
 export const SAMPLE_FORM_VALUES = {
   email: "",
@@ -56,6 +64,7 @@ export function createSampleForm(
 }
 
 export {
+  asyncValidator,
   connectFormDevToolsToGlobal,
   createForm,
   createAnalyticsPlugin,
@@ -68,6 +77,7 @@ export {
   enableFormDevTools,
   getFormDevTools,
   keyboard,
+  matchesField,
   minLength,
   formatPhone,
   formatPhilippinePhone,
@@ -76,5 +86,5 @@ export {
   formatSlug,
   when,
 };
-export type { FormInstance, FormPlugin };
+export type { FormInstance, FormPlugin, ValidationMode };
 export { useForm, useFormState } from "@jayoncode/form-intelligent-react";

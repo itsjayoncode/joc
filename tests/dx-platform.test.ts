@@ -173,14 +173,21 @@ describe("developer experience platform", () => {
   it("supports versioned documentation archives for publishable packages", () => {
     const rootPackage = readText("package.json");
     const versioningLib = path.join(rootDir, "scripts/lib/doc-versioning.mjs");
+    const versioningLibSource = readText("scripts/lib/doc-versioning.mjs");
     const config = readText("apps/docs/docs/.vitepress/config.ts");
+    const versioningPolicy = readText("engineering/014-versioning-policy.md");
+    const packageChecklist = readText("engineering/016-package-checklist.md");
 
     for (const packageId of ["browser-lifecycle", "object-diff", "form-intelligent"]) {
       const manifestPath = path.join(rootDir, `apps/docs/doc-versions/${packageId}.json`);
       expect(existsSync(manifestPath)).toBe(true);
+      expect(versioningLibSource).toContain(`id: "${packageId}"`);
     }
 
     expect(existsSync(versioningLib)).toBe(true);
+    expect(versioningLibSource).toContain("REQUIRED BY DEFAULT");
+    expect(versioningPolicy).toContain("Documentation version archives (required by default)");
+    expect(packageChecklist).toContain("Versioned docs archives are enabled");
     expect(config).toContain("browser-lifecycle-versions");
     expect(config).toContain("object-diff-versions");
     expect(config).toContain("form-intelligent-versions");

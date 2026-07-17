@@ -6,6 +6,7 @@ import { DashboardPage } from "../pages/DashboardPage.js";
 import { DiffPage } from "../pages/DiffPage.js";
 import { ExamplesPage } from "../pages/ExamplesPage.js";
 import { JsonPage } from "../pages/JsonPage.js";
+import { LabPage } from "../pages/LabPage.js";
 import { NotFoundPage } from "../pages/NotFoundPage.js";
 import { PatchPage } from "../pages/PatchPage.js";
 import { PerformancePage } from "../pages/PerformancePage.js";
@@ -15,6 +16,7 @@ import type { RouteObject } from "react-router-dom";
 
 export const APP_ROUTE_PATHS = [
   "/",
+  "/dashboard",
   "/diff",
   "/patch",
   "/json",
@@ -30,7 +32,8 @@ const routeObjects: RouteObject[] = [
     element: <AppShell />,
     path: "/",
     children: [
-      { element: <DashboardPage />, index: true },
+      { element: <LabPage />, index: true },
+      { element: <DashboardPage />, path: "dashboard" },
       { element: <DiffPage />, path: "diff" },
       { element: <PatchPage />, path: "patch" },
       { element: <JsonPage />, path: "json" },

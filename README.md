@@ -95,6 +95,8 @@ Package docs support **latest** and **archived** URLs so users can reference old
 
 Archives are stored under `apps/docs/archives/` and staged into the site at build time. A version switcher appears on package documentation pages (not package landing pages).
 
+**Default for all packages** — any package that owns a `/packages/<id>/` docs section must enable versioned archives (register in `DOC_VERSIONED_PACKAGES`, bootstrap on first release). See [`engineering/014-versioning-policy.md`](./engineering/014-versioning-policy.md).
+
 **Day to day** — edit docs as usual; CI runs `pnpm docs:prepare` before build and deploy.
 
 **On release** — `pnpm release:version` archives qualifying bumps automatically (minor/major before 1.0, major after 1.0) before Changesets applies the version bump.

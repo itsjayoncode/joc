@@ -1,6 +1,6 @@
 # Form Intelligent Playground
 
-Learn the API by **doing** — every page has a live demo, plain-language explanations, and an inspector panel.
+Interactive **developer sandbox** for `@jayoncode/form-intelligent` — configure forms, inspect state, stream events, and copy generated code. Focused explorers remain available for deep dives.
 
 [Open playground →](/playground/form-intelligent/)
 
@@ -10,7 +10,7 @@ Follow the [learning path](/packages/form-intelligent/) in docs, then try each t
 
 | Docs guide                                                      | Playground route                                           | What to try                   |
 | --------------------------------------------------------------- | ---------------------------------------------------------- | ----------------------------- |
-| [Tutorial](/packages/form-intelligent/modules/getting-started)  | [/](/playground/form-intelligent/)                         | Dashboard + quick validate    |
+| [Tutorial](/packages/form-intelligent/modules/getting-started)  | [/](/playground/form-intelligent/)                         | Sandbox lab — full workspace  |
 | [Concepts](/packages/form-intelligent/modules/concepts)         | [/state](/playground/form-intelligent/state)               | Edit fields, watch JSON state |
 | [Validation](/packages/form-intelligent/modules/validation)     | [/validation](/playground/form-intelligent/validation)     | Toggle timing, async username |
 | [Submission](/packages/form-intelligent/modules/submission)     | [/submission](/playground/form-intelligent/submission)     | Flaky API, double-submit      |
@@ -24,12 +24,16 @@ Follow the [learning path](/packages/form-intelligent/) in docs, then try each t
 | DevTools                                                        | [/devtools](/playground/form-intelligent/devtools)         | Config JSON, export/import    |
 | Performance benches                                             | [/performance](/playground/form-intelligent/performance)   | Validate / autosave / submit  |
 | [Adapters](/packages/form-intelligent/modules/adapters)         | [/adapters](/playground/form-intelligent/adapters)         | HTML + React integration map  |
+| Overview                                                        | [/dashboard](/playground/form-intelligent/dashboard)       | Versions & explorer map       |
 
-## How each page works
+## How the sandbox works
 
-1. **Read** the explanation panel at the top
-2. **Interact** with the demo (inputs, buttons, toggles)
-3. **Inspect** field meta, JSON state, or event logs on the side
+1. **Configure** the experiment in the left panel (template, validateOn, plugins, rules)
+2. **Interact** with the live form in the center canvas
+3. **Inspect** field/form state, events, performance, and generated code on the right
+4. **Read** the bottom console for engine activity
+
+Focused explorers under `/validation`, `/workflow`, etc. remain for single-topic deep dives.
 
 ## Run locally
 
@@ -45,7 +49,8 @@ If the shell shows a blank page or `__FORM_INTELLIGENT_VERSION__ is not defined`
 
 | Route          | Focus                                          |
 | -------------- | ---------------------------------------------- |
-| `/`            | Dashboard & quick links                        |
+| `/`            | Interactive developer sandbox                  |
+| `/dashboard`   | Overview & quick links                         |
 | `/validation`  | Validators & timing                            |
 | `/submission`  | Submit flow & guards                           |
 | `/workflow`    | Autosave, drafts, wizard                       |
@@ -65,6 +70,7 @@ The playground separates shell UI from Form Intelligent runtime state.
 | -------------------------------- | ---------------------------------------------------------------------------------------- |
 | `src/app`                        | Bootstrap and provider composition                                                       |
 | `src/layouts`                    | App shell structure                                                                      |
+| `src/sandbox`                    | Multi-panel developer sandbox (primary home)                                             |
 | `src/pages`                      | Route-level explorers                                                                    |
 | `src/components`                 | Reusable UI (ExplainPanel, EventLog, inspectors)                                         |
 | `src/hooks`                      | `useFormSnapshot`, `useEventLog`                                                         |
@@ -80,30 +86,4 @@ Route pages import from `src/lib/form-intelligent.ts`, not directly from npm pac
 import { createForm, createSampleForm } from "../lib/form-intelligent.js";
 ```
 
-The lib re-exports core APIs, React hooks (`useForm`, `useFormState`), and playground helpers (`createSampleForm`, `getFormIntelligentIntegrationSummary`).
-
-### Version metadata process
-
-Displayed versions (dashboard cards, header eyebrow, footer) follow the same compile-time pattern as other JOC playgrounds:
-
-```
-packages/*/package.json
-        ↓ read in vite.config.ts
-Vite define constants (__FORM_INTELLIGENT_VERSION__, …)
-        ↓
-src/config/app-metadata.ts → getPlaygroundMetadata()
-        ↓
-Header, Dashboard, Footer
-```
-
-TypeScript globals are declared in `src/vite-env.d.ts`. Production builds statically replace the constants; dev relies on the same `define` map — restart the dev server after changing package names or monorepo layout.
-
-## Adoption paths demonstrated here
-
-| Path          | API                                                          | Playground route       |
-| ------------- | ------------------------------------------------------------ | ---------------------- |
-| Native HTML   | `createForm({ target, schema, onSubmit })`                   | Validation, Submission |
-| Headless bind | `form.field("email").bind()`                                 | State, Examples        |
-| React adapter | `useForm()` → `form.form()`, `form.field()`, `form.submit()` | Adapters               |
-
-[Back to package overview →](/packages/form-intelligent/)
+Sandbox capabilities register in `src/sandbox/capabilities.ts` so future plugins can appear in the config panel, inspector, console, and generated code without redesigning the workspace.

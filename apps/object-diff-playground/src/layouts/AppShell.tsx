@@ -22,10 +22,12 @@ export function AppShell() {
   };
   const sidebarClasses = {
     brand: getClassName("brand"),
+    brandBlock: getClassName("brandBlock"),
     brandCaption: getClassName("brandCaption"),
     brandLabel: getClassName("brandLabel"),
     brandMark: getClassName("brandMark"),
     brandTitle: getClassName("brandTitle"),
+    docsLink: getClassName("docsLink"),
     navCopy: getClassName("navCopy"),
     navDescription: getClassName("navDescription"),
     navGroup: getClassName("navGroup"),
@@ -54,7 +56,11 @@ export function AppShell() {
   };
 
   return (
-    <div className={styles.shell} data-route-path={currentPath}>
+    <div
+      className={styles.shell}
+      data-layout={currentPath === "/" ? "sandbox" : "explorer"}
+      data-route-path={currentPath}
+    >
       <div className={styles.frame}>
         <Sidebar classNames={sidebarClasses} />
         <div className={styles.mainColumn}>

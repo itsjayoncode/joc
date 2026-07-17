@@ -17,9 +17,8 @@ const folderResponsibilities = [
 export function AboutPage() {
   return (
     <PageContainer
-      description="The Playground Foundation is designed as infrastructure for future Object Diff modules, not as a one-off showcase."
-      eyebrow="About"
-      title="Architecture tuned for long-term extension"
+      compact
+      description="Infrastructure for the Object Diff Lab and focused explorers — not a marketing showcase."
     >
       <div className={styles.cardGrid}>
         <Card

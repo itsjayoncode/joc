@@ -77,6 +77,7 @@ export function WorkflowPage() {
 
   return (
     <PageContainer
+      compact
       description="Debounced autosave, draft restore, wizard guards, and conditional fields."
       eyebrow="Workflow"
       title="Workflow Playground"

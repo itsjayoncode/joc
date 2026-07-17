@@ -63,6 +63,8 @@ Hub page: `/playground/` (lists all three). Form Intelligent production URL:
 
 ### Archived package documentation
 
+**Default for every package that owns a docs site section** — versioned archives and the version switcher are required, including for new packages. Do not add a `/packages/<id>/` section without registering archives.
+
 Publishable packages keep frozen docs per release (version dropdown on package pages):
 
 | Package           | Latest                         | Archives                                  |
@@ -78,11 +80,25 @@ Archives live under `apps/docs/archives/<package>/` and are staged into the Vite
 pnpm docs:archive
 pnpm docs:archive -- --package form-intelligent --bootstrap
 
+# Backfill Form Intelligent history from published git tips (dropdown archives)
+node scripts/backfill-form-intelligent-doc-archives.mjs
+pnpm --filter @jayoncode/docs docs:stage-archives
+
 # Release versioning archives automatically when a qualifying bump is pending
 pnpm release:version
 ```
 
 Archive policy (`archivePolicy: "minor"`): on `0.x`, archive on minor/major; on `1.x+`, archive on major only (patches never archive).
+
+**New package checklist** (required):
+
+1. Add an entry to `DOC_VERSIONED_PACKAGES` in `scripts/lib/doc-versioning.mjs`
+2. Create `apps/docs/doc-versions/<id>.json`
+3. Wire `*-versions.ts` into VitePress config + version switcher components
+4. Gitignore `apps/docs/docs/packages/<id>/v*/` and `.vitepress/<id>-versions.ts`
+5. Bootstrap on first publish: `pnpm docs:archive -- --package <id> --bootstrap`
+
+Policy detail: [`engineering/014-versioning-policy.md`](../engineering/014-versioning-policy.md).
 
 Generated output is gitignored under each package’s `v*/` tree and `.vitepress/*-versions.ts` / `*-meta.ts`. CI and local validation always run `docs:prepare` before typecheck and formatting checks.
 

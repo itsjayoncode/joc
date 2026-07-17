@@ -4,6 +4,24 @@ import { buildVersionedSidebarMap } from "./versioned-sidebar.js";
 
 import type { DefaultTheme } from "vitepress";
 
+function playgroundRoute(slug: string, route = ""): string {
+  const base = resolvePlaygroundPath(slug);
+  if (!route) {
+    return base;
+  }
+
+  return `${base}${route.replace(/^\//, "")}`;
+}
+
+function spaItem(text: string, slug: string, route = ""): DefaultTheme.SidebarItem {
+  return {
+    text: `${text} ↗`,
+    link: playgroundRoute(slug, route),
+    target: "_blank",
+    rel: "noreferrer",
+  };
+}
+
 export function createObjectDiffSidebar(
   pkgBase: string,
   versionLabel: string,
@@ -48,12 +66,13 @@ export function createObjectDiffSidebar(
       text: "Interactive",
       collapsed: false,
       items: [
-        {
-          text: "Open playground ↗",
-          link: resolvePlaygroundPath("object-diff"),
-          target: "_blank",
-          rel: "noreferrer",
-        },
+        spaItem("Open lab", "object-diff"),
+        spaItem("Diff", "object-diff", "diff"),
+        spaItem("Patch", "object-diff", "patch"),
+        spaItem("JSON", "object-diff", "json"),
+        spaItem("Examples", "object-diff", "examples"),
+        spaItem("Performance", "object-diff", "performance"),
+        { text: "Playground hub", link: "/playground/" },
       ],
     },
   ];

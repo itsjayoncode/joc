@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import styles from "./Pages.module.css";
 import { Card } from "../components/primitives/Card.js";
 import { PageContainer } from "../components/primitives/PageContainer.js";
@@ -28,9 +30,13 @@ const EXAMPLES = [
 export function ExamplesPage() {
   return (
     <PageContainer
-      description="Common integration patterns for @jayoncode/object-diff."
-      eyebrow="Examples"
-      title="Usage snippets"
+      compact
+      description={
+        <>
+          Copy-paste snippets. Live experiments and generated code live in the{" "}
+          <Link to="/">Object Diff Lab</Link>.
+        </>
+      }
     >
       <div className={styles.cardGrid}>
         {EXAMPLES.map((example) => (

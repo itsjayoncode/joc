@@ -33,6 +33,10 @@ export default defineConfig({
   },
   resolve: {
     alias: [
+      {
+        find: /^@jayoncode\/object-diff\/(.+)$/,
+        replacement: path.join(repoRoot, "packages/object-diff/src/$1/index.ts"),
+      },
       { find: /^@jayoncode\/(.+)$/, replacement: path.join(repoRoot, "packages/$1/src/index.ts") },
     ],
   },

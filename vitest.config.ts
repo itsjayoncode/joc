@@ -15,6 +15,10 @@ export default defineConfig({
         replacement: path.join(rootDir, "packages/form-intelligent/src/$1/index.ts"),
       },
       {
+        find: /^@jayoncode\/object-diff\/(.+)$/,
+        replacement: path.join(rootDir, "packages/object-diff/src/$1/index.ts"),
+      },
+      {
         find: "@jayoncode/form-intelligent-valibot",
         replacement: path.join(rootDir, "packages/form-intelligent-valibot/src/index.ts"),
       },

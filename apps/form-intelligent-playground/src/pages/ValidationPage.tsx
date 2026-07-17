@@ -74,6 +74,7 @@ export function ValidationPage() {
 
   return (
     <PageContainer
+      compact
       description="Built-in validators, async checks, cross-field rules, and validation timing — all without a UI framework."
       eyebrow="Validation"
       title="Validation Playground"

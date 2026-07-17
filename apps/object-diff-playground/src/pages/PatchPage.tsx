@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 
 import styles from "./Pages.module.css";
 import { Card } from "../components/primitives/Card.js";
@@ -54,9 +55,13 @@ export function PatchPage() {
 
   return (
     <PageContainer
-      description="Generate JSON Patch operations from a diff and apply or revert them interactively."
-      eyebrow="Patch Explorer"
-      title="Patch generation and replay"
+      compact
+      description={
+        <>
+          Focused patch apply/revert. Use the <Link to="/">Object Diff Lab</Link> for optimize,
+          validate, merge patch, and generated code.
+        </>
+      }
     >
       <div className={styles.splitGrid}>
         <Card description="Patch source" title="Object A">

@@ -34,3 +34,12 @@ The first production package should start from the repository package blueprint:
 - `engineering/008-package-architecture.md`
 - `engineering/009-api-design-guidelines.md`
 - `engineering/016-package-checklist.md`
+
+## Versioned documentation (default)
+
+New packages that ship a docs site section must enable versioned archives from day one (version switcher + frozen `/packages/<id>/v{version}/` snapshots). Do not ship a docs section without registering the package in `DOC_VERSIONED_PACKAGES` and bootstrapping the first archive on release.
+
+See the monorepo policies:
+
+- `engineering/014-versioning-policy.md` — versioned docs archives required by default
+- `engineering/017-package-doc-learning-path.md` — new-package docs checklist

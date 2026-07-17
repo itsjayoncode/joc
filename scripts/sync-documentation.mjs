@@ -40,7 +40,7 @@ const PLAYGROUND_ROUTES = {
   "idle-playground.md": { route: "/idle", label: "Idle Playground" },
   "lifecycle-playground.md": { route: "/lifecycle", label: "Lifecycle Playground" },
   "performance-playground.md": { route: "/performance", label: "Performance Playground" },
-  "playground.md": { route: "/", label: "Playground Dashboard" },
+  "playground.md": { route: "/", label: "Sandbox" },
   "plugin-playground.md": { route: "/plugins", label: "Plugin Playground" },
   "state-explorer.md": { route: "/state", label: "State Explorer" },
   "visibility-playground.md": { route: "/visibility", label: "Visibility Playground" },

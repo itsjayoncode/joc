@@ -2,16 +2,19 @@ import { NavLink } from "react-router-dom";
 
 import { APP_NAVIGATION_GROUPS } from "../../constants/navigation.js";
 import { usePlaygroundUi } from "../../hooks/usePlaygroundUi.js";
+import { FORM_INTELLIGENT_DOCS_URL } from "../../lib/playground-links.js";
 import { classNames } from "../../utils/class-names.js";
 import { playgroundAssetUrl } from "../../utils/playground-asset-url.js";
 
 export interface SidebarProps {
   readonly classNames: {
     readonly brand: string;
+    readonly brandBlock: string;
     readonly brandCaption: string;
     readonly brandLabel: string;
     readonly brandMark: string;
     readonly brandTitle: string;
+    readonly docsLink: string;
     readonly navCopy: string;
     readonly navDescription: string;
     readonly navGroup: string;
@@ -46,16 +49,27 @@ export function Sidebar({ classNames: classes }: SidebarProps) {
         />
       ) : null}
       <aside className={classNamesForSidebar(classes, sidebarCollapsed, mobileSidebarOpen)}>
-        <div className={classes.brand}>
-          <img
-            alt="JOC"
-            className={classes.brandMark}
-            src={playgroundAssetUrl("jayoncode-logo-official.png")}
-          />
-          <div className={classes.brandLabel}>
-            <p className={classes.brandTitle}>Lifecycle Lab</p>
-            <p className={classes.brandCaption}>Form Intelligent playground</p>
+        <div className={classes.brandBlock}>
+          <div className={classes.brand}>
+            <img
+              alt="JayOnCode"
+              className={classes.brandMark}
+              src={playgroundAssetUrl("jayoncode-logo-official.png")}
+            />
+            <div className={classes.brandLabel}>
+              <p className={classes.brandTitle}>JayOnCode</p>
+              <p className={classes.brandCaption}>Form Intelligent playground</p>
+            </div>
           </div>
+          <a
+            className={classes.docsLink}
+            href={FORM_INTELLIGENT_DOCS_URL}
+            onClick={closeMobileSidebar}
+            rel="noreferrer"
+            target="_blank"
+          >
+            ← Back to Document
+          </a>
         </div>
 
         <div className={classes.navScroll}>

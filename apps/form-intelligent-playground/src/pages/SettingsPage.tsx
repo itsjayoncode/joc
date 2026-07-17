@@ -15,6 +15,7 @@ export function SettingsPage() {
 
   return (
     <PageContainer
+      compact
       description="Application-level preferences live here so future module pages can stay focused on Form Intelligent behavior instead of shell configuration."
       eyebrow="Settings"
       title="Developer preferences and shell controls"

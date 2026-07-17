@@ -210,6 +210,7 @@ export function PerformancePage() {
 
   return (
     <PageContainer
+      compact
       description="Run in-browser microbenchmarks for validation, autosave coalescing, and submit throughput."
       eyebrow="Performance"
       title="Performance Playground"

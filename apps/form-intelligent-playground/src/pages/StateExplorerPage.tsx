@@ -88,6 +88,7 @@ export function StateExplorerPage() {
 
   return (
     <PageContainer
+      compact
       description="Live values, fieldUi, fieldMeta, fieldOptions, submissionQueue, undo/redo, and object-diff snapshots."
       eyebrow="State"
       title="State Explorer"

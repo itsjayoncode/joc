@@ -3,6 +3,10 @@
   gap: var(--space-5);
 }
 
+.compact {
+  gap: var(--space-4);
+}
+
 .header {
   display: grid;
   gap: var(--space-3);
@@ -33,7 +37,23 @@
   line-height: 1.7;
 }
 
+.purpose {
+  max-width: 72ch;
+  margin: 0;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  background: var(--surface-strong);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
 .content {
   display: grid;
-  gap: var(--space-5);
+  gap: var(--space-4);
+}
+
+.compact .content {
+  gap: var(--space-4);
 }
