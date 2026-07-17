@@ -23,11 +23,28 @@ To prepare JOC for public collaboration, enable the following repository setting
 - Require conversations to be resolved before merge
 - Restrict direct pushes to the default branch
 
-## Release Secrets
+## Release Secrets / npm publish from CI
 
-For Changesets publish on `master`/`main` (see `.github/workflows/ci.yml`):
+There is **no “Automation” token** anymore (classic tokens were revoked). Use one of these:
 
-- `NPM_TOKEN` — npm Automation or Granular Access token with **read + write** for every package under `@jayoncode` (not only packages that already exist on the token allow-list).
-- The publish job maps this secret to both `NPM_TOKEN` and `NODE_AUTH_TOKEN` (required by `actions/setup-node` `registry-url`).
+### Option A — Granular access token (fastest fix for `EOTP`)
 
-If publish fails with `E404 Not Found - PUT .../@jayoncode%2f...`, treat it as an **auth/permission** problem (npm hides 403 as 404). Rotate the token and ensure `@jayoncode/form-intelligent` (and any new adapters) are included in the token’s package scope, or scope the token to the whole `@jayoncode` org.
+1. npmjs.com → profile → **Access Tokens** → **Generate New Token** → **Granular Access Token**
+2. Permissions: **Read and write**
+3. Packages: **All packages** (or add `@jayoncode` scope / each package including `form-intelligent`)
+4. **Check “Bypass two-factor authentication”** ← this is what removes `EOTP` in CI
+5. Set expiration (write tokens are time-limited)
+6. Paste into GitHub → Settings → Secrets → `NPM_TOKEN`
+
+### Option B — Trusted Publishing (recommended, no long-lived publish token)
+
+On each package (e.g. `@jayoncode/form-intelligent`) → **Settings** → **Trusted Publisher**:
+
+| Field | Value |
+| --- | --- |
+| Provider | GitHub Actions |
+| Organization or user | `itsjayoncode` |
+| Repository | `joc` |
+| Workflow filename | `ci.yml` |
+
+CI already requests `id-token: write` for the version/publish job.
