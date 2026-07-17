@@ -24,7 +24,7 @@ Typed deep comparison costs scale with visited nodes. Prefer `hasChanges` for di
 | Identity array match                  | O(n)           | Map by key                                          |
 | `applyPatch`                          | O(ops × depth) | Path resolve per op                                 |
 | `merge`                               | O(N)           | Union of object keys                                |
-| LCS moves                             | —              | Not implemented (`detectMoves` throws)              |
+| `detectMoves`                         | O(R×A)         | Greedy equal removed↔added pairing (not full LCS)   |
 
 ## Allocation
 
@@ -40,4 +40,4 @@ Bundle gates: `node scripts/check-object-diff-bundle.mjs` (locked in `engineerin
 
 ## Bundle policy
 
-Core includes patch + serialize today (compatibility). Optional engines (`/merge`, `/query`, `/stats`, `/plugins`) must not be pulled by a root-only import. See construction `BUNDLE_SIZE.md` + ADR for locked byte budgets.
+Root keeps patch + serialize for compatibility. Prefer `/core` when you only need compare/diff. Optional engines (`/merge`, `/query`, `/stats`, `/plugins`, `/view`) must not be pulled by a root-only import. Bundle gate: `pnpm object-diff:bundle`.

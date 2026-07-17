@@ -2,11 +2,11 @@
 
 Use Object Diff from other packages and apps through the **public API only**. Core never depends on consumers.
 
-**Previous:** [Serialization](/packages/object-diff/modules/serialize) · **Back to:** [Overview](/packages/object-diff/overview)
+**Previous:** [Query](/packages/object-diff/modules/query) · **Next:** [Performance](/packages/object-diff/modules/performance)
 
 ## Principles
 
-1. Import from `@jayoncode/object-diff` or documented subpaths (`/merge`, `/query`, `/stats`, `/formatter`, `/plugins`).
+1. Import from `@jayoncode/object-diff` or documented subpaths (`/core`, `/patch`, `/merge`, `/query`, `/stats`, `/formatter`, `/plugins`, `/view`).
 2. No hard coupling into core — adapters and audit packages live elsewhere.
 3. Prefer docs + examples first; dedicated adapter packages only when a framework needs lifecycle wrappers.
 4. Zero new peer dependencies on the core package.

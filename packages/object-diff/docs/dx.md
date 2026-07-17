@@ -2,6 +2,8 @@
 
 Fluent helpers, docs, and playground polish for shipped engines.
 
+**Previous:** [Performance](/packages/object-diff/modules/performance) · **Back to:** [Overview](/packages/object-diff/overview)
+
 ## Fluent API (ADR 0006)
 
 ```ts
@@ -21,15 +23,19 @@ view.statistics();
 
 ## Subpath map
 
-| Import                   | Use                                     |
-| ------------------------ | --------------------------------------- |
-| `@jayoncode/object-diff` | Core compare/diff/patch/serialize       |
-| `/formatter`             | serialize + createSerializer            |
-| `/merge`                 | merge engine                            |
-| `/query`                 | find/filter/exclude/summary + `query()` |
-| `/stats`                 | statistics                              |
-| `/plugins`               | createEngine                            |
-| `/view`                  | createDiffView                          |
+| Import                             | Use                                               |
+| ---------------------------------- | ------------------------------------------------- |
+| `@jayoncode/object-diff`           | Core compare/diff/patch/serialize (compat)        |
+| `@jayoncode/object-diff/core`      | Slim `diff` / `compare` / `hasChanges`            |
+| `@jayoncode/object-diff/patch`     | Patch generate / apply / validate / optimize      |
+| `@jayoncode/object-diff/formatter` | `serialize` + `createSerializer`                  |
+| `@jayoncode/object-diff/merge`     | Merge engine                                      |
+| `@jayoncode/object-diff/query`     | `find` / `filter` / `exclude` / `summary` / `query()` |
+| `@jayoncode/object-diff/stats`     | `statistics`                                      |
+| `@jayoncode/object-diff/plugins`   | `createEngine`                                    |
+| `@jayoncode/object-diff/view`      | `createDiffView`                                  |
+
+Full map: [Engines](/packages/object-diff/modules/engines).
 
 ## Errors
 

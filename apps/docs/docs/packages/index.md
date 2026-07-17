@@ -38,7 +38,7 @@ Start with the live package today, then explore planned libraries as they land.
 
 1. [Overview & learning path](/packages/object-diff/)
 2. [Tutorial — your first diff](/packages/object-diff/modules/getting-started)
-3. [Diffing](/packages/object-diff/modules/diff) → [Patching](/packages/object-diff/modules/patch) → [Serialization](/packages/object-diff/modules/serialize)
+3. [Diffing](/packages/object-diff/modules/diff) → [Patching](/packages/object-diff/modules/patch) → [Serialization](/packages/object-diff/modules/serialize) → [Engines](/packages/object-diff/modules/engines)
 4. [Interactive playground](/playground/object-diff/)
 
 ### [Form Intelligent](/packages/form-intelligent/)
