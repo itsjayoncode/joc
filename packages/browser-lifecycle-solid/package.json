@@ -1,0 +1,51 @@
+{
+  "name": "@jayoncode/browser-lifecycle-solid",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Solid adapter for @jayoncode/browser-lifecycle — Provider, hooks, and reactive snapshots.",
+  "license": "MIT",
+  "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itsjayoncode/joc.git",
+    "directory": "packages/browser-lifecycle-solid"
+  },
+  "homepage": "https://itsjayoncode.github.io/joc/packages/browser-lifecycle-solid/",
+  "bugs": {
+    "url": "https://github.com/itsjayoncode/joc/issues"
+  },
+  "keywords": [
+    "browser-lifecycle",
+    "solid",
+    "solidjs",
+    "typescript",
+    "jayoncode",
+    "joc"
+  ],
+  "peerDependencies": {
+    "@jayoncode/browser-lifecycle": "workspace:^",
+    "solid-js": ">=1.8"
+  },
+  "devDependencies": {
+    "@jayoncode/browser-lifecycle": "workspace:*",
+    "solid-js": "^1.9.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

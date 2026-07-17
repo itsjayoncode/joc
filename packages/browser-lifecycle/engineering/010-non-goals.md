@@ -54,7 +54,17 @@ The package can inform scheduling decisions, but it should not become a general 
 
 ### Presence and Collaboration
 
-Cross-tab awareness is in scope; multi-user presence or collaborative session coordination is not.
+Cross-tab awareness is in scope; **multi-user presence** or collaborative session coordination is not.
+
+A future **local presence** / page-availability facade (e.g. composed from visible + focused + online) may be added as optional intelligence. That must not be marketed or modeled as multi-user presence.
+
+### Always-On Intelligence
+
+Timeline buffers, metrics aggregators, report generators, analytics clients, and persistence layers must not become always-on core runtime. They belong in optional modules or separate packages.
+
+### Second Snapshot Module
+
+`getSnapshot()` is the snapshot API. Do not ship a parallel Snapshot product module.
 
 ### Security Policy
 
@@ -72,12 +82,20 @@ The package should not enforce CSP, permissions, or browser security configurati
 
 If a proposed feature cannot be explained as one of these:
 
-- lifecycle observation
-- session state normalization
+- lifecycle observation (browser APIs → normalized signals)
+- session state normalization (snapshot + events)
 - cross-tab session coordination
 - additive plugin observation
+- **optional** interpret/DX layers that only consume snapshot/events (Activity facade, local presence, Timeline, Metrics, Reports, Wait, Conditions, Resilience)
 
 then it probably does not belong in Browser Lifecycle core.
+
+Ask:
+
+> Does this observe the browser, or does it derive information from existing state?
+
+- Observes browser APIs → core runtime (rare after v1; justify carefully)
+- Derives insight → optional next layer; never always-on unless proven tiny and gated
 
 ## Review
 
