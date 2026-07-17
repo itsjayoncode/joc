@@ -12,11 +12,11 @@ Prefer `@jayoncode/object-diff/formatter` for formatting-focused apps (root stil
 
 ## Problem → approach
 
-| Typical pain | `serialize()` |
-| ------------ | ------------- |
+| Typical pain                                        | `serialize()`                                  |
+| --------------------------------------------------- | ---------------------------------------------- |
 | `console.log(diffResult)` is noisy and not PR-ready | `serialize(result, "markdown")` for changelogs |
-| APIs need JSON; humans need tables or prose | Same `diff()` output, many formats |
-| Custom formatters duplicated across tools | Built-ins + `createSerializer` plugins |
+| APIs need JSON; humans need tables or prose         | Same `diff()` output, many formats             |
+| Custom formatters duplicated across tools           | Built-ins + `createSerializer` plugins         |
 
 ## Formats
 
@@ -35,14 +35,14 @@ serialize(result, "console"); // ANSI colors; { color: false } to disable
 serialize(result, "human"); // short prose + bullets
 ```
 
-| Format | Best for |
-| ------ | -------- |
-| `json` / `pretty` | APIs, structured logs |
-| `markdown` | PRs, docs, changelogs |
-| `table` | CLI / quick scans |
-| `html` | Email / docs tables (escaped) |
-| `console` | Terminal output |
-| `human` | Short summaries |
+| Format            | Best for                      |
+| ----------------- | ----------------------------- |
+| `json` / `pretty` | APIs, structured logs         |
+| `markdown`        | PRs, docs, changelogs         |
+| `table`           | CLI / quick scans             |
+| `html`            | Email / docs tables (escaped) |
+| `console`         | Terminal output               |
+| `human`           | Short summaries               |
 
 ## Custom formatters
 
@@ -52,8 +52,7 @@ import { createSerializer } from "@jayoncode/object-diff/formatter";
 const serializeWith = createSerializer([
   {
     name: "csv",
-    format: (result) =>
-      result.changes.map((c) => `${c.type},${c.path}`).join("\n"),
+    format: (result) => result.changes.map((c) => `${c.type},${c.path}`).join("\n"),
   },
 ]);
 

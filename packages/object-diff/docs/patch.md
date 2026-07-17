@@ -10,11 +10,11 @@ Generate RFC 6902 JSON Patch operations and apply them to targets.
 
 ## Problem → approach
 
-| Typical pain | Patch pipeline |
-| ------------ | -------------- |
-| Sending full object snapshots on every edit | `patch(diffResult)` → compact ops |
-| Mutating shared state when applying updates | `applyPatch()` returns a new object by default |
-| Undo needs full before/after copies | `applyPatchWithInverse` journals a faithful inverse |
+| Typical pain                                | Patch pipeline                                      |
+| ------------------------------------------- | --------------------------------------------------- |
+| Sending full object snapshots on every edit | `patch(diffResult)` → compact ops                   |
+| Mutating shared state when applying updates | `applyPatch()` returns a new object by default      |
+| Undo needs full before/after copies         | `applyPatchWithInverse` journals a faithful inverse |
 
 Prefer importing from `@jayoncode/object-diff/patch` when you only need the patch domain (root still re-exports for compatibility).
 
@@ -57,13 +57,10 @@ optimizePatch(operations); // coalesce sequential replaces, etc.
 ## Conditional apply (`test`)
 
 ```ts
-applyPatch(
-  { version: 3, name: "Ada" },
-  [
-    { op: "test", path: "/version", value: 3 },
-    { op: "replace", path: "/name", value: "Grace" },
-  ],
-);
+applyPatch({ version: 3, name: "Ada" }, [
+  { op: "test", path: "/version", value: 3 },
+  { op: "replace", path: "/name", value: "Grace" },
+]);
 // throws PatchApplyError if version !== 3
 ```
 

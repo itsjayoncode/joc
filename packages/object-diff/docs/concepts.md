@@ -6,12 +6,12 @@ Terminology and data flow for `@jayoncode/object-diff`.
 
 ## Problem → approach
 
-| Manual comparison | With Object Diff |
-| ----------------- | ---------------- |
-| `JSON.stringify(a) !== JSON.stringify(b)` — no paths, false positives on key order | `diff(a, b)` — typed change records with paths |
-| Hand-rolled patch objects for every API | `patch(result)` — RFC 6902 operations from any diff |
-| Full re-send of large state on every edit | `applyPatch(target, ops)` — minimal updates |
-| Custom formatters for audit UIs | `serialize(result, "markdown" \| "json" \| …)` |
+| Manual comparison                                                                  | With Object Diff                                    |
+| ---------------------------------------------------------------------------------- | --------------------------------------------------- |
+| `JSON.stringify(a) !== JSON.stringify(b)` — no paths, false positives on key order | `diff(a, b)` — typed change records with paths      |
+| Hand-rolled patch objects for every API                                            | `patch(result)` — RFC 6902 operations from any diff |
+| Full re-send of large state on every edit                                          | `applyPatch(target, ops)` — minimal updates         |
+| Custom formatters for audit UIs                                                    | `serialize(result, "markdown" \| "json" \| …)`      |
 
 ## Snapshots and change records
 
@@ -28,33 +28,33 @@ const result = diff(before, after);
 
 ## Change record fields
 
-| Field | Meaning |
-| ----- | ------- |
-| `path` | Display path (e.g. `user.name`, `items[0]`) |
-| `type` | `added` \| `removed` \| `changed` \| `unchanged` \| `moved` |
-| `previous` | Value before the change (when present) |
-| `current` | Value after the change (when present) |
-| `from` | Source path when `type` is `moved` |
+| Field      | Meaning                                                     |
+| ---------- | ----------------------------------------------------------- |
+| `path`     | Display path (e.g. `user.name`, `items[0]`)                 |
+| `type`     | `added` \| `removed` \| `changed` \| `unchanged` \| `moved` |
+| `previous` | Value before the change (when present)                      |
+| `current`  | Value after the change (when present)                       |
+| `from`     | Source path when `type` is `moved`                          |
 
 ## API map
 
-| API | Returns | Use when |
-| --- | ------- | -------- |
-| `diff(a, b)` | Change records + metadata | Audit, debug, UI diff viewers |
-| `hasChanges(a, b)` | `boolean` | Dirty flags, skip expensive work |
-| `compare(a, b)` | Deep equality | Tests, custom equality |
-| `patch(diffResult)` | JSON Patch ops | Network sync, undo stacks |
-| `applyPatch(target, ops)` | New object | Apply remote or local updates |
-| `serialize(result, format)` | String | Logs, exports, docs |
+| API                         | Returns                   | Use when                         |
+| --------------------------- | ------------------------- | -------------------------------- |
+| `diff(a, b)`                | Change records + metadata | Audit, debug, UI diff viewers    |
+| `hasChanges(a, b)`          | `boolean`                 | Dirty flags, skip expensive work |
+| `compare(a, b)`             | Deep equality             | Tests, custom equality           |
+| `patch(diffResult)`         | JSON Patch ops            | Network sync, undo stacks        |
+| `applyPatch(target, ops)`   | New object                | Apply remote or local updates    |
+| `serialize(result, format)` | String                    | Logs, exports, docs              |
 
 Optional engines live on subpaths (`/merge`, `/query`, `/stats`, `/view`, …) — see [Engines](/packages/object-diff/modules/engines).
 
 ## Next steps
 
-| Goal | Guide |
-| ---- | ----- |
-| First integration | [Tutorial](/packages/object-diff/modules/getting-started) |
-| Diff options | [Diffing](/packages/object-diff/modules/diff) |
-| Patch apply / RFC ops | [Patching](/packages/object-diff/modules/patch) |
+| Goal                  | Guide                                                     |
+| --------------------- | --------------------------------------------------------- |
+| First integration     | [Tutorial](/packages/object-diff/modules/getting-started) |
+| Diff options          | [Diffing](/packages/object-diff/modules/diff)             |
+| Patch apply / RFC ops | [Patching](/packages/object-diff/modules/patch)           |
 
 [Diff explorer →](/playground/object-diff/diff)

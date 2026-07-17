@@ -5,15 +5,7 @@ Query helpers over an existing `DiffResult` (does not re-run `diff`).
 **Previous:** [Merge](/packages/object-diff/modules/merge) · **Next:** [DX](/packages/object-diff/modules/dx)
 
 ```ts
-import {
-  find,
-  filter,
-  exclude,
-  paths,
-  summary,
-  ofType,
-  query,
-} from "@jayoncode/object-diff/query";
+import { find, filter, exclude, paths, summary, ofType, query } from "@jayoncode/object-diff/query";
 ```
 
 Root `added` / `removed` / `updated` / `unchanged` still take `(a, b)` — they are unchanged.

@@ -72,33 +72,33 @@ Optional engines: `/merge`, `/query`, `/stats`, `/formatter`, `/plugins`, `/view
 
 ### Core APIs
 
-| #   | Guide                                           | Topics                              | Playground                             |
-| --- | ----------------------------------------------- | ----------------------------------- | -------------------------------------- |
-| 3   | [Diffing](/packages/object-diff/modules/diff)   | Options, moves, filters             | [Diff](/playground/object-diff/diff)   |
-| 4   | [Patching](/packages/object-diff/modules/patch) | RFC ops, validate, optimize         | [Patch](/playground/object-diff/patch) |
+| #   | Guide                                                    | Topics                       | Playground                             |
+| --- | -------------------------------------------------------- | ---------------------------- | -------------------------------------- |
+| 3   | [Diffing](/packages/object-diff/modules/diff)            | Options, moves, filters      | [Diff](/playground/object-diff/diff)   |
+| 4   | [Patching](/packages/object-diff/modules/patch)          | RFC ops, validate, optimize  | [Patch](/playground/object-diff/patch) |
 | 5   | [Serialization](/packages/object-diff/modules/serialize) | Formats + custom serializers | [JSON](/playground/object-diff/json)   |
 
 ### Engines
 
-| #   | Guide                                                    | Topics                         | Playground                                   |
-| --- | -------------------------------------------------------- | ------------------------------ | -------------------------------------------- |
-| 6   | [Engines](/packages/object-diff/modules/engines)         | Subpath map                    | —                                            |
-| 7   | [Merge](/packages/object-diff/modules/merge)             | Two-/three-way strategies      | —                                            |
-| 8   | [Query](/packages/object-diff/modules/query)             | Filter existing DiffResults    | —                                            |
-| 9   | [Integrations](/packages/object-diff/modules/integrations) | Forms, session, audit        | [Examples](/playground/object-diff/examples) |
-| 10  | [Performance](/packages/object-diff/modules/performance) | Complexity, budgets            | [Benchmarks](/playground/object-diff/performance) |
-| 11  | [DX](/packages/object-diff/modules/dx)                   | Fluent `createDiffView`        | [Examples](/playground/object-diff/examples) |
+| #   | Guide                                                      | Topics                      | Playground                                        |
+| --- | ---------------------------------------------------------- | --------------------------- | ------------------------------------------------- |
+| 6   | [Engines](/packages/object-diff/modules/engines)           | Subpath map                 | —                                                 |
+| 7   | [Merge](/packages/object-diff/modules/merge)               | Two-/three-way strategies   | —                                                 |
+| 8   | [Query](/packages/object-diff/modules/query)               | Filter existing DiffResults | —                                                 |
+| 9   | [Integrations](/packages/object-diff/modules/integrations) | Forms, session, audit       | [Examples](/playground/object-diff/examples)      |
+| 10  | [Performance](/packages/object-diff/modules/performance)   | Complexity, budgets         | [Benchmarks](/playground/object-diff/performance) |
+| 11  | [DX](/packages/object-diff/modules/dx)                     | Fluent `createDiffView`     | [Examples](/playground/object-diff/examples)      |
 
 ## Package fit
 
-| Requirement                  | API                          |
-| ---------------------------- | ---------------------------- |
-| Form/state dirty detection   | `hasChanges(a, b)`           |
-| Structured audit log         | `diff()` change records      |
-| Partial sync between clients | `patch()` + `applyPatch()`   |
-| Human-readable changelogs    | `serialize(..., "markdown")` |
-| Collaborative merge          | `merge` from `/merge`        |
-| Slim compare-only bundle     | `@jayoncode/object-diff/core`|
+| Requirement                  | API                           |
+| ---------------------------- | ----------------------------- |
+| Form/state dirty detection   | `hasChanges(a, b)`            |
+| Structured audit log         | `diff()` change records       |
+| Partial sync between clients | `patch()` + `applyPatch()`    |
+| Human-readable changelogs    | `serialize(..., "markdown")`  |
+| Collaborative merge          | `merge` from `/merge`         |
+| Slim compare-only bundle     | `@jayoncode/object-diff/core` |
 
 ## Reference
 

@@ -24,11 +24,11 @@ result.conflicts; // [{ path: "user.name", left, right }]
 result.applied; // DiffResult of left → value (disable with includeApplied: false)
 ```
 
-| Strategy | Behavior |
-| -------- | -------- |
-| `latest-wins` | Prefer `right` on conflict |
-| `manual` | Keep `left`, list conflicts |
-| `custom` | Call `resolve(conflict)` (required) |
+| Strategy      | Behavior                            |
+| ------------- | ----------------------------------- |
+| `latest-wins` | Prefer `right` on conflict          |
+| `manual`      | Keep `left`, list conflicts         |
+| `custom`      | Call `resolve(conflict)` (required) |
 
 Plain objects merge recursively. Arrays and other non-plain values are treated as atomic leaves on conflict.
 
@@ -41,12 +41,12 @@ const result = merge(localDraft, remoteDraft, {
 });
 ```
 
-| left vs base | right vs base | Result |
-| ------------ | ------------- | ------ |
-| equal | equal | base |
-| changed | equal | left |
-| equal | changed | right |
-| changed same | changed same | that value |
+| left vs base        | right vs base       | Result              |
+| ------------------- | ------------------- | ------------------- |
+| equal               | equal               | base                |
+| changed             | equal               | left                |
+| equal               | changed             | right               |
+| changed same        | changed same        | that value          |
 | changed differently | changed differently | conflict → strategy |
 
 ## Custom resolve

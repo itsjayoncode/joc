@@ -23,17 +23,17 @@ view.statistics();
 
 ## Subpath map
 
-| Import                             | Use                                               |
-| ---------------------------------- | ------------------------------------------------- |
-| `@jayoncode/object-diff`           | Core compare/diff/patch/serialize (compat)        |
-| `@jayoncode/object-diff/core`      | Slim `diff` / `compare` / `hasChanges`            |
-| `@jayoncode/object-diff/patch`     | Patch generate / apply / validate / optimize      |
-| `@jayoncode/object-diff/formatter` | `serialize` + `createSerializer`                  |
-| `@jayoncode/object-diff/merge`     | Merge engine                                      |
+| Import                             | Use                                                   |
+| ---------------------------------- | ----------------------------------------------------- |
+| `@jayoncode/object-diff`           | Core compare/diff/patch/serialize (compat)            |
+| `@jayoncode/object-diff/core`      | Slim `diff` / `compare` / `hasChanges`                |
+| `@jayoncode/object-diff/patch`     | Patch generate / apply / validate / optimize          |
+| `@jayoncode/object-diff/formatter` | `serialize` + `createSerializer`                      |
+| `@jayoncode/object-diff/merge`     | Merge engine                                          |
 | `@jayoncode/object-diff/query`     | `find` / `filter` / `exclude` / `summary` / `query()` |
-| `@jayoncode/object-diff/stats`     | `statistics`                                      |
-| `@jayoncode/object-diff/plugins`   | `createEngine`                                    |
-| `@jayoncode/object-diff/view`      | `createDiffView`                                  |
+| `@jayoncode/object-diff/stats`     | `statistics`                                          |
+| `@jayoncode/object-diff/plugins`   | `createEngine`                                        |
+| `@jayoncode/object-diff/view`      | `createDiffView`                                      |
 
 Full map: [Engines](/packages/object-diff/modules/engines).
 

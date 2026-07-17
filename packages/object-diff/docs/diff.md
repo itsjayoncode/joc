@@ -10,21 +10,18 @@ Get structured change records from two object snapshots.
 
 ## Problem → approach
 
-| Without structured diff | With `diff()` |
-| ----------------------- | ------------- |
-| String compare or shallow `===` misses nested edits | Deep walk with path-addressable change records |
+| Without structured diff                             | With `diff()`                                               |
+| --------------------------------------------------- | ----------------------------------------------------------- |
+| String compare or shallow `===` misses nested edits | Deep walk with path-addressable change records              |
 | Building a change list by hand for every form/store | `result.changes` with `type`, `path`, `previous`, `current` |
-| Full diff cost when you only need a dirty flag | `hasChanges()` short-circuits without materializing changes |
+| Full diff cost when you only need a dirty flag      | `hasChanges()` short-circuits without materializing changes |
 
 ## Basics
 
 ```ts
 import { diff } from "@jayoncode/object-diff";
 
-const result = diff(
-  { user: { name: "John" }, count: 1 },
-  { user: { name: "Jane" }, count: 2 },
-);
+const result = diff({ user: { name: "John" }, count: 1 }, { user: { name: "Jane" }, count: 2 });
 
 console.log(result.changes);
 console.log(result.metadata.changeCount);
@@ -58,12 +55,12 @@ diff(before, after, {
 });
 ```
 
-| Option | Effect |
-| ------ | ------ |
-| `ignore` / `include` | Path globs (`*`, `**`) |
-| `identityKey` | Stable array item matching by property or function |
-| `detectMoves` | Emit `moved` records (`from` + `path`) when values match across remove+add |
-| `includeUnchanged` | Keep `unchanged` records in `changes` |
+| Option               | Effect                                                                     |
+| -------------------- | -------------------------------------------------------------------------- |
+| `ignore` / `include` | Path globs (`*`, `**`)                                                     |
+| `identityKey`        | Stable array item matching by property or function                         |
+| `detectMoves`        | Emit `moved` records (`from` + `path`) when values match across remove+add |
+| `includeUnchanged`   | Keep `unchanged` records in `changes`                                      |
 
 ## Filtered helpers (a, b)
 
