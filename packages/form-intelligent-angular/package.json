@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/form-intelligent-angular",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Angular adapter for @jayoncode/form-intelligent — FormService, signals, and standalone directives.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
@@ -36,7 +36,7 @@
   ],
   "peerDependencies": {
     "@angular/core": ">=17.0.0",
-    "@jayoncode/form-intelligent": "^2.0.0"
+    "@jayoncode/form-intelligent": "^3.0.0"
   },
   "devDependencies": {
     "@angular/core": "^18.2.13",

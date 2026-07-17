@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/object-diff",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": false,
   "description": "Object Diff — Typed, framework-agnostic deep comparison, change reporting, and patch generation for structured data.",
   "license": "MIT",
