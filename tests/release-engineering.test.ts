@@ -59,11 +59,14 @@ describe("release engineering foundation", () => {
     };
     const core = JSON.parse(
       readFileSync(path.join(rootDir, "packages/form-intelligent/package.json"), "utf8"),
-    ) as { private?: boolean };
+    ) as { private?: boolean; version: string };
+
+    const major = core.version.split(".")[0] ?? "0";
+    const expectedPeer = `^${major}.0.0`;
 
     expect(adapter.private).not.toBe(true);
     expect(adapter.version).not.toBe("0.0.0");
-    expect(adapter.peerDependencies?.["@jayoncode/form-intelligent"]).toBe("^2.0.0");
+    expect(adapter.peerDependencies?.["@jayoncode/form-intelligent"]).toBe(expectedPeer);
     expect(core.private).not.toBe(true);
   });
 
