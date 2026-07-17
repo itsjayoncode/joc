@@ -35,7 +35,7 @@
     "joc"
   ],
   "peerDependencies": {
-    "@jayoncode/form-intelligent": "^3.1.0",
+    "@jayoncode/form-intelligent": "^3.0.0",
     "vue": ">=3.4"
   },
   "devDependencies": {

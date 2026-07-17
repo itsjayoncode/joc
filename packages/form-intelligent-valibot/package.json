@@ -33,7 +33,7 @@
     "joc"
   ],
   "peerDependencies": {
-    "@jayoncode/form-intelligent": "^3.1.0",
+    "@jayoncode/form-intelligent": "^3.0.0",
     "valibot": ">=1.0.0"
   },
   "devDependencies": {

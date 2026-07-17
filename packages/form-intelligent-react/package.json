@@ -39,7 +39,7 @@
     "joc"
   ],
   "peerDependencies": {
-    "@jayoncode/form-intelligent": "^3.1.0",
+    "@jayoncode/form-intelligent": "^3.0.0",
     "react": ">=18"
   },
   "devDependencies": {
