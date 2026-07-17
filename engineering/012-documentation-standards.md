@@ -40,6 +40,7 @@ Each package README should follow one consistent order:
 - avoid marketing language for unfinished capabilities
 - document limitations honestly
 - synchronize README content with the docs site when package docs become public
+- **enable versioned documentation archives by default** for every package that owns a `/packages/<id>/` docs section (version switcher + frozen `v{version}` snapshots) — see [`014-versioning-policy.md`](./014-versioning-policy.md#documentation-version-archives-required-by-default)
 
 ## Changelog Expectations
 

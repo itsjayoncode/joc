@@ -2,6 +2,10 @@ import { describe, expect, it } from "vitest";
 
 import { createForm, required } from "../../src/index.js";
 
+/** CI runners are often 2–3× noisier than local (same rationale as performance budgets). */
+const CI = process.env.CI === "true" || process.env.GITHUB_ACTIONS === "true";
+const RAPID_SET_BUDGET_MS = 2000 * (CI ? 1.5 : 1);
+
 describe("stress: create/destroy + rapid setValue", () => {
   it("creates and destroys 1000 forms without throwing", () => {
     for (let index = 0; index < 1000; index += 1) {
@@ -28,8 +32,8 @@ describe("stress: create/destroy + rapid setValue", () => {
       }
     }
     const elapsed = performance.now() - started;
-    // CI-tolerant — structural guard against accidental O(n²) notify storms.
-    expect(elapsed).toBeLessThan(2000);
+    // Structural guard against accidental O(n²) notify storms.
+    expect(elapsed).toBeLessThan(RAPID_SET_BUDGET_MS);
     form.destroy();
   });
 });

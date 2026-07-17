@@ -33,6 +33,8 @@ This checklist defines the minimum bar a JOC package should satisfy before relea
 - [ ] Examples are reviewed and verified
 - [ ] Browser or runtime support is documented
 - [ ] Breaking changes and migration notes are documented when needed
+- [ ] Versioned docs archives are enabled (package registered in `DOC_VERSIONED_PACKAGES`, manifest under `apps/docs/doc-versions/`, version switcher wired) — **required by default**
+- [ ] First release bootstrapped with `pnpm docs:archive -- --package <id> --bootstrap` so the version dropdown is not empty
 
 ## Release Readiness
 
