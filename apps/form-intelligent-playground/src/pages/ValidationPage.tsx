@@ -85,7 +85,7 @@ export function ValidationPage() {
           <li>Phone formatting via field format: formatPhone</li>
           <li>Async username availability (simulated API delay)</li>
           <li>Cross-field confirm password rule</li>
-          <li>Validation timing: onChange, onBlur, or onSubmit</li>
+          <li>Validation timing: onChange (value changes only), onBlur, or onSubmit</li>
         </ul>
       </ExplainPanel>
 
@@ -123,8 +123,7 @@ export function ValidationPage() {
                   className={styles.textInput}
                   name="email"
                   onBlur={() => {
-                    form.field("email").setTouched();
-                    void form.validate({ paths: ["email"] });
+                    form.field("email").onBlur();
                     push("blur email");
                   }}
                   onChange={(event) => {
@@ -173,9 +172,8 @@ export function ValidationPage() {
                 <input
                   className={styles.textInput}
                   onBlur={() => {
-                    form.field("username").setTouched();
-                    void form.validate({ paths: ["username"] });
-                    push("blur username → async check");
+                    form.field("username").onBlur();
+                    push("blur username");
                   }}
                   onChange={(event) => {
                     form.setValue("username", event.target.value);

@@ -127,13 +127,13 @@ Structured `{ code, severity }` errors remain **Open** (D-ENTERPRISE-ERR) — st
 
 Control **timing** with `validateOn`:
 
-| Mode        | Runs when                            | Best for                      |
-| ----------- | ------------------------------------ | ----------------------------- |
-| `onChange`  | Every keystroke (debounced)          | Instant feedback              |
-| `onBlur`    | User leaves field                    | Less noisy (default-friendly) |
-| `onSubmit`  | `submit()` or `validate()`           | Simple forms                  |
-| `onTouched` | After field has been touched/visited | Progressive UX                |
-| `all`       | Any trigger                          | Always validate               |
+| Mode        | Runs when                                                   | Best for                      |
+| ----------- | ----------------------------------------------------------- | ----------------------------- |
+| `onChange`  | Value changes only (debounced; includes clear → empty)      | Instant feedback              |
+| `onBlur`    | User leaves field (even with no edits); not on typing       | Less noisy (default-friendly) |
+| `onSubmit`  | `submit()` or `validate()` only                             | Simple forms                  |
+| `onTouched` | After touch/visit: blur and later value changes             | Progressive UX                |
+| `all`       | Value changes and blur (and submit / explicit `validate()`) | Always validate               |
 
 ```ts
 createForm({

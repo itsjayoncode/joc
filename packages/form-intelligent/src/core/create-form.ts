@@ -58,6 +58,11 @@ import { cloneValue, createId, getIn, setIn } from "../utils/index.js";
 import { resolveAsyncDebounceMs } from "../validation/async/run-with-options.js";
 import { AsyncValidationManager } from "../validation/async-validator.js";
 import {
+  resolveFieldValidationMode,
+  shouldValidateOnBlur,
+  shouldValidateOnChange,
+} from "../validation/modes.js";
+import {
   listAllPaths,
   mergePathValidationErrors,
   runValidationPipeline,
@@ -416,6 +421,18 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
         this.events.emit("focus");
       },
       validateOnBlur: () => {
+        const mode = resolveFieldValidationMode(
+          this.config.validateOn,
+          this.fieldOptions.get(path)?.validateOn,
+        );
+        if (
+          !shouldValidateOnBlur(mode, {
+            touched: Boolean(this.core.touched[path]),
+            visited: Boolean(this.core.visited[path]),
+          })
+        ) {
+          return;
+        }
         void this.validate({ paths: [path], mode: "onBlur" });
       },
     });
@@ -1677,11 +1694,17 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
       });
     }
 
-    const mode = fieldOpts?.validateOn ?? this.config.validateOn;
+    const mode = resolveFieldValidationMode(this.config.validateOn, fieldOpts?.validateOn);
     const dependentPaths = [
       ...new Set([...this.collectDependentFieldPaths(path), ...cascade.revalidate]),
     ];
-    if (mode === "onChange") {
+    if (
+      shouldValidateOnChange(mode, {
+        touched: Boolean(this.core.touched[path]),
+        visited: Boolean(this.core.visited[path]),
+      })
+    ) {
+      // Live typing always uses onChange scheduling (debounce) regardless of config mode.
       void this.validate({ paths: [path, ...dependentPaths], mode: "onChange" });
     } else if (cascade.revalidate.length > 0) {
       void this.validate({ paths: cascade.revalidate, mode: "onChange" });

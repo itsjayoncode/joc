@@ -60,5 +60,7 @@ export type { NormalizedFieldError } from "./errors.js";
 export {
   resolveFieldValidationMode,
   shouldValidateForTrigger,
+  shouldValidateOnBlur,
+  shouldValidateOnChange,
   shouldDebounceValidation,
 } from "./modes.js";

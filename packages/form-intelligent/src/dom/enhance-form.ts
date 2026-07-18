@@ -1,5 +1,6 @@
 import { findFieldContainer, findFieldControl, findFieldControls } from "./discover-fields.js";
 import { readControlValue, writeControlValue } from "./field-value.js";
+import { shouldValidateOnBlur } from "../validation/modes.js";
 
 import type { FieldPath, FieldUiState, FormInstance, ValidationMode } from "../types/index.js";
 
@@ -62,10 +63,6 @@ function renderFieldError(
 
   errorElement.textContent = "";
   errorElement.hidden = true;
-}
-
-function shouldValidateOnBlur(mode: ValidationMode): boolean {
-  return mode === "onBlur" || mode === "onChange" || mode === "onTouched";
 }
 
 function syncSubmitButtons(
@@ -238,7 +235,12 @@ export function attachDomEnhancer<TValues extends Record<string, unknown>>(
       field.setTouched(true);
       field.setVisited(true);
 
-      if (shouldValidateOnBlur(options.validateOn)) {
+      if (
+        shouldValidateOnBlur(options.validateOn, {
+          touched: true,
+          visited: true,
+        })
+      ) {
         void form.validate({ paths: [path], mode: "onBlur" }).then(() => {
           syncErrors();
         });
