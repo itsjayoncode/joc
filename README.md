@@ -9,11 +9,11 @@
 
 ## Live packages
 
-| Package                                                                                      | Solves                                           | Install                              |
-| -------------------------------------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------ |
-| [`@jayoncode/browser-lifecycle`](https://www.npmjs.com/package/@jayoncode/browser-lifecycle) | Tab visibility, idle, reconnect, session signals | `npm i @jayoncode/browser-lifecycle` |
-| [`@jayoncode/form-intelligence`](https://www.npmjs.com/package/@jayoncode/form-intelligence) | Headless forms, `when()` rules, autosave         | `npm i @jayoncode/form-intelligence` |
-| [`@jayoncode/object-diff`](https://www.npmjs.com/package/@jayoncode/object-diff)             | Deep diff, dirty checks, patches                 | `npm i @jayoncode/object-diff`       |
+| Package                                                                                      | Solves                                                             | Install                              |
+| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ------------------------------------ |
+| [`@jayoncode/browser-lifecycle`](https://www.npmjs.com/package/@jayoncode/browser-lifecycle) | Tab visibility, idle, reconnect, session signals                   | `npm i @jayoncode/browser-lifecycle` |
+| [`@jayoncode/form-intelligence`](https://www.npmjs.com/package/@jayoncode/form-intelligence) | Stop scattered form effects — one engine for rules, drafts, submit | `npm i @jayoncode/form-intelligence` |
+| [`@jayoncode/object-diff`](https://www.npmjs.com/package/@jayoncode/object-diff)             | Deep diff, dirty checks, patches                                   | `npm i @jayoncode/object-diff`       |
 
 ### Stop wasting work in a background tab
 
@@ -31,15 +31,22 @@ lifecycle.on("page:visible", () => resumePolling());
 lifecycle.on("connection:reconnect", () => flushOfflineQueue());
 ```
 
-### Conditional form fields without `useEffect`
+### Stop repeating form glue across every screen
+
+Conditional fields, draft saves, and submit guards usually become copy-pasted `useEffect`s that drift apart. Declare them once — validation modes, `when()` rules, autosave, drafts, wizards, plugins, and submit live in one engine:
 
 ```ts
 import { createForm, when } from "@jayoncode/form-intelligence";
 
 createForm({
   target: "#checkout",
-  schema: { plan: { required: true } },
+  schema: { plan: { required: true }, email: "email" },
+  validateOn: "onBlur",
   rules: [when("plan").equals("enterprise").show("seatCount").require("seatCount")],
+  workflow: {
+    autosave: { enabled: true, debounceMs: 800, onSave: (v) => api.saveDraft(v) },
+    draft: { enabled: true, storage: "local", key: "checkout" },
+  },
   async onSubmit(values) {
     await api.checkout(values);
   },

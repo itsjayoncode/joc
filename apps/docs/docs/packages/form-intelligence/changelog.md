@@ -5,6 +5,12 @@ description: "Release history for @jayoncode/form-intelligence."
 
 # Changelog
 
+## 3.4.0
+
+### Minor Changes
+
+- 06610ef: Rename Form Intelligence packages from `form-intelligent*` to `form-intelligence*` (core + adapters). Old `@jayoncode/form-intelligent*` packages remain compatibility re-exports so existing installs keep working; prefer the new names for new projects.
+
 ## 3.3.1
 
 ### Patch Changes
@@ -157,4 +163,3 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Examples: `vanilla-html`, `basic-validation`, `wizard-workflow` (+ framework stubs)
 
 ## 0.1.1
-

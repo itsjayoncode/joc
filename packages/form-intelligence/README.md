@@ -1,37 +1,51 @@
-# Form Intelligence — Typed, framework-agnostic headless form workflows for modern web apps.
+# Form Intelligence
 
 [![npm version](https://img.shields.io/npm/v/@jayoncode/form-intelligence.svg)](https://www.npmjs.com/package/@jayoncode/form-intelligence)
 [![license](https://img.shields.io/npm/l/@jayoncode/form-intelligence.svg)](https://github.com/itsjayoncode/joc/blob/master/packages/form-intelligence/package.json)
 [![docs](https://img.shields.io/badge/docs-jayoncode.github.io-2563eb)](https://itsjayoncode.github.io/joc/packages/form-intelligence/)
 
-Published as [`@jayoncode/form-intelligence`](https://www.npmjs.com/package/@jayoncode/form-intelligence) on npm.
+Published as [`@jayoncode/form-intelligence`](https://www.npmjs.com/package/@jayoncode/form-intelligence).
 
-> **Renamed:** `@jayoncode/form-intelligent` remains available as a compatibility re-export. Prefer `@jayoncode/form-intelligence` for new installs.
+> **Renamed:** `@jayoncode/form-intelligent` remains a compatibility re-export. Prefer `@jayoncode/form-intelligence` for new installs.
 
-Stop rebuilding form workflows in every app. Orchestrate validation, submission, drafts, autosave, multi-step wizards, and conditional `when()` rules through one headless TypeScript API — without owning your UI. Use it with native HTML or React, Vue, Angular, Svelte, Next.js, and vanilla JavaScript.
+## The problem
 
-## Install
+A checkout or onboarding form starts simple. Then product asks for:
 
-```bash
-npm install @jayoncode/form-intelligence
-```
+- show company fields only on Enterprise
+- require seats when those fields appear
+- autosave drafts while the user types
+- block double-submit and retry offline
+- keep wizard steps in sync with validation
 
-```bash
-pnpm add @jayoncode/form-intelligence
-```
-
-## The problem it solves
-
-Conditional fields, draft saving, and submit guards usually turn into scattered `useEffect` / change-handler glue:
+Without a form engine, that becomes **scattered, repeating glue**:
 
 ```ts
-// show company fields? require seats? autosave? disable submit?
-// → 4 effects, 2 state flags, and a race on every keystroke
+// FieldA.tsx
+useEffect(() => {
+  setShowCompany(plan === "enterprise");
+}, [plan]);
+
+// FieldB.tsx — same rule, copied
+useEffect(() => {
+  if (plan === "enterprise" && !company) setError("Required");
+}, [plan, company]);
+
+// FormRoot.tsx — third copy, plus races
+useEffect(() => {
+  const t = setTimeout(() => api.saveDraft(values), 800);
+  return () => clearTimeout(t);
+}, [values]);
+
+// SubmitButton.tsx — fourth place that must stay in sync
+const disabled = submitting || (plan === "enterprise" && !seats);
 ```
 
-`@jayoncode/form-intelligence` makes those workflows declarative.
+Every feature adds another effect, flag, or handler. Rules drift between screens. Autosave races submit. New teammates can’t tell which file owns “truth.”
 
-## Quick start — conditional fields without `useEffect`
+## The solution
+
+`@jayoncode/form-intelligence` is a **headless form workflow engine**. You declare validation, rules, drafts, wizards, and submit once. The engine owns timing and state. You keep full control of UI — native HTML or any framework.
 
 ```ts
 import { createForm, when } from "@jayoncode/form-intelligence";
@@ -41,6 +55,7 @@ createForm({
   schema: {
     plan: { required: true },
     companyName: { minLength: 2 },
+    seatCount: { required: true },
   },
   rules: [
     when("plan")
@@ -61,21 +76,59 @@ createForm({
 });
 ```
 
-```html
-<form id="checkout">
-  <select name="plan">
-    <option value="starter">Starter</option>
-    <option value="enterprise">Enterprise</option>
-  </select>
-  <input name="seatCount" type="number" />
-  <input name="companyName" />
-  <button type="submit">Continue</button>
-</form>
+One place for the business rules. No copy-pasted effects for show/require/autosave.
+
+## What you get (capabilities)
+
+| Area             | What you can do                                                                                                                          |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| **State**        | Single `form.state` for values, errors, dirty/touched, submitting; `subscribe` / config `subscribe`                                      |
+| **Validation**   | Schema shortcuts (`email`, `required`, …), custom + **async** validators, modes `onChange` / `onBlur` / `onSubmit` / `onTouched` / `all` |
+| **Rules**        | `when().equals().show().require().populate()` — conditional UI and requirements without effects                                          |
+| **Calculations** | Derived fields from other values                                                                                                         |
+| **Formatters**   | Display vs stored value (`phone`, `currency`, `slug`, custom pipelines via `/format`)                                                    |
+| **Workflow**     | Autosave, drafts (local/custom storage), multi-step **wizard**                                                                           |
+| **Submission**   | Loading phases, cancel, retries, offline queue hooks                                                                                     |
+| **Plugins**      | Lifecycle hooks + browser lifecycle / keyboard integrations                                                                              |
+| **DevTools**     | Inspector, event log, export/import state (`/devtools`)                                                                                  |
+| **A11y**         | Field `aria` helpers and error wiring (`/accessibility`)                                                                                 |
+| **Adapters**     | Optional React / Vue / Angular + Zod / Yup / Valibot / AJV packages                                                                      |
+
+### Options you’ll use often
+
+```ts
+createForm({
+  target: "#form",                 // or omit + form.ref / field().bind()
+  initialValues: { ... },
+  schema: { email: "email" },      // or validators: { email: [required, email] }
+  validateOn: "onBlur",            // form-wide; override per field
+  rules: [when("plan").equals("enterprise").show("seats")],
+  workflow: {
+    autosave: { enabled: true, debounceMs: 800, onSave },
+    draft: { enabled: true, storage: "local", key: "checkout" },
+    wizard: { steps: ["account", "billing", "review"] },
+  },
+  subscribe: (form) => syncUi(form.state),
+  plugins: [/* browser lifecycle, keyboard, … */],
+  async onSubmit(values) { ... },
+});
 ```
 
-## More problem → solution snippets
+Entry points: main barrel, plus `/validation`, `/format`, `/rules`, `/workflow`, `/submission`, `/plugins`, `/devtools`, `/draft`, `/wizard`, and more.
 
-### Enhance existing markup in one call
+## Install
+
+```bash
+npm install @jayoncode/form-intelligence
+```
+
+```bash
+pnpm add @jayoncode/form-intelligence
+```
+
+## Quick start
+
+### Enhance existing markup
 
 ```ts
 import { createForm } from "@jayoncode/form-intelligence";
@@ -90,7 +143,7 @@ createForm({
 });
 ```
 
-### Headless bind for your own UI
+### Headless bind (any UI)
 
 ```ts
 import { createForm, email, required } from "@jayoncode/form-intelligence";
@@ -103,10 +156,9 @@ const form = createForm({
 
 const emailField = form.field("email").bind();
 // { name, value, onChange, onBlur, onFocus }
-await form.submit();
 ```
 
-### React adapter
+### React
 
 ```bash
 npm install @jayoncode/form-intelligence @jayoncode/form-intelligence-react
@@ -130,20 +182,18 @@ return (
 
 ## Philosophy
 
-- **Headless** — no UI components
-- **Workflow-first** — autosave, drafts, wizards, retry
+- **Headless** — no UI kit to fight
+- **Workflow-first** — autosave, drafts, wizards, retry live in the engine
 - **Rules without effects** — `when().equals().show().require()`
-- **Framework-agnostic** — optional React/Vue adapters ship separately
+- **Framework-agnostic** — React / Vue / Angular adapters are optional packages
 
-## Docs
+## Docs & playground
 
-https://itsjayoncode.github.io/joc/packages/form-intelligence/
+- Docs: https://itsjayoncode.github.io/joc/packages/form-intelligence/
+- Capabilities map: https://itsjayoncode.github.io/joc/packages/form-intelligence/modules/capabilities
+- Playground: https://itsjayoncode.github.io/joc/playground/form-intelligence/
 
-**Learning path:** Overview → [Tutorial](https://itsjayoncode.github.io/joc/packages/form-intelligence/modules/getting-started) → Validation → Submission → State → Workflow → [Rules](https://itsjayoncode.github.io/joc/packages/form-intelligence/modules/rules) → [Patterns](https://itsjayoncode.github.io/joc/packages/form-intelligence/modules/patterns)
-
-## Playground
-
-https://itsjayoncode.github.io/joc/playground/form-intelligence/
+**Learning path:** Overview → [Tutorial](https://itsjayoncode.github.io/joc/packages/form-intelligence/modules/getting-started) → Validation → Submission → Workflow → [Rules](https://itsjayoncode.github.io/joc/packages/form-intelligence/modules/rules)
 
 ## License
 
