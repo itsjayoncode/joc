@@ -1,0 +1,6 @@
+{
+  "buildCommand": "pnpm form-intelligence-playground:build",
+  "outputDirectory": "apps/form-intelligence-playground/dist",
+  "framework": "vite",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}

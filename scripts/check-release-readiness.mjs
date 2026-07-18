@@ -12,7 +12,15 @@ const PUBLISHABLE_PACKAGES = new Set([
   "@jayoncode/browser-lifecycle-svelte",
   "@jayoncode/browser-lifecycle-vue",
   "@jayoncode/object-diff",
+  "@jayoncode/form-intelligence",
   "@jayoncode/form-intelligent",
+  "@jayoncode/form-intelligence-ajv",
+  "@jayoncode/form-intelligence-angular",
+  "@jayoncode/form-intelligence-react",
+  "@jayoncode/form-intelligence-valibot",
+  "@jayoncode/form-intelligence-vue",
+  "@jayoncode/form-intelligence-yup",
+  "@jayoncode/form-intelligence-zod",
   "@jayoncode/form-intelligent-ajv",
   "@jayoncode/form-intelligent-angular",
   "@jayoncode/form-intelligent-react",
@@ -69,7 +77,7 @@ try {
     );
   }
 
-  if (ignoredPackages.has("@jayoncode/form-intelligent-react")) {
+  if (ignoredPackages.has("@jayoncode/form-intelligence-react")) {
     failures.push("Changesets ignore list must not exclude publishable form-intelligent adapters.");
   }
 

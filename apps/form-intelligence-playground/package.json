@@ -1,0 +1,34 @@
+{
+  "name": "@jayoncode/form-intelligence-playground",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Official Form Intelligence playground for development, manual QA, and interactive documentation.",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 4277",
+    "build": "tsc -p tsconfig.json && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4278",
+    "test": "vitest run --config vitest.config.ts"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/itsjayoncode/joc.git",
+    "directory": "apps/form-intelligence-playground"
+  },
+  "dependencies": {
+    "@jayoncode/form-intelligence": "workspace:*",
+    "@jayoncode/form-intelligence-react": "workspace:*",
+    "@jayoncode/object-diff": "workspace:*",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.30.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.11",
+    "vite-tsconfig-paths": "^5.1.4"
+  }
+}

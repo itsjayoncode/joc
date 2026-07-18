@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import * as browserLifecycleModule from "@jayoncode/browser-lifecycle";
-import * as formIntelligentModule from "@jayoncode/form-intelligent";
+import * as formIntelligentModule from "@jayoncode/form-intelligence";
 import * as objectDiffModule from "@jayoncode/object-diff";
 
 describe("repository bootstrap", () => {

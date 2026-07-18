@@ -1,22 +1,26 @@
 {
   "name": "@jayoncode/form-intelligent-angular",
   "version": "2.0.0",
-  "description": "Angular adapter for @jayoncode/form-intelligent — FormService, signals, and standalone directives.",
+  "private": false,
+  "description": "Deprecated compatibility package \u2014 use @jayoncode/form-intelligence-angular. Re-exports the Form Intelligence angular adapter.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
   "type": "module",
   "sideEffects": false,
   "files": [
-    "dist",
+    "*.js",
+    "*.d.ts",
+    "src",
     "README.md"
   ],
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./index.js",
+  "module": "./index.js",
+  "types": "./index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./index.d.ts",
+      "import": "./index.js",
+      "default": "./index.js"
     }
   },
   "repository": {
@@ -24,33 +28,25 @@
     "url": "git+https://github.com/itsjayoncode/joc.git",
     "directory": "packages/form-intelligent-angular"
   },
-  "keywords": [
-    "form",
-    "forms",
-    "angular",
-    "signals",
-    "validation",
-    "typescript",
-    "jayoncode",
-    "joc"
-  ],
-  "peerDependencies": {
-    "@angular/core": ">=17.0.0",
-    "@jayoncode/form-intelligent": "^3.0.0"
+  "homepage": "https://itsjayoncode.github.io/joc/packages/form-intelligence/",
+  "bugs": {
+    "url": "https://github.com/itsjayoncode/joc/issues"
   },
-  "devDependencies": {
-    "@angular/core": "^18.2.13",
-    "@angular/platform-browser": "^18.2.13",
-    "@angular/platform-browser-dynamic": "^18.2.13",
-    "@jayoncode/form-intelligent": "workspace:*",
-    "zone.js": "^0.14.10"
+  "keywords": [
+    "deprecated",
+    "form-intelligence",
+    "jayoncode",
+    "joc",
+    "angular"
+  ],
+  "dependencies": {
+    "@jayoncode/form-intelligence-angular": "workspace:*"
   },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "bugs": {
-    "url": "https://github.com/itsjayoncode/joc/issues"
-  },
-  "homepage": "https://itsjayoncode.github.io/joc/packages/form-intelligent/"
+  "peerDependencies": {
+    "@angular/core": ">=17.0.0"
+  }
 }

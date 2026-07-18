@@ -71,9 +71,9 @@ withDefaults(
       <circle class="joc-pkg-icon__pulse-core" cx="24" cy="28" r="3.2" fill="currentColor" />
     </svg>
 
-    <!-- Form Intelligent: fields + check -->
+    <!-- Form Intelligence: fields + check -->
     <svg
-      v-else-if="packageId === 'form-intelligent'"
+      v-else-if="packageId === 'form-intelligence'"
       class="joc-pkg-icon__svg"
       viewBox="0 0 48 48"
       fill="none"

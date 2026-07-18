@@ -45,18 +45,18 @@ export const DOC_VERSIONED_PACKAGES = [
     typeName: "ObjectDiffDocArchive",
   },
   {
-    id: "form-intelligent",
-    npmName: "@jayoncode/form-intelligent",
-    packageJson: path.join(rootDir, "packages/form-intelligent/package.json"),
-    docsRoot: path.join(rootDir, "apps/docs/docs/packages/form-intelligent"),
-    archivesRoot: path.join(rootDir, "apps/docs/archives/form-intelligent"),
-    manifestPath: path.join(rootDir, "apps/docs/doc-versions/form-intelligent.json"),
+    id: "form-intelligence",
+    npmName: "@jayoncode/form-intelligence",
+    packageJson: path.join(rootDir, "packages/form-intelligence/package.json"),
+    docsRoot: path.join(rootDir, "apps/docs/docs/packages/form-intelligence"),
+    archivesRoot: path.join(rootDir, "apps/docs/archives/form-intelligence"),
+    manifestPath: path.join(rootDir, "apps/docs/doc-versions/form-intelligence.json"),
     versionsMetaPath: path.join(
       rootDir,
-      "apps/docs/docs/.vitepress/form-intelligent-versions.ts",
+      "apps/docs/docs/.vitepress/form-intelligence-versions.ts",
     ),
-    exportName: "formIntelligentDocVersions",
-    typeName: "FormIntelligentDocArchive",
+    exportName: "formIntelligenceDocVersions",
+    typeName: "FormIntelligenceDocArchive",
   },
 ];
 

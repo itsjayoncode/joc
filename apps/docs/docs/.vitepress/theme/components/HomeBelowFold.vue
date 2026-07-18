@@ -16,7 +16,7 @@ const problems = [
     id: "forms",
     label: "Complex forms",
     intent: "Validation, conditional fields, drafts, wizards, and submit flows",
-    packageId: "form-intelligent",
+    packageId: "form-intelligence",
   },
   {
     id: "diff",
@@ -54,7 +54,7 @@ const learningPath = [
   {
     step: "3",
     title: "Quick start a package",
-    href: "/packages/form-intelligent/modules/getting-started",
+    href: "/packages/form-intelligence/modules/getting-started",
   },
   { step: "4", title: "Try the playground", href: "/playground/" },
   { step: "5", title: "See the roadmap", href: "/roadmap/" },
@@ -227,7 +227,7 @@ await lifecycle.dispose();</code></pre>
           >
             Open sandbox
           </a>
-          <a :href="docsHref('/packages/form-intelligent/')">Form Intelligent example</a>
+          <a :href="docsHref('/packages/form-intelligence/')">Form Intelligence example</a>
         </p>
       </div>
     </section>
@@ -307,8 +307,8 @@ await lifecycle.dispose();</code></pre>
           <span class="joc-kicker">Interactive playground</span>
           <h2 class="joc-section-title">Try packages before you install</h2>
           <p class="joc-muted">
-            Explore Browser Lifecycle, Form Intelligent, and Object Diff live — hide the tab, edit a
-            form, or diff two objects in the browser.
+            Explore Browser Lifecycle, Form Intelligence, and Object Diff live — hide the tab, edit
+            a form, or diff two objects in the browser.
           </p>
         </div>
         <div class="joc-cta-actions">

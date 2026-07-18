@@ -3,7 +3,7 @@ import { computed } from "vue";
 import { useRoute, withBase } from "vitepress";
 
 import { browserLifecycleDocVersions } from "../../browser-lifecycle-versions.js";
-import { formIntelligentDocVersions } from "../../form-intelligent-versions.js";
+import { formIntelligenceDocVersions } from "../../form-intelligence-versions.js";
 import { objectDiffDocVersions } from "../../object-diff-versions.js";
 import { useDocsPath } from "../normalize-docs-path.js";
 
@@ -12,7 +12,7 @@ const { normalizeDocsPath } = useDocsPath();
 
 const DOC_VERSION_PACKAGES = [
   browserLifecycleDocVersions,
-  formIntelligentDocVersions,
+  formIntelligenceDocVersions,
   objectDiffDocVersions,
 ] as const;
 

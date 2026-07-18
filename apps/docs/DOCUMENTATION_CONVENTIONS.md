@@ -1,6 +1,6 @@
 # Documentation conventions (JOC live packages)
 
-Internal authoring guide for `packages/{form-intelligent,browser-lifecycle,object-diff}/docs`.
+Internal authoring guide for `packages/{form-intelligence,browser-lifecycle,object-diff}/docs`.
 User-facing docs sync into the VitePress site via `pnpm docs:sync`.
 
 ## Preserve
@@ -43,7 +43,7 @@ Keep package glossaries on concepts (or overview). Prefer the glossary term over
 
 | Package           | Glossary location                                             | Key terms                                               |
 | ----------------- | ------------------------------------------------------------- | ------------------------------------------------------- |
-| Form Intelligent  | [concepts.md](../packages/form-intelligent/docs/concepts.md)  | format vs transform, `when()` rules, draft vs autosave  |
+| Form Intelligence | [concepts.md](../packages/form-intelligence/docs/concepts.md) | format vs transform, `when()` rules, draft vs autosave  |
 | Object Diff       | [concepts.md](../packages/object-diff/docs/concepts.md)       | change vs DiffResult vs patch vs merge vs query vs view |
 | Browser Lifecycle | [concepts.md](../packages/browser-lifecycle/docs/concepts.md) | visibility, idle, snapshot, dispose, SSR-safe           |
 

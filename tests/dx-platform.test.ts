@@ -26,9 +26,9 @@ const requiredDocsPages = [
   "scripts/sync-documentation.mjs",
   "packages/browser-lifecycle/typedoc.json",
   "packages/object-diff/typedoc.json",
-  "packages/form-intelligent/typedoc.json",
+  "packages/form-intelligence/typedoc.json",
   "apps/object-diff-playground/docs/playground.md",
-  "apps/form-intelligent-playground/docs/playground.md",
+  "apps/form-intelligence-playground/docs/playground.md",
   "apps/browser-session-playground/engineering/022-documentation-integration.md",
 ];
 
@@ -97,21 +97,21 @@ describe("developer experience platform", () => {
     );
     const hub = readText("apps/docs/docs/public/playground/index.html");
     expect(hub).toContain("object-diff/");
-    expect(hub).toContain("form-intelligent/");
+    expect(hub).toContain("form-intelligence/");
   });
 
-  it("includes form-intelligent documentation integration wiring", () => {
+  it("includes form-intelligence documentation integration wiring", () => {
     const config = readText("apps/docs/docs/.vitepress/config.ts");
     const syncScript = readText("scripts/sync-documentation.mjs");
     const bundleScript = readText("scripts/bundle-playground-into-docs.mjs");
     const apiScript = readText("scripts/generate-api-documentation.mjs");
-    expect(config).toContain("createFormIntelligentSidebarMap");
-    expect(config).toContain("formIntelligentMeta");
+    expect(config).toContain("createFormIntelligenceSidebarMap");
+    expect(config).toContain("formIntelligenceMeta");
     expect(syncScript).toContain("syncFormIntelligentModules");
     expect(syncScript).toContain("syncFormIntelligentMeta");
-    expect(bundleScript).toContain("form-intelligent-playground");
-    expect(bundleScript).toContain("/joc/playground/form-intelligent/");
-    expect(apiScript).toContain("form-intelligent");
+    expect(bundleScript).toContain("form-intelligence-playground");
+    expect(bundleScript).toContain("/joc/playground/form-intelligence/");
+    expect(apiScript).toContain("form-intelligence");
   });
 
   it("maps Edit on GitHub for synced modules to package source docs", () => {
@@ -126,7 +126,7 @@ describe("developer experience platform", () => {
     expect(existsSync(path.join(rootDir, "packages/browser-lifecycle/docs/session-core.md"))).toBe(
       true,
     );
-    expect(existsSync(path.join(rootDir, "packages/form-intelligent/docs/validation.md"))).toBe(
+    expect(existsSync(path.join(rootDir, "packages/form-intelligence/docs/validation.md"))).toBe(
       true,
     );
   });
@@ -178,7 +178,7 @@ describe("developer experience platform", () => {
     const versioningPolicy = readText("engineering/014-versioning-policy.md");
     const packageChecklist = readText("engineering/016-package-checklist.md");
 
-    for (const packageId of ["browser-lifecycle", "object-diff", "form-intelligent"]) {
+    for (const packageId of ["browser-lifecycle", "object-diff", "form-intelligence"]) {
       const manifestPath = path.join(rootDir, `apps/docs/doc-versions/${packageId}.json`);
       expect(existsSync(manifestPath)).toBe(true);
       expect(versioningLibSource).toContain(`id: "${packageId}"`);
@@ -190,10 +190,10 @@ describe("developer experience platform", () => {
     expect(packageChecklist).toContain("Versioned docs archives are enabled");
     expect(config).toContain("browser-lifecycle-versions");
     expect(config).toContain("object-diff-versions");
-    expect(config).toContain("form-intelligent-versions");
+    expect(config).toContain("form-intelligence-versions");
     expect(config).toContain("createBrowserLifecycleSidebarMap");
     expect(config).toContain("createObjectDiffSidebarMap");
-    expect(config).toContain("createFormIntelligentSidebarMap");
+    expect(config).toContain("createFormIntelligenceSidebarMap");
     expect(rootPackage).toContain('"docs:archive"');
     expect(rootPackage).toContain("archive-package-docs.mjs --before-release");
   });
@@ -285,19 +285,19 @@ describe("documentation integration output", () => {
 
     const formIntelligentModulesDir = path.join(
       rootDir,
-      "apps/docs/docs/packages/form-intelligent/modules",
+      "apps/docs/docs/packages/form-intelligence/modules",
     );
     const formIntelligentPlaygroundDir = path.join(
       rootDir,
-      "apps/docs/docs/packages/form-intelligent/playground",
+      "apps/docs/docs/packages/form-intelligence/playground",
     );
     const formIntelligentApiIndex = path.join(
       rootDir,
-      "apps/docs/docs/packages/form-intelligent/api/index.md",
+      "apps/docs/docs/packages/form-intelligence/api/index.md",
     );
     const formIntelligentIndex = path.join(
       rootDir,
-      "apps/docs/docs/packages/form-intelligent/index.md",
+      "apps/docs/docs/packages/form-intelligence/index.md",
     );
 
     expect(existsSync(formIntelligentModulesDir)).toBe(true);

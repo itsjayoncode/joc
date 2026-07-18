@@ -33,7 +33,7 @@ Your app (React / Vue / Angular / Svelte / vanilla)
 | Package           | Docs                                                           | Playground                             |
 | ----------------- | -------------------------------------------------------------- | -------------------------------------- |
 | Browser Lifecycle | [`/packages/browser-lifecycle/`](/packages/browser-lifecycle/) | [Open](/playground/browser-lifecycle/) |
-| Form Intelligent  | [`/packages/form-intelligent/`](/packages/form-intelligent/)   | [Open](/playground/form-intelligent/)  |
+| Form Intelligence | [`/packages/form-intelligence/`](/packages/form-intelligence/) | [Open](/playground/form-intelligence/) |
 | Object Diff       | [`/packages/object-diff/`](/packages/object-diff/)             | [Open](/playground/object-diff/)       |
 
 Upcoming libraries will be **announced** as they enter development — see the [roadmap](/roadmap/). Catalog stubs may appear under [Packages](/packages/) so navigation stays stable when they ship.

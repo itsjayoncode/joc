@@ -61,7 +61,7 @@ jobs:
           VITE_DOCS_PLAYGROUND_URL: https://itsjayoncode.github.io/joc/playground/browser-lifecycle/
           VITE_BROWSER_PLAYGROUND_BASE: /joc/playground/browser-lifecycle/
           VITE_OBJECT_DIFF_PLAYGROUND_BASE: /joc/playground/object-diff/
-          VITE_FORM_INTELLIGENT_PLAYGROUND_BASE: /joc/playground/form-intelligent/
+          VITE_FORM_INTELLIGENCE_PLAYGROUND_BASE: /joc/playground/form-intelligence/
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

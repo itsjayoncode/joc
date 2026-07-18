@@ -1,70 +1,20 @@
-# @jayoncode/form-intelligent-vue
+# @jayoncode/form-intelligent-vue (deprecated)
 
-Vue adapter for [`@jayoncode/form-intelligent`](../form-intelligent/README.md).
+> **Use [`@jayoncode/form-intelligence-vue`](https://www.npmjs.com/package/@jayoncode/form-intelligence-vue) instead.**
 
-## Install
+This package is a **compatibility re-export** of the Form Intelligence `vue` adapter.
 
 ```bash
-npm install @jayoncode/form-intelligent @jayoncode/form-intelligent-vue
+npm uninstall @jayoncode/form-intelligent-vue
+npm install @jayoncode/form-intelligence-vue
 ```
 
-## Usage
+```ts
+// before
+import { ... } from "@jayoncode/form-intelligent-vue";
 
-```vue
-<script setup lang="ts">
-import { useForm } from "@jayoncode/form-intelligent-vue";
-
-const form = useForm({
-  schema: {
-    email: "email",
-    password: "password",
-  },
-  async onSubmit(values) {
-    await api.login(values);
-  },
-});
-</script>
-
-<template>
-  <form v-bind="form.form()">
-    <input v-bind="form.field('email')" />
-    <span v-if="form.state.errors.email">{{ form.state.errors.email }}</span>
-    <input v-bind="form.field('password')" type="password" />
-    <button v-bind="form.submit()" :disabled="!form.state.isValid">Login</button>
-  </form>
-</template>
+// after
+import { ... } from "@jayoncode/form-intelligence-vue";
 ```
 
-`form.state` is a ref — auto-unwrapped in templates; use `form.state.value` in `<script>`.
-
-## Provide / inject
-
-```vue
-<script setup lang="ts">
-import { provideForm } from "@jayoncode/form-intelligent-vue";
-
-const form = provideForm({
-  schema: { email: "email" },
-  onSubmit,
-});
-</script>
-
-<template>
-  <form v-bind="form.form()">
-    <EmailField />
-    <button v-bind="form.submit()">Submit</button>
-  </form>
-</template>
-```
-
-```vue
-<script setup lang="ts">
-import { useField } from "@jayoncode/form-intelligent-vue";
-
-const email = useField("email");
-</script>
-
-<template>
-  <input v-bind="email" />
-</template>
-```
+Docs: https://itsjayoncode.github.io/joc/packages/form-intelligence/

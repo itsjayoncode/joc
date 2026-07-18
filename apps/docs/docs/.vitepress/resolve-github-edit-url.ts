@@ -13,7 +13,7 @@ export function resolveGithubEditUrl(page: { filePath?: string; relativePath?: s
   const PLAYGROUND_DOC_SOURCES: Record<string, string> = {
     "browser-lifecycle": "apps/browser-session-playground/docs",
     "object-diff": "apps/object-diff-playground/docs",
-    "form-intelligent": "apps/form-intelligent-playground/docs",
+    "form-intelligence": "apps/form-intelligence-playground/docs",
   };
 
   let path = (page.filePath || page.relativePath || "").replace(/\\/g, "/");
@@ -23,21 +23,21 @@ export function resolveGithubEditUrl(page: { filePath?: string; relativePath?: s
   if (path.startsWith("apps/docs/docs/")) path = path.slice("apps/docs/docs/".length);
 
   let match = path.match(
-    /^packages\/(browser-lifecycle|object-diff|form-intelligent)\/modules\/(.+)$/,
+    /^packages\/(browser-lifecycle|object-diff|form-intelligence)\/modules\/(.+)$/,
   );
   if (match?.[1] !== undefined && match[2] !== undefined) {
     return `${GITHUB_EDIT_BASE}/packages/${match[1]}/docs/${match[2]}`;
   }
 
   match = path.match(
-    /^packages\/(browser-lifecycle|object-diff|form-intelligent)\/v[^/]+\/modules\/(.+)$/,
+    /^packages\/(browser-lifecycle|object-diff|form-intelligence)\/v[^/]+\/modules\/(.+)$/,
   );
   if (match?.[1] !== undefined && match[2] !== undefined) {
     return `${GITHUB_EDIT_BASE}/packages/${match[1]}/docs/${match[2]}`;
   }
 
   match = path.match(
-    /^packages\/(browser-lifecycle|object-diff|form-intelligent)\/playground\/(.+)$/,
+    /^packages\/(browser-lifecycle|object-diff|form-intelligence)\/playground\/(.+)$/,
   );
   if (match?.[1] !== undefined && match[2] !== undefined) {
     const sourceRoot = PLAYGROUND_DOC_SOURCES[match[1]];
@@ -47,13 +47,15 @@ export function resolveGithubEditUrl(page: { filePath?: string; relativePath?: s
   }
 
   match = path.match(
-    /^packages\/(browser-lifecycle|object-diff|form-intelligent)\/(index|overview)\.md$/,
+    /^packages\/(browser-lifecycle|object-diff|form-intelligence)\/(index|overview)\.md$/,
   );
   if (match?.[1] !== undefined && match[2] !== undefined) {
     return `${GITHUB_EDIT_BASE}/packages/${match[1]}/docs/${match[2]}.md`;
   }
 
-  match = path.match(/^packages\/(browser-lifecycle|object-diff|form-intelligent)\/changelog\.md$/);
+  match = path.match(
+    /^packages\/(browser-lifecycle|object-diff|form-intelligence)\/changelog\.md$/,
+  );
   if (match?.[1] !== undefined) {
     return `${GITHUB_EDIT_BASE}/packages/${match[1]}/CHANGELOG.md`;
   }
@@ -62,7 +64,7 @@ export function resolveGithubEditUrl(page: { filePath?: string; relativePath?: s
     return `${GITHUB_EDIT_BASE}/examples`;
   }
 
-  match = path.match(/^packages\/(browser-lifecycle|object-diff|form-intelligent)\/api\//);
+  match = path.match(/^packages\/(browser-lifecycle|object-diff|form-intelligence)\/api\//);
   if (match?.[1] !== undefined) {
     return `${GITHUB_EDIT_BASE}/packages/${match[1]}/README.md`;
   }

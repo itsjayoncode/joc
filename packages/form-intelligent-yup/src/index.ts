@@ -1,1 +1,2 @@
-export { yupAdapter } from "./yup-adapter.js";
+/** Compatibility entry — prefer importing from package root. */
+export * from "@jayoncode/form-intelligence-yup";

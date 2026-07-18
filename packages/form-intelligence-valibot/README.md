@@ -1,0 +1,32 @@
+# @jayoncode/form-intelligence-valibot
+
+Bridge [Valibot](https://valibot.dev) schemas into the `@jayoncode/form-intelligence` validation pipeline.
+
+## Install
+
+```bash
+npm install @jayoncode/form-intelligence @jayoncode/form-intelligence-valibot valibot
+```
+
+## Usage
+
+```ts
+import { createForm } from "@jayoncode/form-intelligence";
+import { valibotAdapter } from "@jayoncode/form-intelligence-valibot";
+import * as v from "valibot";
+
+const signupSchema = v.object({
+  email: v.pipe(v.string(), v.email()),
+  password: v.pipe(v.string(), v.minLength(8)),
+});
+
+const form = createForm({
+  initialValues: { email: "", password: "" },
+  schema: valibotAdapter(signupSchema),
+  async onSubmit(values) {
+    await api.signup(values);
+  },
+});
+```
+
+Valibot issue paths map to form field paths via `getDotPath()`. Form-level issues use `_form`.

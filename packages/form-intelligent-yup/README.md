@@ -1,32 +1,20 @@
-# @jayoncode/form-intelligent-yup
+# @jayoncode/form-intelligent-yup (deprecated)
 
-Bridge [Yup](https://github.com/jquense/yup) schemas into the `@jayoncode/form-intelligent` validation pipeline.
+> **Use [`@jayoncode/form-intelligence-yup`](https://www.npmjs.com/package/@jayoncode/form-intelligence-yup) instead.**
 
-## Install
+This package is a **compatibility re-export** of the Form Intelligence `yup` adapter.
 
 ```bash
-npm install @jayoncode/form-intelligent @jayoncode/form-intelligent-yup yup
+npm uninstall @jayoncode/form-intelligent-yup
+npm install @jayoncode/form-intelligence-yup
 ```
-
-## Usage
 
 ```ts
-import { createForm } from "@jayoncode/form-intelligent";
-import { yupAdapter } from "@jayoncode/form-intelligent-yup";
-import * as yup from "yup";
+// before
+import { ... } from "@jayoncode/form-intelligent-yup";
 
-const signupSchema = yup.object({
-  email: yup.string().email().required(),
-  password: yup.string().min(8).required(),
-});
-
-const form = createForm({
-  initialValues: { email: "", password: "" },
-  schema: yupAdapter(signupSchema),
-  async onSubmit(values) {
-    await api.signup(values);
-  },
-});
+// after
+import { ... } from "@jayoncode/form-intelligence-yup";
 ```
 
-Yup error paths map to form field paths (`address.city` for nested objects). Form-level issues use `_form`.
+Docs: https://itsjayoncode.github.io/joc/packages/form-intelligence/

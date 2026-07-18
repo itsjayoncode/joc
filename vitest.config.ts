@@ -11,40 +11,80 @@ export default defineConfig({
   resolve: {
     alias: [
       {
+        find: /^@jayoncode\/form-intelligence\/(.+)$/,
+        replacement: path.join(rootDir, "packages/form-intelligence/src/$1/index.ts"),
+      },
+      {
         find: /^@jayoncode\/form-intelligent\/(.+)$/,
-        replacement: path.join(rootDir, "packages/form-intelligent/src/$1/index.ts"),
+        replacement: path.join(rootDir, "packages/form-intelligence/src/$1/index.ts"),
       },
       {
         find: /^@jayoncode\/object-diff\/(.+)$/,
         replacement: path.join(rootDir, "packages/object-diff/src/$1/index.ts"),
       },
       {
+        find: "@jayoncode/form-intelligence-valibot",
+        replacement: path.join(rootDir, "packages/form-intelligence-valibot/src/index.ts"),
+      },
+      {
         find: "@jayoncode/form-intelligent-valibot",
-        replacement: path.join(rootDir, "packages/form-intelligent-valibot/src/index.ts"),
+        replacement: path.join(rootDir, "packages/form-intelligence-valibot/src/index.ts"),
+      },
+      {
+        find: "@jayoncode/form-intelligence-yup",
+        replacement: path.join(rootDir, "packages/form-intelligence-yup/src/index.ts"),
       },
       {
         find: "@jayoncode/form-intelligent-yup",
-        replacement: path.join(rootDir, "packages/form-intelligent-yup/src/index.ts"),
+        replacement: path.join(rootDir, "packages/form-intelligence-yup/src/index.ts"),
+      },
+      {
+        find: "@jayoncode/form-intelligence-ajv",
+        replacement: path.join(rootDir, "packages/form-intelligence-ajv/src/index.ts"),
       },
       {
         find: "@jayoncode/form-intelligent-ajv",
-        replacement: path.join(rootDir, "packages/form-intelligent-ajv/src/index.ts"),
+        replacement: path.join(rootDir, "packages/form-intelligence-ajv/src/index.ts"),
+      },
+      {
+        find: "@jayoncode/form-intelligence-angular",
+        replacement: path.join(rootDir, "packages/form-intelligence-angular/src/index.ts"),
       },
       {
         find: "@jayoncode/form-intelligent-angular",
-        replacement: path.join(rootDir, "packages/form-intelligent-angular/src/index.ts"),
+        replacement: path.join(rootDir, "packages/form-intelligence-angular/src/index.ts"),
+      },
+      {
+        find: "@jayoncode/form-intelligence-vue",
+        replacement: path.join(rootDir, "packages/form-intelligence-vue/src/index.ts"),
       },
       {
         find: "@jayoncode/form-intelligent-vue",
-        replacement: path.join(rootDir, "packages/form-intelligent-vue/src/index.ts"),
+        replacement: path.join(rootDir, "packages/form-intelligence-vue/src/index.ts"),
+      },
+      {
+        find: "@jayoncode/form-intelligence-zod",
+        replacement: path.join(rootDir, "packages/form-intelligence-zod/src/index.ts"),
       },
       {
         find: "@jayoncode/form-intelligent-zod",
-        replacement: path.join(rootDir, "packages/form-intelligent-zod/src/index.ts"),
+        replacement: path.join(rootDir, "packages/form-intelligence-zod/src/index.ts"),
+      },
+      {
+        find: "@jayoncode/form-intelligence-react",
+        replacement: path.join(rootDir, "packages/form-intelligence-react/src/index.ts"),
+      },
+      {
+        find: "@jayoncode/form-intelligent-react",
+        replacement: path.join(rootDir, "packages/form-intelligence-react/src/index.ts"),
+      },
+      {
+        find: "@jayoncode/form-intelligence",
+        replacement: path.join(rootDir, "packages/form-intelligence/src/index.ts"),
       },
       {
         find: "@jayoncode/form-intelligent",
-        replacement: path.join(rootDir, "packages/form-intelligent/src/index.ts"),
+        replacement: path.join(rootDir, "packages/form-intelligence/src/index.ts"),
       },
       {
         find: /^@jayoncode\/(.+)$/,
@@ -82,8 +122,8 @@ export default defineConfig({
             "apps/browser-session-playground/src/**/*.{test,spec}.tsx",
             "apps/object-diff-playground/src/**/*.{test,spec}.ts",
             "apps/object-diff-playground/src/**/*.{test,spec}.tsx",
-            "apps/form-intelligent-playground/src/**/*.{test,spec}.ts",
-            "apps/form-intelligent-playground/src/**/*.{test,spec}.tsx",
+            "apps/form-intelligence-playground/src/**/*.{test,spec}.ts",
+            "apps/form-intelligence-playground/src/**/*.{test,spec}.tsx",
             "tests/**/*.{test,spec}.ts",
             "tests/**/*.{test,spec}.tsx",
           ],

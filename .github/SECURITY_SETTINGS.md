@@ -38,7 +38,7 @@ There is **no “Automation” token** anymore (classic tokens were revoked). Us
 
 ### Option B — Trusted Publishing (recommended, no long-lived publish token)
 
-On each package (e.g. `@jayoncode/form-intelligent`) → **Settings** → **Trusted Publisher**:
+On each package (e.g. `@jayoncode/form-intelligence`) → **Settings** → **Trusted Publisher**:
 
 | Field                | Value          |
 | -------------------- | -------------- |

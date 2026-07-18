@@ -12,7 +12,9 @@ describe("documentation versioning", () => {
     expect(archiveBasePath("browser-lifecycle", "0.1.2")).toBe(
       "/packages/browser-lifecycle/v0.1.2",
     );
-    expect(archiveBasePath("form-intelligent", "1.0.0")).toBe("/packages/form-intelligent/v1.0.0");
+    expect(archiveBasePath("form-intelligence", "1.0.0")).toBe(
+      "/packages/form-intelligence/v1.0.0",
+    );
     expect(archiveBasePath("object-diff", "0.2.0")).toBe("/packages/object-diff/v0.2.0");
   });
 

@@ -11,7 +11,7 @@ export const siteTagline =
 export const defaultKeywords = [
   "JOC",
   "JayOnCode",
-  "form intelligent",
+  "form intelligence",
   "headless forms",
   "object diff",
   "browser lifecycle",

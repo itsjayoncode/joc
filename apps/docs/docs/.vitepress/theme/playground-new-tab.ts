@@ -3,7 +3,7 @@
  * in a new tab so VitePress client routing does not swallow them.
  */
 const PLAYGROUND_SPA_PATH =
-  /\/playground\/(browser-lifecycle|object-diff|form-intelligent)(?:\/|$)/i;
+  /\/playground\/(browser-lifecycle|object-diff|form-intelligence)(?:\/|$)/i;
 
 export function isPlaygroundSpaPath(pathname: string): boolean {
   return PLAYGROUND_SPA_PATH.test(pathname);

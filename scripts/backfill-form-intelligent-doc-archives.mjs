@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * One-shot / maintenance: rebuild Form Intelligent doc archives from historical
+ * One-shot / maintenance: rebuild Form Intelligence doc archives from historical
  * git tips so the docs version dropdown has prior releases (like browser-lifecycle).
  *
  * Usage: node scripts/backfill-form-intelligent-doc-archives.mjs
@@ -118,7 +118,7 @@ function withFrontmatter(fileName, body, extra = {}) {
 }
 
 function rewriteModuleLinks(body) {
-  return body.replace(/\]\(\.\/([^)]+)\.md\)/g, "](/packages/form-intelligent/modules/$1)");
+  return body.replace(/\]\(\.\/([^)]+)\.md\)/g, "](/packages/form-intelligence/modules/$1)");
 }
 
 function prependArchiveBanner(indexBody, version) {
@@ -127,7 +127,7 @@ function prependArchiveBanner(indexBody, version) {
   }
 
   const banner = `> [!NOTE]
-> **Archived documentation (v${version})** — You are viewing a frozen snapshot for \`@jayoncode/form-intelligent@${version}\`. See the [latest docs](/packages/form-intelligent/) for the current release.
+> **Archived documentation (v${version})** — You are viewing a frozen snapshot for \`@jayoncode/form-intelligent@${version}\`. See the [latest docs](/packages/form-intelligence/) for the current release.
 
 `;
 
@@ -144,14 +144,14 @@ function buildArchive(pkg, entry) {
   rmSync(archiveDir, { recursive: true, force: true });
   mkdirSync(archiveDir, { recursive: true });
 
-  const indexSource = gitShow(entry.commit, "packages/form-intelligent/docs/index.md");
+  const indexSource = gitShow(entry.commit, "packages/form-intelligence/docs/index.md");
   if (!indexSource) {
     throw new Error(`Missing index.md at ${entry.commit} for ${entry.version}`);
   }
 
   let indexBody = withFrontmatter("index.md", rewriteModuleLinks(indexSource), {
-    title: "Form Intelligent",
-    description: "Landing page for @jayoncode/form-intelligent — headless form workflow engine.",
+    title: "Form Intelligence",
+    description: "Landing page for @jayoncode/form-intelligence — headless form workflow engine.",
     layout: "doc",
     sidebar: false,
     aside: false,
@@ -160,23 +160,23 @@ function buildArchive(pkg, entry) {
   indexBody = prependArchiveBanner(indexBody, entry.version);
   writeFile(path.join(archiveDir, "index.md"), indexBody);
 
-  const overviewSource = gitShow(entry.commit, "packages/form-intelligent/docs/overview.md");
+  const overviewSource = gitShow(entry.commit, "packages/form-intelligence/docs/overview.md");
   if (overviewSource) {
     writeFile(
       path.join(archiveDir, "overview.md"),
       withFrontmatter("overview.md", rewriteModuleLinks(overviewSource), {
-        title: "Form Intelligent overview",
+        title: "Form Intelligence overview",
         description: "Documentation overview for @jayoncode/form-intelligent.",
       }),
     );
   }
 
-  const moduleFiles = gitListTree(entry.commit, "packages/form-intelligent/docs").filter(
+  const moduleFiles = gitListTree(entry.commit, "packages/form-intelligence/docs").filter(
     (name) => name.endsWith(".md") && !SKIP_MODULE_FILES.has(name),
   );
 
   for (const file of moduleFiles) {
-    const source = gitShow(entry.commit, `packages/form-intelligent/docs/${file}`);
+    const source = gitShow(entry.commit, `packages/form-intelligence/docs/${file}`);
     if (!source) {
       continue;
     }
@@ -184,14 +184,14 @@ function buildArchive(pkg, entry) {
       path.join(archiveDir, "modules", file),
       withFrontmatter(file, rewriteModuleLinks(source), {
         title: toTitle(file),
-        description: `Form Intelligent documentation for ${toTitle(file)}.`,
+        description: `Form Intelligence documentation for ${toTitle(file)}.`,
       }),
     );
   }
 
-  const playgroundFiles = gitListTree(entry.commit, "apps/form-intelligent-playground/docs");
+  const playgroundFiles = gitListTree(entry.commit, "apps/form-intelligence-playground/docs");
   for (const file of playgroundFiles.filter((name) => name.endsWith(".md"))) {
-    const source = gitShow(entry.commit, `apps/form-intelligent-playground/docs/${file}`);
+    const source = gitShow(entry.commit, `apps/form-intelligence-playground/docs/${file}`);
     if (!source) {
       continue;
     }
@@ -199,14 +199,14 @@ function buildArchive(pkg, entry) {
       path.join(archiveDir, "playground", file),
       withFrontmatter(file, source, {
         title: toTitle(file),
-        description: `Form Intelligent playground documentation for ${toTitle(file)}.`,
-        playgroundUrl: "/playground/form-intelligent/",
+        description: `Form Intelligence playground documentation for ${toTitle(file)}.`,
+        playgroundUrl: "/playground/form-intelligence/",
       }),
     );
   }
 
   const changelog =
-    gitShow(entry.commit, "packages/form-intelligent/CHANGELOG.md") ??
+    gitShow(entry.commit, "packages/form-intelligence/CHANGELOG.md") ??
     `# Changelog\n\nRelease history for \`@jayoncode/form-intelligent@${entry.version}\`.\n`;
   writeFile(
     path.join(archiveDir, "changelog.md"),
@@ -224,10 +224,10 @@ function buildArchive(pkg, entry) {
       path.join(archiveDir, "api", "index.md"),
       withFrontmatter(
         "index.md",
-        "# API Reference\n\nAPI docs for this archive were not snapshotted. See the [latest API](/packages/form-intelligent/api/).\n",
+        "# API Reference\n\nAPI docs for this archive were not snapshotted. See the [latest API](/packages/form-intelligence/api/).\n",
         {
           title: "API Reference",
-          description: "Form Intelligent API reference placeholder for archived docs.",
+          description: "Form Intelligence API reference placeholder for archived docs.",
         },
       ),
     );
@@ -260,7 +260,7 @@ function formatArchive(archiveDir) {
   });
 }
 
-const pkg = getDocPackage("form-intelligent");
+const pkg = getDocPackage("form-intelligence");
 const manifest = readVersionsManifest(pkg);
 
 const built = [];

@@ -7,7 +7,16 @@
     }
   ],
   "commit": false,
-  "fixed": [],
+  "fixed": [
+    ["@jayoncode/form-intelligence", "@jayoncode/form-intelligent"],
+    ["@jayoncode/form-intelligence-react", "@jayoncode/form-intelligent-react"],
+    ["@jayoncode/form-intelligence-vue", "@jayoncode/form-intelligent-vue"],
+    ["@jayoncode/form-intelligence-angular", "@jayoncode/form-intelligent-angular"],
+    ["@jayoncode/form-intelligence-zod", "@jayoncode/form-intelligent-zod"],
+    ["@jayoncode/form-intelligence-yup", "@jayoncode/form-intelligent-yup"],
+    ["@jayoncode/form-intelligence-valibot", "@jayoncode/form-intelligent-valibot"],
+    ["@jayoncode/form-intelligence-ajv", "@jayoncode/form-intelligent-ajv"]
+  ],
   "linked": [],
   "access": "public",
   "baseBranch": "master",
@@ -17,7 +26,7 @@
     "@jayoncode/playground",
     "@jayoncode/browser-session-playground",
     "@jayoncode/object-diff-playground",
-    "@jayoncode/form-intelligent-playground"
+    "@jayoncode/form-intelligence-playground"
   ],
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true

@@ -10,13 +10,13 @@
     { "path": "./packages/browser-lifecycle-solid" },
     { "path": "./packages/browser-lifecycle-angular" },
     { "path": "./packages/object-diff" },
-    { "path": "./packages/form-intelligent" },
-    { "path": "./packages/form-intelligent-zod" },
-    { "path": "./packages/form-intelligent-yup" },
-    { "path": "./packages/form-intelligent-valibot" },
-    { "path": "./packages/form-intelligent-ajv" },
-    { "path": "./packages/form-intelligent-react" },
-    { "path": "./packages/form-intelligent-vue" },
-    { "path": "./packages/form-intelligent-angular" }
+    { "path": "./packages/form-intelligence" },
+    { "path": "./packages/form-intelligence-zod" },
+    { "path": "./packages/form-intelligence-yup" },
+    { "path": "./packages/form-intelligence-valibot" },
+    { "path": "./packages/form-intelligence-ajv" },
+    { "path": "./packages/form-intelligence-react" },
+    { "path": "./packages/form-intelligence-vue" },
+    { "path": "./packages/form-intelligence-angular" }
   ]
 }

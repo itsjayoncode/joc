@@ -1,2 +1,2 @@
-export { ajvAdapter } from "./ajv-adapter.js";
-export type { AjvAdapterOptions } from "./ajv-adapter.js";
+/** Compatibility entry — prefer importing from package root. */
+export * from "@jayoncode/form-intelligence-ajv";

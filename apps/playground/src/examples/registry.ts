@@ -1,5 +1,5 @@
 import * as browserLifecycleModule from "@jayoncode/browser-lifecycle";
-import * as formIntelligentModule from "@jayoncode/form-intelligent";
+import * as formIntelligentModule from "@jayoncode/form-intelligence";
 import * as objectDiffModule from "@jayoncode/object-diff";
 
 export type PlaygroundExample = {
@@ -33,9 +33,9 @@ export const playgroundExamples: PlaygroundExample[] = [
   },
   {
     id: "form-intelligent",
-    name: "Form Intelligent Sandbox",
+    name: "Form Intelligence Sandbox",
     summary: "Probe headless form workflows, validation, and rules in the workspace.",
-    packageName: "@jayoncode/form-intelligent",
+    packageName: "@jayoncode/form-intelligence",
     status: "ready-for-wiring",
     details: [
       "Wire createForm() experiments without leaving the monorepo.",

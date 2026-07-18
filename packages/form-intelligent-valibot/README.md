@@ -1,32 +1,20 @@
-# @jayoncode/form-intelligent-valibot
+# @jayoncode/form-intelligent-valibot (deprecated)
 
-Bridge [Valibot](https://valibot.dev) schemas into the `@jayoncode/form-intelligent` validation pipeline.
+> **Use [`@jayoncode/form-intelligence-valibot`](https://www.npmjs.com/package/@jayoncode/form-intelligence-valibot) instead.**
 
-## Install
+This package is a **compatibility re-export** of the Form Intelligence `valibot` adapter.
 
 ```bash
-npm install @jayoncode/form-intelligent @jayoncode/form-intelligent-valibot valibot
+npm uninstall @jayoncode/form-intelligent-valibot
+npm install @jayoncode/form-intelligence-valibot
 ```
-
-## Usage
 
 ```ts
-import { createForm } from "@jayoncode/form-intelligent";
-import { valibotAdapter } from "@jayoncode/form-intelligent-valibot";
-import * as v from "valibot";
+// before
+import { ... } from "@jayoncode/form-intelligent-valibot";
 
-const signupSchema = v.object({
-  email: v.pipe(v.string(), v.email()),
-  password: v.pipe(v.string(), v.minLength(8)),
-});
-
-const form = createForm({
-  initialValues: { email: "", password: "" },
-  schema: valibotAdapter(signupSchema),
-  async onSubmit(values) {
-    await api.signup(values);
-  },
-});
+// after
+import { ... } from "@jayoncode/form-intelligence-valibot";
 ```
 
-Valibot issue paths map to form field paths via `getDotPath()`. Form-level issues use `_form`.
+Docs: https://itsjayoncode.github.io/joc/packages/form-intelligence/
