@@ -44,6 +44,13 @@ export type {
   WizardStepGraphNode,
 } from "../engines/workflow/types.js";
 
+/** Plain rule object or a `when()` builder (`createForm` calls `.build()` for builders). */
+export type FormRuleInput<TValues extends Record<string, unknown> = Record<string, unknown>> =
+  | FormRuleDefinition<TValues>
+  // `when()` defaults to Record<string, unknown>; class generics are invariant, so accept both.
+  | WhenRuleBuilder<TValues>
+  | WhenRuleBuilder;
+
 export type ValidationMode = "onChange" | "onBlur" | "onSubmit" | "onTouched" | "all";
 
 export type FormEvent =
@@ -385,7 +392,7 @@ export interface FormConfig<TValues extends Record<string, unknown>> {
   readonly workflow?: WorkflowConfig;
   readonly autoSave?: AutosaveConfig & { readonly every?: string };
   readonly wizard?: boolean | WizardConfig;
-  readonly rules?: readonly FormRuleDefinition<TValues>[];
+  readonly rules?: readonly FormRuleInput<TValues>[];
   /**
    * Plugins registered at create time (same as calling `form.use(plugin)` for each entry, in order).
    * Prefer this for declarative setup; use `form.use()` later for conditional or late registration.
