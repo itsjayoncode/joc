@@ -1,5 +1,12 @@
 # @jayoncode/form-intelligent
 
+## 3.4.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @jayoncode/form-intelligence@3.4.1
+
 ## 3.4.0
 
 ### Minor Changes
