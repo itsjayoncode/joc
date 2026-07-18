@@ -6,11 +6,14 @@ export const docsPlaygroundUrl = process.env.VITE_DOCS_PLAYGROUND_URL ?? DEFAULT
 
 export const siteName = "JOC by JayOnCode";
 export const siteTagline =
-  "An open-source ecosystem of headless TypeScript libraries — lightweight, type-safe, and framework-agnostic under @jayoncode/*.";
+  "Headless TypeScript libraries for the web — forms, browser lifecycle, object diffing, and more under @jayoncode/*.";
 
 export const defaultKeywords = [
   "JOC",
   "JayOnCode",
+  "form intelligent",
+  "headless forms",
+  "object diff",
   "browser lifecycle",
   "browser session",
   "TypeScript",
@@ -18,11 +21,9 @@ export const defaultKeywords = [
   "page visibility API",
   "idle detection",
   "cross-tab",
-  "BroadcastChannel",
   "npm package",
   "framework agnostic",
   "SSR safe",
-  "web app lifecycle",
 ].join(", ");
 
 export function resolvePublicAssetUrl(assetPath: string): string {

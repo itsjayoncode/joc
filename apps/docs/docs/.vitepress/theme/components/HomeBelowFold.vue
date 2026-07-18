@@ -49,15 +49,15 @@ const selectedPackage = computed(
 );
 
 const learningPath = [
-  { step: "1", title: "Read introduction", href: "/getting-started/introduction" },
+  { step: "1", title: "What JOC is", href: "/getting-started/introduction" },
   { step: "2", title: "Browse packages", href: "/packages/" },
   {
     step: "3",
     title: "Quick start a package",
-    href: "/packages/browser-lifecycle/modules/getting-started",
+    href: "/packages/form-intelligent/modules/getting-started",
   },
   { step: "4", title: "Try the playground", href: "/playground/" },
-  { step: "5", title: "API reference", href: "/packages/browser-lifecycle/api/" },
+  { step: "5", title: "See the roadmap", href: "/roadmap/" },
 ] as const;
 
 const docLinks = [
@@ -268,6 +268,23 @@ await lifecycle.dispose();</code></pre>
           <span class="joc-arch__label">Headless TypeScript cores</span>
           <p class="joc-muted joc-arch__note">Typed · tree-shakeable · SSR-aware</p>
         </div>
+      </div>
+    </section>
+
+    <!-- Vision -->
+    <section class="joc-home-section" aria-labelledby="vision-title">
+      <span class="joc-kicker">Vision</span>
+      <h2 id="vision-title" class="joc-section-title">What JOC is becoming</h2>
+      <p class="joc-muted joc-section-lead">
+        A trusted toolkit of independent headless libraries — not a mega-framework. Install only
+        what you need. Compose when you need more. Stop rewriting the same infrastructure in every
+        app.
+      </p>
+      <div class="joc-choose-result__actions">
+        <a class="joc-cta-primary" :href="docsHref('/getting-started/introduction')"
+          >Read the intro</a
+        >
+        <a class="joc-cta-secondary" :href="docsHref('/roadmap/')">See the future</a>
       </div>
     </section>
 

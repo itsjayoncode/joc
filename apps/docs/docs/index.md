@@ -3,8 +3,8 @@ layout: home
 title: JOC | Headless TypeScript libraries for the web
 description: JOC is an open-source ecosystem of headless TypeScript libraries — browser lifecycle, forms, object diffing, and more — composable, tree-shakeable, and framework-agnostic.
 hero:
-  text: Build modern web applications with lightweight, framework-agnostic tools.
-  tagline: An open-source ecosystem of headless TypeScript libraries that solve common frontend problems with composable, tree-shakeable, production-ready APIs.
+  text: Headless TypeScript libraries for real frontend infrastructure.
+  tagline: JOC (JayOnCode) ships focused @jayoncode/* packages — forms, browser session lifecycle, object diffing, and more — so you stop rewriting the same orchestration in every app.
   image:
     src: /jayoncode-logo-official.png
     alt: JOC by JayOnCode logo

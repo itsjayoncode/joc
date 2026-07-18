@@ -5,7 +5,9 @@ description: Browse the JayOnCode (JOC) monorepo package catalog — independent
 
 # Packages
 
-JayOnCode (JOC) is a **monorepo of focused TypeScript packages**. Each `@jayoncode/*` library solves one developer problem well, ships on its own version line, and documents under its own package section in this site.
+JayOnCode (**JOC**) is a monorepo of focused TypeScript packages. Each `@jayoncode/*` library solves one developer problem well, ships on its own version line, and documents under its own section on this site.
+
+**Today:** three live packages with docs and playgrounds. **Next:** additional libraries — [to be announced](/roadmap/).
 
 ## How the docs are organized
 
@@ -15,7 +17,7 @@ JayOnCode (JOC) is a **monorepo of focused TypeScript packages**. Each `@jayonco
 | **Contributor** | [Contribution](/guides/contribution), [monorepo guide](/guides/monorepo), [package standards](/guides/package-standards)                                                               |
 | **Package**     | Guides, API, examples, FAQ, patterns, and playgrounds scoped to that package                                                                                                           |
 
-Start with the live package today, then explore planned libraries as they land.
+Start with a live package, then explore planned libraries as they land.
 
 ## Live on npm
 
@@ -72,6 +74,7 @@ These libraries are on the roadmap and documented as stubs until implementation 
 
 ## New to JOC?
 
-1. Read [Introduction](/getting-started/introduction) to understand the monorepo model.
-2. Pick a package — start with [Browser Lifecycle](/packages/browser-lifecycle/) if you manage browser session behavior.
-3. Follow the [roadmap](/roadmap/) for what ships next across the collection.
+1. Read [Introduction](/getting-started/introduction) — what JOC is, the vision, and live packages.
+2. Skim [Philosophy](/getting-started/philosophy) — why packages stay independent.
+3. Pick a library from this catalog (or try the [playground](/playground/)).
+4. Follow the [roadmap](/roadmap/) for what’s next — and [contribute](/guides/contribution) if you want to help.

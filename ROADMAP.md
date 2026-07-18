@@ -1,83 +1,53 @@
 # JOC Roadmap
 
-This roadmap describes the intended progression of the JOC ecosystem. It is intentionally phased so the repository grows from a stable foundation instead of accumulating tooling and packages without clear boundaries.
+This roadmap describes how the JOC ecosystem grows. Phases 1–3 established the foundation and first package loop; the ecosystem now has **multiple live packages** and continues to expand deliberately.
 
-## Phase 1.1: Repository Foundation
+For the product-facing summary, see the docs [Roadmap](https://itsjayoncode.github.io/joc/roadmap/).
 
-- Establish the pnpm workspace and Turborepo layout.
-- Create the package and app directory structure.
-- Publish architecture, contribution, and governance documents.
-- Define engineering principles before implementation begins.
+---
 
-## Phase 1.2: Developer Tooling Foundation
+## Completed foundation (Phases 1.1–1.6)
 
-- Introduce linting, formatting, testing, and TypeScript build standards.
-- Add local quality checks and contributor workflows.
-- Define package-level script conventions.
+- pnpm + Turborepo workspace, architecture, and governance docs
+- Lint, format, test, TypeScript, and package script conventions
+- GitHub Actions CI, quality, CodeQL, Dependabot, templates
+- VitePress docs platform, sync scripts, versioned package archives
+- Release engineering via Changesets and publish safeguards
+- Package blueprint / template every new library inherits
 
-## Phase 1.3: Engineering Automation
+## Completed first-product loop (Phases 2–3)
 
-- Add GitHub Actions workflows for CI, pull request validation, scheduled quality checks, and CodeQL.
-- Generate local coverage reports and upload them as CI artifacts.
-- Prepare Dependabot, issue templates, pull request templates, and repository security guidance.
-- Add workspace health and package integrity checks to support public collaboration.
+- `@jayoncode/browser-lifecycle` — session lifecycle core + modules
+- Browser session playground as QA, docs, and showcase surface
+- Docs integration and release validation for the first public track
 
-## Phase 1.4: Developer Experience Platform
+---
 
-- Build the VitePress documentation application.
-- Create the local Vite playground for future package exploration.
-- Add package documentation templates and example placeholders.
-- Establish a stable navigation system for future package growth.
+## Current era — live ecosystem
 
-## Phase 1.5: Release Engineering
+| Package                        | Role                                                         | Notes                                   |
+| ------------------------------ | ------------------------------------------------------------ | --------------------------------------- |
+| `@jayoncode/browser-lifecycle` | Visibility, focus, idle, connectivity, cross-tab             | Live; continue hardening + adapters     |
+| `@jayoncode/form-intelligent`  | Headless form workflows (validation, rules, drafts, wizards) | Live; expand recipes + adapter polish   |
+| `@jayoncode/object-diff`       | Deep diff, change records, JSON Patch                        | Live; composition docs with forms/state |
 
-- Add release workflows, versioning strategy, and pre-publication safeguards.
-- Prepare the repository for package publication without releasing early.
-- Refine validation around changelogs, packaging, and release quality gates.
+**Active priorities**
 
-## Phase 1.6: Package Engineering Standards
+1. API polish, tests, and performance budgets on live packages
+2. Docs / playground fidelity with every release
+3. Honest SemVer + Changesets; versioned doc archives
+4. Composition guides without coupling public packages
 
-- Establish the blueprint that every future package implementation will inherit.
-- Standardize package exports, file structure, and documentation requirements.
-- Define implementation-ready conventions before feature work begins.
+---
 
-## Phase 2: Browser Lifecycle Manager v1
+## Next — ecosystem expansion
 
-- Implement the first public JOC package as `@jayoncode/browser-lifecycle`.
-- Validate package conventions, release practices, and docs standards through real code.
-- Current progress: core infrastructure, typed events, session core, and visibility module are implemented with tests.
-- Remaining work: additional modules, public API hardening, playground module pages, and first npm release.
+Additional `@jayoncode/*` packages are **to be announced**. We will publish which libraries enter active development as they are scheduled — see the docs [Roadmap](https://itsjayoncode.github.io/joc/roadmap/) and GitHub Discussions for announcements.
 
-## Phase 3: Browser Session Playground
+New packages will still follow the blueprint (template → standards → docs → playground → Changesets). Package boundaries and independence remain non-negotiable.
 
-- Build the long-lived engineering application in `apps/browser-session-playground`.
-- Provide manual QA, integration testing, and interactive documentation for Browser Lifecycle modules.
-- **Complete (v1.0.0):** all module playgrounds (3.4–3.15), framework examples (3.16), documentation integration (3.17), and release validation (3.18).
-- Playground serves as development environment, interactive documentation, integration test platform, QA console, and product showcase.
+---
 
-## Naming Note
+## Naming note
 
-Phase 2 and Phase 3 construction documents sometimes refer to the product as "Browser Session" or `@jayoncode/browser-session`. The canonical package name in the monorepo is `@jayoncode/browser-lifecycle` in `packages/browser-lifecycle`. See `engineering/017-ecosystem-remediation.md`.
-
-## Future Package Tracks
-
-After the first release pipeline is proven, the ecosystem is expected to expand across:
-
-- Request and networking
-- Scroll and interaction primitives
-- Keyboard tooling
-- Responsive utilities
-- Theme and styling support
-- Form architecture
-- Layering and overlays
-- Object diffing
-- Audit and diagnostics
-- Permissions and authorization modeling
-- Workflow orchestration
-- Queueing
-- Cache management
-- Configuration
-- Logging
-- Doctor and environment diagnostics
-
-Roadmap priorities may shift, but the repository foundation and package boundaries should remain stable.
+Older construction docs may say “Browser Session” or `@jayoncode/browser-session`. The canonical package is `@jayoncode/browser-lifecycle` in `packages/browser-lifecycle`.

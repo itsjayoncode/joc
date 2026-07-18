@@ -37,7 +37,7 @@ export const jocPackages: JocPackage[] = [
     icon: "◎",
     capabilities: ["Visibility", "Focus", "Idle", "Cross-tab", "Lifecycle"],
     featured: true,
-    versionLabel: "v0.1.3",
+    versionLabel: "v0.3.0",
   },
   {
     id: "form-intelligent",
@@ -48,13 +48,13 @@ export const jocPackages: JocPackage[] = [
     purpose: "Headless forms",
     problem: "Conditional fields, drafts, and submit races turn into effect spaghetti in every app",
     status: "live",
-    statusLabel: "In development",
+    statusLabel: "Released",
     docsLink: "/packages/form-intelligent/",
     accent: "amber",
     icon: "▤",
     capabilities: ["Validation", "Workflow", "Wizard", "Autosave", "Offline"],
     featured: true,
-    versionLabel: "v0.1.1",
+    versionLabel: "v3.3.0",
   },
   {
     id: "object-diff",
@@ -70,7 +70,7 @@ export const jocPackages: JocPackage[] = [
     icon: "≠",
     capabilities: ["Diff", "Patch", "Serialize", "Snapshots"],
     featured: true,
-    versionLabel: "v0.1.0",
+    versionLabel: "v0.3.0",
   },
   {
     id: "keyboard",

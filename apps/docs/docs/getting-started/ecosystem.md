@@ -1,43 +1,71 @@
+---
+title: JOC Ecosystem
+description: How the JayOnCode monorepo is organized — packages, apps, docs, playgrounds, and how new libraries land.
+---
+
 # Ecosystem
 
-JOC is one repository, but it is not one library. It is a **monorepo of `@jayoncode/*` packages** — each focused, independently installable, and documented under its own section on this site.
+JOC is **one repository, many libraries**. It is not a single runtime you install — it is a monorepo of `@jayoncode/*` packages that share standards, tooling, and documentation, while remaining independently versioned on npm.
 
-## Repository areas
+## At a glance
 
-| Area           | Purpose                                                              |
-| -------------- | -------------------------------------------------------------------- |
-| `packages/`    | Public libraries (`@jayoncode/*`) and internal shared workspace code |
-| `apps/`        | First-party applications — docs site and browser session playground  |
-| `examples/`    | Framework integration examples (starting with browser-lifecycle)     |
-| `templates/`   | Reusable scaffolds such as the standard JOC package template         |
-| `engineering/` | Architectural and operational model                                  |
-| `.github/`     | Collaboration and automation                                         |
+```text
+Your app (React / Vue / Angular / Svelte / vanilla)
+        ↓
+  @jayoncode/* packages  (+ optional framework adapters)
+        ↓
+  Headless TypeScript cores (typed · tree-shakeable · SSR-aware)
+```
+
+## Repository map
+
+| Area           | Purpose                                                    |
+| -------------- | ---------------------------------------------------------- |
+| `packages/`    | Public libraries (`@jayoncode/*`) and internal shared code |
+| `apps/`        | Docs site and interactive playgrounds                      |
+| `examples/`    | Framework integration demos                                |
+| `templates/`   | Package blueprint every new library starts from            |
+| `engineering/` | Architecture, versioning, and operational policy           |
+| `.github/`     | CI, templates, and automation                              |
+
+## Live surface area
+
+| Package           | Docs                                                           | Playground                             |
+| ----------------- | -------------------------------------------------------------- | -------------------------------------- |
+| Browser Lifecycle | [`/packages/browser-lifecycle/`](/packages/browser-lifecycle/) | [Open](/playground/browser-lifecycle/) |
+| Form Intelligent  | [`/packages/form-intelligent/`](/packages/form-intelligent/)   | [Open](/playground/form-intelligent/)  |
+| Object Diff       | [`/packages/object-diff/`](/packages/object-diff/)             | [Open](/playground/object-diff/)       |
+
+Upcoming libraries will be **announced** as they enter development — see the [roadmap](/roadmap/). Catalog stubs may appear under [Packages](/packages/) so navigation stays stable when they ship.
 
 ## Documentation model
 
-Docs are organized in two layers:
+### Monorepo layer (JayOnCode / JOC)
 
-### Monorepo (JayOnCode / JOC)
-
-- [Introduction](/getting-started/introduction)
-- [Philosophy](/getting-started/philosophy)
-- [Package catalog](/packages/)
+- [Introduction](/getting-started/introduction) — what JOC is and why it exists
+- [Philosophy](/getting-started/philosophy) — design rules
+- [Package catalog](/packages/) — live + planned libraries
 - [Contributor guides](/guides/contribution)
-- [Roadmap](/roadmap/) and package changelogs under each live package (for example [Browser Lifecycle](/packages/browser-lifecycle/changelog))
+- [Roadmap](/roadmap/)
 
-### Per package
+### Package layer
 
-Each package owns its documentation namespace under `/packages/<name>/`:
+Each live package owns `/packages/<name>/`:
 
-- Overview and installation
+- Overview and learning path
 - Guides, API reference, examples, FAQ
-- Patterns, tutorials, best practices (where applicable)
-- Playground docs (where applicable)
+- Versioned archives for published releases
+- Playground entry when interactive docs apply
 
-**Live today:** [Browser Lifecycle](/packages/browser-lifecycle/) — guides, API, examples, FAQ, patterns, and playground docs are all under that package path.
-
-**Coming soon:** placeholder pages exist for Request, Scroll, Keyboard, Theme, Forms, and other planned packages so navigation stays consistent as they ship.
+Source docs live next to package code and sync into this VitePress site — so API truth and prose stay aligned.
 
 ## Growth model
 
-New packages follow the same blueprint: source docs in the package repo path, sync scripts into VitePress, and a dedicated sidebar under `/packages/<name>/`. That keeps the monorepo coherent as the collection grows.
+New packages follow the same path:
+
+1. Scaffold from `templates/package-template/`
+2. Meet [package standards](/guides/package-standards) and blueprint checks
+3. Ship docs + (usually) a playground
+4. Version with Changesets; archive docs on release
+
+That keeps the collection coherent as JOC expands — without forcing consumers onto a single mega-version.

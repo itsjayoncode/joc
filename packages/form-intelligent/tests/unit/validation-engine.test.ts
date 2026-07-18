@@ -221,7 +221,9 @@ describe("validation modes", () => {
     expect(shouldValidateForTrigger({ mode: "onBlur", trigger: "onBlur" })).toBe(true);
     expect(shouldValidateForTrigger({ mode: "onChange", trigger: "onBlur" })).toBe(false);
     expect(shouldValidateForTrigger({ mode: "onSubmit", trigger: "onChange" })).toBe(false);
+    expect(shouldValidateForTrigger({ mode: "onSubmit", trigger: "onBlur" })).toBe(false);
     expect(shouldValidateForTrigger({ mode: "all", trigger: "onChange" })).toBe(true);
+    expect(shouldValidateForTrigger({ mode: "all", trigger: "onBlur" })).toBe(true);
     expect(
       shouldValidateForTrigger({ mode: "onTouched", trigger: "onChange", touched: true }),
     ).toBe(true);
@@ -231,10 +233,140 @@ describe("validation modes", () => {
     expect(
       shouldValidateForTrigger({ mode: "onTouched", trigger: "onChange", touched: false }),
     ).toBe(false);
+    expect(
+      shouldValidateForTrigger({ mode: "onTouched", trigger: "onSubmit", touched: true }),
+    ).toBe(false);
     expect(shouldDebounceValidation("onChange")).toBe(true);
+    expect(shouldDebounceValidation("all")).toBe(true);
     expect(shouldDebounceValidation("onSubmit")).toBe(false);
     expect(resolveFieldValidationMode("onSubmit", "onBlur")).toBe("onBlur");
     expect(resolveFieldValidationMode("onSubmit")).toBe("onSubmit");
+  });
+
+  it("does not validate on blur when validateOn is onChange", async () => {
+    const form = createForm({
+      initialValues: { email: "" },
+      validateOn: "onChange",
+      validators: { email: [required, email] },
+    });
+
+    form.field("email").onBlur();
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    expect(form.errors("email")).toBeUndefined();
+
+    form.setValue("email", "x");
+    form.setValue("email", "");
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    expect(form.errors("email")).toBe("This field is required.");
+
+    form.setValue("email", "bad");
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    expect(form.errors("email")).toContain("email");
+
+    form.destroy();
+  });
+
+  it("validates on blur when validateOn is onBlur even without value change", async () => {
+    const form = createForm({
+      initialValues: { email: "" },
+      validateOn: "onBlur",
+      validators: { email: [required] },
+    });
+
+    form.setValue("email", "x");
+    form.setValue("email", "");
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    expect(form.errors("email")).toBeUndefined();
+
+    form.field("email").onBlur();
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    expect(form.errors("email")).toBe("This field is required.");
+
+    form.destroy();
+  });
+
+  it("does not validate on change or blur when validateOn is onSubmit", async () => {
+    const form = createForm({
+      initialValues: { email: "" },
+      validateOn: "onSubmit",
+      validators: { email: [required] },
+    });
+
+    form.setValue("email", "x");
+    form.setValue("email", "");
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    expect(form.errors("email")).toBeUndefined();
+
+    form.field("email").onBlur();
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    expect(form.errors("email")).toBeUndefined();
+
+    expect(await form.submit()).toBe(false);
+    expect(form.errors("email")).toBe("This field is required.");
+
+    form.destroy();
+  });
+
+  it("validates on change after touch when validateOn is onTouched", async () => {
+    const form = createForm({
+      initialValues: { email: "" },
+      validateOn: "onTouched",
+      validators: { email: [required] },
+    });
+
+    form.setValue("email", "x");
+    form.setValue("email", "");
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    expect(form.errors("email")).toBeUndefined();
+
+    form.field("email").onBlur();
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    expect(form.errors("email")).toBe("This field is required.");
+
+    form.setValue("email", "ok");
+    form.setValue("email", "");
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    expect(form.errors("email")).toBe("This field is required.");
+
+    form.destroy();
+  });
+
+  it("validates on change when validateOn is all", async () => {
+    const form = createForm({
+      initialValues: { email: "" },
+      validateOn: "all",
+      validators: { email: [required] },
+    });
+
+    form.setValue("email", "x");
+    form.setValue("email", "");
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    expect(form.errors("email")).toBe("This field is required.");
+
+    form.destroy();
+  });
+
+  it("honors per-field validateOn override on value change", async () => {
+    const form = createForm({
+      initialValues: { email: "", name: "" },
+      validateOn: "onSubmit",
+      validators: {
+        email: [required],
+        name: [required],
+      },
+    });
+
+    form.field("email", { validateOn: "onChange" });
+    form.setValue("email", "x");
+    form.setValue("email", "");
+    form.setValue("name", "x");
+    form.setValue("name", "");
+    await new Promise((resolve) => setTimeout(resolve, 400));
+
+    expect(form.errors("email")).toBe("This field is required.");
+    expect(form.errors("name")).toBeUndefined();
+
+    form.destroy();
   });
 
   it("honors validate mode overrides on form.validate", async () => {

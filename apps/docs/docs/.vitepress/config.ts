@@ -224,8 +224,8 @@ gtag('config', '${docsGaId}');`,
     },
     footer: {
       message:
-        "JOC is a JayOnCode monorepo of @jayoncode/* packages. Docs sync from source via TypeDoc and sync scripts.",
-      copyright: "MIT Licensed. Built for the JayOnCode ecosystem.",
+        "JOC — headless @jayoncode/* TypeScript libraries. Docs sync from package source via TypeDoc and sync scripts.",
+      copyright: "MIT Licensed · JayOnCode",
     },
     outline: {
       level: [2, 3],

@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.3.1
+
+### Patch Changes
+
+- Fix `validateOn` mode gating: `onChange` is value-change only; wire `all` / `onTouched` for change+blur; keep `onBlur` / `onSubmit` from validating on the wrong triggers.
+
 ## 3.3.0
 
 ### Minor Changes
