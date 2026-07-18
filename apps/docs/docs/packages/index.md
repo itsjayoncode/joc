@@ -1,6 +1,6 @@
 ---
 title: JOC Packages | JayOnCode Monorepo Catalog
-description: Browse the JayOnCode (JOC) monorepo package catalog — independently installable @jayoncode/* TypeScript libraries for browser lifecycle, forms, scroll, themes, requests, and more.
+description: Browse the JayOnCode (JOC) monorepo package catalog — independently installable @jayoncode/* TypeScript libraries for browser lifecycle, forms, object diffing, and more.
 ---
 
 # Packages
@@ -17,7 +17,7 @@ JayOnCode (**JOC**) is a monorepo of focused TypeScript packages. Each `@jayonco
 | **Contributor** | [Contribution](/guides/contribution), [monorepo guide](/guides/monorepo), [package standards](/guides/package-standards)                                                               |
 | **Package**     | Guides, API, examples, FAQ, patterns, and playgrounds scoped to that package                                                                                                           |
 
-Start with a live package, then explore planned libraries as they land.
+Start with a live package below. New libraries will appear here when they ship.
 
 ## Live on npm
 
@@ -56,21 +56,9 @@ Start with a live package, then explore planned libraries as they land.
 5. [Migration](/packages/form-intelligence/modules/migration) · [Patterns](/packages/form-intelligence/modules/patterns)
 6. [Interactive playground](/playground/form-intelligence/)
 
-## Coming soon
+## What’s next
 
-These libraries are on the roadmap and documented as stubs until implementation begins:
-
-| Package     | npm name                 | Docs                               |
-| ----------- | ------------------------ | ---------------------------------- |
-| Request     | `@jayoncode/request`     | [Overview](/packages/request/)     |
-| Scroll      | `@jayoncode/scroll`      | [Overview](/packages/scroll/)      |
-| Keyboard    | `@jayoncode/keyboard`    | [Overview](/packages/keyboard/)    |
-| Responsive  | `@jayoncode/responsive`  | [Overview](/packages/responsive/)  |
-| Theme       | `@jayoncode/theme`       | [Overview](/packages/theme/)       |
-| Layers      | `@jayoncode/layers`      | [Overview](/packages/layers/)      |
-| Audit       | `@jayoncode/audit`       | [Overview](/packages/audit/)       |
-| Permissions | `@jayoncode/permissions` | [Overview](/packages/permissions/) |
-| Workflow    | `@jayoncode/workflow`    | [Overview](/packages/workflow/)    |
+Additional `@jayoncode/*` packages will be **announced** as they enter active development. We won’t list unreleased package names here — watch the [roadmap](/roadmap/), [GitHub Discussions](https://github.com/itsjayoncode/joc/discussions), and this catalog when new libraries ship.
 
 ## New to JOC?
 

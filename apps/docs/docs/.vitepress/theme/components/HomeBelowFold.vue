@@ -24,18 +24,6 @@ const problems = [
     intent: "Compare two objects and generate patches or merge drafts",
     packageId: "object-diff",
   },
-  {
-    id: "keyboard",
-    label: "Keyboard shortcuts",
-    intent: "Manage scoped shortcuts without fighting the DOM",
-    packageId: "keyboard",
-  },
-  {
-    id: "theme",
-    label: "Theming",
-    intent: "Build theme-aware apps with tokens and dark mode",
-    packageId: "theme",
-  },
 ] as const;
 
 const selectedProblemId = ref<(typeof problems)[number]["id"]>("browser");
@@ -119,16 +107,7 @@ const communityLinks = [
       <div class="joc-choose-result" :class="`joc-choose-result--${selectedPackage.accent}`">
         <div class="joc-choose-result__meta">
           <span class="joc-choose-result__label">Recommended</span>
-          <span
-            class="joc-choose-result__status"
-            :class="
-              selectedPackage.status === 'live'
-                ? 'joc-choose-result__status--live'
-                : 'joc-choose-result__status--soon'
-            "
-          >
-            {{ selectedPackage.status === "live" ? "Live" : "Coming soon" }}
-          </span>
+          <span class="joc-choose-result__status joc-choose-result__status--live">Live</span>
         </div>
         <h3 class="joc-choose-result__name">{{ selectedPackage.name }}</h3>
         <p class="joc-choose-result__npm">{{ selectedPackage.npmName }}</p>
@@ -139,7 +118,6 @@ const communityLinks = [
         <div class="joc-choose-result__actions">
           <a class="joc-cta-primary" :href="docsHref(selectedPackage.docsLink)">View docs</a>
           <a
-            v-if="selectedPackage.status === 'live'"
             class="joc-cta-secondary"
             :href="docsHref(`/playground/${selectedPackage.id}/`)"
             target="_blank"
@@ -147,7 +125,6 @@ const communityLinks = [
           >
             Open playground
           </a>
-          <a v-else class="joc-cta-secondary" :href="docsHref('/roadmap/')">See roadmap</a>
         </div>
       </div>
     </section>

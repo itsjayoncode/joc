@@ -9,8 +9,8 @@ import PackageIcon from "./PackageIcon.vue";
     <span class="joc-kicker">Package catalog</span>
     <h2 class="joc-section-title">Available now</h2>
     <p class="joc-muted joc-section-lead">
-      Three live packages on npm. More libraries are on the
-      <a :href="docsHref('/roadmap/')">roadmap</a>.
+      Three live packages on npm. More libraries will be
+      <a :href="docsHref('/roadmap/')">announced</a> as they enter development.
     </p>
 
     <div class="joc-package-stats" aria-label="Package ecosystem status">
