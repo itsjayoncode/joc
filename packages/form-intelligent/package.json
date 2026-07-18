@@ -1,8 +1,8 @@
 {
   "name": "@jayoncode/form-intelligent",
-  "version": "3.3.1",
+  "version": "3.4.0",
   "private": false,
-  "description": "Deprecated compatibility package \u2014 use @jayoncode/form-intelligence. Re-exports the Form Intelligence API.",
+  "description": "Deprecated compatibility package — use @jayoncode/form-intelligence. Re-exports the Form Intelligence API.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
   "type": "module",

@@ -1,8 +1,8 @@
 {
   "name": "@jayoncode/form-intelligent-zod",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": false,
-  "description": "Deprecated compatibility package \u2014 use @jayoncode/form-intelligence-zod. Re-exports the Form Intelligence zod adapter.",
+  "description": "Deprecated compatibility package — use @jayoncode/form-intelligence-zod. Re-exports the Form Intelligence zod adapter.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
   "type": "module",

@@ -1,8 +1,8 @@
 {
   "name": "@jayoncode/form-intelligent-react",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "private": false,
-  "description": "Deprecated compatibility package \u2014 use @jayoncode/form-intelligence-react. Re-exports the Form Intelligence react adapter.",
+  "description": "Deprecated compatibility package — use @jayoncode/form-intelligence-react. Re-exports the Form Intelligence react adapter.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
   "type": "module",
