@@ -5,6 +5,12 @@ description: "Release history for @jayoncode/object-diff."
 
 # Changelog
 
+## 0.3.1
+
+### Patch Changes
+
+- Enhance document introduction
+
 ## 0.3.0
 
 ### Minor Changes

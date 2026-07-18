@@ -34,7 +34,7 @@ Read the full [philosophy](/getting-started/philosophy) and [vision on GitHub](h
 | [`@jayoncode/form-intelligence`](/packages/form-intelligence/) | Headless form workflows — validation, rules, drafts, wizards, submit | [Docs](/packages/form-intelligence/) · [Playground](/playground/form-intelligence/) |
 | [`@jayoncode/object-diff`](/packages/object-diff/)             | Deep comparison, change records, JSON Patch                          | [Docs](/packages/object-diff/) · [Playground](/playground/object-diff/)             |
 
-Browse the full [package catalog](/packages/) (including planned libraries).
+Browse the full [package catalog](/packages/). New libraries will be announced as they enter development.
 
 ## Who this is for
 

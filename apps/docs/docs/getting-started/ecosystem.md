@@ -36,7 +36,7 @@ Your app (React / Vue / Angular / Svelte / vanilla)
 | Form Intelligence | [`/packages/form-intelligence/`](/packages/form-intelligence/) | [Open](/playground/form-intelligence/) |
 | Object Diff       | [`/packages/object-diff/`](/packages/object-diff/)             | [Open](/playground/object-diff/)       |
 
-Upcoming libraries will be **announced** as they enter development — see the [roadmap](/roadmap/). Catalog stubs may appear under [Packages](/packages/) so navigation stays stable when they ship.
+Upcoming libraries will be **announced** as they enter development — see the [roadmap](/roadmap/). They appear under [Packages](/packages/) when they ship.
 
 ## Documentation model
 
@@ -44,7 +44,7 @@ Upcoming libraries will be **announced** as they enter development — see the [
 
 - [Introduction](/getting-started/introduction) — what JOC is and why it exists
 - [Philosophy](/getting-started/philosophy) — design rules
-- [Package catalog](/packages/) — live + planned libraries
+- [Package catalog](/packages/) — live libraries (new ones announced when ready)
 - [Contributor guides](/guides/contribution)
 - [Roadmap](/roadmap/)
 

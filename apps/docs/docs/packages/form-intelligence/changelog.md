@@ -5,6 +5,12 @@ description: "Release history for @jayoncode/form-intelligence."
 
 # Changelog
 
+## 3.4.1
+
+### Patch Changes
+
+- Enhance document introduction
+
 ## 3.4.0
 
 ### Minor Changes
