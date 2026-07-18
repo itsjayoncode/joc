@@ -1,0 +1,51 @@
+{
+  "name": "@jayoncode/form-intelligence-yup",
+  "version": "2.0.0",
+  "description": "Yup schema adapter for @jayoncode/form-intelligence.",
+  "license": "MIT",
+  "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itsjayoncode/joc.git",
+    "directory": "packages/form-intelligence-yup"
+  },
+  "keywords": [
+    "form",
+    "yup",
+    "validation",
+    "schema",
+    "jayoncode",
+    "joc"
+  ],
+  "peerDependencies": {
+    "@jayoncode/form-intelligence": "^3.0.0",
+    "yup": ">=1.0.0"
+  },
+  "devDependencies": {
+    "@jayoncode/form-intelligence": "workspace:*",
+    "yup": "^1.6.1"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "bugs": {
+    "url": "https://github.com/itsjayoncode/joc/issues"
+  },
+  "homepage": "https://itsjayoncode.github.io/joc/packages/form-intelligence/"
+}

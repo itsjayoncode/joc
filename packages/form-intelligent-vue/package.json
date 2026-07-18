@@ -1,22 +1,26 @@
 {
   "name": "@jayoncode/form-intelligent-vue",
   "version": "2.0.0",
-  "description": "Vue adapter for @jayoncode/form-intelligent — useForm, provideForm, and useField composables.",
+  "private": false,
+  "description": "Deprecated compatibility package \u2014 use @jayoncode/form-intelligence-vue. Re-exports the Form Intelligence vue adapter.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
   "type": "module",
   "sideEffects": false,
   "files": [
-    "dist",
+    "*.js",
+    "*.d.ts",
+    "src",
     "README.md"
   ],
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./index.js",
+  "module": "./index.js",
+  "types": "./index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./index.d.ts",
+      "import": "./index.js",
+      "default": "./index.js"
     }
   },
   "repository": {
@@ -24,31 +28,25 @@
     "url": "git+https://github.com/itsjayoncode/joc.git",
     "directory": "packages/form-intelligent-vue"
   },
-  "keywords": [
-    "form",
-    "forms",
-    "vue",
-    "composables",
-    "validation",
-    "typescript",
-    "jayoncode",
-    "joc"
-  ],
-  "peerDependencies": {
-    "@jayoncode/form-intelligent": "^3.0.0",
-    "vue": ">=3.4"
+  "homepage": "https://itsjayoncode.github.io/joc/packages/form-intelligence/",
+  "bugs": {
+    "url": "https://github.com/itsjayoncode/joc/issues"
   },
-  "devDependencies": {
-    "@jayoncode/form-intelligent": "workspace:*",
-    "@vue/test-utils": "^2.4.6",
-    "vue": "^3.5.13"
+  "keywords": [
+    "deprecated",
+    "form-intelligence",
+    "jayoncode",
+    "joc",
+    "vue"
+  ],
+  "dependencies": {
+    "@jayoncode/form-intelligence-vue": "workspace:*"
   },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "bugs": {
-    "url": "https://github.com/itsjayoncode/joc/issues"
-  },
-  "homepage": "https://itsjayoncode.github.io/joc/packages/form-intelligent/"
+  "peerDependencies": {
+    "vue": ">=3.4"
+  }
 }

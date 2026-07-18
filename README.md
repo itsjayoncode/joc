@@ -12,7 +12,7 @@
 | Package                                                                                      | Solves                                           | Install                              |
 | -------------------------------------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------ |
 | [`@jayoncode/browser-lifecycle`](https://www.npmjs.com/package/@jayoncode/browser-lifecycle) | Tab visibility, idle, reconnect, session signals | `npm i @jayoncode/browser-lifecycle` |
-| [`@jayoncode/form-intelligent`](https://www.npmjs.com/package/@jayoncode/form-intelligent)   | Headless forms, `when()` rules, autosave         | `npm i @jayoncode/form-intelligent`  |
+| [`@jayoncode/form-intelligence`](https://www.npmjs.com/package/@jayoncode/form-intelligence) | Headless forms, `when()` rules, autosave         | `npm i @jayoncode/form-intelligence` |
 | [`@jayoncode/object-diff`](https://www.npmjs.com/package/@jayoncode/object-diff)             | Deep diff, dirty checks, patches                 | `npm i @jayoncode/object-diff`       |
 
 ### Stop wasting work in a background tab
@@ -34,7 +34,7 @@ lifecycle.on("connection:reconnect", () => flushOfflineQueue());
 ### Conditional form fields without `useEffect`
 
 ```ts
-import { createForm, when } from "@jayoncode/form-intelligent";
+import { createForm, when } from "@jayoncode/form-intelligence";
 
 createForm({
   target: "#checkout",
@@ -64,7 +64,7 @@ if (hasChanges(saved, draft)) {
 | ----------------- | -------------------------------------------------------------- |
 | Documentation     | https://itsjayoncode.github.io/joc/                            |
 | Browser Lifecycle | https://itsjayoncode.github.io/joc/packages/browser-lifecycle/ |
-| Form Intelligent  | https://itsjayoncode.github.io/joc/packages/form-intelligent/  |
+| Form Intelligence | https://itsjayoncode.github.io/joc/packages/form-intelligence/ |
 | Object Diff       | https://itsjayoncode.github.io/joc/packages/object-diff/       |
 | Playground        | https://itsjayoncode.github.io/joc/playground/                 |
 | npm scope         | https://www.npmjs.com/~jayoncode                               |
@@ -75,7 +75,7 @@ if (hasChanges(saved, draft)) {
 | Area                           | Status                                                                   |
 | ------------------------------ | ------------------------------------------------------------------------ |
 | `@jayoncode/browser-lifecycle` | Published on npm                                                         |
-| `@jayoncode/form-intelligent`  | Published on npm                                                         |
+| `@jayoncode/form-intelligence` | Published on npm                                                         |
 | `@jayoncode/object-diff`       | Published on npm                                                         |
 | Documentation site             | VitePress on GitHub Pages — guides, API reference, patterns, FAQs        |
 | Interactive playgrounds        | Per-package explorers                                                    |
@@ -123,7 +123,7 @@ joc/
 | `apps/docs/`                       | VitePress documentation platform                      |
 | `apps/browser-session-playground/` | Long-lived Browser Lifecycle engineering shell        |
 | `packages/browser-lifecycle/`      | Published session lifecycle library                   |
-| `packages/form-intelligent/`       | Published headless form workflow engine               |
+| `packages/form-intelligence/`      | Published headless form workflow engine               |
 | `packages/object-diff/`            | Published deep comparison and patch library           |
 | `templates/package-template/`      | Standard structure for future libraries               |
 | `engineering/`                     | Monorepo architecture, versioning, and release policy |

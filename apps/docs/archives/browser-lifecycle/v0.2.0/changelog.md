@@ -9,7 +9,7 @@ description: "Release history for @jayoncode/browser-lifecycle."
 
 ### Minor Changes
 
-- 926fd56: JOC Docs v1.3.0 — Form Intelligent, playground hub, per-package changelogs
+- 926fd56: JOC Docs v1.3.0 — Form Intelligence, playground hub, per-package changelogs
 
 ## 0.1.3
 

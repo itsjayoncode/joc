@@ -1,0 +1,16 @@
+{
+  "name": "Form Intelligence Playground | JayOnCode",
+  "short_name": "Form Playground",
+  "description": "Interactive playground for @jayoncode/form-intelligence — validation, submission, workflow, and live form state.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#111827",
+  "icons": [
+    {
+      "src": "jayoncode-logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

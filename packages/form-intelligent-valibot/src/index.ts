@@ -1,1 +1,2 @@
-export { valibotAdapter } from "./valibot-adapter.js";
+/** Compatibility entry — prefer importing from package root. */
+export * from "@jayoncode/form-intelligence-valibot";

@@ -28,7 +28,7 @@ For the product-facing summary, see the docs [Roadmap](https://itsjayoncode.gith
 | Package                        | Role                                                         | Notes                                   |
 | ------------------------------ | ------------------------------------------------------------ | --------------------------------------- |
 | `@jayoncode/browser-lifecycle` | Visibility, focus, idle, connectivity, cross-tab             | Live; continue hardening + adapters     |
-| `@jayoncode/form-intelligent`  | Headless form workflows (validation, rules, drafts, wizards) | Live; expand recipes + adapter polish   |
+| `@jayoncode/form-intelligence` | Headless form workflows (validation, rules, drafts, wizards) | Live; expand recipes + adapter polish   |
 | `@jayoncode/object-diff`       | Deep diff, change records, JSON Patch                        | Live; composition docs with forms/state |
 
 **Active priorities**

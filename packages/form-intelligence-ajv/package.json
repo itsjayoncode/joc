@@ -1,0 +1,52 @@
+{
+  "name": "@jayoncode/form-intelligence-ajv",
+  "version": "2.0.0",
+  "description": "AJV JSON Schema adapter for @jayoncode/form-intelligence.",
+  "license": "MIT",
+  "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itsjayoncode/joc.git",
+    "directory": "packages/form-intelligence-ajv"
+  },
+  "keywords": [
+    "form",
+    "ajv",
+    "json-schema",
+    "validation",
+    "schema",
+    "jayoncode",
+    "joc"
+  ],
+  "peerDependencies": {
+    "@jayoncode/form-intelligence": "^3.0.0",
+    "ajv": ">=8.0.0"
+  },
+  "devDependencies": {
+    "@jayoncode/form-intelligence": "workspace:*",
+    "ajv": "^8.17.1"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "bugs": {
+    "url": "https://github.com/itsjayoncode/joc/issues"
+  },
+  "homepage": "https://itsjayoncode.github.io/joc/packages/form-intelligence/"
+}

@@ -8,8 +8,8 @@
  * - apps/browser-session-playground/docs -> browser-lifecycle playground docs
  * - packages/object-diff/docs -> object-diff modules
  * - apps/object-diff-playground/docs -> object-diff playground docs
- * - packages/form-intelligent/docs -> form-intelligent modules
- * - apps/form-intelligent-playground/docs -> form-intelligent playground docs
+ * - packages/form-intelligence/docs -> form-intelligent modules
+ * - apps/form-intelligence-playground/docs -> form-intelligent playground docs
  */
 
 import {
@@ -50,7 +50,7 @@ const PLAYGROUND_ROUTES = {
 const PLAYGROUND_SPA = {
   browserLifecycle: "/playground/browser-lifecycle",
   objectDiff: "/playground/object-diff",
-  formIntelligent: "/playground/form-intelligent",
+  formIntelligent: "/playground/form-intelligence",
 };
 
 /** Module → SPA route (not the markdown playground guide page). */
@@ -431,12 +431,12 @@ export const objectDiffMeta = {
 }
 
 function rewriteFormIntelligentDocLinks(body) {
-  return body.replace(/\]\(\.\/([^)]+)\.md\)/g, "](/packages/form-intelligent/modules/$1)");
+  return body.replace(/\]\(\.\/([^)]+)\.md\)/g, "](/packages/form-intelligence/modules/$1)");
 }
 
 function syncFormIntelligentModules() {
-  const sourceDir = path.join(rootDir, "packages/form-intelligent/docs");
-  const targetDir = path.join(docsRoot, "packages/form-intelligent/modules");
+  const sourceDir = path.join(rootDir, "packages/form-intelligence/docs");
+  const targetDir = path.join(docsRoot, "packages/form-intelligence/modules");
 
   return syncDirectory({
     sourceDir,
@@ -444,14 +444,14 @@ function syncFormIntelligentModules() {
     transform: (file, body) =>
       withFrontmatter(file, rewriteFormIntelligentDocLinks(body), {
         title: toTitle(file),
-        description: `Form Intelligent documentation for ${toTitle(file)}.`,
+        description: `Form Intelligence documentation for ${toTitle(file)}.`,
       }),
   });
 }
 
 function syncFormIntelligentIndex() {
-  const sourceFile = path.join(rootDir, "packages/form-intelligent/docs/index.md");
-  const targetFile = path.join(docsRoot, "packages/form-intelligent/index.md");
+  const sourceFile = path.join(rootDir, "packages/form-intelligence/docs/index.md");
+  const targetFile = path.join(docsRoot, "packages/form-intelligence/index.md");
 
   if (!existsSync(sourceFile)) {
     return 0;
@@ -461,8 +461,8 @@ function syncFormIntelligentIndex() {
   writeFileSync(
     targetFile,
     withFrontmatter("index.md", body, {
-      title: "Form Intelligent",
-      description: "Landing page for @jayoncode/form-intelligent — headless form workflow engine.",
+      title: "Form Intelligence",
+      description: "Landing page for @jayoncode/form-intelligence — headless form workflow engine.",
       layout: "doc",
       sidebar: false,
       aside: false,
@@ -475,8 +475,8 @@ function syncFormIntelligentIndex() {
 }
 
 function syncFormIntelligentOverview() {
-  const sourceFile = path.join(rootDir, "packages/form-intelligent/docs/overview.md");
-  const targetFile = path.join(docsRoot, "packages/form-intelligent/overview.md");
+  const sourceFile = path.join(rootDir, "packages/form-intelligence/docs/overview.md");
+  const targetFile = path.join(docsRoot, "packages/form-intelligence/overview.md");
 
   if (!existsSync(sourceFile)) {
     return 0;
@@ -486,8 +486,8 @@ function syncFormIntelligentOverview() {
   writeFileSync(
     targetFile,
     withFrontmatter("overview.md", body, {
-      title: "Form Intelligent overview",
-      description: "Documentation overview for @jayoncode/form-intelligent.",
+      title: "Form Intelligence overview",
+      description: "Documentation overview for @jayoncode/form-intelligence.",
     }),
     "utf8",
   );
@@ -496,8 +496,8 @@ function syncFormIntelligentOverview() {
 }
 
 function syncFormIntelligentPlaygroundDocs() {
-  const sourceDir = path.join(rootDir, "apps/form-intelligent-playground/docs");
-  const targetDir = path.join(docsRoot, "packages/form-intelligent/playground");
+  const sourceDir = path.join(rootDir, "apps/form-intelligence-playground/docs");
+  const targetDir = path.join(docsRoot, "packages/form-intelligence/playground");
 
   return syncDirectory({
     sourceDir,
@@ -505,7 +505,7 @@ function syncFormIntelligentPlaygroundDocs() {
     transform: (file, body) =>
       withFrontmatter(file, body, {
         title: toTitle(file),
-        description: `Form Intelligent playground documentation for ${toTitle(file)}.`,
+        description: `Form Intelligence playground documentation for ${toTitle(file)}.`,
         playgroundUrl: spaPlaygroundUrl(PLAYGROUND_SPA.formIntelligent),
       }),
   });
@@ -513,15 +513,15 @@ function syncFormIntelligentPlaygroundDocs() {
 
 function syncFormIntelligentMeta() {
   const pkg = JSON.parse(
-    readFileSync(path.join(rootDir, "packages/form-intelligent/package.json"), "utf8"),
+    readFileSync(path.join(rootDir, "packages/form-intelligence/package.json"), "utf8"),
   );
-  const targetFile = path.join(docsRoot, ".vitepress/form-intelligent-meta.ts");
+  const targetFile = path.join(docsRoot, ".vitepress/form-intelligence-meta.ts");
   const body = `/** Generated by scripts/sync-documentation.mjs — do not edit manually. */
 
-export const formIntelligentMeta = {
+export const formIntelligenceMeta = {
   version: "${pkg.version}",
   versionLabel: "v${pkg.version}",
-  npmName: "@jayoncode/form-intelligent",
+  npmName: "@jayoncode/form-intelligence",
 } as const;
 `;
 
@@ -560,9 +560,9 @@ function syncPackageChangelogs() {
       npmName: "@jayoncode/object-diff",
     },
     {
-      sourceDir: "packages/form-intelligent",
-      targetFile: "packages/form-intelligent/changelog.md",
-      npmName: "@jayoncode/form-intelligent",
+      sourceDir: "packages/form-intelligence",
+      targetFile: "packages/form-intelligence/changelog.md",
+      npmName: "@jayoncode/form-intelligence",
     },
   ];
 
@@ -619,18 +619,18 @@ function formatGeneratedFiles() {
     path.join(docsRoot, "packages/object-diff/index.md"),
     path.join(docsRoot, "packages/object-diff/overview.md"),
     path.join(docsRoot, "packages/object-diff/changelog.md"),
-    path.join(docsRoot, "packages/form-intelligent/modules"),
-    path.join(docsRoot, "packages/form-intelligent/playground"),
-    path.join(docsRoot, "packages/form-intelligent/index.md"),
-    path.join(docsRoot, "packages/form-intelligent/overview.md"),
-    path.join(docsRoot, "packages/form-intelligent/changelog.md"),
+    path.join(docsRoot, "packages/form-intelligence/modules"),
+    path.join(docsRoot, "packages/form-intelligence/playground"),
+    path.join(docsRoot, "packages/form-intelligence/index.md"),
+    path.join(docsRoot, "packages/form-intelligence/overview.md"),
+    path.join(docsRoot, "packages/form-intelligence/changelog.md"),
     path.join(docsRoot, ".vitepress/browser-lifecycle-meta.ts"),
     path.join(docsRoot, ".vitepress/docs-meta.ts"),
     path.join(docsRoot, ".vitepress/browser-lifecycle-versions.ts"),
     path.join(docsRoot, ".vitepress/object-diff-versions.ts"),
-    path.join(docsRoot, ".vitepress/form-intelligent-versions.ts"),
+    path.join(docsRoot, ".vitepress/form-intelligence-versions.ts"),
     path.join(docsRoot, ".vitepress/object-diff-meta.ts"),
-    path.join(docsRoot, ".vitepress/form-intelligent-meta.ts"),
+    path.join(docsRoot, ".vitepress/form-intelligence-meta.ts"),
   ];
 
   const result = spawnSync(process.execPath, [prettierBin, "--write", ...generatedPaths], {
@@ -650,9 +650,9 @@ function lintGeneratedMetaFiles() {
     path.join(docsRoot, ".vitepress/docs-meta.ts"),
     path.join(docsRoot, ".vitepress/browser-lifecycle-versions.ts"),
     path.join(docsRoot, ".vitepress/object-diff-versions.ts"),
-    path.join(docsRoot, ".vitepress/form-intelligent-versions.ts"),
+    path.join(docsRoot, ".vitepress/form-intelligence-versions.ts"),
     path.join(docsRoot, ".vitepress/object-diff-meta.ts"),
-    path.join(docsRoot, ".vitepress/form-intelligent-meta.ts"),
+    path.join(docsRoot, ".vitepress/form-intelligence-meta.ts"),
   ];
 
   const result = spawnSync(process.execPath, [eslintBin, ...generatedMetaFiles], {

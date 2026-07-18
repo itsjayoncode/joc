@@ -51,15 +51,15 @@ pnpm docs:prepare
 
 `docs:build` also bundles interactive playgrounds into the Pages artifact via `scripts/bundle-playground-into-docs.mjs`:
 
-| Playground        | Dist path                       | Base env                                |
-| ----------------- | ------------------------------- | --------------------------------------- |
-| Browser Lifecycle | `playground/browser-lifecycle/` | `VITE_BROWSER_PLAYGROUND_BASE`          |
-| Object Diff       | `playground/object-diff/`       | `VITE_OBJECT_DIFF_PLAYGROUND_BASE`      |
-| Form Intelligent  | `playground/form-intelligent/`  | `VITE_FORM_INTELLIGENT_PLAYGROUND_BASE` |
+| Playground        | Dist path                       | Base env                                 |
+| ----------------- | ------------------------------- | ---------------------------------------- |
+| Browser Lifecycle | `playground/browser-lifecycle/` | `VITE_BROWSER_PLAYGROUND_BASE`           |
+| Object Diff       | `playground/object-diff/`       | `VITE_OBJECT_DIFF_PLAYGROUND_BASE`       |
+| Form Intelligence | `playground/form-intelligence/` | `VITE_FORM_INTELLIGENCE_PLAYGROUND_BASE` |
 
-Hub page: `/playground/` (lists all three). Form Intelligent production URL:
+Hub page: `/playground/` (lists all three). Form Intelligence production URL:
 
-`https://itsjayoncode.github.io/joc/playground/form-intelligent/`
+`https://itsjayoncode.github.io/joc/playground/form-intelligence/`
 
 ### Archived package documentation
 
@@ -71,7 +71,7 @@ Publishable packages keep frozen docs per release (version dropdown on package p
 | ----------------- | ------------------------------ | ----------------------------------------- |
 | Browser Lifecycle | `/packages/browser-lifecycle/` | `/packages/browser-lifecycle/v{version}/` |
 | Object Diff       | `/packages/object-diff/`       | `/packages/object-diff/v{version}/`       |
-| Form Intelligent  | `/packages/form-intelligent/`  | `/packages/form-intelligent/v{version}/`  |
+| Form Intelligence | `/packages/form-intelligence/` | `/packages/form-intelligence/v{version}/` |
 
 Archives live under `apps/docs/archives/<package>/` and are staged into the VitePress tree during `docs:prepare`. Manifests: `apps/docs/doc-versions/<package>.json`.
 
@@ -80,7 +80,7 @@ Archives live under `apps/docs/archives/<package>/` and are staged into the Vite
 pnpm docs:archive
 pnpm docs:archive -- --package form-intelligent --bootstrap
 
-# Backfill Form Intelligent history from published git tips (dropdown archives)
+# Backfill Form Intelligence history from published git tips (dropdown archives)
 node scripts/backfill-form-intelligent-doc-archives.mjs
 pnpm --filter @jayoncode/docs docs:stage-archives
 

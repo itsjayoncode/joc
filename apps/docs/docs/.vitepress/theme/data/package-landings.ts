@@ -77,17 +77,17 @@ lifecycle.on("connection:reconnect", () => {
   flushOfflineQueue();
 });`,
   },
-  "form-intelligent": {
-    id: "form-intelligent",
-    name: "Form Intelligent",
-    npmName: "@jayoncode/form-intelligent",
+  "form-intelligence": {
+    id: "form-intelligence",
+    name: "Form Intelligence",
+    npmName: "@jayoncode/form-intelligence",
     accent: "amber",
     headline: "Stop rebuilding form workflows in every app",
     description:
       "Conditional fields, draft recovery, and submit races usually mean effects and flags everywhere. One headless createForm() owns validation, when() rules, autosave, and submit — your UI just binds.",
-    getStartedLink: "/packages/form-intelligent/overview",
-    playgroundLink: "/playground/form-intelligent/",
-    overviewLink: "/packages/form-intelligent/overview",
+    getStartedLink: "/packages/form-intelligence/overview",
+    playgroundLink: "/playground/form-intelligence/",
+    overviewLink: "/packages/form-intelligence/overview",
     highlights: [
       {
         title: "when() instead of useEffect",
@@ -111,7 +111,7 @@ lifecycle.on("connection:reconnect", () => {
       },
     ],
     sampleTitle: "SaaS checkout: conditional fields + draft autosave",
-    sampleCode: `import { createForm, when } from "@jayoncode/form-intelligent";
+    sampleCode: `import { createForm, when } from "@jayoncode/form-intelligence";
 
 // Pain: enterprise fields, autosave, and submit guards
 // usually mean 4 effects and a race on every keystroke.

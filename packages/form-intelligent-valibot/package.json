@@ -1,22 +1,26 @@
 {
   "name": "@jayoncode/form-intelligent-valibot",
   "version": "2.0.0",
-  "description": "Valibot schema adapter for @jayoncode/form-intelligent.",
+  "private": false,
+  "description": "Deprecated compatibility package \u2014 use @jayoncode/form-intelligence-valibot. Re-exports the Form Intelligence valibot adapter.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
   "type": "module",
   "sideEffects": false,
   "files": [
-    "dist",
+    "*.js",
+    "*.d.ts",
+    "src",
     "README.md"
   ],
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./index.js",
+  "module": "./index.js",
+  "types": "./index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./index.d.ts",
+      "import": "./index.js",
+      "default": "./index.js"
     }
   },
   "repository": {
@@ -24,28 +28,25 @@
     "url": "git+https://github.com/itsjayoncode/joc.git",
     "directory": "packages/form-intelligent-valibot"
   },
-  "keywords": [
-    "form",
-    "valibot",
-    "validation",
-    "schema",
-    "jayoncode",
-    "joc"
-  ],
-  "peerDependencies": {
-    "@jayoncode/form-intelligent": "^3.0.0",
-    "valibot": ">=1.0.0"
+  "homepage": "https://itsjayoncode.github.io/joc/packages/form-intelligence/",
+  "bugs": {
+    "url": "https://github.com/itsjayoncode/joc/issues"
   },
-  "devDependencies": {
-    "@jayoncode/form-intelligent": "workspace:*",
-    "valibot": "^1.0.0"
+  "keywords": [
+    "deprecated",
+    "form-intelligence",
+    "jayoncode",
+    "joc",
+    "valibot"
+  ],
+  "dependencies": {
+    "@jayoncode/form-intelligence-valibot": "workspace:*"
   },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "bugs": {
-    "url": "https://github.com/itsjayoncode/joc/issues"
-  },
-  "homepage": "https://itsjayoncode.github.io/joc/packages/form-intelligent/"
+  "peerDependencies": {
+    "valibot": ">=1.0.0"
+  }
 }

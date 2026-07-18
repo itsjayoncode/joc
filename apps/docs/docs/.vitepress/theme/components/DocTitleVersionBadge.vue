@@ -3,13 +3,13 @@ import { onMounted } from "vue";
 import { onContentUpdated, useRoute } from "vitepress";
 
 import { browserLifecycleMeta } from "../../browser-lifecycle-meta.js";
-import { formIntelligentMeta } from "../../form-intelligent-meta.js";
+import { formIntelligenceMeta } from "../../form-intelligence-meta.js";
 import { objectDiffMeta } from "../../object-diff-meta.js";
 import { useDocsPath } from "../normalize-docs-path.js";
 
 const PACKAGE_OVERVIEW_META = {
   "browser-lifecycle": browserLifecycleMeta,
-  "form-intelligent": formIntelligentMeta,
+  "form-intelligence": formIntelligenceMeta,
   "object-diff": objectDiffMeta,
 } as const;
 

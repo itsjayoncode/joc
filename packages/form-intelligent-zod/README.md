@@ -1,32 +1,20 @@
-# @jayoncode/form-intelligent-zod
+# @jayoncode/form-intelligent-zod (deprecated)
 
-Bridge [Zod](https://zod.dev) schemas into the `@jayoncode/form-intelligent` validation pipeline.
+> **Use [`@jayoncode/form-intelligence-zod`](https://www.npmjs.com/package/@jayoncode/form-intelligence-zod) instead.**
 
-## Install
+This package is a **compatibility re-export** of the Form Intelligence `zod` adapter.
 
 ```bash
-npm install @jayoncode/form-intelligent @jayoncode/form-intelligent-zod zod
+npm uninstall @jayoncode/form-intelligent-zod
+npm install @jayoncode/form-intelligence-zod
 ```
-
-## Usage
 
 ```ts
-import { createForm } from "@jayoncode/form-intelligent";
-import { zodAdapter } from "@jayoncode/form-intelligent-zod";
-import { z } from "zod";
+// before
+import { ... } from "@jayoncode/form-intelligent-zod";
 
-const signupSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
-});
-
-const form = createForm({
-  initialValues: { email: "", password: "" },
-  schema: zodAdapter(signupSchema),
-  async onSubmit(values) {
-    await api.signup(values);
-  },
-});
+// after
+import { ... } from "@jayoncode/form-intelligence-zod";
 ```
 
-Zod issue paths map to form field paths (`address.city` for nested objects). Form-level issues use `_form`.
+Docs: https://itsjayoncode.github.io/joc/packages/form-intelligence/

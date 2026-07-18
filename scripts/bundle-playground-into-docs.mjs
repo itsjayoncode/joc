@@ -22,10 +22,11 @@ const PLAYGROUNDS = [
     base: process.env.VITE_OBJECT_DIFF_PLAYGROUND_BASE ?? "/joc/playground/object-diff/",
   },
   {
-    name: "form-intelligent",
-    appDir: "apps/form-intelligent-playground",
-    buildScript: "form-intelligent-playground:build",
-    base: process.env.VITE_FORM_INTELLIGENT_PLAYGROUND_BASE ?? "/joc/playground/form-intelligent/",
+    name: "form-intelligence",
+    appDir: "apps/form-intelligence-playground",
+    buildScript: "form-intelligence-playground:build",
+    base:
+      process.env.VITE_FORM_INTELLIGENCE_PLAYGROUND_BASE ?? "/joc/playground/form-intelligence/",
   },
 ];
 
@@ -124,6 +125,33 @@ function bundlePlayground({ name, appDir, buildScript, base }) {
   console.log(`Bundled ${appDir} into ${playgroundTarget} with base ${normalizedBase}.`);
 }
 
+function writeFormIntelligencePlaygroundRedirect(docsDistPath) {
+  // Keep old /playground/form-intelligent/ bookmarks working after the rename.
+  const redirectDir = path.join(docsDistPath, "playground", "form-intelligent");
+  mkdirSync(redirectDir, { recursive: true });
+  writeFileSync(
+    path.join(redirectDir, "index.html"),
+    `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="refresh" content="0;url=../form-intelligence/" />
+    <link rel="canonical" href="../form-intelligence/" />
+    <title>Moved to Form Intelligence playground</title>
+    <script>
+      location.replace("../form-intelligence/" + location.search + location.hash);
+    </script>
+  </head>
+  <body>
+    <p>This playground moved to <a href="../form-intelligence/">/playground/form-intelligence/</a>.</p>
+  </body>
+</html>
+`,
+    "utf8",
+  );
+  console.log(`Wrote legacy playground redirect at ${redirectDir}.`);
+}
+
 if (process.env.SKIP_PLAYGROUND_BUNDLE === "1") {
   console.log("Skipped playground bundle (SKIP_PLAYGROUND_BUNDLE=1).");
   process.exit(0);
@@ -132,3 +160,5 @@ if (process.env.SKIP_PLAYGROUND_BUNDLE === "1") {
 for (const playground of PLAYGROUNDS) {
   bundlePlayground(playground);
 }
+
+writeFormIntelligencePlaygroundRedirect(docsDist);

@@ -43,18 +43,18 @@ Start with a live package, then explore planned libraries as they land.
 3. [Diffing](/packages/object-diff/modules/diff) → [Patching](/packages/object-diff/modules/patch) → [Serialization](/packages/object-diff/modules/serialize) → [Engines](/packages/object-diff/modules/engines)
 4. [Interactive playground](/playground/object-diff/)
 
-### [Form Intelligent](/packages/form-intelligent/)
+### [Form Intelligence](/packages/form-intelligence/)
 
-`@jayoncode/form-intelligent` — a headless form workflow engine for validation, submission, autosave, drafts, and multi-step wizards.
+`@jayoncode/form-intelligence` — a headless form workflow engine for validation, submission, autosave, drafts, and multi-step wizards.
 
 **Start here (in order):**
 
-1. [Overview & learning path](/packages/form-intelligent/)
-2. [Tutorial — your first form](/packages/form-intelligent/modules/getting-started)
-3. [Validation](/packages/form-intelligent/modules/validation) → [Submission](/packages/form-intelligent/modules/submission) → [Workflow](/packages/form-intelligent/modules/workflow)
-4. [Rules](/packages/form-intelligent/modules/rules) · [Calculations](/packages/form-intelligent/modules/calculations) · [State](/packages/form-intelligent/modules/state)
-5. [Migration](/packages/form-intelligent/modules/migration) · [Patterns](/packages/form-intelligent/modules/patterns)
-6. [Interactive playground](/playground/form-intelligent/)
+1. [Overview & learning path](/packages/form-intelligence/)
+2. [Tutorial — your first form](/packages/form-intelligence/modules/getting-started)
+3. [Validation](/packages/form-intelligence/modules/validation) → [Submission](/packages/form-intelligence/modules/submission) → [Workflow](/packages/form-intelligence/modules/workflow)
+4. [Rules](/packages/form-intelligence/modules/rules) · [Calculations](/packages/form-intelligence/modules/calculations) · [State](/packages/form-intelligence/modules/state)
+5. [Migration](/packages/form-intelligence/modules/migration) · [Patterns](/packages/form-intelligence/modules/patterns)
+6. [Interactive playground](/playground/form-intelligence/)
 
 ## Coming soon
 

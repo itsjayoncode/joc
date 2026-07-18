@@ -109,14 +109,14 @@ importers:
         specifier: ^3.5.13
         version: 3.5.39(typescript@5.9.3)
 
-  apps/form-intelligent-playground:
+  apps/form-intelligence-playground:
     dependencies:
-      '@jayoncode/form-intelligent':
+      '@jayoncode/form-intelligence':
         specifier: workspace:*
-        version: link:../../packages/form-intelligent
-      '@jayoncode/form-intelligent-react':
+        version: link:../../packages/form-intelligence
+      '@jayoncode/form-intelligence-react':
         specifier: workspace:*
-        version: link:../../packages/form-intelligent-react
+        version: link:../../packages/form-intelligence-react
       '@jayoncode/object-diff':
         specifier: workspace:*
         version: link:../../packages/object-diff
@@ -182,9 +182,9 @@ importers:
       '@jayoncode/browser-lifecycle':
         specifier: workspace:*
         version: link:../../packages/browser-lifecycle
-      '@jayoncode/form-intelligent':
+      '@jayoncode/form-intelligence':
         specifier: workspace:*
-        version: link:../../packages/form-intelligent
+        version: link:../../packages/form-intelligence
       '@jayoncode/object-diff':
         specifier: workspace:*
         version: link:../../packages/object-diff
@@ -282,7 +282,7 @@ importers:
         specifier: ^3.5.13
         version: 3.5.39(typescript@5.9.3)
 
-  packages/form-intelligent:
+  packages/form-intelligence:
     devDependencies:
       '@jayoncode/browser-lifecycle':
         specifier: workspace:*
@@ -297,16 +297,16 @@ importers:
         specifier: ^6.0.0
         version: 6.2.5
 
-  packages/form-intelligent-ajv:
+  packages/form-intelligence-ajv:
     devDependencies:
-      '@jayoncode/form-intelligent':
+      '@jayoncode/form-intelligence':
         specifier: workspace:*
-        version: link:../form-intelligent
+        version: link:../form-intelligence
       ajv:
         specifier: ^8.17.1
         version: 8.20.0
 
-  packages/form-intelligent-angular:
+  packages/form-intelligence-angular:
     devDependencies:
       '@angular/core':
         specifier: ^18.2.13
@@ -317,18 +317,18 @@ importers:
       '@angular/platform-browser-dynamic':
         specifier: ^18.2.13
         version: 18.2.14(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/compiler@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(@angular/platform-browser@18.2.14(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))
-      '@jayoncode/form-intelligent':
+      '@jayoncode/form-intelligence':
         specifier: workspace:*
-        version: link:../form-intelligent
+        version: link:../form-intelligence
       zone.js:
         specifier: ^0.14.10
         version: 0.14.10
 
-  packages/form-intelligent-react:
+  packages/form-intelligence-react:
     devDependencies:
-      '@jayoncode/form-intelligent':
+      '@jayoncode/form-intelligence':
         specifier: workspace:*
-        version: link:../form-intelligent
+        version: link:../form-intelligence
       '@testing-library/react':
         specifier: ^16.3.0
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -342,20 +342,20 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
 
-  packages/form-intelligent-valibot:
+  packages/form-intelligence-valibot:
     devDependencies:
-      '@jayoncode/form-intelligent':
+      '@jayoncode/form-intelligence':
         specifier: workspace:*
-        version: link:../form-intelligent
+        version: link:../form-intelligence
       valibot:
         specifier: ^1.0.0
         version: 1.4.2(typescript@5.9.3)
 
-  packages/form-intelligent-vue:
+  packages/form-intelligence-vue:
     devDependencies:
-      '@jayoncode/form-intelligent':
+      '@jayoncode/form-intelligence':
         specifier: workspace:*
-        version: link:../form-intelligent
+        version: link:../form-intelligence
       '@vue/test-utils':
         specifier: ^2.4.6
         version: 2.4.11(@vue/compiler-dom@3.5.39)(@vue/server-renderer@3.5.39(vue@3.5.39(typescript@5.9.3)))(vue@3.5.39(typescript@5.9.3))
@@ -363,22 +363,91 @@ importers:
         specifier: ^3.5.13
         version: 3.5.39(typescript@5.9.3)
 
-  packages/form-intelligent-yup:
+  packages/form-intelligence-yup:
     devDependencies:
-      '@jayoncode/form-intelligent':
+      '@jayoncode/form-intelligence':
         specifier: workspace:*
-        version: link:../form-intelligent
+        version: link:../form-intelligence
       yup:
         specifier: ^1.6.1
         version: 1.7.1
 
-  packages/form-intelligent-zod:
+  packages/form-intelligence-zod:
     devDependencies:
-      '@jayoncode/form-intelligent':
+      '@jayoncode/form-intelligence':
         specifier: workspace:*
-        version: link:../form-intelligent
+        version: link:../form-intelligence
       zod:
         specifier: ^3.24.0
+        version: 3.25.76
+
+  packages/form-intelligent:
+    dependencies:
+      '@jayoncode/form-intelligence':
+        specifier: workspace:*
+        version: link:../form-intelligence
+
+  packages/form-intelligent-ajv:
+    dependencies:
+      '@jayoncode/form-intelligence-ajv':
+        specifier: workspace:*
+        version: link:../form-intelligence-ajv
+      ajv:
+        specifier: '>=8.0.0'
+        version: 8.20.0
+
+  packages/form-intelligent-angular:
+    dependencies:
+      '@angular/core':
+        specifier: '>=17.0.0'
+        version: 18.2.14(rxjs@7.8.2)(zone.js@0.14.10)
+      '@jayoncode/form-intelligence-angular':
+        specifier: workspace:*
+        version: link:../form-intelligence-angular
+
+  packages/form-intelligent-react:
+    dependencies:
+      '@jayoncode/form-intelligence-react':
+        specifier: workspace:*
+        version: link:../form-intelligence-react
+      react:
+        specifier: '>=18'
+        version: 18.3.1
+
+  packages/form-intelligent-valibot:
+    dependencies:
+      '@jayoncode/form-intelligence-valibot':
+        specifier: workspace:*
+        version: link:../form-intelligence-valibot
+      valibot:
+        specifier: '>=1.0.0'
+        version: 1.4.2(typescript@5.9.3)
+
+  packages/form-intelligent-vue:
+    dependencies:
+      '@jayoncode/form-intelligence-vue':
+        specifier: workspace:*
+        version: link:../form-intelligence-vue
+      vue:
+        specifier: '>=3.4'
+        version: 3.5.39(typescript@5.9.3)
+
+  packages/form-intelligent-yup:
+    dependencies:
+      '@jayoncode/form-intelligence-yup':
+        specifier: workspace:*
+        version: link:../form-intelligence-yup
+      yup:
+        specifier: '>=1.0.0'
+        version: 1.7.1
+
+  packages/form-intelligent-zod:
+    dependencies:
+      '@jayoncode/form-intelligence-zod':
+        specifier: workspace:*
+        version: link:../form-intelligence-zod
+      zod:
+        specifier: '>=3.22.0'
         version: 3.25.76
 
   packages/object-diff: {}

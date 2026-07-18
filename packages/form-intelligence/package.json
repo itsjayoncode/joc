@@ -1,0 +1,157 @@
+{
+  "name": "@jayoncode/form-intelligence",
+  "version": "3.3.1",
+  "private": false,
+  "description": "Form Intelligence \u2014 Typed, framework-agnostic headless form engine for validation, submission, state, drafts, wizards, and plugins. Works with native HTML or any UI framework.",
+  "license": "MIT",
+  "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./validation": {
+      "types": "./dist/validation/index.d.ts",
+      "import": "./dist/validation/index.js"
+    },
+    "./format": {
+      "types": "./dist/format/index.d.ts",
+      "import": "./dist/format/index.js"
+    },
+    "./rules": {
+      "types": "./dist/rules/index.d.ts",
+      "import": "./dist/rules/index.js"
+    },
+    "./workflow": {
+      "types": "./dist/workflow/index.d.ts",
+      "import": "./dist/workflow/index.js"
+    },
+    "./submission": {
+      "types": "./dist/submission/index.d.ts",
+      "import": "./dist/submission/index.js"
+    },
+    "./plugins": {
+      "types": "./dist/plugins/index.d.ts",
+      "import": "./dist/plugins/index.js"
+    },
+    "./analytics": {
+      "types": "./dist/analytics/index.d.ts",
+      "import": "./dist/analytics/index.js"
+    },
+    "./offline": {
+      "types": "./dist/offline/index.d.ts",
+      "import": "./dist/offline/index.js"
+    },
+    "./history": {
+      "types": "./dist/history/index.d.ts",
+      "import": "./dist/history/index.js"
+    },
+    "./draft": {
+      "types": "./dist/draft/index.d.ts",
+      "import": "./dist/draft/index.js"
+    },
+    "./wizard": {
+      "types": "./dist/wizard/index.d.ts",
+      "import": "./dist/wizard/index.js"
+    },
+    "./devtools": {
+      "types": "./dist/devtools/index.d.ts",
+      "import": "./dist/devtools/index.js"
+    },
+    "./fields": {
+      "types": "./dist/fields/index.d.ts",
+      "import": "./dist/fields/index.js"
+    },
+    "./state": {
+      "types": "./dist/state/index.d.ts",
+      "import": "./dist/state/index.js"
+    },
+    "./adapters": {
+      "types": "./dist/adapters/index.d.ts",
+      "import": "./dist/adapters/index.js"
+    },
+    "./dependency": {
+      "types": "./dist/dependency/index.d.ts",
+      "import": "./dist/dependency/index.js"
+    },
+    "./transform": {
+      "types": "./dist/transform/index.d.ts",
+      "import": "./dist/transform/index.js"
+    },
+    "./presentation": {
+      "types": "./dist/presentation/index.d.ts",
+      "import": "./dist/presentation/index.js"
+    },
+    "./middleware": {
+      "types": "./dist/middleware/index.d.ts",
+      "import": "./dist/middleware/index.js"
+    },
+    "./accessibility": {
+      "types": "./dist/engines/accessibility/index.d.ts",
+      "import": "./dist/engines/accessibility/index.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itsjayoncode/joc.git",
+    "directory": "packages/form-intelligence"
+  },
+  "homepage": "https://itsjayoncode.github.io/joc/packages/form-intelligence/",
+  "bugs": {
+    "url": "https://github.com/itsjayoncode/joc/issues"
+  },
+  "scripts": {
+    "test": "pnpm -w exec vitest run packages/form-intelligence/tests",
+    "test:ssr": "pnpm -w exec vitest run packages/form-intelligence/tests/ssr",
+    "test:coverage": "pnpm -w exec vitest run --coverage packages/form-intelligence/src packages/form-intelligence/tests",
+    "typecheck:examples": "tsc -p tsconfig.examples.json --noEmit",
+    "check:entry-sizes": "node ./scripts/check-entry-sizes.mjs",
+    "check:bundle-budgets": "node ./scripts/bundle-budgets.mjs",
+    "check:size": "pnpm run check:entry-sizes && pnpm run check:bundle-budgets"
+  },
+  "keywords": [
+    "form",
+    "forms",
+    "headless",
+    "validation",
+    "workflow",
+    "wizard",
+    "autosave",
+    "typescript",
+    "framework-agnostic",
+    "jayoncode",
+    "joc",
+    "form-intelligence"
+  ],
+  "peerDependencies": {
+    "@jayoncode/browser-lifecycle": ">=0.3.0",
+    "@jayoncode/object-diff": ">=0.3.0"
+  },
+  "peerDependenciesMeta": {
+    "@jayoncode/browser-lifecycle": {
+      "optional": true
+    },
+    "@jayoncode/object-diff": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@jayoncode/browser-lifecycle": "workspace:*",
+    "@jayoncode/object-diff": "workspace:*",
+    "esbuild": "^0.21.5",
+    "fake-indexeddb": "^6.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

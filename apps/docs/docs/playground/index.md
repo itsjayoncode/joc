@@ -1,6 +1,6 @@
 ---
 title: Playground
-description: Interactive playgrounds for live JOC packages — explore Browser Lifecycle, Object Diff, and Form Intelligent in the browser.
+description: Interactive playgrounds for live JOC packages — explore Browser Lifecycle, Object Diff, and Form Intelligence in the browser.
 ---
 
 # Playground
@@ -16,7 +16,7 @@ Run a playground app directly from the monorepo when you are contributing or deb
 ```bash
 pnpm browser-session-playground:dev
 pnpm object-diff-playground:dev
-pnpm form-intelligent-playground:dev
+pnpm form-intelligence-playground:dev
 ```
 
 See each package’s playground guide for routes, deployment notes, and module-specific walkthroughs.

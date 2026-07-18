@@ -3,9 +3,9 @@ import { defineConfig } from "vitepress";
 import { browserLifecycleMeta } from "./browser-lifecycle-meta.js";
 import { createBrowserLifecycleSidebarMap } from "./browser-lifecycle-sidebar.js";
 import { browserLifecycleDocVersions } from "./browser-lifecycle-versions.js";
-import { formIntelligentMeta } from "./form-intelligent-meta.js";
-import { createFormIntelligentSidebarMap } from "./form-intelligent-sidebar.js";
-import { formIntelligentDocVersions } from "./form-intelligent-versions.js";
+import { formIntelligenceMeta } from "./form-intelligence-meta.js";
+import { createFormIntelligenceSidebarMap } from "./form-intelligence-sidebar.js";
+import { formIntelligenceDocVersions } from "./form-intelligence-versions.js";
 import { navPackageLabel } from "./nav-package-label.js";
 import { objectDiffMeta } from "./object-diff-meta.js";
 import { createObjectDiffSidebarMap } from "./object-diff-sidebar.js";
@@ -33,15 +33,15 @@ const docsGaId = process.env.VITE_DOCS_GA_ID ?? "G-7EG7FB1SL4";
 const PKG = browserLifecycleDocVersions.basePath;
 const browserLifecycleVersionLabel = browserLifecycleMeta.versionLabel;
 const objectDiffVersionLabel = objectDiffMeta.versionLabel;
-const formIntelligentVersionLabel = formIntelligentMeta.versionLabel;
+const formIntelligenceVersionLabel = formIntelligenceMeta.versionLabel;
 
 const packageItems = [
   { text: "All Packages", link: "/packages/" },
   { text: navPackageLabel("Browser Lifecycle", browserLifecycleVersionLabel), link: `${PKG}/` },
   { text: navPackageLabel("Object Diff", objectDiffVersionLabel), link: "/packages/object-diff/" },
   {
-    text: navPackageLabel("Form Intelligent", formIntelligentVersionLabel),
-    link: "/packages/form-intelligent/",
+    text: navPackageLabel("Form Intelligence", formIntelligenceVersionLabel),
+    link: "/packages/form-intelligence/",
   },
 ];
 
@@ -58,11 +58,11 @@ const objectDiffSidebar = createObjectDiffSidebarMap(
   objectDiffDocVersions.archives,
 );
 
-const FORM_INTELLIGENT_PKG = "/packages/form-intelligent";
-const formIntelligentSidebar = createFormIntelligentSidebarMap(
-  FORM_INTELLIGENT_PKG,
-  formIntelligentVersionLabel,
-  formIntelligentDocVersions.archives,
+const FORM_INTELLIGENCE_PKG = "/packages/form-intelligence";
+const formIntelligenceSidebar = createFormIntelligenceSidebarMap(
+  FORM_INTELLIGENCE_PKG,
+  formIntelligenceVersionLabel,
+  formIntelligenceDocVersions.archives,
 );
 
 export default defineConfig({
@@ -168,7 +168,7 @@ gtag('config', '${docsGaId}');`,
       ],
       ...browserLifecycleSidebar,
       ...objectDiffSidebar,
-      ...formIntelligentSidebar,
+      ...formIntelligenceSidebar,
       "/guides/": [
         {
           text: "Contributor Guides",
@@ -206,8 +206,8 @@ gtag('config', '${docsGaId}');`,
               rel: "noreferrer",
             },
             {
-              text: "Form Intelligent ↗",
-              link: "/playground/form-intelligent/",
+              text: "Form Intelligence ↗",
+              link: "/playground/form-intelligence/",
               target: "_blank",
               rel: "noreferrer",
             },

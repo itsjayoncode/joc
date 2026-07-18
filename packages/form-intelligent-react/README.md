@@ -1,40 +1,20 @@
-# Form Intelligent React
+# @jayoncode/form-intelligent-react (deprecated)
 
-React adapter for [`@jayoncode/form-intelligent`](../form-intelligent/README.md).
+> **Use [`@jayoncode/form-intelligence-react`](https://www.npmjs.com/package/@jayoncode/form-intelligence-react) instead.**
 
-## Install
+This package is a **compatibility re-export** of the Form Intelligence `react` adapter.
 
 ```bash
-npm install @jayoncode/form-intelligent @jayoncode/form-intelligent-react
+npm uninstall @jayoncode/form-intelligent-react
+npm install @jayoncode/form-intelligence-react
 ```
 
-## Usage
+```ts
+// before
+import { ... } from "@jayoncode/form-intelligent-react";
 
-```tsx
-import { useForm } from "@jayoncode/form-intelligent-react";
-
-export default function App() {
-  const form = useForm({
-    schema: {
-      email: "email",
-      password: "password",
-    },
-    async onSubmit(values) {
-      await api.login(values);
-    },
-  });
-
-  return (
-    <form {...form.form()}>
-      <input {...form.field("email")} />
-      {form.state.errors.email && <span>{form.state.errors.email}</span>}
-      <input {...form.field("password")} type="password" />
-      <button {...form.submit()} disabled={!form.state.isValid}>
-        Login
-      </button>
-    </form>
-  );
-}
+// after
+import { ... } from "@jayoncode/form-intelligence-react";
 ```
 
-Keep your markup. The engine owns validation, submit, and loading state. No `subscribe()` in app code.
+Docs: https://itsjayoncode.github.io/joc/packages/form-intelligence/

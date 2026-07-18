@@ -2,102 +2,124 @@
   "name": "@jayoncode/form-intelligent",
   "version": "3.3.1",
   "private": false,
-  "description": "Form Intelligent — Typed, framework-agnostic headless form engine for validation, submission, state, drafts, wizards, and plugins. Works with native HTML or any UI framework.",
+  "description": "Deprecated compatibility package \u2014 use @jayoncode/form-intelligence. Re-exports the Form Intelligence API.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
   "type": "module",
   "sideEffects": false,
   "files": [
-    "dist",
+    "*.js",
+    "*.d.ts",
     "README.md"
   ],
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./index.js",
+  "module": "./index.js",
+  "types": "./index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./index.d.ts",
+      "import": "./index.js",
+      "default": "./index.js"
     },
     "./validation": {
-      "types": "./dist/validation/index.d.ts",
-      "import": "./dist/validation/index.js"
+      "types": "./validation.d.ts",
+      "import": "./validation.js",
+      "default": "./validation.js"
     },
     "./format": {
-      "types": "./dist/format/index.d.ts",
-      "import": "./dist/format/index.js"
+      "types": "./format.d.ts",
+      "import": "./format.js",
+      "default": "./format.js"
     },
     "./rules": {
-      "types": "./dist/rules/index.d.ts",
-      "import": "./dist/rules/index.js"
+      "types": "./rules.d.ts",
+      "import": "./rules.js",
+      "default": "./rules.js"
     },
     "./workflow": {
-      "types": "./dist/workflow/index.d.ts",
-      "import": "./dist/workflow/index.js"
+      "types": "./workflow.d.ts",
+      "import": "./workflow.js",
+      "default": "./workflow.js"
     },
     "./submission": {
-      "types": "./dist/submission/index.d.ts",
-      "import": "./dist/submission/index.js"
+      "types": "./submission.d.ts",
+      "import": "./submission.js",
+      "default": "./submission.js"
     },
     "./plugins": {
-      "types": "./dist/plugins/index.d.ts",
-      "import": "./dist/plugins/index.js"
+      "types": "./plugins.d.ts",
+      "import": "./plugins.js",
+      "default": "./plugins.js"
     },
     "./analytics": {
-      "types": "./dist/analytics/index.d.ts",
-      "import": "./dist/analytics/index.js"
+      "types": "./analytics.d.ts",
+      "import": "./analytics.js",
+      "default": "./analytics.js"
     },
     "./offline": {
-      "types": "./dist/offline/index.d.ts",
-      "import": "./dist/offline/index.js"
+      "types": "./offline.d.ts",
+      "import": "./offline.js",
+      "default": "./offline.js"
     },
     "./history": {
-      "types": "./dist/history/index.d.ts",
-      "import": "./dist/history/index.js"
+      "types": "./history.d.ts",
+      "import": "./history.js",
+      "default": "./history.js"
     },
     "./draft": {
-      "types": "./dist/draft/index.d.ts",
-      "import": "./dist/draft/index.js"
+      "types": "./draft.d.ts",
+      "import": "./draft.js",
+      "default": "./draft.js"
     },
     "./wizard": {
-      "types": "./dist/wizard/index.d.ts",
-      "import": "./dist/wizard/index.js"
+      "types": "./wizard.d.ts",
+      "import": "./wizard.js",
+      "default": "./wizard.js"
     },
     "./devtools": {
-      "types": "./dist/devtools/index.d.ts",
-      "import": "./dist/devtools/index.js"
+      "types": "./devtools.d.ts",
+      "import": "./devtools.js",
+      "default": "./devtools.js"
     },
     "./fields": {
-      "types": "./dist/fields/index.d.ts",
-      "import": "./dist/fields/index.js"
+      "types": "./fields.d.ts",
+      "import": "./fields.js",
+      "default": "./fields.js"
     },
     "./state": {
-      "types": "./dist/state/index.d.ts",
-      "import": "./dist/state/index.js"
+      "types": "./state.d.ts",
+      "import": "./state.js",
+      "default": "./state.js"
     },
     "./adapters": {
-      "types": "./dist/adapters/index.d.ts",
-      "import": "./dist/adapters/index.js"
+      "types": "./adapters.d.ts",
+      "import": "./adapters.js",
+      "default": "./adapters.js"
     },
     "./dependency": {
-      "types": "./dist/dependency/index.d.ts",
-      "import": "./dist/dependency/index.js"
+      "types": "./dependency.d.ts",
+      "import": "./dependency.js",
+      "default": "./dependency.js"
     },
     "./transform": {
-      "types": "./dist/transform/index.d.ts",
-      "import": "./dist/transform/index.js"
+      "types": "./transform.d.ts",
+      "import": "./transform.js",
+      "default": "./transform.js"
     },
     "./presentation": {
-      "types": "./dist/presentation/index.d.ts",
-      "import": "./dist/presentation/index.js"
+      "types": "./presentation.d.ts",
+      "import": "./presentation.js",
+      "default": "./presentation.js"
     },
     "./middleware": {
-      "types": "./dist/middleware/index.d.ts",
-      "import": "./dist/middleware/index.js"
+      "types": "./middleware.d.ts",
+      "import": "./middleware.js",
+      "default": "./middleware.js"
     },
     "./accessibility": {
-      "types": "./dist/engines/accessibility/index.d.ts",
-      "import": "./dist/engines/accessibility/index.js"
+      "types": "./accessibility.d.ts",
+      "import": "./accessibility.js",
+      "default": "./accessibility.js"
     }
   },
   "repository": {
@@ -105,49 +127,20 @@
     "url": "git+https://github.com/itsjayoncode/joc.git",
     "directory": "packages/form-intelligent"
   },
-  "homepage": "https://itsjayoncode.github.io/joc/packages/form-intelligent/",
+  "homepage": "https://itsjayoncode.github.io/joc/packages/form-intelligence/",
   "bugs": {
     "url": "https://github.com/itsjayoncode/joc/issues"
-  },
-  "scripts": {
-    "test": "pnpm -w exec vitest run packages/form-intelligent/tests",
-    "test:ssr": "pnpm -w exec vitest run packages/form-intelligent/tests/ssr",
-    "test:coverage": "pnpm -w exec vitest run --coverage packages/form-intelligent/src packages/form-intelligent/tests",
-    "typecheck:examples": "tsc -p tsconfig.examples.json --noEmit",
-    "check:entry-sizes": "node ./scripts/check-entry-sizes.mjs",
-    "check:bundle-budgets": "node ./scripts/bundle-budgets.mjs",
-    "check:size": "pnpm run check:entry-sizes && pnpm run check:bundle-budgets"
   },
   "keywords": [
     "form",
     "forms",
-    "headless",
-    "validation",
-    "workflow",
-    "wizard",
-    "autosave",
-    "typescript",
-    "framework-agnostic",
+    "deprecated",
+    "form-intelligence",
     "jayoncode",
     "joc"
   ],
-  "peerDependencies": {
-    "@jayoncode/browser-lifecycle": ">=0.3.0",
-    "@jayoncode/object-diff": ">=0.3.0"
-  },
-  "peerDependenciesMeta": {
-    "@jayoncode/browser-lifecycle": {
-      "optional": true
-    },
-    "@jayoncode/object-diff": {
-      "optional": true
-    }
-  },
-  "devDependencies": {
-    "@jayoncode/browser-lifecycle": "workspace:*",
-    "@jayoncode/object-diff": "workspace:*",
-    "esbuild": "^0.21.5",
-    "fake-indexeddb": "^6.0.0"
+  "dependencies": {
+    "@jayoncode/form-intelligence": "workspace:*"
   },
   "publishConfig": {
     "access": "public",

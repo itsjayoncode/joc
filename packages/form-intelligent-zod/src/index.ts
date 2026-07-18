@@ -1,1 +1,2 @@
-export { zodAdapter } from "./zod-adapter.js";
+/** Compatibility entry — prefer importing from package root. */
+export * from "@jayoncode/form-intelligence-zod";

@@ -31,7 +31,7 @@ Read the full [philosophy](/getting-started/philosophy) and [vision on GitHub](h
 | Package                                                        | What it solves                                                       | Start here                                                                          |
 | -------------------------------------------------------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
 | [`@jayoncode/browser-lifecycle`](/packages/browser-lifecycle/) | Visibility, focus, idle, connectivity, cross-tab session signals     | [Docs](/packages/browser-lifecycle/) · [Playground](/playground/browser-lifecycle/) |
-| [`@jayoncode/form-intelligent`](/packages/form-intelligent/)   | Headless form workflows — validation, rules, drafts, wizards, submit | [Docs](/packages/form-intelligent/) · [Playground](/playground/form-intelligent/)   |
+| [`@jayoncode/form-intelligence`](/packages/form-intelligence/) | Headless form workflows — validation, rules, drafts, wizards, submit | [Docs](/packages/form-intelligence/) · [Playground](/playground/form-intelligence/) |
 | [`@jayoncode/object-diff`](/packages/object-diff/)             | Deep comparison, change records, JSON Patch                          | [Docs](/packages/object-diff/) · [Playground](/playground/object-diff/)             |
 
 Browse the full [package catalog](/packages/) (including planned libraries).

@@ -7,7 +7,7 @@ Current applications include:
 - `docs` — official VitePress documentation site
 - `playground` — lightweight local package validation
 - `browser-session-playground` — Browser Lifecycle engineering shell
-- `form-intelligent-playground` — Form Intelligent engineering shell
+- `form-intelligence-playground` — Form Intelligence engineering shell
 - `object-diff-playground` — Object Diff engineering shell
 - `website` — reserved for the future public project presence
 

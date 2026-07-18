@@ -22,9 +22,9 @@ const packages = [
     apiDir: path.join(rootDir, "apps/docs/docs/packages/object-diff/api"),
   },
   {
-    name: "form-intelligent",
-    typedocConfig: path.join(rootDir, "packages/form-intelligent/typedoc.json"),
-    apiDir: path.join(rootDir, "apps/docs/docs/packages/form-intelligent/api"),
+    name: "form-intelligence",
+    typedocConfig: path.join(rootDir, "packages/form-intelligence/typedoc.json"),
+    apiDir: path.join(rootDir, "apps/docs/docs/packages/form-intelligence/api"),
   },
 ];
 

@@ -29,11 +29,11 @@ describe("release engineering foundation", () => {
 
     expect(config.ignore).not.toContain("@jayoncode/browser-lifecycle");
     expect(config.ignore).not.toContain("@jayoncode/browser-lifecycle-react");
-    expect(config.ignore).not.toContain("@jayoncode/form-intelligent");
-    expect(config.ignore).not.toContain("@jayoncode/form-intelligent-react");
+    expect(config.ignore).not.toContain("@jayoncode/form-intelligence");
+    expect(config.ignore).not.toContain("@jayoncode/form-intelligence-react");
     expect(config.ignore).not.toContain("@jayoncode/object-diff");
     expect(config.ignore).toContain("@jayoncode/browser-session-playground");
-    expect(config.ignore).toContain("@jayoncode/form-intelligent-playground");
+    expect(config.ignore).toContain("@jayoncode/form-intelligence-playground");
   });
 
   it("keeps browser-lifecycle adapters public for npm publication", () => {
@@ -51,14 +51,14 @@ describe("release engineering foundation", () => {
 
   it("keeps form-intelligent adapters public for npm publication", () => {
     const adapter = JSON.parse(
-      readFileSync(path.join(rootDir, "packages/form-intelligent-react/package.json"), "utf8"),
+      readFileSync(path.join(rootDir, "packages/form-intelligence-react/package.json"), "utf8"),
     ) as {
       private?: boolean;
       version: string;
       peerDependencies?: Record<string, string>;
     };
     const core = JSON.parse(
-      readFileSync(path.join(rootDir, "packages/form-intelligent/package.json"), "utf8"),
+      readFileSync(path.join(rootDir, "packages/form-intelligence/package.json"), "utf8"),
     ) as { private?: boolean; version: string };
 
     const major = core.version.split(".")[0] ?? "0";
@@ -66,7 +66,7 @@ describe("release engineering foundation", () => {
 
     expect(adapter.private).not.toBe(true);
     expect(adapter.version).not.toBe("0.0.0");
-    expect(adapter.peerDependencies?.["@jayoncode/form-intelligent"]).toBe(expectedPeer);
+    expect(adapter.peerDependencies?.["@jayoncode/form-intelligence"]).toBe(expectedPeer);
     expect(core.private).not.toBe(true);
   });
 

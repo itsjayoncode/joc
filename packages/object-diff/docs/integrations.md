@@ -15,7 +15,7 @@ Use Object Diff from other packages and apps through the **public API only**. Co
 
 | Consumer                                 | Typical APIs                      | Notes                     |
 | ---------------------------------------- | --------------------------------- | ------------------------- |
-| Forms / `@jayoncode/form-intelligent`    | `hasChanges`, `diff`, `serialize` | Dirty check + audit trail |
+| Forms / `@jayoncode/form-intelligence`   | `hasChanges`, `diff`, `serialize` | Dirty check + audit trail |
 | Session / `@jayoncode/browser-lifecycle` | `diff`, `hasChanges`              | Optional snapshot compare |
 | Audit / logging                          | `diff`, `serialize`, `/stats`     | Change records as events  |
 | Collaboration / sync                     | `/merge`, `patch`, `applyPatch`   | Conflict-aware merge      |

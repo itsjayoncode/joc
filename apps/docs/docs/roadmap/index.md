@@ -14,7 +14,7 @@ JOC has moved past “foundation only.” The monorepo standards, docs platform,
 | Package                                                        | Focus                                                        | Status      |
 | -------------------------------------------------------------- | ------------------------------------------------------------ | ----------- |
 | [`@jayoncode/browser-lifecycle`](/packages/browser-lifecycle/) | Session signals — visibility, idle, connectivity, cross-tab  | Live on npm |
-| [`@jayoncode/form-intelligent`](/packages/form-intelligent/)   | Headless form workflows — validation, rules, drafts, wizards | Live on npm |
+| [`@jayoncode/form-intelligence`](/packages/form-intelligence/) | Headless form workflows — validation, rules, drafts, wizards | Live on npm |
 | [`@jayoncode/object-diff`](/packages/object-diff/)             | Deep diff, change records, JSON Patch                        | Live on npm |
 
 Each ships with docs, SemVer/changesets, and an interactive [playground](/playground/).
