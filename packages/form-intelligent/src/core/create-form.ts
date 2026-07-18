@@ -264,6 +264,25 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     if (options.domTarget) {
       this.attachElement(options.domTarget, options.fieldPaths);
     }
+
+    this.registerConfigSubscribe(config.subscribe);
+  }
+
+  /** Register `createForm({ subscribe })` listeners and fire once after init. */
+  private registerConfigSubscribe(subscribe: FormConfig<TValues>["subscribe"]): void {
+    if (!subscribe) {
+      return;
+    }
+
+    const listeners = Array.isArray(subscribe) ? subscribe : [subscribe];
+    for (const listener of listeners) {
+      this.subscribe(() => {
+        listener(this);
+      });
+    }
+    for (const listener of listeners) {
+      listener(this);
+    }
   }
 
   /** Apply per-path debounce / abortPrevious from `asyncValidator({ … })` options. */

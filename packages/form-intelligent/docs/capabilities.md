@@ -25,7 +25,13 @@
 One instance owns values, errors, loading, dirty, and touched state.
 
 ```ts
-const form = createForm({ initialValues: { email: "" } });
+const form = createForm({
+  initialValues: { email: "" },
+  // Optional: declarative listeners (same store as form.subscribe; until destroy)
+  subscribe: (form) => {
+    syncUi(form.state);
+  },
+});
 
 form.state.values;
 form.state.errors;

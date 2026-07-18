@@ -81,7 +81,7 @@ return (
 
 `useForm` owns instance lifecycle (StrictMode-safe). `form.field(path)` spreads `name` + `aria-*`. Use `form.fieldController(path)` / `form.controller` for the full Phase 16 controller surface (`bind`, `setAriaIds`, `focusFirstInvalid`).
 
-Read `form.state` in JSX — never `subscribe()` in application code.
+Read `form.state` in JSX — never `subscribe()` (or `createForm({ subscribe })`) in application code.
 
 Internally the adapter uses:
 

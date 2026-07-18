@@ -179,6 +179,8 @@ form.subscribe(() => {
 await form.submit();
 ```
 
+You can also pass `subscribe` on `createForm` (one listener or an array) — same store, fires once after create, then on every notify, until `destroy()`.
+
 The instance owns values, per-field errors, touched/dirty flags, and submit lifecycle (`isSubmitting`, duplicate-submit guard). UI layers read state and call `bind()` handlers — the package does not render components.
 
 [Run this flow in the playground →](/playground/form-intelligent/validation)
@@ -232,13 +234,13 @@ createForm({
 
 ## Problem → approach
 
-| Typical pain                                                                    | Form Intelligent                                                                     |
-| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| Validation, touched state, and submit guards duplicated in every form component | One `createForm()` instance owns values, errors, dirty/touched, and submit lifecycle |
-| Conditional fields and require rules via `useEffect`                            | `when().equals().show().require()` — declarative, testable                           |
-| Draft/autosave races and lost input on refresh                                  | Built-in autosave debounce + draft storage                                           |
-| `onSubmit` handlers mix fetch, error mapping, and UI flags                      | `onSubmit` is async-first; `isSubmitting` and duplicate-submit guard are built in    |
-| Framework form libs own too much UI or too little workflow                      | Headless `bind()` + `form.state`; `subscribe()` only for manual UI                   |
+| Typical pain                                                                    | Form Intelligent                                                                                 |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Validation, touched state, and submit guards duplicated in every form component | One `createForm()` instance owns values, errors, dirty/touched, and submit lifecycle             |
+| Conditional fields and require rules via `useEffect`                            | `when().equals().show().require()` — declarative, testable                                       |
+| Draft/autosave races and lost input on refresh                                  | Built-in autosave debounce + draft storage                                                       |
+| `onSubmit` handlers mix fetch, error mapping, and UI flags                      | `onSubmit` is async-first; `isSubmitting` and duplicate-submit guard are built in                |
+| Framework form libs own too much UI or too little workflow                      | Headless `bind()` + `form.state`; `subscribe()` / `createForm({ subscribe })` only for manual UI |
 
 ## Overview
 

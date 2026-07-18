@@ -371,6 +371,14 @@ export interface ResetOptions<TValues extends Record<string, unknown>> {
   readonly keepDirty?: boolean;
 }
 
+/**
+ * State listener for `createForm({ subscribe })`. Receives the form instance.
+ * Lives until `form.destroy()` — use `form.subscribe()` when you need unsubscribe.
+ */
+export type FormSubscribeListener<
+  TValues extends Record<string, unknown> = Record<string, unknown>,
+> = (form: FormInstance<TValues>) => void;
+
 export interface FormConfig<TValues extends Record<string, unknown>> {
   readonly initialValues?: TValues;
   readonly target?: string | HTMLElement;
@@ -398,6 +406,13 @@ export interface FormConfig<TValues extends Record<string, unknown>> {
    * Prefer this for declarative setup; use `form.use()` later for conditional or late registration.
    */
   readonly plugins?: readonly FormPlugin<TValues>[];
+  /**
+   * State listeners registered at create time (same store as `form.subscribe()`).
+   * Pass one listener or an array. Each receives the form instance, is invoked once after
+   * create (so UI can sync immediately), then on every state notify. Lives until
+   * `form.destroy()`. Prefer framework adapters for React/Vue; use this for vanilla / host UI.
+   */
+  readonly subscribe?: FormSubscribeListener<TValues> | readonly FormSubscribeListener<TValues>[];
   /**
    * Explicit dependency map: child → parent(s).
    * Cycles throw `ConfigurationError` at registration (ADR-007).
@@ -569,7 +584,10 @@ export interface FormInstance<TValues extends Record<string, unknown>> {
     readonly order: number;
     readonly version?: string;
   }[];
-  /** Advanced: reactive UI updates. Framework adapters call this internally. */
+  /**
+   * Advanced: reactive UI updates. Framework adapters call this internally.
+   * For declarative create-time listeners, prefer `createForm({ subscribe })`.
+   */
   subscribe(listener: () => void): () => void;
   on(event: FormEvent, listener: () => void): () => void;
   destroy(): void;

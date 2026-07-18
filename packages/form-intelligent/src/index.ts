@@ -153,6 +153,7 @@ export type {
   FormRuleInput,
   FormSelector,
   FormState,
+  FormSubscribeListener,
   FormUiState,
   Formatter,
   KeyboardShortcutConfig,

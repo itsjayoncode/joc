@@ -207,6 +207,17 @@ form.subscribe(() => {
 });
 ```
 
+You can also declare listeners at create time (fires once immediately, then on every change, until `destroy()`):
+
+```ts
+createForm({
+  initialValues: { email: "" },
+  subscribe: (form) => {
+    render(form.state);
+  },
+});
+```
+
 React developers should use `useForm()` instead — the adapter subscribes internally via `useSyncExternalStore`.
 
 ---
@@ -240,13 +251,13 @@ While `onSubmit` runs, `form.isSubmitting()` is `true`.
 
 ## Recap
 
-| Step | API                          | Result                                   |
-| ---- | ---------------------------- | ---------------------------------------- |
-| 1    | `npm install`                | Package on disk                          |
-| 2    | `createForm({ … })`          | Instance with values + validators        |
-| 3    | `field().bind()`             | Headless input wiring                    |
-| 4    | `form.state` / `subscribe()` | Read state; subscribe only for manual UI |
-| 5    | `submit()`                   | Validated async submission               |
+| Step | API                          | Result                                                                      |
+| ---- | ---------------------------- | --------------------------------------------------------------------------- |
+| 1    | `npm install`                | Package on disk                                                             |
+| 2    | `createForm({ … })`          | Instance with values + validators                                           |
+| 3    | `field().bind()`             | Headless input wiring                                                       |
+| 4    | `form.state` / `subscribe()` | Read state; `createForm({ subscribe })` or `form.subscribe()` for manual UI |
+| 5    | `submit()`                   | Validated async submission                                                  |
 
 ## Continue
 
