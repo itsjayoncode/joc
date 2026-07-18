@@ -46,6 +46,18 @@ form.subscribe(() => {
 });
 ```
 
+Or declare listeners at create time (same store; lives until `destroy()`; fires once immediately):
+
+```ts
+createForm({
+  initialValues: { email: "" },
+  subscribe: (form) => {
+    render(form.state);
+  },
+  // or multiple: subscribe: [(form) => { … }, (form) => { … }],
+});
+```
+
 Framework adapters subscribe for you — prefer `useForm()` / `useFormState()` in React.
 
 ---

@@ -66,6 +66,15 @@ form.subscribe(() => {
 });
 ```
 
+Or pass `subscribe` on `createForm` (one listener or an array) — same store, invoked once after create, then on every notify, until `destroy()`:
+
+```ts
+createForm({
+  initialValues: { email: "" },
+  subscribe: (form) => render(form.state),
+});
+```
+
 Framework adapters (React, Vue, Angular) call `subscribe()` internally — application code should not.
 
 | State        | Access                                       |

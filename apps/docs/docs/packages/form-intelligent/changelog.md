@@ -5,6 +5,13 @@ description: "Release history for @jayoncode/form-intelligent."
 
 # Changelog
 
+## 3.3.0
+
+### Minor Changes
+
+- Add `createForm({ subscribe })` for one or many create-time state listeners (same store as `form.subscribe()`, fires once after init, until destroy).
+- Additive subscribe to createForm()
+
 ## 3.2.1
 
 ### Patch Changes
