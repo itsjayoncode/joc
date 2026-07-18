@@ -14,3 +14,4 @@ export type {
   FormUiState,
   RuleContext,
 } from "../engines/workflow/index.js";
+export type { FormRuleInput } from "../types/index.js";

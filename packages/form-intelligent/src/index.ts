@@ -150,6 +150,7 @@ export type {
   FormPluginSetupResult,
   FormRef,
   FormRuleDefinition,
+  FormRuleInput,
   FormSelector,
   FormState,
   FormUiState,

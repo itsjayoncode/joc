@@ -46,6 +46,16 @@ Rules evaluate when watched values change. Results land in `form.state.fieldUi` 
 
 **Evaluation order:** rules run in **registration order** (config `rules`, then `form.when(…)` commits). For the same UI key, **later rules win**.
 
+`createForm({ rules })` accepts either a `when()` builder or a plain rule object. You do **not** need `.toRule()` / `.build()` for config rules — TypeScript accepts the builder, and the form materializes it at create time.
+
+```ts
+// Preferred — pass the builder directly
+rules: [when("name").equals("blocked").disableSubmit()];
+
+// Equivalent — only needed when you want a plain FormRuleDefinition yourself
+rules: [when("name").equals("blocked").disableSubmit().toRule()];
+```
+
 ---
 
 ## Which import should I use?

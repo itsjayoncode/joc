@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.2.1
+
+### Patch Changes
+
+- Fix incorrect types / docs mismatch
+
 ## 3.2.0
 
 ### Minor Changes
