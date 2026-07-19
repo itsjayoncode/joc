@@ -71,4 +71,28 @@ serializeWith(result, "human"); // built-ins still work
 
 No import side effects — pass plugins explicitly. Plugin names must not collide with built-ins.
 
+## Named format helpers
+
+Each built-in format is also exported as a standalone named function from `@jayoncode/object-diff/formatter`, in case you want to call one directly without going through `serialize(result, format)`:
+
+```ts
+import {
+  serializeJson,
+  serializeMarkdown,
+  serializeTable,
+  serializeHtml,
+  serializeConsole,
+  serializeHuman,
+} from "@jayoncode/object-diff/formatter";
+
+serializeJson(result, /* pretty */ false);
+serializeMarkdown(result, { title: "Form changes" });
+serializeTable(result);
+serializeHtml(result, { title: "Audit" });
+serializeConsole(result, { color: false });
+serializeHuman(result);
+```
+
+`serializeJson` takes a `pretty: boolean` second argument (not `SerializeOptions`) — `serialize(result, "json")` / `serialize(result, "pretty")` cover the same two cases without needing the named helper. The other named helpers take the same `SerializeOptions` as their `serialize(result, format, options)` equivalent.
+
 **Next:** [Engines](/packages/object-diff/modules/engines) — merge, query, stats, plugins, view, and slim `/core`.

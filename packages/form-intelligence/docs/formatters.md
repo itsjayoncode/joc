@@ -84,6 +84,42 @@ form.field("email", {
 
 Use **format** when the user should see a mask. Use **transform** when you need a clean value before validators run.
 
+### Transform options
+
+Inbound stages always run in fixed order (`TRANSFORM_INBOUND_ORDER`):
+
+`trim` → `normalize` → `sanitize` → `custom` (`stages`) → `parse`
+
+| Option      | Type                                          | Notes                                       |
+| ----------- | --------------------------------------------- | ------------------------------------------- |
+| `trim`      | `boolean` \| `"start"` \| `"end"` \| `"both"` | `true` ≡ `"both"`                           |
+| `normalize` | `boolean` \| `"nfc"` \| `"nfd"`               | Unicode normalization; `true` ≡ `"nfc"`     |
+| `sanitize`  | `boolean` \| `SanitizeOptions`                | `true` enables defaults below               |
+| `parse`     | `Parser`                                      | Final inbound parse before validation       |
+| `stages`    | `TransformFn[]`                               | Custom functions between sanitize and parse |
+
+`SanitizeOptions`:
+
+| Option              | Default when `sanitize: true` | Notes                                |
+| ------------------- | ----------------------------- | ------------------------------------ |
+| `stripHtml`         | `true`                        | Strip simple HTML tags               |
+| `stripControlChars` | `true`                        | Strip C0 controls except tab/newline |
+
+```ts
+form.field("bio", {
+  transform: {
+    trim: "both",
+    normalize: "nfc",
+    sanitize: { stripHtml: true, stripControlChars: true },
+    stages: [(value) => String(value).replace(/\s+/g, " ")],
+  },
+});
+```
+
+Low-level helpers (`createTransformPipeline`, `TRANSFORM_INBOUND_ORDER`) live on `@jayoncode/form-intelligence/transform`.
+
+Outbound **format** is separate and is not part of `TRANSFORM_INBOUND_ORDER`.
+
 ---
 
 ## Built-in formatters
@@ -175,6 +211,27 @@ createForm({
 ```
 
 When you pass **functions** (`format: formatPhone`), import them from `/format`. When you pass **preset strings** (`format: "phone"`), the main `createForm` path is enough.
+
+::: warning Schema preset `"phone"` is Philippine
+`schema: { format: "phone" }` and `"philippine-phone"` both resolve to **`formatPhilippinePhone`** / `philippinePhoneParser` (local PH grouping), **not** the North American-style `formatPhone` helper.
+
+| Schema preset        | Resolves to                    |
+| -------------------- | ------------------------------ |
+| `"phone"`            | `formatPhilippinePhone`        |
+| `"philippine-phone"` | `formatPhilippinePhone` (same) |
+| `"credit-card"`      | `formatCreditCard` + parser    |
+| `"currency"`         | built-in currency formatter    |
+| `"slug"`             | `formatSlug`                   |
+
+For US-style `(555) 123-4567` masking, pass the function explicitly:
+
+```ts
+import { formatPhone } from "@jayoncode/form-intelligence/format";
+
+form.field("mobile", { format: formatPhone });
+```
+
+:::
 
 ---
 

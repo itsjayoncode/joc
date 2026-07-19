@@ -47,7 +47,34 @@ Prefer linking here rather than duplicating forever — canonical table: [Engine
 
 ## Errors
 
-Typed `ObjectDiffError` subclasses with `code`. Prefer messages that include path when available. See `ERROR_HANDLING.md`.
+All thrown errors extend `ObjectDiffError` (itself an `Error`), carrying a machine-readable `code` and optional `details`:
+
+```ts
+import { ObjectDiffError } from "@jayoncode/object-diff";
+
+try {
+  diff(circularA, circularB); // circular: "error" (default)
+} catch (error) {
+  if (error instanceof ObjectDiffError) {
+    error.code; // e.g. "circular_reference"
+    error.details; // e.g. { path: "user.self" }
+    error.cause; // original cause, when the error wraps another (e.g. PluginError)
+  }
+}
+```
+
+| Class                    | `code`               | Thrown by                                                                                                                     |
+| ------------------------ | -------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `CircularReferenceError` | `circular_reference` | `diff`/`compare` when a repeated reference is found and `circular: "error"` (default)                                         |
+| `MaxDepthExceededError`  | `max_depth_exceeded` | `diff`/`compare` when traversal depth exceeds `maxDepth`                                                                      |
+| `InvalidPatchError`      | `invalid_patch`      | `patch`, `applyPatch`, `validatePatch` on malformed ops or unsafe path segments (`__proto__`, `constructor`, `prototype`)     |
+| `PatchApplyError`        | `patch_apply_error`  | `applyPatch` when a `test` op fails, or a path cannot be resolved on the target                                               |
+| `InvalidOptionsError`    | `invalid_options`    | Duplicate `identityKey` ids, unknown `serialize` format or `merge` strategy names, duplicate/colliding formatter plugin names |
+| `UnsupportedTypeError`   | `unsupported_type`   | Reserved for value kinds the core cannot classify (currently unused by shipped code paths)                                    |
+| `NotImplementedError`    | `not_implemented`    | Reserved for stubbed/future functionality                                                                                     |
+| `PluginError`            | `plugin_error`       | `/plugins` `createEngine` — duplicate/invalid plugin shape, or a hook callback throwing (original error is `cause`)           |
+
+All error classes are exported from the root entry, `/core`, and their owning subpath (e.g. `PluginError` from `/plugins`).
 
 ## Playground
 

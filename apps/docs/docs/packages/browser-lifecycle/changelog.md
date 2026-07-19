@@ -67,4 +67,3 @@ First public pre-release of the Browser Lifecycle package.
 - Runtime diagnostics, configuration validation, and developer inspection APIs.
 - Unit and integration tests across session core, events, modules, and plugins.
 - Package documentation, engineering notes, and runnable examples under `docs/` and `examples/`.
-

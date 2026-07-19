@@ -1,8 +1,19 @@
+import { playgroundExamples } from "../examples/registry.js";
+
 export function PlaygroundHeader() {
+  const packageNames = [...new Set(playgroundExamples.map((example) => example.packageName))];
+
   return (
     <header className="playground-header">
       <div>
-        <p className="eyebrow">JOC Playground</p>
+        <div className="eyebrow-row">
+          {packageNames.map((name) => (
+            <span className="package-name" key={name}>
+              {name}
+            </span>
+          ))}
+          <span className="eyebrow">JOC Playground</span>
+        </div>
         <h1>Local package exploration without publishing</h1>
       </div>
       <p className="lead">

@@ -46,6 +46,7 @@ export function createFormIntelligenceSidebar(
       items: [
         { text: "Validation", link: `${base}/modules/validation` },
         { text: "Submission", link: `${base}/modules/submission` },
+        { text: "CAPTCHA", link: `${base}/modules/captcha` },
         { text: "State", link: `${base}/modules/state` },
         { text: "Workflow", link: `${base}/modules/workflow` },
         { text: "Rules", link: `${base}/modules/rules` },
@@ -113,6 +114,12 @@ export function createFormIntelligenceSidebar(
         {
           text: "Submission ↗",
           link: playgroundRoute("form-intelligence", "submission"),
+          target: "_blank",
+          rel: "noreferrer",
+        },
+        {
+          text: "CAPTCHA ↗",
+          link: playgroundRoute("form-intelligence", "captcha"),
           target: "_blank",
           rel: "noreferrer",
         },

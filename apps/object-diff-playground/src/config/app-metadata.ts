@@ -16,6 +16,8 @@ export interface PlaygroundEnvironment {
 
 export interface PlaygroundMetadata {
   readonly applicationName: string;
+  readonly packageName: "@jayoncode/object-diff";
+  /** @deprecated Use `packageName` — kept for dashboard pills. */
   readonly browserLifecyclePackageName: "@jayoncode/object-diff";
   readonly environment: PlaygroundEnvironment;
   readonly versions: PlaygroundVersions;
@@ -24,6 +26,7 @@ export interface PlaygroundMetadata {
 export function getPlaygroundMetadata(): PlaygroundMetadata {
   return {
     applicationName: "Object Diff Playground",
+    packageName: "@jayoncode/object-diff",
     browserLifecyclePackageName: "@jayoncode/object-diff",
     environment: {
       enableDebugTools: import.meta.env.VITE_PLAYGROUND_ENABLE_DEBUG_TOOLS === "true",

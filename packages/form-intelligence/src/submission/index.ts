@@ -32,3 +32,9 @@ export type {
   QueuedSubmission,
   SubmissionQueueState,
 } from "./offline-queue.js";
+export {
+  getSecurityStageExplainReasons,
+  registerSecurityStage,
+  runSecurityStage,
+} from "./security-stage.js";
+export type { SecurityStageHandler, SecurityStageResult } from "./security-stage.js";

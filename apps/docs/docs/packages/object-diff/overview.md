@@ -17,7 +17,7 @@ Typed deep comparison, change records, JSON Patch, and optional engines for merg
 
 - Shallow equality on primitives or a single known key (`===` / lodash `isEqual` may be enough)
 - Full CRDT / OT collaboration runtimes — this is snapshot merge + patch, not a live sync protocol
-- Binary / stream diffs — plain JSON-like objects and arrays only
+- Binary blob / stream diffs — comparison walks structured values (objects, arrays, `Map`, `Set`, `Date`, `RegExp`, typed arrays), not arbitrary byte streams or file diffs
 
 ## Features
 
@@ -73,7 +73,7 @@ Slim entry: `@jayoncode/object-diff/core` (compare/diff only). Patch domain: `@j
 
 ## Overview
 
-Object Diff compares plain objects and arrays, emits structured **change records**, and can serialize results or produce [RFC 6902](https://datatracker.ietf.org/doc/html/rfc6902)-style patch operations (`add` / `remove` / `replace` / `move` / `copy` / `test`).
+Object Diff compares structured values — plain objects, arrays, `Date`, `RegExp`, `Map`, `Set`, and typed arrays, not just JSON-safe primitives — emits structured **change records**, and can serialize results or produce [RFC 6902](https://datatracker.ietf.org/doc/html/rfc6902)-style patch operations (`add` / `remove` / `replace` / `move` / `copy` / `test`).
 
 | API                       | Purpose                                    |
 | ------------------------- | ------------------------------------------ |
@@ -111,9 +111,11 @@ Root import of merge/query/stats/plugins/view is **not** supported — use the s
 | 6   | [Engines](/packages/object-diff/modules/engines)           | Subpath map                 | —                                                 |
 | 7   | [Merge](/packages/object-diff/modules/merge)               | Two-/three-way strategies   | [Lab](/playground/object-diff/) Merge tab         |
 | 8   | [Query](/packages/object-diff/modules/query)               | Filter existing DiffResults | —                                                 |
-| 9   | [Integrations](/packages/object-diff/modules/integrations) | Forms, session, audit       | [Examples](/playground/object-diff/examples)      |
-| 10  | [Performance](/packages/object-diff/modules/performance)   | Complexity, budgets         | [Benchmarks](/playground/object-diff/performance) |
-| 11  | [DX](/packages/object-diff/modules/dx)                     | Fluent `createDiffView`     | [Examples](/playground/object-diff/examples)      |
+| 9   | [Statistics](/packages/object-diff/modules/stats)          | Metrics, hot prefixes       | —                                                 |
+| 10  | [Plugins](/packages/object-diff/modules/plugins)           | Matchers, formatters, hooks | —                                                 |
+| 11  | [Integrations](/packages/object-diff/modules/integrations) | Forms, session, audit       | [Examples](/playground/object-diff/examples)      |
+| 12  | [Performance](/packages/object-diff/modules/performance)   | Complexity, budgets         | [Benchmarks](/playground/object-diff/performance) |
+| 13  | [DX](/packages/object-diff/modules/dx)                     | Fluent `createDiffView`     | [Examples](/playground/object-diff/examples)      |
 
 ## Package fit
 
@@ -131,4 +133,3 @@ Root import of merge/query/stats/plugins/view is **not** supported — use the s
 - [API (TypeDoc)](/packages/object-diff/api/)
 - [Playground guide](/packages/object-diff/playground/playground)
 - [Examples](/playground/object-diff/examples)
-

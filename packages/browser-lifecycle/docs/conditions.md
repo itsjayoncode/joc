@@ -32,4 +32,16 @@ when.dispose();
 
 No polling. Dispose the conditions API without disposing the session.
 
+## Error isolation
+
+Pass `onHandlerError` to observe (e.g. log) handler exceptions without letting them escape:
+
+```ts
+const when = createConditionsApi(lifecycle, {
+  onHandlerError: (error) => reportToSentry(error),
+});
+```
+
+When omitted, thrown errors from a condition handler are swallowed silently — the session keeps running either way.
+
 [Resilience →](./resilience.md)

@@ -24,13 +24,15 @@ import {
 import { when } from "@jayoncode/form-intelligence/rules";
 import { createBrowserLifecyclePlugin, createKeyboardPlugin, keyboard } from "@jayoncode/form-intelligence/plugins";
 import { ui, snapshotUiProjection, setUiPolicies } from "@jayoncode/form-intelligence/ui";
+import { captcha, mockCaptcha } from "@jayoncode/form-intelligence/captcha";
 
-import type { FormInstance, FormPlugin, ValidationMode } from "@jayoncode/form-intelligence";
+import type { FormInstance, FormPlugin, SubmitSecurityCaptcha, ValidationMode } from "@jayoncode/form-intelligence";
 import type {
   UiDisableSubmitWhen,
   UiErrorDisplay,
   UiPolicyOptions,
 } from "@jayoncode/form-intelligence/ui";
+import type { CaptchaBlockReason } from "@jayoncode/form-intelligence/captcha";
 
 export const SAMPLE_FORM_VALUES = {
   email: "",
@@ -54,6 +56,7 @@ export function getFormIntelligentIntegrationSummary() {
       "useForm",
       "ui projection",
       "submissionGuard",
+      "captcha Security Stage",
     ],
   };
 }
@@ -96,6 +99,17 @@ export {
   ui,
   snapshotUiProjection,
   setUiPolicies,
+  captcha,
+  mockCaptcha,
 };
-export type { FormInstance, FormPlugin, ValidationMode, UiDisableSubmitWhen, UiErrorDisplay, UiPolicyOptions };
+export type {
+  FormInstance,
+  FormPlugin,
+  ValidationMode,
+  UiDisableSubmitWhen,
+  UiErrorDisplay,
+  UiPolicyOptions,
+  CaptchaBlockReason,
+  SubmitSecurityCaptcha,
+};
 export { useForm, useFormState } from "@jayoncode/form-intelligence-react";

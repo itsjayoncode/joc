@@ -102,6 +102,10 @@
     "./ui": {
       "types": "./dist/ui/index.d.ts",
       "import": "./dist/ui/index.js"
+    },
+    "./captcha": {
+      "types": "./dist/captcha/index.d.ts",
+      "import": "./dist/captcha/index.js"
     }
   },
   "repository": {

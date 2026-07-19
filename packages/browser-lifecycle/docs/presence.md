@@ -38,4 +38,19 @@ Any required input `unknown` ⇒ `unknown`.
 
 Pure snapshot reads — no subscriptions until you opt into other APIs.
 
+## `requireActive`
+
+Idle time is **not** part of the default policy — a visible, focused, online tab is `present` even while idle. Pass `requireActive: true` to also require `activity === "active"`:
+
+```ts
+const presence = createPresenceApi(lifecycle, { requireActive: true });
+```
+
+With `requireActive: true`:
+
+- `activity === "idle"` adds `"idle"` to `reasons` and reports `away`
+- `activity === "unknown"` adds `"activity-unknown"` and reports `unknown`
+
+Requires the [Idle](./idle.md) module to be enabled (`idleTimeout` set) — otherwise `activity` stays `"unknown"` and presence reports `unknown` whenever `requireActive` is on.
+
 [Timeline →](./timeline.md)

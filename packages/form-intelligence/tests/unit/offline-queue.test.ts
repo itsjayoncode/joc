@@ -33,7 +33,10 @@ describe("offline submit queue", () => {
 
     const result = await form.flushOfflineQueue();
     expect(result.flushed).toBe(1);
-    expect(onSubmit).toHaveBeenCalledWith({ email: "a@b.com" });
+    expect(onSubmit).toHaveBeenCalledWith(
+      { email: "a@b.com" },
+      expect.objectContaining({ signal: expect.any(AbortSignal) }),
+    );
     expect(form.state.submissionQueue.pending).toBe(0);
     form.destroy();
     clearOfflineQueue("offline-queue-test");

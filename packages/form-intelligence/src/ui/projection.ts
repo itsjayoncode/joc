@@ -8,6 +8,7 @@ import {
 import { explainDisabled } from "./explain-disabled.js";
 import { explainShowError, projectFieldUi } from "./field-projection.js";
 import { resolvePoliciesForForm } from "./store.js";
+import { getSecurityStageExplainReasons } from "../submission/security-stage.js";
 
 import type { FieldUiDerived, ResolvedUiPolicies, UiExplainResult } from "./types.js";
 import type { FormInstance, FieldPath } from "../types/index.js";
@@ -88,6 +89,7 @@ export function createUiProjection<TValues extends Record<string, unknown>>(
       isValidating: anyFieldValidating(formLike),
       isValid: formLike.isValid(),
       policies,
+      securityReasons: getSecurityStageExplainReasons(formLike),
     });
     return { policies, submitExplain };
   };

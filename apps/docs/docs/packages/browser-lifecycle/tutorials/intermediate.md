@@ -11,15 +11,14 @@ Pause background work when the page is hidden or the user is idle.
 ```ts
 const lifecycle = createBrowserLifecycle({
   autoStart: false,
-  visibility: { enabled: true },
-  idle: { enabled: true, thresholdMs: 30_000 },
+  idleTimeout: 30_000,
 });
 ```
 
 ## Step 2 — Register a plugin
 
 ```ts
-lifecycle.registerPlugin({
+lifecycle.use({
   id: "background-worker",
   onStart() {
     console.log("worker started");

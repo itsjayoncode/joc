@@ -2,7 +2,7 @@
 
 The orchestration layer behind `createBrowserLifecycle()`.
 
-**Previous:** [Events](/packages/browser-lifecycle/modules/events) · **Next:** [Core infrastructure](/packages/browser-lifecycle/modules/core-infrastructure)
+**Previous:** [Events](/packages/browser-lifecycle/modules/events) · **Next:** [Plugins](/packages/browser-lifecycle/modules/plugins)
 
 ::: tip Playground
 [Open Lifecycle playground →](/playground/browser-lifecycle/lifecycle) — inspect session phases and startup ordering.
@@ -26,7 +26,7 @@ Session Core is reached only through the public factory — not a separate impor
 
 ```ts
 const snapshot = lifecycle.getSnapshot();
-console.log(snapshot.session.phase); // "running"
+console.log(snapshot.phase); // "running"
 ```
 
 ## Pitfalls
@@ -53,7 +53,7 @@ It owns:
 - public event dispatch
 - internal module coordination
 
-It does not yet perform browser observation directly. Future modules will provide raw browser signals and register through the Session Core.
+Session Core itself does not touch browser globals directly — it delegates that to the six modules it registers and orchestrates: [Visibility](./visibility.md), [Focus](./focus.md), [Connectivity](./connectivity.md), [Idle](./idle.md), [Page lifecycle](./lifecycle.md), and [Cross-tab](./cross-tab.md), plus any [Plugins](./plugins.md) you register.
 
 ## Architecture
 
@@ -150,12 +150,38 @@ lifecycle.on("session:started", (event) => {
   console.log(event.type, event.current, event.previous);
 });
 
+lifecycle.once("session:started", () => {
+  console.log("fires only for the first session:started");
+});
+
 lifecycle.subscribe((event, snapshot) => {
   console.log(event.type, snapshot.phase);
 });
 
 lifecycle.start();
 ```
+
+`on()` / `once()` return an unsubscribe function; `off(event, listener)` is also available. `subscribe()` receives every public event plus the snapshot at emission time, and also returns an unsubscribe function.
+
+### Query Capabilities and Runtime State
+
+```ts
+lifecycle.getCapabilities(); // Readonly<BrowserLifecycleCapabilities>
+lifecycle.isRunning(); // boolean — true only while phase === "running"
+```
+
+### Runtime Diagnostics
+
+```ts
+const diagnostics = lifecycle.getRuntimeDiagnostics();
+// { capabilities, debug, eventBufferSize, eventStats, isRunning,
+//   moduleCount, phase, pluginCount, subscriberCount,
+//   totalEmissionCount, totalListenerCount }
+
+diagnostics.eventStats; // per-event { event, emissionCount, errorCount, listenerCount, lastDispatchedAt? }
+```
+
+Useful for developer tooling and the [Plugins](./plugins.md) playground — no browser globals are touched to compute it.
 
 ## State Management
 
@@ -171,13 +197,15 @@ The public snapshot is immutable and always includes:
 - capabilities
 - timestamps
 
-The Session Core keeps capability data stable and updates timestamps during lifecycle transitions and future module-driven state updates.
+All of these are flat, top-level properties on the snapshot (`snapshot.phase`, `snapshot.visibility`, …) — there is no nested `snapshot.session` or `snapshot.page` object.
+
+The Session Core keeps capability data stable and updates timestamps during lifecycle transitions and module-driven state updates.
 
 ## Module Registration
 
-The public package surface does not expose module registration. Internal modules register through `BrowserLifecycleSession` so future observers can be initialized, started, stopped, and destroyed in deterministic order.
+The public package surface does not expose module registration. The six built-in modules (Visibility, Focus, Connectivity, Idle, Page lifecycle, Cross-tab) register internally through `BrowserLifecycleSession` so each can be initialized, started, stopped, and destroyed in deterministic order. Consumers extend the session via [Plugins](./plugins.md) instead of registering raw modules.
 
-Module ordering rules:
+Module ordering rules (internal `order` values — lowest first): Visibility (`10`) → Focus (`20`) → Connectivity (`30`) → Idle (`40`) → Page lifecycle (`50`) → Cross-tab (`60`).
 
 - lower `order` values run first during initialize and start
 - teardown runs in reverse order
@@ -185,7 +213,7 @@ Module ordering rules:
 
 ## SSR Safety
 
-Session Core does not access:
+Session Core itself does not access:
 
 - `window`
 - `document`
@@ -193,4 +221,4 @@ Session Core does not access:
 - `history`
 - `location`
 
-Browser APIs remain deferred to future browser-specific modules.
+Browser API access is delegated to the browser-specific modules it orchestrates ([Visibility](./visibility.md), [Focus](./focus.md), [Connectivity](./connectivity.md), [Idle](./idle.md), [Page lifecycle](./lifecycle.md), [Cross-tab](./cross-tab.md)) — each of those touches browser globals only through its own adapter, during module initialization and start, never during construction.

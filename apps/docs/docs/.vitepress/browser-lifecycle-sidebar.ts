@@ -131,9 +131,15 @@ export function createBrowserLifecycleSidebar(
       text: "Build your session",
       items: [
         { text: "1. Visibility", link: `${pkgBase}/modules/visibility` },
-        { text: "2. Events", link: `${pkgBase}/modules/events` },
-        { text: "3. Session core", link: `${pkgBase}/modules/session-core` },
-        { text: "4. Core infrastructure", link: `${pkgBase}/modules/core-infrastructure` },
+        { text: "2. Focus", link: `${pkgBase}/modules/focus` },
+        { text: "3. Idle", link: `${pkgBase}/modules/idle` },
+        { text: "4. Connectivity", link: `${pkgBase}/modules/connectivity` },
+        { text: "5. Cross-tab", link: `${pkgBase}/modules/cross-tab` },
+        { text: "6. Page lifecycle", link: `${pkgBase}/modules/lifecycle` },
+        { text: "7. Events", link: `${pkgBase}/modules/events` },
+        { text: "8. Session core", link: `${pkgBase}/modules/session-core` },
+        { text: "9. Plugins", link: `${pkgBase}/modules/plugins` },
+        { text: "10. Core infrastructure", link: `${pkgBase}/modules/core-infrastructure` },
       ],
     },
     {

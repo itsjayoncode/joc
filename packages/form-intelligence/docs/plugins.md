@@ -16,6 +16,7 @@ Add cross-cutting behavior — analytics, guards, or integrations — without fo
 | Browser lifecycle / keyboard factories                     | `@jayoncode/form-intelligence/plugins`    |
 | Middleware stage maps                                      | `@jayoncode/form-intelligence/middleware` |
 | UI policies (`ui()`)                                       | `@jayoncode/form-intelligence/ui`         |
+| CAPTCHA (`captcha()`, `turnstile()`)                       | `@jayoncode/form-intelligence/captcha`    |
 | DevTools inspector                                         | `@jayoncode/form-intelligence/devtools`   |
 
 Full map: [Entrypoints](/packages/form-intelligence/modules/entrypoints).

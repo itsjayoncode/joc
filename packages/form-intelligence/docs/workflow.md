@@ -56,11 +56,29 @@ createForm({
 });
 ```
 
+| Option       | Type                                | Notes                          |
+| ------------ | ----------------------------------- | ------------------------------ |
+| `enabled`    | `boolean`                           | Opt-in persistence on change   |
+| `debounceMs` | `number`                            | Delay after last value change  |
+| `onSave`     | `(values) => void \| Promise<void>` | Required when autosave is used |
+
 Pending autosave is **canceled** on `submit()` and `destroy()` so saves do not race with submit or teardown.
 
 Status: `form.state.workflow.isAutosaving`, `form.state.workflow.lastAutosaveAt`.
 
 Plugin hook: `api.on("onAutosave", …)` — see [Plugins](/packages/form-intelligence/modules/plugins).
+
+### Legacy `autoSave` alias
+
+Top-level `createForm({ autoSave })` still works. Prefer `workflow.autosave`. If you pass `every: "5s"`, it is converted to `debounceMs`.
+
+```ts
+// Prefer
+workflow: { autosave: { enabled: true, debounceMs: 5000, onSave } }
+
+// Legacy alias (still supported)
+autoSave: { enabled: true, every: "5s", onSave }
+```
 
 ---
 
@@ -73,14 +91,45 @@ workflow: {
   draft: {
     enabled: true,
     storageKey: "signup-draft-v1",
+    storage: "localStorage", // default — or "sessionStorage"
     onRestore: (values) => console.log("Welcome back!", values),
     // promptOnRestore: true,
     // onRestorePrompt: (values) => window.confirm("Restore draft?"),
     // versioning: true,
     // schemaVersion: "2",
     // migrateDraft: (envelope) => ({ ...envelope, schemaVersion: "2" }),
+    // adapter: customSyncAdapter, // overrides storage kind
   },
 },
+```
+
+### Draft options
+
+| Option            | Type                                   | Default          | Notes                                                                   |
+| ----------------- | -------------------------------------- | ---------------- | ----------------------------------------------------------------------- |
+| `enabled`         | `boolean`                              | —                | Opt-in                                                                  |
+| `storageKey`      | `string`                               | —                | Key used by the storage adapter                                         |
+| `storage`         | `"localStorage"` \| `"sessionStorage"` | `"localStorage"` | Built-in sync web storage                                               |
+| `adapter`         | `DraftStorageAdapter`                  | —                | Custom sync `{ get, set, remove }` — wins over `storage`                |
+| `onRestore`       | `(values) => void`                     | —                | Fired after a successful restore                                        |
+| `promptOnRestore` | `boolean`                              | `false`          | When true with `restoreDraft({ prompt: true })`, call `onRestorePrompt` |
+| `onRestorePrompt` | `(values) => boolean`                  | —                | Return `false` to skip restore                                          |
+| `versioning`      | `boolean`                              | `false`          | Persist versioned `DraftEnvelopeV1` instead of raw values               |
+| `schemaVersion`   | `string`                               | —                | Compared / migrated when envelopes are enabled                          |
+| `migrateDraft`    | `(envelope) => envelope`               | —                | Migrate before restore; throw to reject                                 |
+
+```ts
+import type { DraftStorageAdapter } from "@jayoncode/form-intelligence";
+
+const memory: DraftStorageAdapter = {
+  get: (key) => map.get(key) ?? null,
+  set: (key, value) => {
+    map.set(key, value);
+  },
+  remove: (key) => {
+    map.delete(key);
+  },
+};
 ```
 
 Manual:
@@ -119,12 +168,56 @@ workflow: {
         id: "business",
         fields: ["company"],
         when: (values) => values.kind === "business",
+        canLeave: async ({ values, signal }) => {
+          // abortable async gate before leaving this step
+          return values.company !== "" && !signal.aborted;
+        },
       },
-      { id: "review", fields: ["bio"] },
+      {
+        id: "review",
+        fields: ["bio"],
+        canEnter: ({ fromStepId }) => fromStepId !== undefined,
+      },
     ],
   },
 },
 ```
+
+### Wizard config
+
+| Option               | Type                            | Default | Notes                                                |
+| -------------------- | ------------------------------- | ------- | ---------------------------------------------------- |
+| `steps`              | `WizardStep[]`                  | —       | Required                                             |
+| `initialStep`        | `number`                        | `0`     | 0-based index                                        |
+| `goToValidation`     | `"step"` \| `"all"` \| `"none"` | `"all"` | Default validation scope for `goTo`                  |
+| `persistStepInDraft` | `boolean`                       | —       | When true, draft save/restore includes `currentStep` |
+
+### Wizard step
+
+| Option     | Type                                                       | Notes                                                     |
+| ---------- | ---------------------------------------------------------- | --------------------------------------------------------- |
+| `id`       | `string`                                                   | Stable id for `goTo("id")` / branching                    |
+| `fields`   | `FieldPath[]`                                              | Validated on `next()` when step validation runs           |
+| `validate` | `boolean`                                                  | Per-step override for whether fields validate on navigate |
+| `when`     | `(values) => boolean`                                      | Skip step when `false` (conditional steps)                |
+| `next`     | `string` \| `(values) => string \| undefined`              | Explicit next step id / resolver                          |
+| `canLeave` | `(ctx: WizardGuardContext) => boolean \| Promise<boolean>` | Gate leaving this step; `false` blocks navigation         |
+| `canEnter` | `(ctx: WizardGuardContext) => boolean \| Promise<boolean>` | Gate entering this step; `false` blocks navigation        |
+
+### Wizard guards
+
+`canLeave` / `canEnter` receive:
+
+```ts
+{
+  values,        // current form values
+  fromStepId,    // leaving step id (may be undefined)
+  toStepId,      // entering step id
+  signal,        // AbortSignal — abort if navigate is canceled
+}
+```
+
+Guards may be async. Return `false` (or a rejected/aborted path) to block the move — step index stays put and validation errors (if any) remain.
 
 Navigate:
 

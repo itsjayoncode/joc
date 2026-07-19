@@ -33,6 +33,8 @@ const entries = [
   "analytics/index.js",
   "offline/index.js",
   "history/index.js",
+  "ui/index.js",
+  "captcha/index.js",
 ];
 
 console.log("@jayoncode/form-intelligence dist entry sizes (raw / gzip):\n");

@@ -14,13 +14,19 @@ Legacy apps already validate with Yup across APIs and admin UIs. Rewriting those
 
 ## What you get
 
-| Capability              | Detail                                                                    |
-| ----------------------- | ------------------------------------------------------------------------- |
-| **Drop-in schema**      | `schema: yupAdapter(yup.object({ ... }))`                                 |
-| **Path mapping**        | Yup paths → form paths (`address.city`); form-level → `_form`             |
-| **Nested objects**      | Nested Yup shapes map to nested field errors                              |
-| **With core workflows** | Works with `rules`, `workflow`, `validateOn`, plugins, async submit       |
-| **Gradual migration**   | Reuse Yup today; adopt Zod/Valibot later without rewriting the form shell |
+| Capability              | Detail                                                                                      |
+| ----------------------- | ------------------------------------------------------------------------------------------- |
+| **Drop-in schema**      | `schema: yupAdapter(yup.object({ ... }))`                                                   |
+| **Path mapping**        | Yup paths → form paths; `friends[0].name` → `friends.0.name`; form-level → `_form`          |
+| **Nested objects**      | Nested Yup shapes map to nested field errors                                                |
+| **With core workflows** | Works with `rules`, `workflow`, `validateOn`, plugins, async submit                         |
+| **Gradual migration**   | Reuse Yup today; adopt Zod/Valibot later without rewriting the form shell                   |
+| **`formatYupPath`**     | Exported helper converting a Yup path (`friends[0].name`) to a form path (`friends.0.name`) |
+
+### Behavior notes
+
+- **First error per path wins.** `yupAdapter()` validates with `abortEarly: false` to collect every issue, but if Yup reports more than one error for the same path, only the first one encountered is kept.
+- **Validate-only.** `yupAdapter()` returns a `SchemaAdapter` — it validates `values` and returns `{ path: message }`. It does not infer a TypeScript type for `createForm`'s values from your Yup schema; type your `initialValues` (or the `TValues` generic) separately.
 
 ## Install
 
@@ -60,6 +66,17 @@ const form = createForm({
     await api.checkout(values);
   },
 });
+```
+
+### `formatYupPath`
+
+`formatYupPath(path: string | undefined): string` is the same path-mapping logic `yupAdapter()` uses internally, exported for reuse:
+
+```ts
+import { formatYupPath } from "@jayoncode/form-intelligence-yup";
+
+formatYupPath("friends[0].name"); // "friends.0.name"
+formatYupPath(undefined); // "_form"
 ```
 
 ## Docs

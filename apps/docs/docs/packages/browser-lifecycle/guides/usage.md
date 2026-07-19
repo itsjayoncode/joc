@@ -27,15 +27,12 @@ Pass a partial configuration object. Browser Lifecycle merges it with defaults a
 ```ts
 const lifecycle = createBrowserLifecycle({
   autoStart: true,
-  visibility: { enabled: true },
-  focus: { enabled: true },
-  connectivity: { enabled: true },
-  idle: { enabled: true, thresholdMs: 60_000 },
-  crossTab: { enabled: true },
+  idleTimeout: 60_000, // enable idle (default false = off)
+  crossTab: true,
 });
 ```
 
-Configuration changes require a session restart. Validate pending configuration in the [Configuration Playground](/playground/browser-lifecycle/configuration).
+Configuration changes require a session restart. Full option table: [Core infrastructure](/packages/browser-lifecycle/modules/core-infrastructure). Validate pending configuration in the [Configuration Playground](/playground/browser-lifecycle/configuration).
 
 ## Lifecycle control
 

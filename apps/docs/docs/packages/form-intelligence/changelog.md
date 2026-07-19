@@ -5,6 +5,20 @@ description: "Release history for @jayoncode/form-intelligence."
 
 # Changelog
 
+## 3.6.0
+
+### Minor Changes
+
+- af981ea: Deepen DevTools UI projection snapshots with hard `submissionGuard` vs UX explain, presentation flags, and structured playground explain panels.
+- af981ea: Seed Presentation `field.required` (ARIA / DOM / `requiredFields`) from schema and static `required` validators; workflow rules still override (Q10).
+
+### Patch Changes
+
+- af981ea: Align Vue/Angular adapters with the shared adapter contract: `controller`, `fieldController`, `focusFirstInvalid`; Angular `fiField` syncs projection attrs; docs teach `ui()` + `showError`.
+- af981ea: Add a plugin author guide (ownership, extension map, conventions, testing) and maintainer note `019-plugin-author-conventions`.
+- af981ea: Bring Yup/Valibot/AJV to Zod-level schema adapter depth: shared contract harness, nested/array path mapping (Yup brackets, AJV required params), and core nested-adapter error merge fix.
+- af981ea: Document hard `submissionGuard()` vs `form.ui.canSubmit` / `explain("submit")` on the Submission guide; link from UI projection. Add maturity backlog `engineering/016-maturity-backlog.md`. Point UI projection docs at the `/ui` playground lab.
+
 ## 3.5.0
 
 ### Minor Changes
@@ -175,4 +189,3 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Examples: `vanilla-html`, `basic-validation`, `wizard-workflow` (+ framework stubs)
 
 ## 0.1.1
-

@@ -2,7 +2,7 @@
 
 Query helpers over an existing `DiffResult` (does not re-run `diff`).
 
-**Previous:** [Merge](/packages/object-diff/modules/merge) · **Next:** [DX](/packages/object-diff/modules/dx)
+**Previous:** [Merge](/packages/object-diff/modules/merge) · **Next:** [Statistics](/packages/object-diff/modules/stats)
 
 ## Import path
 

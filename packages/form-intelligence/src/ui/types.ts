@@ -2,7 +2,7 @@ import type { FieldPath } from "../types/index.js";
 
 /** Who contributed to an explanation (engines vs layers). */
 export type UiExplainContributor =
-  "validation" | "presentation" | "submission" | "workflow" | "policy" | "state";
+  "validation" | "presentation" | "submission" | "security" | "workflow" | "policy" | "state";
 
 export type UiErrorDisplay = "touched" | "submit" | "always" | "touchedOrSubmit";
 
@@ -18,7 +18,16 @@ export interface ResolvedUiPolicies {
   readonly disableSubmitWhen: readonly UiDisableSubmitWhen[];
 }
 
-export type UiSubmitBlockReason = "submitting" | "validating" | "invalid" | "ruleDisabled";
+export type UiSubmitBlockReason =
+  | "submitting"
+  | "validating"
+  | "invalid"
+  | "ruleDisabled"
+  | "captchaPending"
+  | "captchaFailed"
+  | "captchaExpired"
+  | "captchaTimeout"
+  | "captchaUnavailable";
 
 export type UiShowErrorReason = "hasError" | "policyHidden" | "validating";
 

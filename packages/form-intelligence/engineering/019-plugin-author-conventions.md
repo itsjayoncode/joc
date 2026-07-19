@@ -18,6 +18,7 @@ Keep extensions **additive**: observe, cancel, or integrate — without forking 
 | UI intent (`visible` / `disabled` / `required` / `submitDisabled`) | Workflow → Presentation                     | Read via `getPresentation` / `field.ui`; drive via `when()`, not direct mutation |
 | Soft button UX                                                     | `/ui` projection                            | Use or mirror `ui()` policies; compose `canSubmit` / `explain` — do not redefine |
 | Hard submit start                                                  | `submissionGuard()`                         | Optional `beforeSubmit` cancel; do not invent a second hard API                  |
+| CAPTCHA / Security Stage                                           | `/captcha`                                  | Implement `CaptchaProvider`; register via `captcha()` — do not fork submit       |
 | Framework bind / ARIA                                              | Adapters ([017](./017-adapter-contract.md)) | Separate packages; plugins are form-instance scoped                              |
 
 ## Factory conventions
@@ -33,6 +34,7 @@ Keep extensions **additive**: observe, cancel, or integrate — without forking 
 | Plugin                       | Path                     | Lesson                                                |
 | ---------------------------- | ------------------------ | ----------------------------------------------------- |
 | `ui()`                       | `src/ui/plugin.ts`       | Policies only; Presentation keys stay owned elsewhere |
+| `captcha()`                  | `src/captcha/plugin.ts`  | Security Stage registrant; provider-agnostic          |
 | `createDevToolsPlugin`       | `src/devtools/plugin.ts` | Opt-in inspector; redaction defaults                  |
 | Browser lifecycle / keyboard | `src/integrations/*`     | Thin wrappers over sibling packages                   |
 

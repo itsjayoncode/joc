@@ -56,21 +56,64 @@ createForm({
 });
 ```
 
-| Validator                | Use when                                                               |
-| ------------------------ | ---------------------------------------------------------------------- |
-| `required`               | Field cannot be empty; also seeds Presentation `required` (ARIA / DOM) |
-| `email`                  | Must look like an email                                                |
-| `url`                    | Must be a valid URL                                                    |
-| `minLength(n)`           | String too short                                                       |
-| `maxLength(n)`           | String too long                                                        |
-| `regex(pattern, msg)`    | Custom format                                                          |
-| `number` / `min` / `max` | Numeric bounds                                                         |
-| `date`                   | Parseable date                                                         |
-| `phone()`                | E.164-style phone check (optional fields: empty passes)                |
-| `currency(opts?)`        | Amount / precision                                                     |
-| `password(opts?)`        | Strength rules                                                         |
-| `matchesField(path)`     | Confirm-password style                                                 |
-| `requiredWhen(...)`      | Conditional required (validation only — not UI baseline)               |
+| Validator                       | Use when                                                               |
+| ------------------------------- | ---------------------------------------------------------------------- |
+| `required`                      | Field cannot be empty; also seeds Presentation `required` (ARIA / DOM) |
+| `email`                         | Must look like an email                                                |
+| `url`                           | Must be a valid URL                                                    |
+| `minLength(n)`                  | String too short                                                       |
+| `maxLength(n)`                  | String too long                                                        |
+| `regex(pattern, msg)`           | Custom format                                                          |
+| `number(opts?)` / `min` / `max` | Numeric bounds                                                         |
+| `date(opts?)`                   | Parseable date with optional bounds                                    |
+| `phone()`                       | E.164-style phone check (optional fields: empty passes)                |
+| `currency(opts?)`               | Amount / precision                                                     |
+| `password(opts?)`               | Strength rules                                                         |
+| `matchesField(path)`            | Confirm-password style                                                 |
+| `requiredWhen(...)`             | Conditional required (validation only — not UI baseline)               |
+
+### Factory options
+
+Empty / null / `""` still pass for optional fields (pair with `required` when needed).
+
+**`password(opts?)`**
+
+| Option             | Default | Notes                  |
+| ------------------ | ------- | ---------------------- |
+| `minLength`        | `8`     | Minimum string length  |
+| `requireUppercase` | —       | Must include `[A-Z]`   |
+| `requireLowercase` | —       | Must include `[a-z]`   |
+| `requireNumber`    | —       | Must include a digit   |
+| `requireSymbol`    | —       | Must include non-alnum |
+
+**`currency(opts?)`**
+
+| Option        | Default | Notes                      |
+| ------------- | ------- | -------------------------- |
+| `precision`   | `2`     | Max decimal places         |
+| `min` / `max` | —       | Numeric bounds after parse |
+
+**`number(opts?)`**
+
+| Option        | Notes                            |
+| ------------- | -------------------------------- |
+| `min` / `max` | Numeric bounds                   |
+| `integer`     | Require whole number when `true` |
+
+**`date(opts?)`**
+
+| Option        | Notes                             |
+| ------------- | --------------------------------- |
+| `min` / `max` | `Date` or parseable string bounds |
+
+```ts
+validators: {
+  password: [required, password({ minLength: 10, requireUppercase: true, requireNumber: true })],
+  amount: [required, currency({ precision: 2, min: 0 })],
+  qty: [number({ integer: true, min: 1 })],
+  start: [date({ min: "2024-01-01" })],
+}
+```
 
 ::: warning `phone` / `currency` — validator vs formatter
 On the **main** package, `phone` and `currency` are **validators** (factories). They answer: “is this value valid?”

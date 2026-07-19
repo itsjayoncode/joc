@@ -54,6 +54,7 @@ import { compileSchema } from "../schema/compiler.js";
 import { validatorsIncludeRequired } from "../schema/required-baseline.js";
 import { FormStateStore } from "../state/store.js";
 import { evaluateSubmissionGuard } from "../submission/guard.js";
+import { runSecurityStage } from "../submission/security-stage.js";
 import { SubmissionOrchestrator } from "../submission/submit.js";
 import { ASYNC_VALIDATOR_OPTION_DEFAULTS } from "../types/async-validation.js";
 import { explainDisabled } from "../ui/explain-disabled.js";
@@ -605,6 +606,15 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
         return false;
       }
 
+      // Security Stage (CAPTCHA today) — after validation, before offline enqueue / beforeSubmit (ADR-CAP-001).
+      const securityResult = await runSecurityStage(this as FormInstance<Record<string, unknown>>, {
+        signal,
+      });
+      if (!securityResult.ok || signal.aborted) {
+        this.setSubmitPhase("idle");
+        return false;
+      }
+
       if (this.config.workflow?.offlineQueue?.enabled && isNavigatorOffline()) {
         const offline = await this.ensureOfflineService();
         try {
@@ -640,12 +650,19 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
       this.setSubmitPhase("submitting");
       this.patchState({ isSubmitting: true });
 
-      const meta = options?.includeDiff
+      const metaBase = options?.includeDiff
         ? {
             changedFields: this.changedFields(),
             diff: await this.diffFromDefaults(),
           }
-        : undefined;
+        : {};
+      const meta =
+        options?.includeDiff || securityResult.security
+          ? {
+              ...metaBase,
+              ...(securityResult.security ? { security: securityResult.security } : {}),
+            }
+          : undefined;
 
       this.events.emit("submit");
 
@@ -1373,8 +1390,21 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
 
     const offline = await this.ensureOfflineService();
     const result = await offline.ensure().flush(async (values) => {
+      // Fresh Security Stage token at flush — enqueue-time tokens may have expired (ADR-CAP-001).
+      const controller = new AbortController();
+      const securityResult = await runSecurityStage(this as FormInstance<Record<string, unknown>>, {
+        signal: controller.signal,
+      });
+      if (!securityResult.ok || controller.signal.aborted) {
+        return false;
+      }
+
       try {
-        await this.config.onSubmit?.(values);
+        const meta = {
+          signal: controller.signal,
+          ...(securityResult.security ? { security: securityResult.security } : {}),
+        };
+        await this.config.onSubmit?.(values, meta);
         return true;
       } catch (error) {
         this.config.onSubmitError?.(error);

@@ -17,6 +17,7 @@ export interface PlaygroundEnvironment {
 
 export interface PlaygroundMetadata {
   readonly applicationName: string;
+  readonly packageName: "@jayoncode/form-intelligence";
   readonly formIntelligentPackageName: "@jayoncode/form-intelligence";
   readonly formIntelligentReactPackageName: "@jayoncode/form-intelligence-react";
   readonly environment: PlaygroundEnvironment;
@@ -26,6 +27,7 @@ export interface PlaygroundMetadata {
 export function getPlaygroundMetadata(): PlaygroundMetadata {
   return {
     applicationName: "Form Intelligence Playground",
+    packageName: "@jayoncode/form-intelligence",
     formIntelligentPackageName: "@jayoncode/form-intelligence",
     formIntelligentReactPackageName: "@jayoncode/form-intelligence-react",
     environment: {

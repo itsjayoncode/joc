@@ -4,6 +4,7 @@ import { AppShell } from "../layouts/AppShell.js";
 import { AboutPage } from "../pages/AboutPage.js";
 import { AdaptersPage } from "../pages/AdaptersPage.js";
 import { CalculationsPage } from "../pages/CalculationsPage.js";
+import { CaptchaPage } from "../pages/CaptchaPage.js";
 import { DashboardPage } from "../pages/DashboardPage.js";
 import { DependenciesPage } from "../pages/DependenciesPage.js";
 import { DevToolsPage } from "../pages/DevToolsPage.js";
@@ -29,6 +30,7 @@ export const APP_ROUTE_PATHS = [
   "/dashboard",
   "/validation",
   "/submission",
+  "/captcha",
   "/ui",
   "/workflow",
   "/state",
@@ -56,6 +58,7 @@ const routeObjects: RouteObject[] = [
       { element: <DashboardPage />, path: "dashboard" },
       { element: <ValidationPage />, path: "validation" },
       { element: <SubmissionPage />, path: "submission" },
+      { element: <CaptchaPage />, path: "captcha" },
       { element: <UiProjectionPage />, path: "ui" },
       { element: <WorkflowPage />, path: "workflow" },
       { element: <StateExplorerPage />, path: "state" },

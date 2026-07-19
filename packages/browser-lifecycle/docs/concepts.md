@@ -20,7 +20,7 @@ Terminology and session model for `@jayoncode/browser-lifecycle`.
 | Scattered browser listeners                                         | With Browser Lifecycle                                   |
 | ------------------------------------------------------------------- | -------------------------------------------------------- |
 | `document.addEventListener("visibilitychange", …)` in every feature | One session, typed `page:visible` / `page:hidden` events |
-| Duplicate online/offline handlers across modules                    | Normalized `connectivity:*` events + snapshot            |
+| Duplicate online/offline handlers across modules                    | Normalized `connection:*` events + snapshot              |
 | No single place to read “current tab state”                         | `getSnapshot()` — readonly consolidated state            |
 | Leaked listeners on SPA route changes                               | `dispose()` tears down modules and subscriptions         |
 
@@ -57,10 +57,15 @@ Leaked listeners on SPA navigations are the most common footgun. Always `dispose
 
 ## Next steps
 
-| Goal                    | Guide                                                           |
-| ----------------------- | --------------------------------------------------------------- |
-| Integration walkthrough | [Tutorial](/packages/browser-lifecycle/modules/getting-started) |
-| Page visibility         | [Visibility](/packages/browser-lifecycle/modules/visibility)    |
-| Event subscription      | [Events](/packages/browser-lifecycle/modules/events)            |
+| Goal                    | Guide                                                            |
+| ----------------------- | ---------------------------------------------------------------- |
+| Integration walkthrough | [Tutorial](/packages/browser-lifecycle/modules/getting-started)  |
+| Page visibility         | [Visibility](/packages/browser-lifecycle/modules/visibility)     |
+| Window focus            | [Focus](/packages/browser-lifecycle/modules/focus)               |
+| Idle detection          | [Idle](/packages/browser-lifecycle/modules/idle)                 |
+| Online/offline          | [Connectivity](/packages/browser-lifecycle/modules/connectivity) |
+| Multi-tab coordination  | [Cross-tab](/packages/browser-lifecycle/modules/cross-tab)       |
+| Event subscription      | [Events](/packages/browser-lifecycle/modules/events)             |
+| Extension points        | [Plugins](/packages/browser-lifecycle/modules/plugins)           |
 
 [State explorer →](/playground/browser-lifecycle/state)

@@ -39,13 +39,17 @@ const result = diff(before, after);
 
 ## Change record fields
 
-| Field      | Meaning                                                     |
-| ---------- | ----------------------------------------------------------- |
-| `path`     | Display path (e.g. `user.name`, `items[0]`)                 |
-| `type`     | `added` \| `removed` \| `changed` \| `unchanged` \| `moved` |
-| `previous` | Value before the change (when present)                      |
-| `current`  | Value after the change (when present)                       |
-| `from`     | Source path when `type` is `moved`                          |
+| Field      | Meaning                                                            |
+| ---------- | ------------------------------------------------------------------ |
+| `path`     | Display path (e.g. `user.name`, `items[0]`)                        |
+| `type`     | `added` \| `removed` \| `changed` \| `unchanged` \| `moved`        |
+| `previous` | Value before the change — key is omitted entirely when `undefined` |
+| `current`  | Value after the change — key is omitted entirely when `undefined`  |
+| `from`     | Source path when `type` is `moved`                                 |
+
+## Equality & supported types
+
+`diff()`/`compare()` go well beyond `JSON.stringify` equality: `Object.is` semantics for primitives (`NaN` equals `NaN`), `Date` by `getTime()`, `RegExp` by `source`+`flags`, `Map`/`Set` by deep-equal contents, typed arrays by bytes, and functions by `===`. Plain objects and arrays are compared recursively, key by key. Full rules and edge cases: [Equality & supported types](/packages/object-diff/modules/diff#equality-supported-types) in the Diffing guide.
 
 ## API map
 

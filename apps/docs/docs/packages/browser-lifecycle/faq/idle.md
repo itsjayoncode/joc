@@ -2,15 +2,18 @@
 
 ## What triggers idle state?
 
-Configured thresholds and detected user inactivity.
+A positive `idleTimeout` (milliseconds) and no matching activity events for that duration. Default `idleTimeout: false` means idle observation is off.
 
 ## Example
 
 ```ts
 const lifecycle = createBrowserLifecycle({
-  idle: { enabled: true, thresholdMs: 60_000 },
+  idleTimeout: 60_000,
+  activityDebounce: 250,
 });
 ```
+
+See [Idle](/packages/browser-lifecycle/modules/idle) for `activityEvents`, `session:idle` / `session:active`, and snapshot fields.
 
 ## Playground
 
