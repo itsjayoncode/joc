@@ -78,6 +78,11 @@ describe("form devtools", () => {
     const snapshot = inspector.getStateSnapshot(form.id);
     expect(snapshot?.submitCount).toBe(1);
 
+    const uiProjection = inspector.getUiProjection(form.id);
+    expect(uiProjection?.canSubmit).toBe(true);
+    expect(uiProjection?.submitExplain.value).toBe(true);
+    expect(uiProjection?.fields.some((field) => field.path === "email")).toBe(true);
+
     form.destroy();
   });
 

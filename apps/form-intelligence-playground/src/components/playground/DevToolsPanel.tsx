@@ -5,6 +5,7 @@ import type {
   DevToolsWorkflowEvent,
   FormDevToolsInspector,
   FormDevToolsSummary,
+  UiProjectionSnapshot,
 } from "@jayoncode/form-intelligence/devtools";
 
 import styles from "./DevToolsPanel.module.css";
@@ -47,6 +48,7 @@ export function DevToolsPanel({
   const workflowTimeline = resolvedFormId ? inspector.getWorkflowTimeline(resolvedFormId) : [];
   const performanceMarks = resolvedFormId ? inspector.getPerformanceMarks(resolvedFormId) : [];
   const plugins = resolvedFormId ? inspector.getPlugins(resolvedFormId) : [];
+  const uiProjection = resolvedFormId ? inspector.getUiProjection(resolvedFormId) : null;
 
   const fieldRows =
     snapshot === null
@@ -103,6 +105,13 @@ export function DevToolsPanel({
 
       {snapshot ? (
         <>
+          <Card
+            description="getUiProjection(formId) — form.ui.explain + collections (read-only)."
+            title="UI projection"
+          >
+            {uiProjection ? <UiProjectionInspect snapshot={uiProjection} /> : null}
+          </Card>
+
           <Card
             description="getStateSnapshot(formId) — same shape as State Explorer."
             title="State tree"
@@ -230,5 +239,46 @@ function WorkflowTimeline({ entries }: { readonly entries: readonly DevToolsWork
         </li>
       ))}
     </ul>
+  );
+}
+
+function UiProjectionInspect({ snapshot }: { readonly snapshot: UiProjectionSnapshot }) {
+  const submit = snapshot.submitExplain;
+  const whyBlocked = submit.value
+    ? "Submit is allowed."
+    : submit.reasons.length > 0
+      ? `Blocked: ${submit.reasons.join(", ")}`
+      : "Blocked (no reasons listed).";
+
+  return (
+    <div className={styles.stack}>
+      <p className={styles.timelineDetail}>
+        <strong>canSubmit</strong> {String(snapshot.canSubmit)} · {whyBlocked}
+      </p>
+      <p className={styles.timelineDetail}>
+        contributors: {submit.contributors.join(", ") || "—"} · phase {snapshot.phase}
+      </p>
+      <p className={styles.timelineDetail}>
+        invalid [{snapshot.invalidFields.join(", ") || "—"}] · validating [
+        {snapshot.validatingFields.join(", ") || "—"}]
+      </p>
+      <CodeBlock
+        code={JSON.stringify(
+          {
+            policies: snapshot.policies,
+            submitExplain: snapshot.submitExplain,
+            fields: snapshot.fields.map((field) => ({
+              path: field.path,
+              status: field.status,
+              showError: field.showError,
+              disabledReasons: field.disabledReasons,
+            })),
+          },
+          null,
+          2,
+        )}
+        language="json"
+      />
+    </div>
   );
 }

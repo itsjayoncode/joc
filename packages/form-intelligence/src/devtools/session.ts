@@ -1,6 +1,7 @@
 import { redactValuesRecord } from "./redact.js";
 import { RingBuffer } from "./ring-buffer.js";
 import { nextDevToolsEventId, hasValidationErrors, summarizeErrors } from "./utils.js";
+import { snapshotUiProjection } from "../ui/snapshot.js";
 
 import type {
   DevToolsEventRecord,
@@ -12,6 +13,7 @@ import type {
   FormDevToolsPluginOptions,
 } from "./types.js";
 import type { FormEvent, FormInstance } from "../types/index.js";
+import type { UiProjectionSnapshot } from "../ui/snapshot.js";
 
 const DEFAULT_MAX_EVENTS = 200;
 const DEFAULT_MAX_VALIDATION_ENTRIES = 100;
@@ -89,6 +91,11 @@ export class FormDevToolsSession {
 
   public getPlugins(): readonly DevToolsPluginInfo[] {
     return this.form.listPlugins();
+  }
+
+  /** Read-only UI projection + explain snapshot (Phase 4). */
+  public getUiProjection(): UiProjectionSnapshot {
+    return snapshotUiProjection(this.form);
   }
 
   public clearLogs(): void {

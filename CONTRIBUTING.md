@@ -10,8 +10,6 @@ JOC is an active monorepo with **live `@jayoncode/*` packages** on npm:
 - `@jayoncode/form-intelligence` (+ React / Vue / Angular adapters and Zod / Yup / Valibot / AJV schema adapters)
 - `@jayoncode/object-diff`
 
-Compatibility shims under `@jayoncode/form-intelligent*` re-export the new Form Intelligence names — prefer `form-intelligence*` for new work.
-
 The docs site, versioned package archives, and interactive playgrounds ship with the product. Contributions should align with the [roadmap](./ROADMAP.md) and keep public package boundaries intact.
 
 Product-facing guide: [docs — Contributing](https://itsjayoncode.github.io/joc/guides/contribution).
@@ -112,8 +110,6 @@ If your pull request changes a publishable package in a way that would affect co
 | `major` | Breaking API or behavior                           |
 
 Write release notes from the **package consumer’s** perspective. Call out breaking changes and migration work clearly.
-
-Compatibility shims (`@jayoncode/form-intelligent*`) are version-aligned with their `form-intelligence*` counterparts via Changesets `fixed` groups — bump intent should stay consistent across a pair when both are affected.
 
 Maintainers merge feature PRs first; the automated **Version Packages** PR applies bumps and (when applicable) archives docs before npm publish. Do not run `pnpm release:version` on a feature branch unless a maintainer asks you to.
 

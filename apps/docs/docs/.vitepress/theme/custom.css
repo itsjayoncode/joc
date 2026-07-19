@@ -130,6 +130,11 @@ html.dark:has(.VPHome) {
   background-color: var(--vp-nav-screen-bg-color) !important;
 }
 
+/* Wider than VitePress default (288px), still inset from screen edges */
+.VPNavScreen > .container {
+  max-width: min(100%, 420px);
+}
+
 .Layout:not(.VPHome) .VPSidebar {
   background: var(--vp-sidebar-bg-color) !important;
   backdrop-filter: blur(14px) saturate(1.1);

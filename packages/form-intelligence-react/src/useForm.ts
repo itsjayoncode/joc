@@ -41,30 +41,44 @@ export function useForm<TValues extends Record<string, unknown>>(
     field: (path: FieldPath) => {
       const handle = instance.field(path);
       const attrs = handle.aria.attributes;
+      const showError = handle.ui.showError;
       return {
         name: path,
-        "aria-invalid": attrs["aria-invalid"],
+        "aria-invalid": showError,
+        "data-fi-status": handle.ui.status,
         ...(attrs["aria-required"] === undefined
           ? {}
           : { "aria-required": attrs["aria-required"] }),
-        ...(attrs["aria-describedby"] === undefined
-          ? {}
-          : { "aria-describedby": attrs["aria-describedby"] }),
+        ...(showError && attrs["aria-describedby"] !== undefined
+          ? { "aria-describedby": attrs["aria-describedby"] }
+          : {}),
       };
     },
     fieldController: (path: FieldPath) => instance.field(path),
-    submit: () => ({
-      type: "submit" as const,
-      ...(state.isSubmitting || state.formUi.submitDisabled
-        ? { disabled: true, ...(state.isSubmitting ? { "aria-busy": true as const } : {}) }
-        : {}),
-    }),
-    submitButton: () => ({
-      type: "submit" as const,
-      ...(state.isSubmitting || state.formUi.submitDisabled
-        ? { disabled: true, ...(state.isSubmitting ? { "aria-busy": true as const } : {}) }
-        : {}),
-    }),
+    submit: () => {
+      const canSubmit = instance.ui.canSubmit;
+      return {
+        type: "submit" as const,
+        ...(!canSubmit
+          ? {
+              disabled: true,
+              ...(state.isSubmitting ? { "aria-busy": true as const } : {}),
+            }
+          : {}),
+      };
+    },
+    submitButton: () => {
+      const canSubmit = instance.ui.canSubmit;
+      return {
+        type: "submit" as const,
+        ...(!canSubmit
+          ? {
+              disabled: true,
+              ...(state.isSubmitting ? { "aria-busy": true as const } : {}),
+            }
+          : {}),
+      };
+    },
     focusFirstInvalid: () => instance.focusFirstInvalid(),
   };
 }

@@ -15,10 +15,6 @@ export default defineConfig({
         replacement: path.join(rootDir, "packages/form-intelligence/src/$1/index.ts"),
       },
       {
-        find: /^@jayoncode\/form-intelligent\/(.+)$/,
-        replacement: path.join(rootDir, "packages/form-intelligence/src/$1/index.ts"),
-      },
-      {
         find: /^@jayoncode\/object-diff\/(.+)$/,
         replacement: path.join(rootDir, "packages/object-diff/src/$1/index.ts"),
       },
@@ -27,15 +23,7 @@ export default defineConfig({
         replacement: path.join(rootDir, "packages/form-intelligence-valibot/src/index.ts"),
       },
       {
-        find: "@jayoncode/form-intelligent-valibot",
-        replacement: path.join(rootDir, "packages/form-intelligence-valibot/src/index.ts"),
-      },
-      {
         find: "@jayoncode/form-intelligence-yup",
-        replacement: path.join(rootDir, "packages/form-intelligence-yup/src/index.ts"),
-      },
-      {
-        find: "@jayoncode/form-intelligent-yup",
         replacement: path.join(rootDir, "packages/form-intelligence-yup/src/index.ts"),
       },
       {
@@ -43,15 +31,7 @@ export default defineConfig({
         replacement: path.join(rootDir, "packages/form-intelligence-ajv/src/index.ts"),
       },
       {
-        find: "@jayoncode/form-intelligent-ajv",
-        replacement: path.join(rootDir, "packages/form-intelligence-ajv/src/index.ts"),
-      },
-      {
         find: "@jayoncode/form-intelligence-angular",
-        replacement: path.join(rootDir, "packages/form-intelligence-angular/src/index.ts"),
-      },
-      {
-        find: "@jayoncode/form-intelligent-angular",
         replacement: path.join(rootDir, "packages/form-intelligence-angular/src/index.ts"),
       },
       {
@@ -59,15 +39,7 @@ export default defineConfig({
         replacement: path.join(rootDir, "packages/form-intelligence-vue/src/index.ts"),
       },
       {
-        find: "@jayoncode/form-intelligent-vue",
-        replacement: path.join(rootDir, "packages/form-intelligence-vue/src/index.ts"),
-      },
-      {
         find: "@jayoncode/form-intelligence-zod",
-        replacement: path.join(rootDir, "packages/form-intelligence-zod/src/index.ts"),
-      },
-      {
-        find: "@jayoncode/form-intelligent-zod",
         replacement: path.join(rootDir, "packages/form-intelligence-zod/src/index.ts"),
       },
       {
@@ -75,15 +47,7 @@ export default defineConfig({
         replacement: path.join(rootDir, "packages/form-intelligence-react/src/index.ts"),
       },
       {
-        find: "@jayoncode/form-intelligent-react",
-        replacement: path.join(rootDir, "packages/form-intelligence-react/src/index.ts"),
-      },
-      {
         find: "@jayoncode/form-intelligence",
-        replacement: path.join(rootDir, "packages/form-intelligence/src/index.ts"),
-      },
-      {
-        find: "@jayoncode/form-intelligent",
         replacement: path.join(rootDir, "packages/form-intelligence/src/index.ts"),
       },
       {

@@ -141,6 +141,10 @@ createForm({
       storageKey: "checkout:draft",
     },
   },
+  // Same store as form.subscribe() — fires once after create, then on every notify
+  subscribe: (form) => {
+    syncCheckoutChrome(form.state); // draft badge, plan label, …
+  },
   async onSubmit(values) {
     await api.checkout(values); // isSubmitting + double-submit guard built in
   },

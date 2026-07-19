@@ -167,8 +167,8 @@ export interface FieldHandle<_TValues extends Record<string, unknown>> {
   readonly touched: boolean;
   readonly dirty: boolean;
   readonly visited: boolean;
-  /** Presentation flags for this path (defaults when missing from `fieldUi`). */
-  readonly ui: import("../engines/workflow/types.js").FieldUiState;
+  /** Full presentation maps (same sources as `state.fieldUi` / `formUi` / `fieldOptions`). */
+  readonly ui: import("../ui/types.js").FieldUiView;
   /** Field state + meta (controller surface). */
   readonly meta: FieldState & FieldMetaState;
   /**
@@ -504,6 +504,13 @@ export interface FormInstance<TValues extends Record<string, unknown>> {
    * Returns the focused path or `undefined`.
    */
   focusFirstInvalid(): FieldPath | undefined;
+  /**
+   * Derived UI projection (`@jayoncode/form-intelligence/ui`).
+   * Uses registered policies from `ui()` plugin, or package defaults.
+   */
+  readonly ui: import("../ui/projection.js").FormUiProjection<TValues>;
+  /** Paths registered via `field()` in registration order. */
+  registeredFieldPaths(): readonly FieldPath[];
   pushField(arrayPath: FieldPath, item?: unknown): FieldPath;
   removeField(arrayPath: FieldPath, index: number): void;
   insertField(arrayPath: FieldPath, index: number, item?: unknown): FieldPath;
@@ -543,6 +550,13 @@ export interface FormInstance<TValues extends Record<string, unknown>> {
   getErrors(): Readonly<Record<FieldPath, string>>;
   isValid(): boolean;
   isSubmitting(): boolean;
+  /**
+   * Hard submission eligibility (enforced by `submit()`).
+   * Distinct from `form.ui.canSubmit` (UX projection + `disableSubmitWhen`).
+   */
+  submissionGuard(
+    options?: Pick<SubmitOptions, "preventDoubleSubmit">,
+  ): import("../submission/guard.js").SubmissionGuardResult;
   isDirty(): boolean;
   changedFields(): readonly FieldPath[];
   changedSinceSubmitFields(): readonly FieldPath[];

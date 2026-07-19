@@ -79,7 +79,7 @@ return (
 );
 ```
 
-`useForm` owns instance lifecycle (StrictMode-safe). `form.field(path)` spreads `name` + `aria-*`. Use `form.fieldController(path)` / `form.controller` for the full Phase 16 controller surface (`bind`, `setAriaIds`, `focusFirstInvalid`).
+`useForm` owns instance lifecycle (StrictMode-safe). `form.field(path)` spreads `name`, `aria-*`, and `data-fi-status` from the UI projection (`showError` / `status`). Submit buttons use `form.ui.canSubmit`. Prefer `plugins: [ui()]` so DOM parity and custom policies stay aligned — see [UI projection](/packages/form-intelligence/modules/ui-projection). Use `form.fieldController(path)` / `form.controller` for the full controller surface (`bind`, `setAriaIds`, `focusFirstInvalid`).
 
 Read `form.state` in JSX — never `subscribe()` (or `createForm({ subscribe })`) in application code.
 
@@ -240,7 +240,7 @@ Pass a pre-compiled `ValidateFunction` when reusing a configured `Ajv` instance 
 
 ## Vue — `@jayoncode/form-intelligence-vue`
 
-**Status: PARTIAL** — package ships composables; maturity behind React (controllers/`field.aria` parity pending).
+**Status: PARTIAL** — composables ship; submit/field UX uses `form.ui.canSubmit` / `showError` / `status` (same projection as React). Controllers/`field.aria` depth still thinner than React.
 
 ```bash
 npm install @jayoncode/form-intelligence @jayoncode/form-intelligence-vue vue
@@ -270,7 +270,7 @@ Use `provideForm()` in a parent and `useField('path')` in children for deep tree
 
 ## Angular — `@jayoncode/form-intelligence-angular`
 
-**Status: PARTIAL** — package ships directives/service; maturity behind React (controllers/`field.aria` parity pending).
+**Status: PARTIAL** — directives/service ship; submit/field UX uses `form.ui.canSubmit` / `showError` / `status` (same projection as React). Controllers/`field.aria` depth still thinner than React.
 
 ```bash
 npm install @jayoncode/form-intelligence @jayoncode/form-intelligence-angular

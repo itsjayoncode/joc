@@ -3,11 +3,12 @@ import { useMemo, useRef, useState } from "react";
 import styles from "./Pages.module.css";
 import { EventLog } from "../components/playground/EventLog.js";
 import { ExplainPanel } from "../components/playground/ExplainPanel.js";
+import { SubmitExplainCard } from "../components/playground/SubmitExplainCard.js";
 import { Card } from "../components/primitives/Card.js";
 import { PageContainer } from "../components/primitives/PageContainer.js";
 import { useEventLog } from "../hooks/useEventLog.js";
 import { useFormSnapshot } from "../hooks/useFormSnapshot.js";
-import { createForm, required } from "../lib/form-intelligence.js";
+import { createForm, required, ui } from "../lib/form-intelligence.js";
 import { toInputValue } from "../utils/field-value.js";
 
 const OFFLINE_STORAGE_KEY = "joc.form-intelligence-playground.submission-offline";
@@ -24,6 +25,7 @@ export function SubmissionPage() {
       createForm({
         initialValues: { message: "" },
         validators: { message: [required] },
+        plugins: [ui()],
         workflow: {
           offlineQueue: {
             enabled: true,
@@ -46,7 +48,7 @@ export function SubmissionPage() {
             throw new Error("Simulated API failure");
           }
 
-          push(`onSubmit succeeded: ${values.message}`);
+          push(`onSubmit succeeded: ${String(values.message)}`);
         },
         onSubmitError: (error) => {
           push(`onSubmitError: ${error instanceof Error ? error.message : "unknown error"}`);
@@ -71,6 +73,10 @@ export function SubmissionPage() {
     }
 
     const ok = await form.submit();
+    if (!ok && !form.submissionGuard().allowed) {
+      push(`submit blocked by guard: ${form.submissionGuard().reasons.join(", ") || "unknown"}`);
+      return;
+    }
     if (offlineMode) {
       push(
         ok
@@ -101,14 +107,21 @@ export function SubmissionPage() {
   return (
     <PageContainer
       compact
-      description="Loading states, flaky APIs, duplicate-submit prevention, engine offline queue, and cancel simulation."
+      description="Submit lifecycle, hard submissionGuard(), form.ui.canSubmit projection, offline queue, and cancel simulation."
       eyebrow="Submission"
       title="Submission Playground"
     >
       <ExplainPanel title="What you are testing">
         <ul className={styles.logList}>
-          <li>isSubmitting disables the button while the async handler runs</li>
-          <li>Second submit() call returns false while the first is in flight</li>
+          <li>
+            <code>form.ui.canSubmit</code> drives the button (UX) — not a security boundary
+          </li>
+          <li>
+            <code>form.submissionGuard()</code> is enforced inside <code>submit()</code> (hard)
+          </li>
+          <li>
+            Second <code>submit()</code> returns false while the first is in flight
+          </li>
           <li>Flaky mode randomly throws to exercise onSubmitError</li>
           <li>Offline mode uses workflow.offlineQueue — flush via form.flushOfflineQueue()</li>
           <li>Cancel bumps a generation counter so late responses are ignored</li>
@@ -158,10 +171,11 @@ export function SubmissionPage() {
                 value={toInputValue(form.values("message"))}
               />
             </label>
+            <SubmitExplainCard form={form} />
             <div className={styles.buttonRow}>
               <button
                 className={styles.primaryButton}
-                disabled={snapshot.isSubmitting}
+                disabled={!form.ui.canSubmit}
                 onClick={() => {
                   void runSubmit();
                 }}
@@ -171,7 +185,7 @@ export function SubmissionPage() {
               </button>
               <button
                 className={styles.secondaryButton}
-                disabled={snapshot.isSubmitting}
+                disabled={!form.ui.canSubmit}
                 onClick={() => {
                   void form.submit();
                   void form.submit().then((second) => {

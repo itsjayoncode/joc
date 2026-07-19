@@ -200,7 +200,7 @@ export function DevToolsPage() {
       title="Form DevTools"
     >
       <ExplainPanel
-        body="enableFormDevTools(form) registers instances for the inspector. Use the config editor and export/import tools below for local debugging. Verbose validation logs pipeline hooks without changing engine behavior. A future browser extension is planned in Phase 5.4.8."
+        body="enableFormDevTools(form) registers instances for the inspector. The UI projection card shows getUiProjection() — hard submit explain + per-field status. Verbose validation logs pipeline hooks without changing engine behavior."
         title="In-playground developer utilities"
       />
 

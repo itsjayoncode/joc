@@ -8,9 +8,9 @@ Move from DIY form orchestration (or older Form Intelligence APIs) onto the curr
 
 ## Package rename (`form-intelligent` → `form-intelligence`)
 
-Canonical packages are now **`@jayoncode/form-intelligence*`**. Old `form-intelligent*` names remain published as **compatibility re-exports**.
+Canonical packages are **`@jayoncode/form-intelligence*`**. The old `@jayoncode/form-intelligent*` compatibility packages are **EOL** — removed from this monorepo and no longer published. Last published versions on npm stay installable but will not receive updates; migrate ASAP.
 
-| Before                                | After                                  |
+| Before (EOL)                          | After                                  |
 | ------------------------------------- | -------------------------------------- |
 | `@jayoncode/form-intelligent`         | `@jayoncode/form-intelligence`         |
 | `@jayoncode/form-intelligent-react`   | `@jayoncode/form-intelligence-react`   |
@@ -20,8 +20,6 @@ Canonical packages are now **`@jayoncode/form-intelligence*`**. Old `form-intell
 | `@jayoncode/form-intelligent-yup`     | `@jayoncode/form-intelligence-yup`     |
 | `@jayoncode/form-intelligent-valibot` | `@jayoncode/form-intelligence-valibot` |
 | `@jayoncode/form-intelligent-ajv`     | `@jayoncode/form-intelligence-ajv`     |
-
-Existing installs keep working; new projects should use the new names.
 
 ```bash
 npm uninstall @jayoncode/form-intelligent @jayoncode/form-intelligent-react
@@ -71,7 +69,7 @@ import { createBrowserLifecyclePlugin } from "@jayoncode/form-intelligence/plugi
 
 ### Bundle budget (`core-login`)
 
-Entry-chunk gzip budget is **24 KB** (ADR-013). Measure with `pnpm --filter @jayoncode/form-intelligence check:size` after `tsc -b`. See [Performance](/packages/form-intelligence/modules/performance).
+Entry-chunk gzip budget is **26 KB** (ADR-013). Measure with `pnpm --filter @jayoncode/form-intelligence check:size` after `tsc -b`. See [Performance](/packages/form-intelligence/modules/performance).
 
 ### Controllers / accessibility
 

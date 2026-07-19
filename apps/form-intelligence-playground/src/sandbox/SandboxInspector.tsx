@@ -74,6 +74,12 @@ export function SandboxInspector() {
                 <dd>{JSON.stringify(path ? form.values(path) : null)}</dd>
                 <dt>Error</dt>
                 <dd>{error ?? "—"}</dd>
+                <dt>showError</dt>
+                <dd>
+                  <Flag value={Boolean(path && form.field(path).ui.showError)} />
+                </dd>
+                <dt>status</dt>
+                <dd>{path ? form.field(path).ui.status : "—"}</dd>
                 <dt>Touched</dt>
                 <dd>
                   <Flag value={Boolean(path && snapshot.touched[path])} />
@@ -122,6 +128,23 @@ export function SandboxInspector() {
         {inspectorTab === "form" ? (
           <>
             <dl className={styles.kv}>
+              <dt>canSubmit</dt>
+              <dd>
+                <Flag value={form.ui.canSubmit} />
+              </dd>
+              <dt>submissionGuard</dt>
+              <dd>
+                <Flag value={form.submissionGuard().allowed} />
+                {form.submissionGuard().reasons.length > 0
+                  ? ` (${form.submissionGuard().reasons.join(", ")})`
+                  : ""}
+              </dd>
+              <dt>Submit blocked (UX)</dt>
+              <dd>
+                {form.ui.submitBlockedReasons.length > 0
+                  ? form.ui.submitBlockedReasons.join(", ")
+                  : "—"}
+              </dd>
               <dt>Submitting</dt>
               <dd>
                 <Flag value={snapshot.isSubmitting} />
@@ -167,6 +190,10 @@ export function SandboxInspector() {
                   .join(", ") || "none"}
               </dd>
             </dl>
+            <p className={styles.hint}>Hard guard</p>
+            <pre className={styles.pre}>{JSON.stringify(form.submissionGuard(), null, 2)}</pre>
+            <p className={styles.hint}>Why can’t I submit? (UX explain)</p>
+            <pre className={styles.pre}>{JSON.stringify(form.ui.explain("submit"), null, 2)}</pre>
             <p className={styles.hint}>Values</p>
             <pre className={styles.pre}>{JSON.stringify(snapshot.values, null, 2)}</pre>
             <p className={styles.hint}>Errors</p>

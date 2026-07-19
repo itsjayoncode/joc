@@ -49,7 +49,7 @@ describe("release engineering foundation", () => {
     expect(browserLifecycle.private).not.toBe(true);
   });
 
-  it("keeps form-intelligent adapters public for npm publication", () => {
+  it("keeps form-intelligence adapters public for npm publication", () => {
     const adapter = JSON.parse(
       readFileSync(path.join(rootDir, "packages/form-intelligence-react/package.json"), "utf8"),
     ) as {

@@ -8,6 +8,22 @@ export interface FieldUiState {
   readOnly?: boolean;
   /** Additive — e.g. async option load / validating. */
   busy?: boolean;
+  /**
+   * Derived UI projection (validation state): raw error present.
+   * Distinct from `showError` (whether to display).
+   */
+  hasError?: boolean;
+  /** Derived UI projection: error string when present. */
+  errorMessage?: string;
+  /**
+   * Derived UI projection (UI state): whether the error should be displayed
+   * under the active errorDisplay policy.
+   */
+  showError?: boolean;
+  /**
+   * Derived UI projection: exactly one of validating | error | success | idle.
+   */
+  status?: "validating" | "error" | "success" | "idle";
 }
 
 export interface FormUiState {

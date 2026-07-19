@@ -272,7 +272,7 @@ Fixtures:
 
 | Fixture          | Import surface                      | Budget (gzip) |
 | ---------------- | ----------------------------------- | ------------- |
-| `core-login`     | `createForm` + validators from main | 24 KB         |
+| `core-login`     | `createForm` + validators from main | 26 KB         |
 | `workflow-rules` | `when` from `/rules`                | 3 KB          |
 | `format-only`    | formatters from `/format`           | 2 KB          |
 

@@ -56,12 +56,13 @@ export const APP_NAVIGATION_GROUPS: readonly NavigationGroup[] = [
         path: "/validation",
       },
       {
-        description: "Loading state, flaky API, offline queue, duplicate-submit guard, cancel.",
+        description:
+          "Hard submissionGuard(), form.ui.canSubmit, flaky API, offline queue, double-submit.",
         groupId: "modules",
         icon: ToolsIcon,
         id: "submission",
         intent: "current",
-        keywords: ["submit", "retry", "loading", "offline"],
+        keywords: ["submit", "retry", "loading", "offline", "guard", "canSubmit"],
         label: "Submission",
         path: "/submission",
       },

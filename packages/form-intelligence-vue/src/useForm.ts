@@ -56,24 +56,45 @@ export function useForm<TValues extends Record<string, unknown>>(
       ref: formElement,
       noValidate: true,
     }),
-    field: (path: FieldPath) => ({
-      name: path,
-    }),
-    submit: () => {
-      const snapshot = state.value;
+    field: (path: FieldPath) => {
+      const handle = instanceRef.value.field(path);
+      const attrs = handle.aria.attributes;
+      const showError = handle.ui.showError;
       return {
-        type: "submit",
-        ...(snapshot.isSubmitting || snapshot.formUi.submitDisabled
-          ? { disabled: true, ...(snapshot.isSubmitting ? { "aria-busy": true } : {}) }
+        name: path,
+        "aria-invalid": showError,
+        "data-fi-status": handle.ui.status,
+        ...(attrs["aria-required"] === undefined
+          ? {}
+          : { "aria-required": attrs["aria-required"] }),
+        ...(showError && attrs["aria-describedby"] !== undefined
+          ? { "aria-describedby": attrs["aria-describedby"] }
+          : {}),
+      };
+    },
+    submit: () => {
+      const instance = instanceRef.value;
+      const canSubmit = instance.ui.canSubmit;
+      return {
+        type: "submit" as const,
+        ...(!canSubmit
+          ? {
+              disabled: true,
+              ...(state.value.isSubmitting ? { "aria-busy": true as const } : {}),
+            }
           : {}),
       };
     },
     submitButton: () => {
-      const snapshot = state.value;
+      const instance = instanceRef.value;
+      const canSubmit = instance.ui.canSubmit;
       return {
-        type: "submit",
-        ...(snapshot.isSubmitting || snapshot.formUi.submitDisabled
-          ? { disabled: true, ...(snapshot.isSubmitting ? { "aria-busy": true } : {}) }
+        type: "submit" as const,
+        ...(!canSubmit
+          ? {
+              disabled: true,
+              ...(state.value.isSubmitting ? { "aria-busy": true as const } : {}),
+            }
           : {}),
       };
     },

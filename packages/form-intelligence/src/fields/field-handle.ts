@@ -1,7 +1,6 @@
 import { computeFieldAria } from "../engines/accessibility/compute-aria.js";
 
 import type { FieldAriaIds, FieldAriaResult } from "../engines/accessibility/types.js";
-import type { FieldUiState } from "../engines/workflow/types.js";
 import type {
   FieldBinding,
   FieldHandle,
@@ -9,6 +8,7 @@ import type {
   FieldPath,
   FieldState,
 } from "../types/index.js";
+import type { FieldUiView } from "../ui/types.js";
 
 export interface FieldHandleContext {
   readonly path: FieldPath;
@@ -17,7 +17,7 @@ export interface FieldHandleContext {
   getTouched(): boolean;
   getDirty(): boolean;
   getVisited(): boolean;
-  getUi(): FieldUiState;
+  getUi(): FieldUiView;
   getMeta(): FieldMetaState;
   getFieldState(): FieldState;
   getAriaIds(): FieldAriaIds | undefined;

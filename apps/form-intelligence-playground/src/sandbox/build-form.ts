@@ -8,6 +8,7 @@ import {
   matchesField,
   minLength,
   required,
+  ui,
 } from "../lib/form-intelligence.js";
 
 import type { SandboxConfig } from "./types.js";
@@ -120,6 +121,7 @@ export function buildSandboxForm(
     initialValues,
     validateOn: config.validateOn,
     validators: validators as never,
+    plugins: [ui()],
     ...(config.conditionalBusiness && "customerType" in initialValues && stressCount === 0
       ? {
           rules: [

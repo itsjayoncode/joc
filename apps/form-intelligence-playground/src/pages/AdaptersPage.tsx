@@ -90,17 +90,19 @@ function ReactAdapterDemo() {
     },
   });
 
+  const emailField = form.field("email");
+
   return (
     <Card
-      description="useForm() wires schema validation, rules, and submit state — no manual subscribe."
+      description="useForm() uses form.ui.canSubmit / showError / status — same projection as Vue/Angular/DOM."
       title="React adapter (live)"
     >
       <form {...form.form()}>
         <label className={styles.fieldLabel}>
           Email
-          <input {...form.field("email")} aria-label="Email" className={styles.textInput} />
+          <input {...emailField} aria-label="Email" className={styles.textInput} />
         </label>
-        {form.state.errors.email ? (
+        {form.state.errors.email && emailField["aria-invalid"] ? (
           <p className={styles.fieldHint}>{form.state.errors.email}</p>
         ) : null}
 
@@ -120,12 +122,18 @@ function ReactAdapterDemo() {
       </form>
 
       <p className={styles.fieldHint}>
-        submitDisabled: <code>{String(form.state.formUi.submitDisabled)}</code>
+        formUi.submitDisabled: <code>{String(form.state.formUi.submitDisabled)}</code>
+        {" · "}
+        ui.canSubmit: <code>{String(form.instance.ui.canSubmit)}</code>
+        {" · "}
+        guard: <code>{String(form.instance.submissionGuard().allowed)}</code>
+        {" · "}
+        status: <code>{emailField["data-fi-status"] ?? "—"}</code>
       </p>
       {submitted ? <p className={styles.fieldHint}>{submitted}</p> : null}
 
       <CodeBlock
-        code={`const form = useForm({\n  schema: { email: "email" },\n  rules: [when("loanAmount").greaterThan(500_000).disableSubmit()],\n  onSubmit,\n});\n\n<input {...form.field("email")} />\n<button {...form.submitButton()}>Submit</button>`}
+        code={`const form = useForm({\n  schema: { email: "email" },\n  rules: [when("loanAmount").greaterThan(500_000).disableSubmit()],\n  onSubmit,\n});\n\n<input {...form.field("email")} /> // aria-invalid + data-fi-status\n<button {...form.submitButton()}>Submit</button> // form.ui.canSubmit`}
         language="typescript"
       />
     </Card>

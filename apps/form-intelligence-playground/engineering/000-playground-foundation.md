@@ -67,6 +67,16 @@ The shell displays live package versions without hard-coding strings in React co
 - After config or package layout changes, restart the dev server (default port `4277`).
 - Production `vite build` statically inlines version strings into the bundle.
 
+### Version bumps (required with playground changes)
+
+When implementing a **playground change request**, bump versions in the same PR/commit set:
+
+1. **Playground app** — update `apps/form-intelligence-playground/package.json` `version` (`patch` / `minor` as appropriate). This drives `VITE_PLAYGROUND_VERSION` in the shell.
+2. **Library packages** — if the change depends on unpublished package API work, keep/add a changeset for those packages. The dashboard’s Form Intelligence version tracks `packages/*/package.json`, which usually advances on release (`changeset version`), not on every local edit.
+3. Restart the playground dev server after bumping so the header/dashboard show the new numbers.
+
+See also [README — Version control when changing the playground](../README.md#version-control-when-changing-the-playground).
+
 ## Technology Decisions
 
 ### React Router

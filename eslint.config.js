@@ -28,9 +28,6 @@ export default tseslint.config(
       "eslint.config.js",
       "prettier.config.js",
       "vitest.config.ts",
-      // Compatibility shims: re-export stubs without package tsconfigs
-      "packages/form-intelligent/src/**",
-      "packages/form-intelligent-*/src/**",
     ],
   },
   {

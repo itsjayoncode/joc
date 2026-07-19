@@ -5,6 +5,12 @@ export {
   mapSubmissionErrors,
 } from "./submit.js";
 export type { SubmissionContext, SubmissionFieldErrors, SubmitResult } from "./submit.js";
+export { evaluateSubmissionGuard } from "./guard.js";
+export type {
+  EvaluateSubmissionGuardInput,
+  SubmissionGuardReason,
+  SubmissionGuardResult,
+} from "./guard.js";
 export { SubmissionController } from "./cancel.js";
 export { SubmissionLoadingTracker } from "./loading.js";
 export type { SubmissionLoadingSnapshot } from "./loading.js";
