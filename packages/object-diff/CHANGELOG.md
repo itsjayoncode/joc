@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.2
+
+### Patch Changes
+
+- Security: Hardened against prototype pollution by explicitly rejecting **proto**, constructor, and prototype keys, and replacing dynamic property assignment with Object.defineProperty. Existing security tests continue to pass, resolving the CodeQL warning.
+
 ## 0.3.1
 
 ### Patch Changes

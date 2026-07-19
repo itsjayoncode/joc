@@ -10,7 +10,6 @@ const SUPPORTED_OPS = new Set<PatchOperationType>([
   "copy",
   "test",
 ]);
-const UNSAFE_PATH_KEYS = new Set(["__proto__", "constructor", "prototype"]);
 
 function assertSafePointer(pointer: string): void {
   if (pointer !== "" && !pointer.startsWith("/")) {
@@ -23,7 +22,7 @@ function assertSafePointer(pointer: string): void {
 
   for (const raw of pointer.split("/").slice(1)) {
     const segment = raw.replace(/~1/g, "/").replace(/~0/g, "~");
-    if (UNSAFE_PATH_KEYS.has(segment)) {
+    if (segment === "__proto__" || segment === "constructor" || segment === "prototype") {
       throw new InvalidPatchError(`Unsafe path segment "${segment}" is not allowed.`);
     }
   }
