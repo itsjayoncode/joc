@@ -87,6 +87,10 @@ createForm({
       storageKey: "checkout:draft",
     },
   },
+  // Same store as form.subscribe() — fires once after create, then on every notify
+  subscribe: (form) => {
+    syncCheckoutChrome(form.state); // draft badge, plan label, …
+  },
   async onSubmit(values) {
     await api.checkout(values);
   },
@@ -283,11 +287,12 @@ Work through the journey groups below. Each guide links to a playground route.
 
 ### Core Concepts
 
-| Guide                                                            | Topics                              | Playground                                   |
-| ---------------------------------------------------------------- | ----------------------------------- | -------------------------------------------- |
-| [Core concepts](/packages/form-intelligence/modules/concepts)    | Instance model, flags, architecture | [State](/playground/form-intelligence/state) |
-| [Capabilities](/packages/form-intelligence/modules/capabilities) | Form OS feature map and status      | [Sandbox](/playground/form-intelligence/)    |
-| [Entrypoints](/packages/form-intelligence/modules/entrypoints)   | Main vs `/format`, `/devtools`, …   | [Sandbox](/playground/form-intelligence/)    |
+| Guide                                                              | Topics                                      | Playground                                   |
+| ------------------------------------------------------------------ | ------------------------------------------- | -------------------------------------------- |
+| [Core concepts](/packages/form-intelligence/modules/concepts)      | Instance model, flags, architecture         | [State](/playground/form-intelligence/state) |
+| [Capabilities](/packages/form-intelligence/modules/capabilities)   | Form OS feature map and status              | [Sandbox](/playground/form-intelligence/)    |
+| [Entrypoints](/packages/form-intelligence/modules/entrypoints)     | Main vs `/format`, `/devtools`, `/ui`, …    | [Sandbox](/playground/form-intelligence/)    |
+| [UI projection](/packages/form-intelligence/modules/ui-projection) | `showError`, `canSubmit`, `status`, explain | [Sandbox](/playground/form-intelligence/)    |
 
 ### Guides
 

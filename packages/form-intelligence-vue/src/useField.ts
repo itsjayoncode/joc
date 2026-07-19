@@ -13,9 +13,18 @@ export function useField<TValues extends Record<string, unknown>>(
   form?: UseFormReturn<TValues>,
 ): UseFieldReturn {
   const resolvedForm = form ?? useProvidedForm<TValues>();
+  const handle = resolvedForm.instance.field(path);
+  const attrs = handle.aria.attributes;
+  const showError = handle.ui.showError;
 
   return {
     name: path,
+    "aria-invalid": showError,
+    "data-fi-status": handle.ui.status,
+    ...(attrs["aria-required"] === undefined ? {} : { "aria-required": attrs["aria-required"] }),
+    ...(showError && attrs["aria-describedby"] !== undefined
+      ? { "aria-describedby": attrs["aria-describedby"] }
+      : {}),
     bind: () => resolvedForm.instance.field(path).bind(),
   };
 }

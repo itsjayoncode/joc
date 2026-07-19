@@ -35,8 +35,17 @@ export class FormIntelligentHandleImpl<
   }
 
   public field(path: FieldPath) {
+    const handle = this.instance.field(path);
+    const attrs = handle.aria.attributes;
+    const showError = handle.ui.showError;
     return {
       name: path,
+      "aria-invalid": showError,
+      "data-fi-status": handle.ui.status,
+      ...(attrs["aria-required"] === undefined ? {} : { "aria-required": attrs["aria-required"] }),
+      ...(showError && attrs["aria-describedby"] !== undefined
+        ? { "aria-describedby": attrs["aria-describedby"] }
+        : {}),
     };
   }
 
@@ -56,10 +65,14 @@ export class FormIntelligentHandleImpl<
 
   private submitButtonProps() {
     const snapshot = this.state();
+    const canSubmit = this.instance.ui.canSubmit;
     return {
       type: "submit" as const,
-      ...(snapshot.isSubmitting || snapshot.formUi.submitDisabled
-        ? { disabled: true, ...(snapshot.isSubmitting ? { "aria-busy": true } : {}) }
+      ...(!canSubmit
+        ? {
+            disabled: true,
+            ...(snapshot.isSubmitting ? { "aria-busy": true as const } : {}),
+          }
         : {}),
     };
   }

@@ -25,8 +25,6 @@ Published under [`@jayoncode`](https://www.npmjs.com/~jayoncode) on npm:
 - **Form Intelligence** — headless form engine: validation, `when()` rules, drafts, autosave, wizards, submit
 - **Object Diff** — deep comparison, dirty checks, change records, patches, serialization
 
-Compatibility shims under `@jayoncode/form-intelligent*` re-export Form Intelligence for older installs. Prefer `@jayoncode/form-intelligence*` for new work.
-
 Additional libraries will be announced as they enter active development — see the [roadmap](https://itsjayoncode.github.io/joc/roadmap/).
 
 ## Links

@@ -58,14 +58,28 @@ This mirrors the Browser Lifecycle playground pattern (`src/lib/browser-lifecycl
 Package versions shown in the shell (header, dashboard, footer) come from `vite.config.ts`:
 
 1. Read `package.json` versions from `packages/form-intelligence`, `packages/form-intelligence-react`, and this app.
-2. Inject compile-time constants via Vite `define`:
-   - `__FORM_INTELLIGENT_VERSION__`
-   - `__FORM_INTELLIGENT_REACT_VERSION__`
-   - `__PLAYGROUND_VERSION__`
+2. Inject via Vite `define` / `import.meta.env`:
+   - `VITE_FORM_INTELLIGENT_VERSION`
+   - `VITE_FORM_INTELLIGENT_REACT_VERSION`
+   - `VITE_PLAYGROUND_VERSION`
 3. Consume them in `src/config/app-metadata.ts` through `getPlaygroundMetadata()`.
-4. Declare the globals in `src/vite-env.d.ts` for TypeScript.
+4. Declare the env keys in `src/vite-env.d.ts` for TypeScript.
 
 After renaming packages or changing monorepo paths, restart the dev server so `vite.config.ts` reloads. If `readPackageVersion` cannot find a `package.json`, the dev server fails to start — fix the path before retrying.
+
+### Version control when changing the playground
+
+**Policy (humans + agents):** when a request changes the Form Intelligence playground (pages, sandbox, inspectors, benches, docs under this app), **analyze and bump versions in the same change set** so the shell reflects the update.
+
+| What changed                                                           | Version action                                                                                                                                                                             |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Playground UI, explorers, sandbox, playground docs/engineering         | Bump `apps/form-intelligence-playground/package.json` (`patch` for small fixes, `minor` for user-visible features)                                                                         |
+| `@jayoncode/form-intelligence` / `-react` (or other consumed packages) | Ensure a **changeset** exists for those packages; the shell shows their `package.json` version — it updates when that package version is bumped (usually at release / `changeset version`) |
+| Docs site sync only                                                    | No playground version bump required                                                                                                                                                        |
+
+Always restart `pnpm form-intelligence-playground:dev` after a version bump so Vite re-reads `package.json`.
+
+Do **not** leave playground feature work on an unchanged playground `version` when the change is meant to be visible in the product shell.
 
 ## Documentation
 

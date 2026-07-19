@@ -11,6 +11,7 @@ import type {
   FormDevToolsSummary,
 } from "./types.js";
 import type { FormInstance, FormState } from "../types/index.js";
+import type { UiProjectionSnapshot } from "../ui/snapshot.js";
 
 export class FormDevToolsRegistry implements FormDevToolsInspector {
   private readonly sessions = new Map<string, FormDevToolsSession>();
@@ -77,6 +78,10 @@ export class FormDevToolsRegistry implements FormDevToolsInspector {
 
   public getStateSnapshot(formId: string): FormState<Record<string, unknown>> | null {
     return this.sessions.get(formId)?.getStateSnapshot() ?? null;
+  }
+
+  public getUiProjection(formId: string): UiProjectionSnapshot | null {
+    return this.sessions.get(formId)?.getUiProjection() ?? null;
   }
 
   public clearLogs(formId?: string): void {

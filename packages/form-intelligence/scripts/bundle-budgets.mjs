@@ -116,7 +116,7 @@ for (const fixture of budgets.fixtures) {
 
 if (failed) {
   console.error(
-    "\nBundle budget exceeded. Prefer tree-shake/lazy import; raising maxGzipKb requires ADR-013 note + 24_PERFORMANCE.md update.",
+    "\nBundle budget exceeded. Prefer tree-shake/lazy import; raising maxGzipKb requires ADR-013 note + docs/performance.md update.",
   );
   process.exit(1);
 }

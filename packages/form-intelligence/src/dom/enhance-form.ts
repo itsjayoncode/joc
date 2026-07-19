@@ -1,5 +1,8 @@
 import { findFieldContainer, findFieldControl, findFieldControls } from "./discover-fields.js";
 import { readControlValue, writeControlValue } from "./field-value.js";
+import { shouldShowErrorWithPolicies } from "../ui/show-error.js";
+import { hasUiPoliciesRegistered } from "../ui/store.js";
+import { resolvePoliciesForForm } from "../ui/store.js";
 import { shouldValidateOnBlur } from "../validation/modes.js";
 
 import type { FieldPath, FieldUiState, FormInstance, ValidationMode } from "../types/index.js";
@@ -39,13 +42,19 @@ function renderFieldError(
   formId: string,
   path: FieldPath,
   message: string | undefined,
-  touched: boolean,
+  showError: boolean,
+  status?: string,
 ): void {
   const control = findFieldControl(form, path);
   const errorElement = ensureErrorElement(form, formId, path);
-  const showError = Boolean(message) && touched;
 
   if (control) {
+    if (status) {
+      control.setAttribute("data-fi-status", status);
+    } else {
+      control.removeAttribute("data-fi-status");
+    }
+
     if (showError) {
       control.setAttribute("aria-invalid", "true");
       control.setAttribute("aria-describedby", errorElement.id);
@@ -67,8 +76,8 @@ function renderFieldError(
 
 function syncSubmitButtons(
   formElement: HTMLFormElement,
+  disabled: boolean,
   isSubmitting: boolean,
-  submitDisabled: boolean,
 ): void {
   const buttons = formElement.querySelectorAll('button[type="submit"], input[type="submit"]');
 
@@ -77,7 +86,7 @@ function syncSubmitButtons(
       continue;
     }
 
-    button.disabled = isSubmitting || submitDisabled;
+    button.disabled = disabled;
     if (isSubmitting) {
       button.setAttribute("aria-busy", "true");
     } else {
@@ -211,11 +220,43 @@ export function attachDomEnhancer<TValues extends Record<string, unknown>>(
   };
 
   const syncErrors = (): void => {
+    const useProjection = hasUiPoliciesRegistered(form);
+    const policies = resolvePoliciesForForm(form);
+
     for (const path of fieldPaths) {
       const message = form.errors(path) as string | undefined;
       const { touched } = form.getFieldState(path);
-      renderFieldError(formElement, form.id, path, message, touched);
+      const isValidating = form.getFieldMeta(path).isValidating;
+      const fieldUi = form.field(path).ui;
+      const showError = useProjection
+        ? shouldShowErrorWithPolicies(
+            {
+              error: message,
+              touched,
+              submitCount: form.state.submitCount,
+              isValidating,
+            },
+            policies,
+          )
+        : Boolean(message) && touched;
+      renderFieldError(
+        formElement,
+        form.id,
+        path,
+        message,
+        showError,
+        useProjection ? fieldUi.status : undefined,
+      );
     }
+  };
+
+  const syncSubmit = (): void => {
+    const state = form.getFormState();
+    const useProjection = hasUiPoliciesRegistered(form);
+    const disabled = useProjection
+      ? !form.ui.canSubmit
+      : state.isSubmitting || form.getPresentation().formUi.submitDisabled;
+    syncSubmitButtons(formElement, disabled, state.isSubmitting);
   };
 
   for (const path of fieldPaths) {
@@ -272,11 +313,7 @@ export function attachDomEnhancer<TValues extends Record<string, unknown>>(
       syncFieldOptions(formElement, path, form.getPresentation(path).options);
       syncValidatingState(form, formElement, path);
     }
-    syncSubmitButtons(
-      formElement,
-      form.getFormState().isSubmitting,
-      form.getPresentation().formUi.submitDisabled,
-    );
+    syncSubmit();
   });
 
   syncControlValues();
@@ -286,11 +323,7 @@ export function attachDomEnhancer<TValues extends Record<string, unknown>>(
     syncFieldOptions(formElement, path, form.getPresentation(path).options);
     syncValidatingState(form, formElement, path);
   }
-  syncSubmitButtons(
-    formElement,
-    form.getFormState().isSubmitting,
-    form.getPresentation().formUi.submitDisabled,
-  );
+  syncSubmit();
 
   return () => {
     unsubscribe();
@@ -305,6 +338,7 @@ export function attachDomEnhancer<TValues extends Record<string, unknown>>(
       control?.removeAttribute("aria-invalid");
       control?.removeAttribute("aria-describedby");
       control?.removeAttribute("aria-required");
+      control?.removeAttribute("data-fi-status");
 
       const container = findFieldContainer(formElement, path);
       container?.removeAttribute("hidden");

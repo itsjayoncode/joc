@@ -1,4 +1,4 @@
-# Form Intelligence
+# Form Intelligence — Typed, framework-agnostic headless form engine for modern web apps.
 
 [![npm version](https://img.shields.io/npm/v/@jayoncode/form-intelligence.svg)](https://www.npmjs.com/package/@jayoncode/form-intelligence)
 [![license](https://img.shields.io/npm/l/@jayoncode/form-intelligence.svg)](https://github.com/itsjayoncode/joc/blob/master/packages/form-intelligence/package.json)
@@ -6,7 +6,7 @@
 
 Published as [`@jayoncode/form-intelligence`](https://www.npmjs.com/package/@jayoncode/form-intelligence).
 
-> **Renamed:** `@jayoncode/form-intelligent` remains a compatibility re-export. Prefer `@jayoncode/form-intelligence` for new installs.
+> **Renamed from `form-intelligent`:** use `@jayoncode/form-intelligence` only. Old shim packages are EOL and no longer published from this repo.
 
 ## The problem
 
@@ -69,6 +69,10 @@ createForm({
       debounceMs: 800,
       onSave: (values) => api.saveDraft(values),
     },
+  },
+  // Same store as form.subscribe() — fires once after create, then on every notify
+  subscribe: (form) => {
+    syncCheckoutChrome(form.state); // draft badge, plan label, …
   },
   async onSubmit(values) {
     await api.checkout(values);

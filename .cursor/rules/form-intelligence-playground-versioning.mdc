@@ -1,0 +1,20 @@
+---
+description: Bump Form Intelligence playground versions when the playground changes
+globs: apps/form-intelligence-playground/**
+alwaysApply: false
+---
+
+# Form Intelligence playground versioning
+
+When the user asks for **playground** changes under `apps/form-intelligence-playground/`:
+
+1. **Analyze** whether the change is user-visible (pages, sandbox, inspectors, benches, playground docs).
+2. **Bump** `apps/form-intelligence-playground/package.json` `version` in the **same** change set:
+   - `patch` — small fixes, copy, typo, non-feature polish
+   - `minor` — new explorers, panels, or user-visible behavior
+3. If the work also changes `@jayoncode/form-intelligence` / `-react` (etc.), keep/add a **changeset** for those packages. The shell’s library version tracks their `package.json` (usually advances on release).
+4. Remind to **restart** `pnpm form-intelligence-playground:dev` so Vite re-reads versions.
+
+Do not ship playground feature work with an unchanged playground `version` when the shell is expected to show the update.
+
+Canonical write-up: `apps/form-intelligence-playground/README.md` → “Version control when changing the playground”.

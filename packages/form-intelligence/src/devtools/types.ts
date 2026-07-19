@@ -60,6 +60,8 @@ export interface FormDevToolsInspector {
   getPerformanceMarks(formId: string): readonly DevToolsPerformanceMark[];
   getPlugins(formId: string): readonly DevToolsPluginInfo[];
   getStateSnapshot(formId: string): FormState<Record<string, unknown>> | null;
+  /** Read-only `form.ui` / explain snapshot for inspectors. */
+  getUiProjection(formId: string): import("../ui/snapshot.js").UiProjectionSnapshot | null;
   clearLogs(formId?: string): void;
 }
 

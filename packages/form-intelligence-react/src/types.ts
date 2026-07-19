@@ -19,6 +19,8 @@ export interface FieldElementProps {
   readonly "aria-invalid"?: boolean;
   readonly "aria-required"?: boolean;
   readonly "aria-describedby"?: string;
+  /** Derived UI projection status (`idle` | `validating` | `error` | `success`). */
+  readonly "data-fi-status"?: "validating" | "error" | "success" | "idle";
 }
 
 export interface SubmitButtonProps {

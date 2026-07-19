@@ -5,6 +5,7 @@ import styles from "./Pages.module.css";
 import { EventLog } from "../components/playground/EventLog.js";
 import { ExplainPanel } from "../components/playground/ExplainPanel.js";
 import { SandboxCue } from "../components/playground/SandboxCue.js";
+import { SubmitExplainCard } from "../components/playground/SubmitExplainCard.js";
 import { Card } from "../components/primitives/Card.js";
 import { PageContainer } from "../components/primitives/PageContainer.js";
 import { useEventLog } from "../hooks/useEventLog.js";
@@ -68,7 +69,12 @@ export function RulesPage() {
             </code>
           </li>
           <li>
-            <code>when(&quot;loanAmount&quot;).greaterThan(500000).disableSubmit()</code>
+            <code>when(&quot;loanAmount&quot;).greaterThan(500000).disableSubmit()</code> → hard{" "}
+            <code>ruleDisabled</code> guard
+          </li>
+          <li>
+            Button uses <code>form.ui.canSubmit</code>; engine uses{" "}
+            <code>form.submissionGuard()</code>
           </li>
           <li>
             Inspect live <code>fieldUi</code> / <code>formUi.submitDisabled</code> on the right
@@ -158,16 +164,42 @@ export function RulesPage() {
               </div>
             </div>
 
+            <SubmitExplainCard form={form} />
+
             <div className={styles.buttonRow}>
               <button
                 className={styles.primaryButton}
-                disabled={snapshot.formUi.submitDisabled || snapshot.isSubmitting}
+                disabled={!form.ui.canSubmit}
                 onClick={() => {
-                  void form.submit();
+                  void form.submit().then((ok) => {
+                    if (!ok) {
+                      const guard = form.submissionGuard();
+                      push(
+                        guard.allowed
+                          ? "submit() returned false (validation or pipeline)"
+                          : `submit blocked by guard: ${guard.reasons.join(", ")}`,
+                      );
+                    }
+                  });
                 }}
                 type="button"
               >
                 {snapshot.isSubmitting ? "Submitting…" : "Submit"}
+              </button>
+              <button
+                className={styles.secondaryButton}
+                onClick={() => {
+                  void form.submit().then((ok) => {
+                    push(
+                      ok
+                        ? "forced submit succeeded"
+                        : `forced submit refused — guard=${JSON.stringify(form.submissionGuard())}`,
+                    );
+                  });
+                }}
+                type="button"
+              >
+                Force submit()
               </button>
               <span className={styles.muted}>
                 {snapshot.formUi.submitDisabled

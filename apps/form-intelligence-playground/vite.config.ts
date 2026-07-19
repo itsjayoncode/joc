@@ -41,10 +41,6 @@ export default defineConfig({
         find: /^@jayoncode\/form-intelligence\/(.+)$/,
         replacement: path.join(repoRoot, "packages/form-intelligence/src/$1/index.ts"),
       },
-      {
-        find: /^@jayoncode\/form-intelligent\/(.+)$/,
-        replacement: path.join(repoRoot, "packages/form-intelligence/src/$1/index.ts"),
-      },
       { find: /^@jayoncode\/(.+)$/, replacement: path.join(repoRoot, "packages/$1/src/index.ts") },
     ],
   },

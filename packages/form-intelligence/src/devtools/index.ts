@@ -18,4 +18,5 @@ export type {
   FormDevToolsPluginOptions,
   FormDevToolsSummary,
 } from "./types.js";
+export type { UiProjectionSnapshot, UiFieldProjectionSnapshot } from "../ui/snapshot.js";
 export type { RedactOptions } from "./redact.js";

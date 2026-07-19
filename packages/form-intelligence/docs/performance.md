@@ -20,7 +20,7 @@ Measured as **entry chunk** gzip (esbuild minify + `splitting: true`) so dynamic
 
 | Fixture          | maxGzipKb | Notes                                                                               |
 | ---------------- | --------- | ----------------------------------------------------------------------------------- |
-| `core-login`     | 24        | `createForm` login graph; forbids DevTools / offline queue class / analytics module |
+| `core-login`     | 26        | `createForm` login graph; forbids DevTools / offline queue class / analytics module |
 | `workflow-rules` | 3         | Rules-only subpath                                                                  |
 | `format-only`    | 2         | Format subpath                                                                      |
 
@@ -36,6 +36,12 @@ Measured as **entry chunk** gzip (esbuild minify + `splitting: true`) so dynamic
 - Node 20 / esbuild budget script
 - core-login entry ≈ **22.8 KB** gzip after removing static `workflow` → browser-lifecycle re-export and lazy keyboard/draft modules
 - Raised budget **19 → 24** for engines shipped in Phases 1–17 (middleware, presentation, a11y, controllers, …) while keeping forbid list for `/devtools` + offline queue implementation
+
+### UI projection + submission guards (2026-07)
+
+- `form.ui` / `submissionGuard()` live on the main instance (not lazy) so adapters share one projection
+- core-login entry ≈ **24.7 KB** gzip after derived `/ui` projection + hard submit guards
+- Raised budget **24 → 26**; DevTools / offline queue forbid list unchanged
 
 ## Timing budgets (Vitest)
 

@@ -14,7 +14,6 @@ const PUBLISHABLE_PACKAGES = new Set([
   "browser-lifecycle-vue",
   "object-diff",
   "form-intelligence",
-  "form-intelligent",
   "form-intelligence-ajv",
   "form-intelligence-angular",
   "form-intelligence-react",
@@ -22,13 +21,6 @@ const PUBLISHABLE_PACKAGES = new Set([
   "form-intelligence-vue",
   "form-intelligence-yup",
   "form-intelligence-zod",
-  "form-intelligent-ajv",
-  "form-intelligent-angular",
-  "form-intelligent-react",
-  "form-intelligent-valibot",
-  "form-intelligent-vue",
-  "form-intelligent-yup",
-  "form-intelligent-zod",
 ]);
 
 const failures = [];

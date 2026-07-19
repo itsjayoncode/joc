@@ -4,12 +4,11 @@
 
 JOC publishes multiple `@jayoncode/*` packages on npm. Security fixes are prioritized for **the latest release** of each actively maintained package on its current major line.
 
-| Package family                                       | Support focus                                                       |
-| ---------------------------------------------------- | ------------------------------------------------------------------- |
-| `@jayoncode/browser-lifecycle` (+ adapters)          | Latest published version                                            |
-| `@jayoncode/form-intelligence` (+ adapters)          | Latest published version                                            |
-| `@jayoncode/object-diff`                             | Latest published version                                            |
-| `@jayoncode/form-intelligent*` (compatibility shims) | Latest published version — prefer migrating to `form-intelligence*` |
+| Package family                              | Support focus            |
+| ------------------------------------------- | ------------------------ |
+| `@jayoncode/browser-lifecycle` (+ adapters) | Latest published version |
+| `@jayoncode/form-intelligence` (+ adapters) | Latest published version |
+| `@jayoncode/object-diff`                    | Latest published version |
 
 Older minor/patch releases may receive fixes at maintainer discretion (especially for severe issues). Pre-1.0 packages may include breaking changes when a fix requires API correction; we will document migration notes in the release.
 

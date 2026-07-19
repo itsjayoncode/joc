@@ -107,6 +107,10 @@ createForm({
     autosave: { enabled: true, debounceMs: 800, onSave: (v) => api.saveDraft(v) },
     draft: { enabled: true, storage: "local", key: "checkout" },
   },
+  // Same store as form.subscribe() — fires once after create, then on every notify
+  subscribe: (form) => {
+    syncCheckoutChrome(form.state); // draft badge, plan label, …
+  },
   async onSubmit(values) {
     await api.checkout(values);
   },
@@ -114,8 +118,6 @@ createForm({
 ```
 
 Playground: [Form Intelligence](https://itsjayoncode.github.io/joc/playground/form-intelligence/)
-
-> **Compatibility shims** — Older `@jayoncode/form-intelligent` and `@jayoncode/form-intelligent-*` packages re-export the new names for existing installs. Prefer `@jayoncode/form-intelligence*` for new work.
 
 ### Object Diff
 
@@ -187,7 +189,7 @@ Full pipeline notes: [`scripts/README.md`](./scripts/README.md).
 ```text
 joc/
 ├── apps/                  # Docs site and interactive playgrounds
-├── packages/              # Public @jayoncode/* libraries (+ compatibility shims)
+├── packages/              # Public @jayoncode/* libraries
 ├── examples/              # Framework integration examples
 ├── templates/             # Package blueprint for new libraries
 ├── engineering/           # Architecture and policy documents
@@ -204,7 +206,6 @@ joc/
 | `apps/object-diff-playground/`       | Object Diff explorer                         |
 | `packages/browser-lifecycle*`        | Core + framework adapters                    |
 | `packages/form-intelligence*`        | Core + framework / schema adapters           |
-| `packages/form-intelligent*`         | Compatibility shims → `form-intelligence*`   |
 | `packages/object-diff/`              | Deep comparison and patch library            |
 | `templates/package-template/`        | Standard structure for future libraries      |
 | `engineering/`                       | Architecture, versioning, and release policy |

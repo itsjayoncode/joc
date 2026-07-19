@@ -4,7 +4,7 @@ import styles from "./Pages.module.css";
 import { ExplainPanel } from "../components/playground/ExplainPanel.js";
 import { Card } from "../components/primitives/Card.js";
 import { PageContainer } from "../components/primitives/PageContainer.js";
-import { createForm, required } from "../lib/form-intelligence.js";
+import { createForm, required, ui, snapshotUiProjection } from "../lib/form-intelligence.js";
 
 type FieldCount = 25 | 50 | 100;
 
@@ -33,6 +33,7 @@ function buildForm(fieldCount: number, fill: boolean) {
   return createForm({
     initialValues,
     validators,
+    plugins: [ui()],
   });
 }
 
@@ -208,6 +209,36 @@ export function PerformancePage() {
     }
   };
 
+  const runProjectionBench = () => {
+    setBusy(true);
+    try {
+      const form = buildForm(fieldCount, false);
+      for (const path of Object.keys(form.state.values)) {
+        form.field(path);
+      }
+      // Warm
+      snapshotUiProjection(form);
+
+      const rounds = 50;
+      const started = performance.now();
+      for (let index = 0; index < rounds; index += 1) {
+        snapshotUiProjection(form);
+      }
+      const elapsed = performance.now() - started;
+      const perPass = elapsed / rounds;
+      form.destroy();
+
+      appendResult({
+        label: `ui projection ×${String(rounds)} (${String(fieldCount)} fields)`,
+        elapsedMs: elapsed,
+        detail: `${perPass.toFixed(3)} ms/pass · snapshotUiProjection (explain + collections)`,
+      });
+      setMemory(readMemoryNotes());
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return (
     <PageContainer
       compact
@@ -287,6 +318,16 @@ export function PerformancePage() {
               type="button"
             >
               vs manual loop
+            </button>
+            <button
+              className={styles.secondaryButton}
+              disabled={busy}
+              onClick={() => {
+                runProjectionBench();
+              }}
+              type="button"
+            >
+              UI projection
             </button>
           </div>
           {busy ? <p className={styles.muted}>Running…</p> : null}

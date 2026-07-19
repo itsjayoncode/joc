@@ -13,7 +13,6 @@ const PUBLISHABLE_PACKAGES = new Set([
   "@jayoncode/browser-lifecycle-vue",
   "@jayoncode/object-diff",
   "@jayoncode/form-intelligence",
-  "@jayoncode/form-intelligent",
   "@jayoncode/form-intelligence-ajv",
   "@jayoncode/form-intelligence-angular",
   "@jayoncode/form-intelligence-react",
@@ -21,13 +20,6 @@ const PUBLISHABLE_PACKAGES = new Set([
   "@jayoncode/form-intelligence-vue",
   "@jayoncode/form-intelligence-yup",
   "@jayoncode/form-intelligence-zod",
-  "@jayoncode/form-intelligent-ajv",
-  "@jayoncode/form-intelligent-angular",
-  "@jayoncode/form-intelligent-react",
-  "@jayoncode/form-intelligent-valibot",
-  "@jayoncode/form-intelligent-vue",
-  "@jayoncode/form-intelligent-yup",
-  "@jayoncode/form-intelligent-zod",
 ]);
 
 const requiredFiles = [
@@ -78,7 +70,9 @@ try {
   }
 
   if (ignoredPackages.has("@jayoncode/form-intelligence-react")) {
-    failures.push("Changesets ignore list must not exclude publishable form-intelligent adapters.");
+    failures.push(
+      "Changesets ignore list must not exclude publishable form-intelligence adapters.",
+    );
   }
 
   const workspaceManifests = [];

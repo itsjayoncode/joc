@@ -52,8 +52,13 @@ import { MiddlewarePipeline } from "../plugins/middleware.js";
 import { PluginRegistry } from "../plugins/registry.js";
 import { compileSchema } from "../schema/compiler.js";
 import { FormStateStore } from "../state/store.js";
+import { evaluateSubmissionGuard } from "../submission/guard.js";
 import { SubmissionOrchestrator } from "../submission/submit.js";
 import { ASYNC_VALIDATOR_OPTION_DEFAULTS } from "../types/async-validation.js";
+import { explainDisabled } from "../ui/explain-disabled.js";
+import { projectFieldUi } from "../ui/field-projection.js";
+import { createUiProjection } from "../ui/projection.js";
+import { resolvePoliciesForForm, clearUiPolicies } from "../ui/store.js";
 import { cloneValue, createId, getIn, setIn } from "../utils/index.js";
 import { resolveAsyncDebounceMs } from "../validation/async/run-with-options.js";
 import { AsyncValidationManager } from "../validation/async-validator.js";
@@ -86,6 +91,7 @@ import type {
 } from "../engines/workflow/types.js";
 import type { MiddlewareInput } from "../plugins/middleware.js";
 import type { FormCoreState } from "../state/store.js";
+import type { SubmissionGuardResult } from "../submission/guard.js";
 import type {
   CreateCheckpointOptions,
   FieldHandle,
@@ -394,10 +400,39 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
       getTouched: () => Boolean(this.core.touched[path]),
       getDirty: () => Boolean(this.core.dirty[path]),
       getVisited: () => Boolean(this.core.visited[path]),
-      getUi: () =>
-        resolveFieldUi(path, this.fieldUi, {
-          ...(this.asyncValidation.isFieldValidating(path) ? { busy: true } : {}),
-        }),
+      getUi: () => {
+        const isValidating = this.asyncValidation.isFieldValidating(path);
+        const presentation = resolveFieldUi(path, this.fieldUi, {
+          ...(isValidating ? { busy: true } : {}),
+        });
+        const policies = resolvePoliciesForForm(this);
+        const error = this.errors(path);
+        const derived = projectFieldUi({
+          error: typeof error === "string" ? error : undefined,
+          touched: Boolean(this.core.touched[path]),
+          submitCount: this.core.submitCount,
+          isValidating,
+          busy: presentation.busy === true,
+          policies,
+        });
+        const disabledExplain = explainDisabled({
+          disabled: presentation.disabled,
+          readOnly: presentation.readOnly === true,
+          isSubmitting: this.core.isSubmitting,
+          isValidating: isValidating || presentation.busy === true,
+        });
+        return {
+          ...presentation,
+          ...derived,
+          disabledReasons: disabledExplain.reasons,
+          explain: (topic: "showError" | "disabled") => {
+            const projection = createUiProjection(this);
+            return topic === "showError"
+              ? projection.explain("showError", path)
+              : projection.explain("disabled", path);
+          },
+        };
+      },
       getMeta: () => this.getFieldMeta(path),
       getFieldState: () => this.getFieldState(path),
       getAriaIds: () => this.ariaIds.get(path),
@@ -463,6 +498,10 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     return path;
   }
 
+  public registeredFieldPaths(): readonly FieldPath[] {
+    return [...this.fieldOptions.keys()];
+  }
+
   public pushField(arrayPath: FieldPath, item: unknown = {}): FieldPath {
     const current = getIn(this.core.values, arrayPath);
     const array = Array.isArray(current) ? [...current] : [];
@@ -497,8 +536,14 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     this.autosave.cancel();
 
     const preventDoubleSubmit = options?.preventDoubleSubmit !== false;
-
-    if (preventDoubleSubmit && (this.submitInFlight || this.submission.isActive)) {
+    const alreadySubmitting =
+      preventDoubleSubmit &&
+      (this.submitInFlight || this.submission.isActive || this.core.isSubmitting);
+    const guard = evaluateSubmissionGuard({
+      alreadySubmitting,
+      ruleSubmitDisabled: this.formUi.submitDisabled,
+    });
+    if (!guard.allowed) {
       return false;
     }
 
@@ -521,6 +566,17 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
         for (const path of Object.keys(this.core.errors)) {
           this.patchMeta(path, { touched: true });
         }
+        this.setSubmitPhase("idle");
+        return false;
+      }
+
+      // Re-check hard rule intent after validation (rules may have updated).
+      if (
+        !evaluateSubmissionGuard({
+          alreadySubmitting: false,
+          ruleSubmitDisabled: this.formUi.submitDisabled,
+        }).allowed
+      ) {
         this.setSubmitPhase("idle");
         return false;
       }
@@ -977,6 +1033,10 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     return this.cachedSnapshot;
   }
 
+  public get ui(): import("../ui/projection.js").FormUiProjection<TValues> {
+    return createUiProjection(this);
+  }
+
   public getSnapshot(): FormState<TValues> {
     return this.cachedSnapshot;
   }
@@ -1066,6 +1126,23 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
 
   public isSubmitting(): boolean {
     return this.core.isSubmitting;
+  }
+
+  /**
+   * Hard submission eligibility (ADR-SUB-001).
+   * Distinct from `form.ui.canSubmit` (UX projection).
+   */
+  public submissionGuard(
+    options?: Pick<SubmitOptions, "preventDoubleSubmit">,
+  ): SubmissionGuardResult {
+    const preventDoubleSubmit = options?.preventDoubleSubmit !== false;
+    // Must match the hard check at the start of `submit()` (include isSubmitting as belt-and-suspenders).
+    return evaluateSubmissionGuard({
+      alreadySubmitting:
+        preventDoubleSubmit &&
+        (this.submitInFlight || this.submission.isActive || this.core.isSubmitting),
+      ruleSubmitDisabled: this.formUi.submitDisabled,
+    });
   }
 
   public isDirty(): boolean {
@@ -1330,6 +1407,7 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     this.transformEngine.destroy();
     this.moduleHost.destroy();
     this.events.clear();
+    clearUiPolicies(this);
     this.store.destroy();
   }
 

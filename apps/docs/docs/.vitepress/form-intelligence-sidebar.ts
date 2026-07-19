@@ -38,6 +38,7 @@ export function createFormIntelligenceSidebar(
         { text: "Core concepts", link: `${base}/modules/concepts` },
         { text: "Capabilities", link: `${base}/modules/capabilities` },
         { text: "Entrypoints", link: `${base}/modules/entrypoints` },
+        { text: "UI projection", link: `${base}/modules/ui-projection` },
       ],
     },
     {

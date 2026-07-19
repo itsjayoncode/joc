@@ -23,6 +23,7 @@ import {
 } from "@jayoncode/form-intelligence/format";
 import { when } from "@jayoncode/form-intelligence/rules";
 import { createBrowserLifecyclePlugin, createKeyboardPlugin, keyboard } from "@jayoncode/form-intelligence/plugins";
+import { ui, snapshotUiProjection } from "@jayoncode/form-intelligence/ui";
 
 import type { FormInstance, FormPlugin, ValidationMode } from "@jayoncode/form-intelligence";
 
@@ -46,6 +47,8 @@ export function getFormIntelligentIntegrationSummary() {
       "undo/redo",
       "analytics",
       "useForm",
+      "ui projection",
+      "submissionGuard",
     ],
   };
 }
@@ -85,6 +88,8 @@ export {
   required,
   formatSlug,
   when,
+  ui,
+  snapshotUiProjection,
 };
 export type { FormInstance, FormPlugin, ValidationMode };
 export { useForm, useFormState } from "@jayoncode/form-intelligence-react";
