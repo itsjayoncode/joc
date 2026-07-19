@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.7.0
+
+### Minor Changes
+
+- 6134105: Add `@jayoncode/form-intelligence/captcha` Security Stage with Turnstile, reCAPTCHA, hCaptcha, and `mockCaptcha`; token at `meta.security.captcha`.
+
 ## 3.6.0
 
 ### Minor Changes
