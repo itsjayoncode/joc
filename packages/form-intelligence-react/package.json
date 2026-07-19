@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/form-intelligence-react",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "React adapter for @jayoncode/form-intelligence — useForm hook and minimal field bindings.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",

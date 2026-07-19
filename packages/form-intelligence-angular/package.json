@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/form-intelligence-angular",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Angular adapter for @jayoncode/form-intelligence — FormService, signals, and standalone directives.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
