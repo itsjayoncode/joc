@@ -83,9 +83,16 @@ describe("patch", () => {
   });
 
   it("rejects prototype-polluting patch paths", () => {
-    const pollutionAttempt = [{ op: "add" as const, path: "/__proto__/polluted", value: true }];
+    const attempts = [
+      [{ op: "add" as const, path: "/__proto__/polluted", value: true }],
+      [{ op: "add" as const, path: "/constructor/prototype/polluted", value: true }],
+      [{ op: "replace" as const, path: "/prototype", value: true }],
+    ];
 
-    expect(() => applyPatch({}, pollutionAttempt)).toThrow(InvalidPatchError);
+    for (const pollutionAttempt of attempts) {
+      expect(() => applyPatch({}, pollutionAttempt)).toThrow(InvalidPatchError);
+    }
+
     expect(Object.prototype).not.toHaveProperty("polluted");
   });
 });

@@ -15,10 +15,12 @@ import type {
   PatchOptions,
 } from "../types/index.js";
 
-const UNSAFE_PATH_KEYS = new Set(["__proto__", "constructor", "prototype"]);
-
 function assertSafePathSegment(segment: string | number): void {
-  if (typeof segment === "string" && UNSAFE_PATH_KEYS.has(segment)) {
+  // Explicit equality checks — CodeQL does not treat Set.has as a sanitizer.
+  if (
+    typeof segment === "string" &&
+    (segment === "__proto__" || segment === "constructor" || segment === "prototype")
+  ) {
     throw new InvalidPatchError(`Unsafe path segment "${segment}" is not allowed.`);
   }
 }
@@ -35,7 +37,13 @@ function setPropertyValue(
     return;
   }
 
-  (parent as Record<string | number, unknown>)[key] = value;
+  // Own-property write — avoids [[Set]] / __proto__ pollution from dynamic assignment.
+  Object.defineProperty(parent, key, {
+    value,
+    writable: true,
+    enumerable: true,
+    configurable: true,
+  });
 }
 
 function toJsonPointer(path: string): string {
