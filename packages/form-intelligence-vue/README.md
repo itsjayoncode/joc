@@ -18,8 +18,10 @@ A multi-field Vue form often grows a forest of `watch` / `computed` sync for sho
 | ------------------------------------------------ | -------------------------------------------------------------------------------------- |
 | `useForm(config)`                                | Create form + reactive `form.state` (ref); same core options as `createForm`           |
 | `provideForm(config)`                            | Same as `useForm`, plus provide for descendants                                        |
-| `useField(path)`                                 | Injected field bindings for child components (`v-bind="email"`)                        |
+| `useField(path)`                                 | Injected field bindings + `controller` / `setAriaIds` / `aria`                         |
 | `form.form()` / `form.field()` / `form.submit()` | Object spreads for `v-bind`                                                            |
+| `form.controller` / `fieldController`            | Same controller contract as React                                                      |
+| `form.focusFirstInvalid()`                       | Focus first invalid field after failed submit                                          |
 | `form.state`                                     | Ref of values, errors, flags (`isValid`, `isSubmitting`, …) — auto-unwrap in templates |
 | `form.instance`                                  | Underlying Form Intelligence instance                                                  |
 
@@ -37,8 +39,10 @@ npm install @jayoncode/form-intelligence @jayoncode/form-intelligence-vue
 <script setup lang="ts">
 import { useForm } from "@jayoncode/form-intelligence-vue";
 import { when } from "@jayoncode/form-intelligence";
+import { ui } from "@jayoncode/form-intelligence/ui";
 
 const form = useForm({
+  plugins: [ui()],
   schema: {
     plan: { required: true },
     email: "email",
@@ -62,9 +66,9 @@ const form = useForm({
       <option value="enterprise">Enterprise</option>
     </select>
     <input v-bind="form.field('email')" />
-    <span v-if="form.state.errors.email">{{ form.state.errors.email }}</span>
+    <span v-if="form.fieldController('email').ui.showError">{{ form.state.errors.email }}</span>
     <input v-bind="form.field('seatCount')" type="number" />
-    <button v-bind="form.submit()" :disabled="form.state.isSubmitting">Continue</button>
+    <button v-bind="form.submit()">Continue</button>
   </form>
 </template>
 ```

@@ -8,6 +8,10 @@ Shared interpretation of engine state for apps, DOM enhancer, adapters, and tool
 `@jayoncode/form-intelligence/ui`
 :::
 
+::: tip Playground
+[UI Projection lab →](/playground/form-intelligence/ui) — toggle `errorDisplay` / `disableSubmitWhen` and watch `showError`, `status`, and `canSubmit` live.
+:::
+
 ## Problem → solution
 
 | Problem                                           | Solution                                     |
@@ -61,7 +65,7 @@ Hard rule: `formUi.submitDisabled` always blocks submit, even if `"ruleDisabled"
 | `disabledReasons` | Alias of `explain("disabled").reasons`                        |
 | `explain(topic)`  | Primary explanation API                                       |
 
-Presentation keys (`visible`, `disabled`, `required`, `readOnly`, `busy`) stay owned by Presentation — `/ui` never overwrites them.
+Presentation keys (`visible`, `disabled`, `required`, `readOnly`, `busy`) stay owned by Presentation — `/ui` never overwrites them. Static schema/`required` validators seed `required` into Presentation ([ADR-018](https://github.com/itsjayoncode/joc/blob/master/packages/form-intelligence/engineering/018-schema-required-sync.md)); workflow rules may override.
 
 ### Status priority (exactly one)
 
@@ -142,7 +146,7 @@ await form.submit(); // refuses when !submissionGuard().allowed
 | `alreadySubmitting`, `ruleDisabled` | Submission guards         | Blocks `submit()` **and** forces `form.ui.canSubmit === false` |
 | `validating`, optional `invalid`    | `/ui` `disableSubmitWhen` | Button UX only — does **not** change engine behavior           |
 
-See construction ADR-SUB-001 (Submission Guards).
+Full walkthrough: [Submission — Hard guards vs button UX](/packages/form-intelligence/modules/submission#hard-guards-vs-button-ux).
 
 ## DevTools
 
@@ -150,13 +154,19 @@ See construction ADR-SUB-001 (Submission Guards).
 import { enableFormDevTools, getFormDevTools } from "@jayoncode/form-intelligence/devtools";
 
 enableFormDevTools(form);
-getFormDevTools().getUiProjection(form.id);
-// → canSubmit, submitExplain, per-field status / showError / disabledReasons
+const snap = getFormDevTools().getUiProjection(form.id);
+// snap.submissionGuard — hard engine (allowed / reasons)
+// snap.canSubmit + snap.submitExplain — button UX
+// snap.policies, requiredFields, fields[].status / showError / required / explain
 ```
+
+Playground [`/devtools`](/playground/form-intelligence/devtools) renders these as structured explain panels (hard vs UX, policies, collections, per-field).
 
 ## Related
 
+- [Submission](/packages/form-intelligence/modules/submission#hard-guards-vs-button-ux) — guards vs button UX
 - [Entrypoints](/packages/form-intelligence/modules/entrypoints) — `/ui` subpath
 - [Adapters](/packages/form-intelligence/modules/adapters) — React / DOM wiring
 - [Rules](/packages/form-intelligence/modules/rules) — `formUi` / `fieldUi` intents
+- [Plugins — author guide](/packages/form-intelligence/modules/plugins#plugin-author-guide) — do not reinvent Presentation / `canSubmit`
 - [API (TypeDoc)](/packages/form-intelligence/api/)

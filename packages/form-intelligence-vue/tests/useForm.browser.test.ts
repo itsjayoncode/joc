@@ -188,4 +188,24 @@ describe("provideForm / useField", () => {
       expect.objectContaining({ signal: expect.any(AbortSignal) }),
     );
   });
+
+  it("exposes controller façade and focusFirstInvalid", async () => {
+    const onSubmit = vi.fn();
+
+    const Probe = defineComponent({
+      setup() {
+        const form = useForm({
+          schema: { email: "email" },
+          onSubmit,
+        });
+        expect(form.controller).toBeDefined();
+        expect(form.fieldController("email").ui.status).toBeDefined();
+        expect(typeof form.focusFirstInvalid).toBe("function");
+        return () => h("form", { ...form.form() }, [h("input", { name: "email" })]);
+      },
+    });
+
+    mount(Probe, { attachTo: document.body });
+    await nextTick();
+  });
 });

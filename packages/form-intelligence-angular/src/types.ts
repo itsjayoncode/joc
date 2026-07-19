@@ -1,6 +1,8 @@
 import type {
+  FieldController,
   FieldPath,
   FormConfig,
+  FormController,
   FormInstance,
   FormSelector,
   FormState,
@@ -29,12 +31,18 @@ export interface SubmitButtonProps {
 
 export interface FormIntelligentHandle<TValues extends Record<string, unknown>> {
   readonly instance: FormInstance<TValues>;
+  /** Thin FormController façade over the same instance. */
+  readonly controller: FormController<TValues>;
   readonly state: Signal<FormState<TValues>>;
   readonly ref: FormInstance<TValues>["ref"];
   form(): FormElementProps;
+  /** Props for host bindings — `name` + projection `aria-*` / `data-fi-status`. */
   field(path: FieldPath): FieldElementProps;
+  /** Full FieldController (`bind()`, `aria`, `setAriaIds`, …). */
+  fieldController(path: FieldPath): FieldController<TValues>;
   submit(): SubmitButtonProps;
   submitButton(): SubmitButtonProps;
+  focusFirstInvalid(): FieldPath | undefined;
 }
 
 export type UseFormConfig<TValues extends Record<string, unknown>> = FormConfig<TValues>;

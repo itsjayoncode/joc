@@ -63,7 +63,7 @@ export function createFormIntelligenceSidebar(
     {
       text: "Advanced",
       items: [
-        { text: "Plugins", link: `${base}/modules/plugins` },
+        { text: "Plugins & authoring", link: `${base}/modules/plugins` },
         { text: "Performance", link: `${base}/modules/performance` },
         { text: "Patterns", link: `${base}/modules/patterns` },
       ],

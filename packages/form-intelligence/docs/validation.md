@@ -56,21 +56,21 @@ createForm({
 });
 ```
 
-| Validator                | Use when                                                |
-| ------------------------ | ------------------------------------------------------- |
-| `required`               | Field cannot be empty                                   |
-| `email`                  | Must look like an email                                 |
-| `url`                    | Must be a valid URL                                     |
-| `minLength(n)`           | String too short                                        |
-| `maxLength(n)`           | String too long                                         |
-| `regex(pattern, msg)`    | Custom format                                           |
-| `number` / `min` / `max` | Numeric bounds                                          |
-| `date`                   | Parseable date                                          |
-| `phone()`                | E.164-style phone check (optional fields: empty passes) |
-| `currency(opts?)`        | Amount / precision                                      |
-| `password(opts?)`        | Strength rules                                          |
-| `matchesField(path)`     | Confirm-password style                                  |
-| `requiredWhen(...)`      | Conditional required                                    |
+| Validator                | Use when                                                               |
+| ------------------------ | ---------------------------------------------------------------------- |
+| `required`               | Field cannot be empty; also seeds Presentation `required` (ARIA / DOM) |
+| `email`                  | Must look like an email                                                |
+| `url`                    | Must be a valid URL                                                    |
+| `minLength(n)`           | String too short                                                       |
+| `maxLength(n)`           | String too long                                                        |
+| `regex(pattern, msg)`    | Custom format                                                          |
+| `number` / `min` / `max` | Numeric bounds                                                         |
+| `date`                   | Parseable date                                                         |
+| `phone()`                | E.164-style phone check (optional fields: empty passes)                |
+| `currency(opts?)`        | Amount / precision                                                     |
+| `password(opts?)`        | Strength rules                                                         |
+| `matchesField(path)`     | Confirm-password style                                                 |
+| `requiredWhen(...)`      | Conditional required (validation only — not UI baseline)               |
 
 ::: warning `phone` / `currency` — validator vs formatter
 On the **main** package, `phone` and `currency` are **validators** (factories). They answer: “is this value valid?”

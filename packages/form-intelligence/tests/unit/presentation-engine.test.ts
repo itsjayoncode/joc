@@ -2,7 +2,7 @@
 
 import { describe, expect, it, vi } from "vitest";
 
-import { createForm, when } from "../../src/index.js";
+import { createForm, when, required } from "../../src/index.js";
 import {
   DEFAULT_FIELD_UI,
   PRESENTATION_OWNERSHIP,
@@ -12,11 +12,75 @@ import {
 describe("presentation ownership", () => {
   it("documents producers vs non-writers", () => {
     expect(PRESENTATION_OWNERSHIP.producers).toContain("workflow.rules");
+    expect(PRESENTATION_OWNERSHIP.producers).toContain("schema.requiredBaseline");
     expect(PRESENTATION_OWNERSHIP.nonWriters).toContain("validation");
   });
 
   it("resolves defaults when path missing", () => {
     expect(resolveFieldUi("missing", {})).toEqual(DEFAULT_FIELD_UI);
+  });
+});
+
+describe("schema required → presentation", () => {
+  it("seeds fieldUi.required from schema required: true", () => {
+    const form = createForm({
+      schema: { email: { required: true }, note: "text" },
+    });
+
+    expect(form.getPresentation("email").field.required).toBe(true);
+    expect(form.getPresentation("note").field.required).toBeUndefined();
+    expect(form.ui.requiredFields).toEqual(["email"]);
+    form.destroy();
+  });
+
+  it("seeds fieldUi.required from email/password/url shortcuts", () => {
+    const form = createForm({
+      schema: { email: "email", password: "password", website: "url" },
+    });
+
+    expect(form.getPresentation("email").field.required).toBe(true);
+    expect(form.getPresentation("password").field.required).toBe(true);
+    expect(form.getPresentation("website").field.required).toBe(true);
+    form.destroy();
+  });
+
+  it("seeds from validators: [required] without rules", () => {
+    const form = createForm({
+      initialValues: { name: "" },
+      validators: { name: [required] },
+    });
+
+    expect(form.getPresentation("name").field.required).toBe(true);
+    form.destroy();
+  });
+
+  it("keeps unmatched require → false over schema baseline", async () => {
+    const form = createForm({
+      initialValues: { customerType: "Personal", taxNumber: "" },
+      schema: { taxNumber: { required: true } },
+      rules: [when("customerType").equals("Business").require("taxNumber")],
+    });
+
+    await vi.waitFor(() => {
+      expect(form.getPresentation("taxNumber").field.required).toBe(false);
+    });
+
+    form.setValue("customerType", "Business");
+    await vi.waitFor(() => {
+      expect(form.getPresentation("taxNumber").field.required).toBe(true);
+    });
+    form.destroy();
+  });
+
+  it("seeds when field() registers required validators", () => {
+    const form = createForm({
+      initialValues: { code: "" },
+    });
+
+    expect(form.getPresentation("code").field.required).toBeUndefined();
+    form.field("code", { validators: [required] });
+    expect(form.getPresentation("code").field.required).toBe(true);
+    form.destroy();
   });
 });
 

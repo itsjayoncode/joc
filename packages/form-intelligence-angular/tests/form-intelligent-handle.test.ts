@@ -30,6 +30,19 @@ describe("FormIntelligentHandleImpl", () => {
     handle.destroy();
   });
 
+  it("exposes controller façade and focusFirstInvalid", async () => {
+    const handle = new FormIntelligentHandleImpl({
+      initialValues: { email: "" },
+      schema: { email: "email" },
+    });
+
+    expect(handle.controller).toBeDefined();
+    expect(handle.fieldController("email").ui.status).toBeDefined();
+    await handle.instance.validate();
+    expect(handle.focusFirstInvalid()).toBe("email");
+    handle.destroy();
+  });
+
   it("returns no errors when validation passes", async () => {
     const handle = new FormIntelligentHandleImpl({
       initialValues: { email: "user@example.com" },

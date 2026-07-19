@@ -121,7 +121,7 @@ createForm({
 // Or later: form.use({ name: "audit", setup(...) { ... } });
 ```
 
-Hooks: `beforeValidate`, `afterValidate`, `beforeSubmit`, `afterSubmit`, `onAutosave`, `onDraftRestore`.
+Hooks: `beforeValidate`, `afterValidate`, `beforeSubmit`, `afterSubmit`, `onAutosave`, `onDraftRestore`. Full authoring rules (ownership, `engines`, testing): [Plugins — author guide](/packages/form-intelligence/modules/plugins#plugin-author-guide).
 
 ---
 

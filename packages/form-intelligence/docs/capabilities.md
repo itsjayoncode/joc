@@ -274,7 +274,7 @@ Saves draft when the tab is hidden.
 
 `createForm({ plugins })` / `form.use(plugin)` / `registerPlugin()`, hook bus, error isolation (`onPluginError`), `version` / `engines` metadata, `PLUGIN_PIPELINE_STAGES`.
 
-[Plugins guide →](/packages/form-intelligence/modules/plugins)
+[Plugins guide →](/packages/form-intelligence/modules/plugins) · [Author guide →](/packages/form-intelligence/modules/plugins#plugin-author-guide)
 
 ### 24. React adapter — **SHIPPED**
 
@@ -285,7 +285,7 @@ const form = useForm({ schema: { email: "email" } });
 // form.controller · form.fieldController · aria on form.field()
 ```
 
-Vue / Angular packages exist as **PARTIAL** (controller/`field.aria` parity pending).
+Vue / Angular packages ship the same controller contract as React (`controller`, `fieldController`, `focusFirstInvalid`).
 
 [Adapters guide →](/packages/form-intelligence/modules/adapters)
 

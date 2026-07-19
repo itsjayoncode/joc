@@ -14,14 +14,14 @@ Your contract is already JSON Schema (OpenAPI, shared `schemas/`, server-side AJ
 
 ## What you get
 
-| Capability              | Detail                                                                  |
-| ----------------------- | ----------------------------------------------------------------------- |
-| **Schema object**       | Pass a JSON Schema literal: `ajvAdapter({ type: "object", ... })`       |
-| **Compiled validator**  | Pass `ValidateFunction` / async compile for reuse and `$async` keywords |
-| **Path mapping**        | `instancePath` `/address/city` → `address.city`; form-level → `_form`   |
-| **allErrors-friendly**  | Works with AJV configured for multiple field errors                     |
-| **Formats**             | Use `ajv-formats` on your Ajv instance for `email`, `uri`, etc.         |
-| **With core workflows** | Combine with `when()` rules, autosave, wizard, plugins, `validateOn`    |
+| Capability              | Detail                                                                                        |
+| ----------------------- | --------------------------------------------------------------------------------------------- |
+| **Schema object**       | Pass a JSON Schema literal: `ajvAdapter({ type: "object", ... })`                             |
+| **Compiled validator**  | Pass `ValidateFunction` / async compile for reuse and `$async` keywords                       |
+| **Path mapping**        | `instancePath` + `required`/`additionalProperties` params → field paths; form-level → `_form` |
+| **allErrors-friendly**  | Works with AJV configured for multiple field errors                                           |
+| **Formats**             | Use `ajv-formats` on your Ajv instance for `email`, `uri`, etc.                               |
+| **With core workflows** | Combine with `when()` rules, autosave, wizard, plugins, `validateOn`                          |
 
 ## Install
 

@@ -123,11 +123,12 @@ connectFormDevToolsToGlobal();
 const inspector = getFormDevTools();
 inspector.getActiveForms();
 inspector.getStateSnapshot(form.id);
+inspector.getUiProjection(form.id); // hard guard + UX explain + field status
 inspector.getPlugins(form.id);
 inspector.getPerformanceMarks(form.id);
 ```
 
-Playground DevTools (`/playground/form-intelligence/devtools`) consumes this inspector: event log, validation log, workflow timeline, plugins, performance marks, export/import state.
+Playground DevTools (`/playground/form-intelligence/devtools`) consumes this inspector: **UI projection / explain panels**, event log, validation log, workflow timeline, plugins, performance marks, export/import state.
 
 ### Production redaction
 

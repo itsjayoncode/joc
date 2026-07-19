@@ -29,6 +29,8 @@ import {
   email,
   enableFormDevTools,
   required,
+  ui,
+  when,
   type FormInstance,
 } from "../lib/form-intelligence.js";
 import { toInputValue } from "../utils/field-value.js";
@@ -49,19 +51,19 @@ export function DevToolsPage() {
   const profileForm = useMemo(() => {
     const instance = createForm({
       initialValues: { email: "", name: "" },
+      plugins: [ui()],
       validators: {
         email: [required, email],
         name: [required],
       },
+      rules: [when("email").equals("block").disable("name").disableSubmit()],
       onSubmit: () => undefined,
     });
 
-    instance.use(
-      createVerboseValidationPlugin<{ email: string; name: string }>(
-        () => debugFlagsRef.current,
-        push,
-      ),
-    );
+    instance.field("name");
+    instance.field("email");
+
+    instance.use(createVerboseValidationPlugin(() => debugFlagsRef.current, push));
 
     return instance;
   }, [push]);
@@ -69,6 +71,7 @@ export function DevToolsPage() {
   const workflowForm = useMemo(() => {
     const instance = createForm({
       initialValues: { title: "", notes: "" },
+      plugins: [ui()],
       validators: {
         title: [required],
         notes: [required],
@@ -93,20 +96,15 @@ export function DevToolsPage() {
       onSubmit: () => undefined,
     });
 
-    instance.use(
-      createVerboseValidationPlugin<{ title: string; notes: string }>(
-        () => debugFlagsRef.current,
-        push,
-      ),
-    );
+    instance.field("title");
+    instance.field("notes");
+
+    instance.use(createVerboseValidationPlugin(() => debugFlagsRef.current, push));
 
     return instance;
   }, [push]);
 
-  const instrumentedForms = useMemo(
-    () => [profileForm, workflowForm] as unknown as FormInstance<Record<string, unknown>>[],
-    [profileForm, workflowForm],
-  );
+  const instrumentedForms = useMemo(() => [profileForm, workflowForm], [profileForm, workflowForm]);
 
   useEffect(() => {
     enableFormDevTools(profileForm);
@@ -200,10 +198,9 @@ export function DevToolsPage() {
       title="Form DevTools"
     >
       <ExplainPanel
-        body="enableFormDevTools(form) registers instances for the inspector. The UI projection card shows getUiProjection() — hard submit explain + per-field status. Verbose validation logs pipeline hooks without changing engine behavior."
+        body='enableFormDevTools(form) registers instances for the inspector. The UI projection card shows getUiProjection() — hard submissionGuard vs form.ui.explain("submit"), policies, collections, and per-field status/explain. Type email "block" on the profile form to force ruleDisabled + disable name. Verbose validation logs pipeline hooks without changing engine behavior.'
         title="In-playground developer utilities"
       />
-
       <div className={styles.explorerLayout}>
         <div className={styles.stack}>
           <Card description="Validation + submit events for the inspector." title="Profile form">
@@ -228,7 +225,8 @@ export function DevToolsPage() {
               />
             </label>
             <p className={styles.fieldHint}>
-              valid {String(profileSnapshot.isValid)} · dirty {String(profileSnapshot.isDirty)}
+              valid {String(profileSnapshot.isValid)} · dirty {String(profileSnapshot.isDirty)} ·
+              tip: set email to <code>block</code> to demo ruleDisabled
             </p>
             <div className={styles.buttonRow}>
               <button

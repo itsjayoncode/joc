@@ -51,6 +51,7 @@ import { resolveHookResult } from "../plugins/hooks.js";
 import { MiddlewarePipeline } from "../plugins/middleware.js";
 import { PluginRegistry } from "../plugins/registry.js";
 import { compileSchema } from "../schema/compiler.js";
+import { validatorsIncludeRequired } from "../schema/required-baseline.js";
 import { FormStateStore } from "../state/store.js";
 import { evaluateSubmissionGuard } from "../submission/guard.js";
 import { SubmissionOrchestrator } from "../submission/submit.js";
@@ -88,6 +89,7 @@ import type {
   FormRuleDefinition,
   FormUiState,
   FieldOption,
+  FieldUiState,
 } from "../engines/workflow/types.js";
 import type { MiddlewareInput } from "../plugins/middleware.js";
 import type { FormCoreState } from "../state/store.js";
@@ -165,6 +167,8 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
   private submitInFlight = false;
   private readonly schemaAdapter: SchemaAdapter | undefined;
   private readonly schemaPaths: readonly FieldPath[];
+  /** Static `required` validator paths seeded into Presentation (ADR-018). */
+  private readonly requiredBaseline: Set<FieldPath>;
   private cachedSnapshot: FormState<TValues>;
 
   private get core(): FormCoreState<TValues> {
@@ -182,7 +186,11 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
 
   public constructor(
     config: ResolvedCreateFormConfig<TValues>["formConfig"],
-    options: { domTarget: HTMLFormElement | null; fieldPaths: readonly FieldPath[] } = {
+    options: {
+      domTarget: HTMLFormElement | null;
+      fieldPaths: readonly FieldPath[];
+      requiredBaseline?: readonly FieldPath[];
+    } = {
       domTarget: null,
       fieldPaths: [],
     },
@@ -203,6 +211,7 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
       : config.schema && !isSchemaAdapter(config.schema)
         ? Object.keys(config.schema)
         : options.fieldPaths;
+    this.requiredBaseline = new Set(options.requiredBaseline ?? []);
 
     const draftKey = this.config.workflow?.draft?.storageKey ?? `${this.id}:draft`;
     const draftConfig = this.config.workflow?.draft;
@@ -230,6 +239,7 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     });
 
     this.setupAutosave();
+    this.seedRequiredBaselineUi();
     this.recomputeFieldUi();
     this.applyCompiledFieldFormats(config);
     registerConfiguredModules(
@@ -386,6 +396,15 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     if (options.validators) {
       this.fieldValidators.set(path, options.validators);
       this.syncAsyncValidatorPathPolicies();
+      if (validatorsIncludeRequired(options.validators)) {
+        this.requiredBaseline.add(path);
+        if (this.hasWorkflowRules()) {
+          this.recomputeFieldUi();
+        } else {
+          this.seedRequiredBaselineUi();
+          this.notify();
+        }
+      }
     }
     this.dependencyEngine.syncInferredFromFields(this.fieldOptions);
 
@@ -881,10 +900,15 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
           return settleAborted();
         }
 
-        const includeAllAdapterErrors = validatePathsInput.length !== 1;
+        const solePath = validatePathsInput.length === 1 ? validatePathsInput[0] : undefined;
 
         for (const [path, message] of Object.entries(adapterErrors)) {
-          if (includeAllAdapterErrors || validatePathsInput.includes(path) || path === "_form") {
+          const include =
+            solePath === undefined ||
+            path === "_form" ||
+            path === solePath ||
+            path.startsWith(`${solePath}.`);
+          if (include) {
             errors[path] = message;
           }
         }
@@ -1524,6 +1548,7 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
           rules: [...this.baseRules, ...this.runtimeRules],
           values: this.core.values,
           fieldPaths,
+          requiredBaseline: [...this.requiredBaseline],
           setValue: (path, value) => {
             this.patchValuesSilent(path, value);
           },
@@ -1533,6 +1558,24 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
       },
       { notify: shouldNotify },
     );
+  }
+
+  /** Seed Presentation `required` from schema/static validators when no rules run. */
+  private seedRequiredBaselineUi(): void {
+    if (this.hasWorkflowRules() || this.requiredBaseline.size === 0) {
+      return;
+    }
+
+    const next: Record<string, FieldUiState> = { ...this.fieldUi };
+    for (const path of this.requiredBaseline) {
+      next[path] = {
+        visible: true,
+        disabled: false,
+        ...next[path],
+        required: true,
+      };
+    }
+    this.fieldUi = next;
   }
 
   private applyCalculations(
@@ -1951,5 +1994,6 @@ export function createForm<TValues extends Record<string, unknown>>(
   return new FormInstanceImpl(resolved.formConfig, {
     domTarget: resolved.domTarget,
     fieldPaths: resolved.fieldPaths,
+    requiredBaseline: resolved.requiredBaseline,
   });
 }

@@ -81,7 +81,9 @@ describe("form devtools", () => {
     const uiProjection = inspector.getUiProjection(form.id);
     expect(uiProjection?.canSubmit).toBe(true);
     expect(uiProjection?.submitExplain.value).toBe(true);
+    expect(uiProjection?.submissionGuard.allowed).toBe(true);
     expect(uiProjection?.fields.some((field) => field.path === "email")).toBe(true);
+    expect(uiProjection?.fields.find((field) => field.path === "email")?.required).toBe(true);
 
     form.destroy();
   });

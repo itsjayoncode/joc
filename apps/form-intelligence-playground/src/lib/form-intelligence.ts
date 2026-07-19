@@ -23,9 +23,14 @@ import {
 } from "@jayoncode/form-intelligence/format";
 import { when } from "@jayoncode/form-intelligence/rules";
 import { createBrowserLifecyclePlugin, createKeyboardPlugin, keyboard } from "@jayoncode/form-intelligence/plugins";
-import { ui, snapshotUiProjection } from "@jayoncode/form-intelligence/ui";
+import { ui, snapshotUiProjection, setUiPolicies } from "@jayoncode/form-intelligence/ui";
 
 import type { FormInstance, FormPlugin, ValidationMode } from "@jayoncode/form-intelligence";
+import type {
+  UiDisableSubmitWhen,
+  UiErrorDisplay,
+  UiPolicyOptions,
+} from "@jayoncode/form-intelligence/ui";
 
 export const SAMPLE_FORM_VALUES = {
   email: "",
@@ -90,6 +95,7 @@ export {
   when,
   ui,
   snapshotUiProjection,
+  setUiPolicies,
 };
-export type { FormInstance, FormPlugin, ValidationMode };
+export type { FormInstance, FormPlugin, ValidationMode, UiDisableSubmitWhen, UiErrorDisplay, UiPolicyOptions };
 export { useForm, useFormState } from "@jayoncode/form-intelligence-react";

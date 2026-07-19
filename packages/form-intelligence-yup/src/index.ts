@@ -1,1 +1,1 @@
-export { yupAdapter } from "./yup-adapter.js";
+export { yupAdapter, formatYupPath } from "./yup-adapter.js";

@@ -14,13 +14,13 @@ Legacy apps already validate with Yup across APIs and admin UIs. Rewriting those
 
 ## What you get
 
-| Capability              | Detail                                                                    |
-| ----------------------- | ------------------------------------------------------------------------- |
-| **Drop-in schema**      | `schema: yupAdapter(yup.object({ ... }))`                                 |
-| **Path mapping**        | Yup paths → form paths (`address.city`); form-level → `_form`             |
-| **Nested objects**      | Nested Yup shapes map to nested field errors                              |
-| **With core workflows** | Works with `rules`, `workflow`, `validateOn`, plugins, async submit       |
-| **Gradual migration**   | Reuse Yup today; adopt Zod/Valibot later without rewriting the form shell |
+| Capability              | Detail                                                                             |
+| ----------------------- | ---------------------------------------------------------------------------------- |
+| **Drop-in schema**      | `schema: yupAdapter(yup.object({ ... }))`                                          |
+| **Path mapping**        | Yup paths → form paths; `friends[0].name` → `friends.0.name`; form-level → `_form` |
+| **Nested objects**      | Nested Yup shapes map to nested field errors                                       |
+| **With core workflows** | Works with `rules`, `workflow`, `validateOn`, plugins, async submit                |
+| **Gradual migration**   | Reuse Yup today; adopt Zod/Valibot later without rewriting the form shell          |
 
 ## Install
 

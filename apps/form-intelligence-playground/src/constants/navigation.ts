@@ -67,6 +67,17 @@ export const APP_NAVIGATION_GROUPS: readonly NavigationGroup[] = [
         path: "/submission",
       },
       {
+        description:
+          "errorDisplay + disableSubmitWhen policies — live showError, status, canSubmit, explain.",
+        groupId: "modules",
+        icon: CompassIcon,
+        id: "ui-projection",
+        intent: "current",
+        keywords: ["ui", "projection", "showError", "canSubmit", "policy", "status"],
+        label: "UI Projection",
+        path: "/ui",
+      },
+      {
         description: "Autosave debounce, draft restore, wizard steps, and conditional fields.",
         groupId: "modules",
         icon: PerformanceIcon,
@@ -87,7 +98,7 @@ export const APP_NAVIGATION_GROUPS: readonly NavigationGroup[] = [
         path: "/state",
       },
       {
-        description: "Active forms, validation log, workflow timeline, and state snapshots.",
+        description: "UI explain panels, active forms, validation log, and state snapshots.",
         groupId: "modules",
         icon: EventsIcon,
         id: "devtools",

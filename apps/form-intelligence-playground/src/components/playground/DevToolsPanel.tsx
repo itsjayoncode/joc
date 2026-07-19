@@ -106,7 +106,7 @@ export function DevToolsPanel({
       {snapshot ? (
         <>
           <Card
-            description="getUiProjection(formId) — form.ui.explain + collections (read-only)."
+            description="getUiProjection(formId) — hard guard vs UX explain, policies, collections, per-field status."
             title="UI projection"
           >
             {uiProjection ? <UiProjectionInspect snapshot={uiProjection} /> : null}
@@ -244,41 +244,135 @@ function WorkflowTimeline({ entries }: { readonly entries: readonly DevToolsWork
 
 function UiProjectionInspect({ snapshot }: { readonly snapshot: UiProjectionSnapshot }) {
   const submit = snapshot.submitExplain;
+  const guard = snapshot.submissionGuard;
   const whyBlocked = submit.value
-    ? "Submit is allowed."
+    ? "Submit UX allows the button."
     : submit.reasons.length > 0
-      ? `Blocked: ${submit.reasons.join(", ")}`
-      : "Blocked (no reasons listed).";
+      ? `UX blocked: ${submit.reasons.join(", ")}`
+      : "UX blocked (no reasons listed).";
 
   return (
     <div className={styles.stack}>
-      <p className={styles.timelineDetail}>
-        <strong>canSubmit</strong> {String(snapshot.canSubmit)} · {whyBlocked}
-      </p>
-      <p className={styles.timelineDetail}>
-        contributors: {submit.contributors.join(", ") || "—"} · phase {snapshot.phase}
-      </p>
-      <p className={styles.timelineDetail}>
-        invalid [{snapshot.invalidFields.join(", ") || "—"}] · validating [
-        {snapshot.validatingFields.join(", ") || "—"}]
-      </p>
-      <CodeBlock
-        code={JSON.stringify(
-          {
-            policies: snapshot.policies,
-            submitExplain: snapshot.submitExplain,
-            fields: snapshot.fields.map((field) => ({
-              path: field.path,
-              status: field.status,
-              showError: field.showError,
-              disabledReasons: field.disabledReasons,
-            })),
-          },
-          null,
-          2,
+      <div className={styles.explainBlock}>
+        <p className={styles.sectionLabel}>Hard guard (engine)</p>
+        <p className={styles.timelineDetail}>
+          submissionGuard.allowed=<code>{String(guard.allowed)}</code>
+          {snapshot.formUi.submitDisabled ? " · formUi.submitDisabled" : ""}
+        </p>
+        {guard.reasons.length === 0 ? (
+          <p className={styles.empty}>No hard blocks — pipeline may start.</p>
+        ) : (
+          <ul className={styles.reasonList}>
+            {guard.reasons.map((reason) => (
+              <li key={reason}>
+                <code>{reason}</code>
+              </li>
+            ))}
+          </ul>
         )}
-        language="json"
-      />
+      </div>
+
+      <div className={styles.explainBlock}>
+        <p className={styles.sectionLabel}>Button UX (projection)</p>
+        <p className={styles.timelineDetail}>
+          <strong>canSubmit</strong> {String(snapshot.canSubmit)} · phase {snapshot.phase} ·{" "}
+          {whyBlocked}
+        </p>
+        {submit.reasons.length === 0 ? (
+          <p className={styles.empty}>No UX block reasons.</p>
+        ) : (
+          <ul className={styles.reasonList}>
+            {submit.reasons.map((reason) => (
+              <li key={reason}>
+                <code>{reason}</code>
+              </li>
+            ))}
+          </ul>
+        )}
+        <p className={styles.timelineDetail}>
+          contributors: {submit.contributors.join(", ") || "—"}
+        </p>
+      </div>
+
+      <div className={styles.explainBlock}>
+        <p className={styles.sectionLabel}>Policies</p>
+        <p className={styles.timelineDetail}>
+          errorDisplay=<code>{snapshot.policies.errorDisplay}</code> · disableSubmitWhen=
+          <code>[{snapshot.policies.disableSubmitWhen.join(", ")}]</code>
+        </p>
+      </div>
+
+      <div className={styles.explainBlock}>
+        <p className={styles.sectionLabel}>Collections</p>
+        <p className={styles.timelineDetail}>
+          required [{snapshot.requiredFields.join(", ") || "—"}] · invalid [
+          {snapshot.invalidFields.join(", ") || "—"}] · validating [
+          {snapshot.validatingFields.join(", ") || "—"}] · visible [
+          {snapshot.visibleFields.join(", ") || "—"}]
+        </p>
+      </div>
+
+      <div className={styles.explainBlock}>
+        <p className={styles.sectionLabel}>Fields</p>
+        {snapshot.fields.length === 0 ? (
+          <p className={styles.empty}>No fields in projection yet.</p>
+        ) : (
+          <ul className={styles.fieldExplainList}>
+            {snapshot.fields.map((field) => (
+              <li className={styles.fieldExplainEntry} key={field.path}>
+                <span className={styles.fieldPath}>{field.path}</span>
+                <span className={styles.timelineDetail}>
+                  status=<code>{field.status}</code>
+                  {field.showError ? " · showError" : ""}
+                  {field.required === true ? " · required" : ""}
+                  {field.disabled ? " · disabled" : ""}
+                  {!field.visible ? " · hidden" : ""}
+                </span>
+                {field.showErrorExplain.reasons.length > 0 ? (
+                  <span className={styles.timelineDetail}>
+                    showError: {field.showErrorExplain.reasons.join(", ")}
+                  </span>
+                ) : null}
+                {field.disabledExplain.reasons.length > 0 ? (
+                  <span className={styles.timelineDetail}>
+                    disabled: {field.disabledExplain.reasons.join(", ")}
+                  </span>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <details className={styles.rawDetails}>
+        <summary>Raw getUiProjection() JSON</summary>
+        <CodeBlock
+          code={JSON.stringify(
+            {
+              policies: snapshot.policies,
+              submissionGuard: snapshot.submissionGuard,
+              formUi: snapshot.formUi,
+              canSubmit: snapshot.canSubmit,
+              submitExplain: snapshot.submitExplain,
+              requiredFields: snapshot.requiredFields,
+              fields: snapshot.fields.map((field) => ({
+                path: field.path,
+                status: field.status,
+                showError: field.showError,
+                required: field.required,
+                visible: field.visible,
+                disabled: field.disabled,
+                disabledReasons: field.disabledReasons,
+                showErrorExplain: field.showErrorExplain,
+                disabledExplain: field.disabledExplain,
+              })),
+            },
+            null,
+            2,
+          )}
+          language="json"
+        />
+      </details>
     </div>
   );
 }

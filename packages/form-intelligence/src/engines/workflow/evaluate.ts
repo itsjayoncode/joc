@@ -105,9 +105,21 @@ export function evaluateFormRules<TValues extends Record<string, unknown>>(optio
   readonly values: TValues;
   readonly fieldPaths: readonly FieldPath[];
   readonly setValue: (path: FieldPath, value: unknown) => void;
+  /**
+   * Schema / static `required` validator paths. Seeds default `fieldUi.required`
+   * before rules run (ADR-018). Unmatched `.require()` still forces `false`.
+   */
+  readonly requiredBaseline?: readonly FieldPath[];
 }): { fieldUi: FieldUiMap; formUi: FormUiState } {
+  const baseline = new Set(options.requiredBaseline ?? []);
   const ui = Object.fromEntries(
-    options.fieldPaths.map((path) => [path, { ...DEFAULT_UI }]),
+    options.fieldPaths.map((path) => [
+      path,
+      {
+        ...DEFAULT_UI,
+        ...(baseline.has(path) ? { required: true as const } : {}),
+      },
+    ]),
   ) as Record<FieldPath, FieldUiState>;
   let formUi: FormUiState = { ...DEFAULT_FORM_UI };
 
