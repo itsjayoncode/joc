@@ -19,10 +19,11 @@
   --vp-code-link-color: var(--joc-accent);
   --vp-code-link-hover-color: var(--joc-secondary);
   --vp-nav-bg-color: rgba(255, 255, 255, 0.72);
-  --vp-sidebar-bg-color: rgba(248, 251, 255, 0.62);
-  --vp-local-nav-bg-color: rgba(255, 255, 255, 0.78);
+  --vp-nav-screen-bg-color: #f7fafc;
+  --vp-sidebar-bg-color: #f8fbff;
+  --vp-local-nav-bg-color: #ffffff;
   --vp-c-bg-elv: rgba(255, 255, 255, 0.97);
-  --vp-backdrop-bg-color: rgba(7, 19, 40, 0.58);
+  --vp-backdrop-bg-color: rgba(7, 19, 40, 0.28);
   --vp-local-search-bg: rgba(255, 255, 255, 0.98);
   --vp-local-search-result-bg: rgba(252, 254, 255, 0.96);
   --vp-local-search-result-selected-bg: rgba(237, 244, 255, 0.98);
@@ -43,10 +44,11 @@
   --vp-code-link-color: #7cc4ff;
   --vp-code-link-hover-color: var(--joc-primary);
   --vp-nav-bg-color: rgba(8, 20, 38, 0.78);
-  --vp-sidebar-bg-color: rgba(8, 20, 38, 0.55);
-  --vp-local-nav-bg-color: rgba(8, 20, 38, 0.82);
+  --vp-nav-screen-bg-color: #081426;
+  --vp-sidebar-bg-color: #0f2748;
+  --vp-local-nav-bg-color: #122a52;
   --vp-c-bg-elv: rgba(8, 20, 38, 0.97);
-  --vp-backdrop-bg-color: rgba(0, 0, 0, 0.74);
+  --vp-backdrop-bg-color: rgba(0, 0, 0, 0.45);
   --vp-local-search-bg: rgba(8, 20, 38, 0.98);
   --vp-local-search-result-bg: rgba(10, 31, 68, 0.92);
   --vp-local-search-result-selected-bg: rgba(18, 42, 82, 0.98);
@@ -115,15 +117,83 @@ html.dark:has(.VPHome) {
   z-index: 1;
 }
 
-.Layout:not(.VPHome) .VPNavBar {
+/* Blur only on the bar — never on .VPNav (parent of VPNavScreen).
+   backdrop-filter creates a containing block that collapses the mobile menu. */
+.VPNavBar {
   background: var(--vp-nav-bg-color) !important;
   backdrop-filter: blur(18px) saturate(1.2);
   border-bottom: 1px solid rgba(var(--joc-secondary-rgb), 0.1);
 }
 
+/* Solid fill — --vp-c-bg is transparent for the page canvas */
+.VPNavScreen {
+  background-color: var(--vp-nav-screen-bg-color) !important;
+}
+
 .Layout:not(.VPHome) .VPSidebar {
   background: var(--vp-sidebar-bg-color) !important;
   backdrop-filter: blur(14px) saturate(1.1);
+}
+
+/* Mobile drawer: solid bright panel — glass + dark backdrop made it look buried */
+@media (max-width: 959px) {
+  .VPSidebar {
+    background: #ffffff !important;
+    backdrop-filter: none;
+    box-shadow:
+      4px 0 24px rgba(7, 19, 40, 0.12),
+      0 0 0 1px rgba(var(--joc-secondary-rgb), 0.06);
+  }
+
+  html.dark .VPSidebar {
+    background: #122a52 !important;
+    box-shadow:
+      4px 0 28px rgba(0, 0, 0, 0.35),
+      0 0 0 1px rgba(var(--joc-primary-rgb), 0.14);
+  }
+
+  .VPBackdrop {
+    background: rgba(7, 19, 40, 0.22);
+  }
+
+  html.dark .VPBackdrop {
+    background: rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* "On this page" bar + outline flyout — visible below 1280px */
+@media (max-width: 1279px) {
+  .VPLocalNav {
+    background-color: #ffffff !important;
+    border-bottom-color: rgba(var(--joc-secondary-rgb), 0.12);
+  }
+
+  html.dark .VPLocalNav {
+    background-color: #122a52 !important;
+    border-bottom-color: rgba(var(--joc-primary-rgb), 0.18);
+  }
+
+  .VPLocalNavOutlineDropdown .items {
+    background-color: #e8eef6 !important;
+    border-color: rgba(var(--joc-secondary-rgb), 0.14);
+    box-shadow: 0 12px 32px rgba(7, 19, 40, 0.14);
+  }
+
+  .VPLocalNavOutlineDropdown .header,
+  .VPLocalNavOutlineDropdown .outline {
+    background-color: #ffffff !important;
+  }
+
+  html.dark .VPLocalNavOutlineDropdown .items {
+    background-color: #0a1f44 !important;
+    border-color: rgba(var(--joc-primary-rgb), 0.22);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  html.dark .VPLocalNavOutlineDropdown .header,
+  html.dark .VPLocalNavOutlineDropdown .outline {
+    background-color: #122a52 !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -273,17 +343,11 @@ html.dark .VPHome {
   object-fit: contain;
 }
 
-.VPHome .VPNavBar {
-  background: var(--vp-nav-bg-color) !important;
-  border-bottom: 1px solid rgba(var(--joc-secondary-rgb), 0.12);
-  backdrop-filter: blur(18px) saturate(1.2);
-}
-
 .VPHome .VPNavBarTitle .title {
   color: var(--vp-c-text-1);
 }
 
-html.dark .VPHome .VPNavBar {
+html.dark .VPNavBar {
   border-bottom-color: rgba(var(--joc-primary-rgb), 0.14);
 }
 
@@ -367,10 +431,6 @@ html.dark .VPHome .VPNavBar {
   .joc-nav-doc-version {
     font-size: 0.62rem;
   }
-}
-
-.VPNav {
-  backdrop-filter: blur(16px);
 }
 
 /* ── Homepage FX layer ───────────────────────────────── */
