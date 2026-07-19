@@ -1,6 +1,6 @@
 ---
 title: State
-description: Form Intelligent documentation for State.
+description: Form Intelligence documentation for State.
 ---
 
 # State
@@ -10,7 +10,7 @@ One snapshot for values, errors, field flags, workflow progress, and UI rules �
 **Previous:** [Submission](/packages/form-intelligence/modules/submission) · **Next:** [Workflow](/packages/form-intelligence/modules/workflow)
 
 ::: tip Playground
-[State explorer →](/playground/form-intelligence/state) · [DevTools →](/playground/form-intelligence/devtools)
+[State explorer →](/playground/form-intelligent/state) · [DevTools →](/playground/form-intelligent/devtools)
 :::
 
 ## Problem → solution
@@ -142,7 +142,7 @@ await form.submit({ includeDiff: true });
 JSON.stringify(form.getFormState(), null, 2);
 ```
 
-The playground [DevTools](/playground/form-intelligence/devtools) page exports/imports this snapshot shape for local debugging.
+The playground [DevTools](/playground/form-intelligent/devtools) page exports/imports this snapshot shape for local debugging.
 
 ---
 

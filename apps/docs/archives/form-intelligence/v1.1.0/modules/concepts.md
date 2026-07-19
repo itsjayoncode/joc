@@ -1,11 +1,11 @@
 ---
 title: Concepts
-description: Form Intelligent documentation for Concepts.
+description: Form Intelligence documentation for Concepts.
 ---
 
 # Core concepts
 
-Terminology and architecture for `@jayoncode/form-intelligent`. Prefer this page for _what things mean_; feature how-tos live under Guides.
+Terminology and architecture for `@jayoncode/form-intelligence`. Prefer this page for _what things mean_; feature how-tos live under Guides.
 
 **Previous:** [Tutorial](/packages/form-intelligence/modules/getting-started) · **Next:** [Capabilities](/packages/form-intelligence/modules/capabilities)
 
@@ -140,4 +140,4 @@ How-to, import choices, and DOM wrappers: [Rules guide](/packages/form-intellige
 | Snapshots / undo      | [State](/packages/form-intelligence/modules/state)               |
 | Autosave / wizard     | [Workflow](/packages/form-intelligence/modules/workflow)         |
 
-Inspect live state: [State explorer](/playground/form-intelligence/state)
+Inspect live state: [State explorer](/playground/form-intelligent/state)

@@ -1,6 +1,6 @@
 ---
 title: Migration
-description: Form Intelligent documentation for Migration.
+description: Form Intelligence documentation for Migration.
 ---
 
 # Migration — replace ad-hoc autosave
@@ -36,7 +36,7 @@ Problems: debounce races, no cancel on unmount, restore fights controlled inputs
 ## After — workflow.autosave + draft
 
 ```ts
-import { createForm } from "@jayoncode/form-intelligent";
+import { createForm } from "@jayoncode/form-intelligence";
 
 const form = createForm({
   initialValues: { notes: "" },
@@ -72,7 +72,7 @@ const form = createForm({
 ## React adapter
 
 ```tsx
-import { useForm } from "@jayoncode/form-intelligence-react";
+import { useForm } from "@jayoncode/form-intelligent-react";
 
 const form = useForm({
   schema: { notes: { required: true } },
@@ -91,7 +91,7 @@ No `useEffect` for drafts — the adapter owns lifecycle; the engine owns workfl
 ## Optional: flush on page hide
 
 ```ts
-import { createBrowserLifecyclePlugin } from "@jayoncode/form-intelligent/plugins";
+import { createBrowserLifecyclePlugin } from "@jayoncode/form-intelligence/plugins";
 
 form.use(createBrowserLifecyclePlugin({ saveDraftOnHidden: true }));
 ```

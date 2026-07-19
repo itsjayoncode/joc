@@ -1,6 +1,6 @@
 ---
 title: Calculations
-description: Form Intelligent documentation for Calculations.
+description: Form Intelligence documentation for Calculations.
 ---
 
 # Calculations
@@ -10,7 +10,7 @@ Derived fields that update when dependencies change — no manual `onChange` wir
 **Previous:** [Rules](/packages/form-intelligence/modules/rules) · **Next:** [Formatters](/packages/form-intelligence/modules/formatters)
 
 ::: tip Playground
-[Calculations explorer →](/playground/form-intelligence/calculations)
+[Calculations explorer →](/playground/form-intelligent/calculations)
 :::
 
 ## Problem → solution

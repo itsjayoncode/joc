@@ -1,6 +1,6 @@
 ---
 title: Validation
-description: Form Intelligent documentation for Validation.
+description: Form Intelligence documentation for Validation.
 ---
 
 # Validation
@@ -10,7 +10,7 @@ Check user input before submit — with built-in rules, custom logic, or async A
 **Previous:** [Capabilities](/packages/form-intelligence/modules/capabilities) · **Next:** [Submission](/packages/form-intelligence/modules/submission)
 
 ::: tip Playground
-[Validation explorer →](/playground/form-intelligence/validation) — timing modes, async validators, field inspector.
+[Validation explorer →](/playground/form-intelligent/validation) — timing modes, async validators, field inspector.
 :::
 
 ## Problem → solution
@@ -38,7 +38,7 @@ validators: {
 Good for most forms. Import what you need:
 
 ```ts
-import { required, email, url, minLength, regex } from "@jayoncode/form-intelligent";
+import { required, email, url, minLength, regex } from "@jayoncode/form-intelligence";
 
 createForm({
   initialValues: { email: "", site: "", code: "" },

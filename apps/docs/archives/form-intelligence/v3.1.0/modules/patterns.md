@@ -1,6 +1,6 @@
 ---
 title: Patterns
-description: Form Intelligent documentation for Patterns.
+description: Form Intelligence documentation for Patterns.
 ---
 
 # Patterns
@@ -10,7 +10,7 @@ Common Form Intelligent recipes — wizard, autosave, offline submit, plugins.
 **Previous:** [Plugins](/packages/form-intelligence/modules/plugins) · **Next:** [Migration](/packages/form-intelligence/modules/migration)
 
 ::: tip Playground
-Try [Workflow](/playground/form-intelligence/workflow), [Submission](/playground/form-intelligence/submission), and [Plugins](/playground/form-intelligence/plugins).
+Try [Workflow](/playground/form-intelligent/workflow), [Submission](/playground/form-intelligent/submission), and [Plugins](/playground/form-intelligent/plugins).
 :::
 
 ---
@@ -123,7 +123,7 @@ Hooks: `beforeValidate`, `afterValidate`, `beforeSubmit`, `afterSubmit`, `onAuto
 ## Schema adapters (Zod)
 
 ```ts
-import { zodAdapter } from "@jayoncode/form-intelligence-zod";
+import { zodAdapter } from "@jayoncode/form-intelligent-zod";
 import { z } from "zod";
 
 createForm({
@@ -149,4 +149,4 @@ createForm({
 
 Errors announce with `role="alert"` and `aria-invalid` automatically.
 
-**Done?** Browse the [API Reference](/packages/form-intelligence/api/) or [open the playground](/playground/form-intelligence/).
+**Done?** Browse the [API Reference](/packages/form-intelligence/api/) or [open the playground](/playground/form-intelligent/).

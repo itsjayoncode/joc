@@ -23,6 +23,16 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 /** Last commit that still carried each published version before the next bump. */
 const ARCHIVES = [
   {
+    version: "3.5.0",
+    commit: "9e9874a2e001ea2ebd5b5dfda29c48e5952334b4",
+    archivedAt: "2026-07-20",
+  },
+  {
+    version: "3.4.0",
+    commit: "4b3d33f3d9d068a4337e810171a58028e3c06d24",
+    archivedAt: "2026-07-18",
+  },
+  {
     version: "3.1.0",
     commit: "c7e9d57eb4c75bb71cfe9050505ad99cb3861364",
     archivedAt: "2026-07-17",
@@ -40,6 +50,29 @@ const ARCHIVES = [
 ];
 
 const SKIP_MODULE_FILES = new Set(["index.md", "overview.md"]);
+const DOCS_PACKAGE_DIRS = ["packages/form-intelligence", "packages/form-intelligent"];
+const PLAYGROUND_DOCS_DIRS = [
+  "apps/form-intelligence-playground/docs",
+  "apps/form-intelligent-playground/docs",
+];
+
+function resolveDocsPackageDir(commit) {
+  for (const dir of DOCS_PACKAGE_DIRS) {
+    if (gitShow(commit, `${dir}/docs/index.md`)) {
+      return dir;
+    }
+  }
+  return null;
+}
+
+function resolvePlaygroundDocsDir(commit) {
+  for (const dir of PLAYGROUND_DOCS_DIRS) {
+    if (gitListTree(commit, dir).length > 0) {
+      return dir;
+    }
+  }
+  return null;
+}
 
 function gitShow(commit, filePath) {
   const result = spawnSync("git", ["show", `${commit}:${filePath}`], {
@@ -118,7 +151,10 @@ function withFrontmatter(fileName, body, extra = {}) {
 }
 
 function rewriteModuleLinks(body) {
-  return body.replace(/\]\(\.\/([^)]+)\.md\)/g, "](/packages/form-intelligence/modules/$1)");
+  return body
+    .replace(/\]\(\.\/([^)]+)\.md\)/g, "](/packages/form-intelligence/modules/$1)")
+    .replace(/\/packages\/form-intelligent(\/|$)/g, "/packages/form-intelligence$1")
+    .replace(/@jayoncode\/form-intelligent(?!-)/g, "@jayoncode/form-intelligence");
 }
 
 function prependArchiveBanner(indexBody, version) {
@@ -127,7 +163,7 @@ function prependArchiveBanner(indexBody, version) {
   }
 
   const banner = `> [!NOTE]
-> **Archived documentation (v${version})** — You are viewing a frozen snapshot for \`@jayoncode/form-intelligent@${version}\`. See the [latest docs](/packages/form-intelligence/) for the current release.
+> **Archived documentation (v${version})** — You are viewing a frozen snapshot for \`@jayoncode/form-intelligence@${version}\`. See the [latest docs](/packages/form-intelligence/) for the current release.
 
 `;
 
@@ -144,7 +180,14 @@ function buildArchive(pkg, entry) {
   rmSync(archiveDir, { recursive: true, force: true });
   mkdirSync(archiveDir, { recursive: true });
 
-  const indexSource = gitShow(entry.commit, "packages/form-intelligence/docs/index.md");
+  const docsPackageDir = resolveDocsPackageDir(entry.commit);
+  if (!docsPackageDir) {
+    throw new Error(
+      `Missing form-intelligence docs at ${entry.commit} for ${entry.version} (tried ${DOCS_PACKAGE_DIRS.join(", ")})`,
+    );
+  }
+
+  const indexSource = gitShow(entry.commit, `${docsPackageDir}/docs/index.md`);
   if (!indexSource) {
     throw new Error(`Missing index.md at ${entry.commit} for ${entry.version}`);
   }
@@ -160,23 +203,23 @@ function buildArchive(pkg, entry) {
   indexBody = prependArchiveBanner(indexBody, entry.version);
   writeFile(path.join(archiveDir, "index.md"), indexBody);
 
-  const overviewSource = gitShow(entry.commit, "packages/form-intelligence/docs/overview.md");
+  const overviewSource = gitShow(entry.commit, `${docsPackageDir}/docs/overview.md`);
   if (overviewSource) {
     writeFile(
       path.join(archiveDir, "overview.md"),
       withFrontmatter("overview.md", rewriteModuleLinks(overviewSource), {
         title: "Form Intelligence overview",
-        description: "Documentation overview for @jayoncode/form-intelligent.",
+        description: "Documentation overview for @jayoncode/form-intelligence.",
       }),
     );
   }
 
-  const moduleFiles = gitListTree(entry.commit, "packages/form-intelligence/docs").filter(
+  const moduleFiles = gitListTree(entry.commit, `${docsPackageDir}/docs`).filter(
     (name) => name.endsWith(".md") && !SKIP_MODULE_FILES.has(name),
   );
 
   for (const file of moduleFiles) {
-    const source = gitShow(entry.commit, `packages/form-intelligence/docs/${file}`);
+    const source = gitShow(entry.commit, `${docsPackageDir}/docs/${file}`);
     if (!source) {
       continue;
     }
@@ -189,30 +232,33 @@ function buildArchive(pkg, entry) {
     );
   }
 
-  const playgroundFiles = gitListTree(entry.commit, "apps/form-intelligence-playground/docs");
-  for (const file of playgroundFiles.filter((name) => name.endsWith(".md"))) {
-    const source = gitShow(entry.commit, `apps/form-intelligence-playground/docs/${file}`);
-    if (!source) {
-      continue;
+  const playgroundDocsDir = resolvePlaygroundDocsDir(entry.commit);
+  if (playgroundDocsDir) {
+    const playgroundFiles = gitListTree(entry.commit, playgroundDocsDir);
+    for (const file of playgroundFiles.filter((name) => name.endsWith(".md"))) {
+      const source = gitShow(entry.commit, `${playgroundDocsDir}/${file}`);
+      if (!source) {
+        continue;
+      }
+      writeFile(
+        path.join(archiveDir, "playground", file),
+        withFrontmatter(file, rewriteModuleLinks(source), {
+          title: toTitle(file),
+          description: `Form Intelligence playground documentation for ${toTitle(file)}.`,
+          playgroundUrl: "/playground/form-intelligence/",
+        }),
+      );
     }
-    writeFile(
-      path.join(archiveDir, "playground", file),
-      withFrontmatter(file, source, {
-        title: toTitle(file),
-        description: `Form Intelligence playground documentation for ${toTitle(file)}.`,
-        playgroundUrl: "/playground/form-intelligence/",
-      }),
-    );
   }
 
   const changelog =
-    gitShow(entry.commit, "packages/form-intelligence/CHANGELOG.md") ??
-    `# Changelog\n\nRelease history for \`@jayoncode/form-intelligent@${entry.version}\`.\n`;
+    gitShow(entry.commit, `${docsPackageDir}/CHANGELOG.md`) ??
+    `# Changelog\n\nRelease history for \`@jayoncode/form-intelligence@${entry.version}\`.\n`;
   writeFile(
     path.join(archiveDir, "changelog.md"),
-    withFrontmatter("changelog.md", changelog, {
+    withFrontmatter("changelog.md", rewriteModuleLinks(changelog), {
       title: "Changelog",
-      description: "Release history for @jayoncode/form-intelligent.",
+      description: "Release history for @jayoncode/form-intelligence.",
     }),
   );
 

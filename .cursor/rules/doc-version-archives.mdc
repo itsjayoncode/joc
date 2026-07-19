@@ -17,7 +17,7 @@ Any package that owns a `/packages/<id>/` docs section **must** have versioned d
 When adding a new package docs section:
 
 1. Register in `DOC_VERSIONED_PACKAGES` (`scripts/lib/doc-versioning.mjs`)
-2. Create `apps/docs/doc-versions/<id>.json` with `archivePolicy: "minor"` and `archives: []`
+2. Create `apps/docs/doc-versions/<id>.json` with `archive: { major: true, minor: true, patch: false }` and `archives: []`
 3. Wire versions meta into VitePress config, sidebar map, `DocsVersionSwitcher`, and `ArchivedDocsBanner`
 4. Gitignore `apps/docs/docs/packages/<id>/v*/` and `.vitepress/<id>-versions.ts`
 5. Bootstrap on first publish: `pnpm docs:archive -- --package <id> --bootstrap`
