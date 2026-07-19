@@ -133,16 +133,16 @@ Construct and `start()` only in the browser (or after hydration). Capability det
 
 ### Intelligence & DX (experimental)
 
-| #   | Guide                                                                                                                                                                          | Topics                                 |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------- |
-| 14  | [Intelligence overview](/packages/browser-lifecycle/modules/intelligence)                                                                                                      | Opt-in factories, observe vs interpret |
-| 15  | [Activity](/packages/browser-lifecycle/modules/activity)                                                                                                                       | Active / idle facade                   |
-| 16  | [Presence](/packages/browser-lifecycle/modules/presence)                                                                                                                       | Page-local present / away              |
-| 17  | [Timeline](/packages/browser-lifecycle/modules/timeline)                                                                                                                       | Bounded event history                  |
-| 18  | [Metrics](/packages/browser-lifecycle/modules/metrics)                                                                                                                         | Durations, counts, attention           |
-| 19  | [Reports](/packages/browser-lifecycle/modules/reports)                                                                                                                         | On-demand session summary              |
+| #   | Guide                                                                             | Topics                                 |
+| --- | --------------------------------------------------------------------------------- | -------------------------------------- |
+| 14  | [Intelligence overview](/packages/browser-lifecycle/modules/intelligence)                                        | Opt-in factories, observe vs interpret |
+| 15  | [Activity](/packages/browser-lifecycle/modules/activity)                                                         | Active / idle facade                   |
+| 16  | [Presence](/packages/browser-lifecycle/modules/presence)                                                         | Page-local present / away              |
+| 17  | [Timeline](/packages/browser-lifecycle/modules/timeline)                                                         | Bounded event history                  |
+| 18  | [Metrics](/packages/browser-lifecycle/modules/metrics)                                                           | Durations, counts, attention           |
+| 19  | [Reports](/packages/browser-lifecycle/modules/reports)                                                           | On-demand session summary              |
 | 20  | [Wait](/packages/browser-lifecycle/modules/wait) / [Conditions](/packages/browser-lifecycle/modules/conditions) / [Resilience](/packages/browser-lifecycle/modules/resilience) | DX helpers                             |
-| 21  | [Framework adapters](/packages/browser-lifecycle/modules/adapters)                                                                                                             | React, Vue, Svelte, Solid, Angular     |
+| 21  | [Framework adapters](/packages/browser-lifecycle/modules/adapters)                                               | React, Vue, Svelte, Solid, Angular     |
 
 ## Package fit
 
@@ -152,10 +152,10 @@ Construct and `start()` only in the browser (or after hydration). Capability det
 | React to window focus                 | `window:focus` / `window:blur`                                                 |
 | Offline-aware UI                      | `connection:*`                                                                 |
 | Idle timeout / autosave triggers      | Idle module                                                                    |
-| Session duration / attention          | [Metrics](/packages/browser-lifecycle/modules/metrics)                         |
-| Event audit log                       | [Timeline](/packages/browser-lifecycle/modules/timeline)                       |
-| Reconnect / wake / restore            | [Resilience](/packages/browser-lifecycle/modules/resilience)                   |
-| React / Vue / etc. bindings           | [Adapters](/packages/browser-lifecycle/modules/adapters)                       |
+| Session duration / attention          | [Metrics](/packages/browser-lifecycle/modules/metrics)                                                        |
+| Event audit log                       | [Timeline](/packages/browser-lifecycle/modules/timeline)                                                      |
+| Reconnect / wake / restore            | [Resilience](/packages/browser-lifecycle/modules/resilience)                                                  |
+| React / Vue / etc. bindings           | [Adapters](/packages/browser-lifecycle/modules/adapters)                                                      |
 | Cross-tab coordination                | [Cross-tab](/packages/browser-lifecycle/modules/cross-tab)                     |
 | Cross-cutting observation / telemetry | [Plugins](/packages/browser-lifecycle/modules/plugins)                         |
 | SSR / capability guards               | [Core infrastructure](/packages/browser-lifecycle/modules/core-infrastructure) |
@@ -175,3 +175,4 @@ Construct and `start()` only in the browser (or after hydration). Capability det
 ## Version
 
 <BrowserLifecycleVersion mode="overview" />
+
