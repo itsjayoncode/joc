@@ -1,6 +1,6 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
-import { createForm, when } from "../../src/index.js";
+import { createForm, required, when } from "../../src/index.js";
 import {
   canSubmit,
   createUiProjection,
@@ -323,6 +323,36 @@ describe("ui projection — form.ui + field.ui", () => {
 });
 
 describe("ui projection — snapshot + cost smoke", () => {
+  it("includes submissionGuard and presentation required flags", async () => {
+    const form = createForm({
+      initialValues: { email: "" },
+      validators: { email: [required] },
+      plugins: [ui()],
+      rules: [when("email").equals("block").disableSubmit()],
+    });
+    form.field("email");
+
+    await vi.waitFor(() => {
+      const snap = snapshotUiProjection(form);
+      expect(snap.submissionGuard.allowed).toBe(true);
+      expect(snap.formUi.submitDisabled).toBe(false);
+      expect(snap.requiredFields).toEqual(["email"]);
+      expect(snap.fields[0]?.required).toBe(true);
+      expect(snap.fields[0]?.status).toBeDefined();
+    });
+
+    form.setValue("email", "block");
+    await vi.waitFor(() => {
+      const blocked = snapshotUiProjection(form);
+      expect(blocked.submissionGuard.allowed).toBe(false);
+      expect(blocked.submissionGuard.reasons).toContain("ruleDisabled");
+      expect(blocked.canSubmit).toBe(false);
+      expect(blocked.submitExplain.reasons).toContain("ruleDisabled");
+    });
+
+    form.destroy();
+  });
+
   it("snapshotUiProjection is stable and cheap on a mid-size form", () => {
     const initialValues: Record<string, string> = {};
     for (let index = 0; index < 40; index += 1) {

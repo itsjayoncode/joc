@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { compileSchema } from "../../src/schema/compiler.js";
+import { collectRequiredBaseline } from "../../src/schema/required-baseline.js";
 import { required } from "../../src/validation/validators.js";
 
 describe("compileSchema", () => {
@@ -65,5 +66,20 @@ describe("compileSchema", () => {
     });
 
     expect(message).toBe("Passwords do not match.");
+  });
+});
+
+describe("collectRequiredBaseline", () => {
+  it("detects built-in required identity from compiled schema validators", () => {
+    const compiled = compileSchema({
+      email: "email",
+      note: "text",
+      name: { required: true },
+    });
+
+    expect(collectRequiredBaseline(compiled.validators)).toEqual(
+      expect.arrayContaining(["email", "name"]),
+    );
+    expect(collectRequiredBaseline(compiled.validators)).not.toContain("note");
   });
 });

@@ -62,12 +62,13 @@ export function buildPresentationState(
 }
 
 /**
- * Ownership note (Phase 9): Workflow rules produce UI intents; Presentation
- * exposes them. Validation must not write `visible`/`hidden`. DOM enhancer
- * and adapters consume `getPresentation` / `field.ui` only.
+ * Ownership note (Phase 9 / ADR-018): Workflow rules and schema/static
+ * `required` baseline produce UI intents; Presentation exposes them.
+ * Validation must not write `visible`/`hidden`/`required` on validate ticks.
+ * DOM enhancer and adapters consume `getPresentation` / `field.ui` only.
  */
 export const PRESENTATION_OWNERSHIP = {
-  producers: ["workflow.rules", "dependency.populate"] as const,
+  producers: ["workflow.rules", "dependency.populate", "schema.requiredBaseline"] as const,
   consumers: ["dom.enhancer", "framework.adapters", "a11y"] as const,
   nonWriters: ["validation", "transform", "format"] as const,
 } as const;

@@ -14,15 +14,17 @@ Form Intelligence owns the workflow. This adapter wires Angular DI, signals, and
 
 ## What you get
 
-| API                               | Purpose                                                                  |
-| --------------------------------- | ------------------------------------------------------------------------ |
-| `provideFormIntelligent(config)`  | Provide a form from component `providers` (same options as `createForm`) |
-| `injectForm()`                    | Inject the reactive form handle in the component tree                    |
-| `FormIntelligentService`          | Imperative `create(config, destroyRef)` for headless setups              |
-| `fiForm` directive                | Bind the host `<form>` to the engine (`ref`, submit)                     |
-| `fiField` directive               | Bind an input’s `name` / path into the engine                            |
-| `form.state()`                    | Signal snapshot: values, errors, `isValid`, `isSubmitting`, …            |
-| `selectFormState(form, selector)` | Computed signal for a state slice                                        |
+| API                                                         | Purpose                                                                  |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------ |
+| `provideFormIntelligent(config)`                            | Provide a form from component `providers` (same options as `createForm`) |
+| `injectForm()`                                              | Inject the reactive form handle in the component tree                    |
+| `FormIntelligentService`                                    | Imperative `create(config, destroyRef)` for headless setups              |
+| `fiForm` directive                                          | Bind the host `<form>` to the engine (`ref`, submit)                     |
+| `fiField` directive                                         | Sync `name` + projection `aria-invalid` / `data-fi-status`               |
+| `form.controller` / `fieldController` / `focusFirstInvalid` | Same controller contract as React                                        |
+| `form.state()`                                              | Signal snapshot: values, errors, `isValid`, `isSubmitting`, …            |
+| `form.submit()` / `submitButton()`                          | Button UX from `form.ui.canSubmit`                                       |
+| `selectFormState(form, selector)`                           | Computed signal for a state slice                                        |
 
 Core config still includes: schema/validators, `validateOn`, `when()` rules, autosave, drafts, wizard, plugins, async validation, formatters.
 
@@ -43,12 +45,14 @@ import {
   provideFormIntelligent,
 } from "@jayoncode/form-intelligence-angular";
 import { when } from "@jayoncode/form-intelligence";
+import { ui } from "@jayoncode/form-intelligence/ui";
 
 @Component({
   standalone: true,
   imports: [FormIntelligentFormDirective, FormIntelligentFieldDirective],
   providers: [
     provideFormIntelligent({
+      plugins: [ui()],
       schema: {
         plan: { required: true },
         email: "email",
@@ -69,11 +73,11 @@ import { when } from "@jayoncode/form-intelligence";
         <option value="enterprise">Enterprise</option>
       </select>
       <input fiField="email" />
-      @if (form.state().errors.email) {
+      @if (form.fieldController("email").ui.showError) {
         <span>{{ form.state().errors.email }}</span>
       }
       <input fiField="seatCount" type="number" />
-      <button type="submit" [disabled]="form.state().isSubmitting">Continue</button>
+      <button type="submit" [disabled]="form.submit().disabled">Continue</button>
     </form>
   `,
 })

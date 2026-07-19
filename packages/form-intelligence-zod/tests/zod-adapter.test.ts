@@ -41,6 +41,30 @@ describe("zodAdapter", () => {
     form.destroy();
   });
 
+  it("maps nested and array paths to dot notation", async () => {
+    const schema = z.object({
+      address: z.object({
+        city: z.string().min(2, "City too short"),
+      }),
+      friends: z.array(
+        z.object({
+          name: z.string().min(1, "Name required"),
+        }),
+      ),
+    });
+
+    const form = createForm({
+      initialValues: { address: { city: "" }, friends: [{ name: "" }] },
+      schema: zodAdapter(schema),
+    });
+
+    const valid = await form.validate();
+    expect(valid).toBe(false);
+    expect(form.errors("address.city")).toBe("City too short");
+    expect(form.errors("friends.0.name")).toBe("Name required");
+    form.destroy();
+  });
+
   it("supports async refinements", async () => {
     const schema = z.object({
       username: z.string().refine(async (value) => value !== "taken", {

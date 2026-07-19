@@ -1,6 +1,6 @@
 import { signal, type DestroyRef } from "@angular/core";
 
-import { createForm } from "@jayoncode/form-intelligence";
+import { createForm, createFormController } from "@jayoncode/form-intelligence";
 import type { FieldPath } from "@jayoncode/form-intelligence";
 
 import type { FormIntelligentHandle, UseFormConfig } from "./types.js";
@@ -9,6 +9,7 @@ export class FormIntelligentHandleImpl<
   TValues extends Record<string, unknown>,
 > implements FormIntelligentHandle<TValues> {
   readonly instance;
+  readonly controller;
   readonly state;
   readonly ref;
 
@@ -16,6 +17,7 @@ export class FormIntelligentHandleImpl<
 
   public constructor(config: UseFormConfig<TValues>, destroyRef?: DestroyRef) {
     this.instance = createForm(config);
+    this.controller = createFormController(this.instance);
     this.ref = this.instance.ref;
     this.state = signal(this.instance.getSnapshot());
 
@@ -49,12 +51,20 @@ export class FormIntelligentHandleImpl<
     };
   }
 
+  public fieldController(path: FieldPath) {
+    return this.instance.field(path);
+  }
+
   public submit() {
     return this.submitButtonProps();
   }
 
   public submitButton() {
     return this.submitButtonProps();
+  }
+
+  public focusFirstInvalid() {
+    return this.instance.focusFirstInvalid();
   }
 
   public destroy(): void {

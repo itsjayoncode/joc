@@ -29,4 +29,23 @@ describe("schema adapter integration", () => {
     expect(await form.validate()).toBe(true);
     form.destroy();
   });
+
+  it("keeps nested adapter errors when values only expose one parent path", async () => {
+    const form = createForm({
+      initialValues: { address: {} },
+      schema: {
+        async validate(values) {
+          const address = values.address as Record<string, unknown> | undefined;
+          if (!address || address.city === undefined || address.city === "") {
+            return { "address.city": "City is required" };
+          }
+          return {};
+        },
+      },
+    });
+
+    expect(await form.validate()).toBe(false);
+    expect(form.errors("address.city")).toBe("City is required");
+    form.destroy();
+  });
 });

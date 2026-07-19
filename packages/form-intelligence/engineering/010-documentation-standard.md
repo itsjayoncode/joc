@@ -62,7 +62,7 @@ Sidebar maps pages into journey groups; disk layout does not need to mirror the 
 | Core Concepts   | `concepts.md`, `capabilities.md`                                                       |
 | Guides          | `validation`, `submission`, `state`, `workflow`, `rules`, `calculations`, `formatters` |
 | Integrations    | `integrations.md`, `adapters.md`                                                       |
-| Advanced        | `plugins.md`, `patterns.md`                                                            |
+| Advanced        | `plugins.md` (incl. author guide), `patterns.md`                                       |
 | Support         | `migration.md`, site changelog                                                         |
 | Reference       | TypeDoc API, playground guide                                                          |
 

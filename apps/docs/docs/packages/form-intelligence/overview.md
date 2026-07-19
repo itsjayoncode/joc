@@ -297,7 +297,7 @@ Work through the journey groups below. Each guide links to a playground route.
 | [Core concepts](/packages/form-intelligence/modules/concepts)      | Instance model, flags, architecture         | [State](/playground/form-intelligence/state) |
 | [Capabilities](/packages/form-intelligence/modules/capabilities)   | Form OS feature map and status              | [Sandbox](/playground/form-intelligence/)    |
 | [Entrypoints](/packages/form-intelligence/modules/entrypoints)     | Main vs `/format`, `/devtools`, `/ui`, …    | [Sandbox](/playground/form-intelligence/)    |
-| [UI projection](/packages/form-intelligence/modules/ui-projection) | `showError`, `canSubmit`, `status`, explain | [Sandbox](/playground/form-intelligence/)    |
+| [UI projection](/packages/form-intelligence/modules/ui-projection) | `showError`, `canSubmit`, `status`, explain | [UI lab](/playground/form-intelligence/ui)   |
 
 ### Guides
 
@@ -320,12 +320,12 @@ Work through the journey groups below. Each guide links to a playground route.
 
 ### Advanced and Support
 
-| Guide                                                          | Topics                        | Playground                                               |
-| -------------------------------------------------------------- | ----------------------------- | -------------------------------------------------------- |
-| [Plugins](/packages/form-intelligence/modules/plugins)         | Lifecycle hooks + middleware  | [Plugins](/playground/form-intelligence/plugins)         |
-| [Performance](/packages/form-intelligence/modules/performance) | Bundle + timing budgets       | [Performance](/playground/form-intelligence/performance) |
-| [Patterns](/packages/form-intelligence/modules/patterns)       | Wizard, offline, recipes      | [Sandbox](/playground/form-intelligence/)                |
-| [Migration](/packages/form-intelligence/modules/migration)     | DIY autosave + breaking notes | [Workflow](/playground/form-intelligence/workflow)       |
+| Guide                                                          | Topics                              | Playground                                               |
+| -------------------------------------------------------------- | ----------------------------------- | -------------------------------------------------------- |
+| [Plugins](/packages/form-intelligence/modules/plugins)         | Hooks, middleware, **author guide** | [Plugins](/playground/form-intelligence/plugins)         |
+| [Performance](/packages/form-intelligence/modules/performance) | Bundle + timing budgets             | [Performance](/playground/form-intelligence/performance) |
+| [Patterns](/packages/form-intelligence/modules/patterns)       | Wizard, offline, recipes            | [Sandbox](/playground/form-intelligence/)                |
+| [Migration](/packages/form-intelligence/modules/migration)     | DIY autosave + breaking notes       | [Workflow](/playground/form-intelligence/workflow)       |
 
 ## Package fit
 
@@ -345,4 +345,3 @@ Work through the journey groups below. Each guide links to a playground route.
 - [API (TypeDoc)](/packages/form-intelligence/api/)
 - [Playground guide](/packages/form-intelligence/playground/playground)
 - [Examples](/playground/form-intelligence/examples)
-

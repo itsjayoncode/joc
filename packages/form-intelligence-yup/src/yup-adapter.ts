@@ -2,12 +2,15 @@ import { ValidationError, type AnySchema } from "yup";
 
 import type { SchemaAdapter } from "@jayoncode/form-intelligence";
 
-function formatYupPath(path: string | undefined): string {
+/**
+ * Yup uses `friends[0].name`; Form Intelligence field paths use `friends.0.name`.
+ */
+export function formatYupPath(path: string | undefined): string {
   if (!path) {
     return "_form";
   }
 
-  return path;
+  return path.replace(/\[(\d+)\]/g, ".$1");
 }
 
 function mapYupErrors(error: ValidationError): Record<string, string> {

@@ -25,6 +25,20 @@ Adapters connect `createForm()` to framework-specific lifecycle and field bindin
 
 See [Ecosystem architecture](https://github.com/itsjayoncode/joc/blob/master/packages/form-intelligence/engineering/001-ecosystem-architecture.md) for the full package map.
 
+## Compatibility contract
+
+Framework adapters share one product contract (lifecycle, field projection attrs, submit UX, controllers, focus). Details: [017-adapter-contract](https://github.com/itsjayoncode/joc/blob/master/packages/form-intelligence/engineering/017-adapter-contract.md).
+
+| Capability                                             | React | Vue         | Angular                     |
+| ------------------------------------------------------ | ----- | ----------- | --------------------------- |
+| Reactive `state`                                       | Yes   | Yes (`Ref`) | Yes (`Signal`)              |
+| `field()` → `aria-invalid` / `data-fi-status`          | Yes   | Yes         | Yes (+ `fiField` directive) |
+| `submit()` from `form.ui.canSubmit`                    | Yes   | Yes         | Yes                         |
+| `controller` / `fieldController` / `focusFirstInvalid` | Yes   | Yes         | Yes                         |
+| Prefer `plugins: [ui()]`                               | Yes   | Yes         | Yes                         |
+
+`field()` does **not** spread controlled `value`/`onChange` — use the DOM enhancer or `fieldController(path).bind()` for headless inputs.
+
 ---
 
 ## Native HTML (built-in)
@@ -240,7 +254,7 @@ Pass a pre-compiled `ValidateFunction` when reusing a configured `Ajv` instance 
 
 ## Vue — `@jayoncode/form-intelligence-vue`
 
-**Status: PARTIAL** — composables ship; submit/field UX uses `form.ui.canSubmit` / `showError` / `status` (same projection as React). Controllers/`field.aria` depth still thinner than React.
+**Status: SHIPPED** (controller contract aligned with React).
 
 ```bash
 npm install @jayoncode/form-intelligence @jayoncode/form-intelligence-vue vue
@@ -249,8 +263,10 @@ npm install @jayoncode/form-intelligence @jayoncode/form-intelligence-vue vue
 ```vue
 <script setup lang="ts">
 import { useForm } from "@jayoncode/form-intelligence-vue";
+import { ui } from "@jayoncode/form-intelligence/ui";
 
 const form = useForm({
+  plugins: [ui()],
   schema: { email: "email", password: "password" },
   onSubmit,
 });
@@ -259,18 +275,19 @@ const form = useForm({
 <template>
   <form v-bind="form.form()">
     <input v-bind="form.field('email')" />
+    <span v-if="form.fieldController('email').ui.showError">{{ form.state.errors.email }}</span>
     <button v-bind="form.submit()">Login</button>
   </form>
 </template>
 ```
 
-Use `provideForm()` in a parent and `useField('path')` in children for deep trees.
+Use `provideForm()` in a parent and `useField('path')` in children for deep trees (`useField` exposes `setAriaIds` / `aria` / `controller`). Prefer `form.submit()` — it already disables from `form.ui.canSubmit`.
 
 ---
 
 ## Angular — `@jayoncode/form-intelligence-angular`
 
-**Status: PARTIAL** — directives/service ship; submit/field UX uses `form.ui.canSubmit` / `showError` / `status` (same projection as React). Controllers/`field.aria` depth still thinner than React.
+**Status: SHIPPED** (controller contract + `fiField` projection attrs aligned with React).
 
 ```bash
 npm install @jayoncode/form-intelligence @jayoncode/form-intelligence-angular
@@ -284,17 +301,34 @@ import {
   injectForm,
   provideFormIntelligent,
 } from "@jayoncode/form-intelligence-angular";
+import { ui } from "@jayoncode/form-intelligence/ui";
 
 @Component({
   standalone: true,
   imports: [FormIntelligentFormDirective, FormIntelligentFieldDirective],
-  providers: [provideFormIntelligent({ schema: { email: "email" }, onSubmit })],
-  template: `<form fiForm><input fiField="email" /><button type="submit">Login</button></form>`,
+  providers: [
+    provideFormIntelligent({
+      plugins: [ui()],
+      schema: { email: "email" },
+      onSubmit,
+    }),
+  ],
+  template: `
+    <form fiForm>
+      <input fiField="email" />
+      @if (form.fieldController("email").ui.showError) {
+        <span>{{ form.state().errors.email }}</span>
+      }
+      <button type="submit" [disabled]="form.submit().disabled">Login</button>
+    </form>
+  `,
 })
 export class LoginComponent {
   readonly form = injectForm();
 }
 ```
+
+`fiField` keeps `name`, `aria-invalid`, `data-fi-status`, and related aria attrs in sync. Prefer `form.submit().disabled` (or host bindings from `submit()`) over `isSubmitting` alone.
 
 ---
 
@@ -318,11 +352,15 @@ export class LoginComponent {
 
 ## Schema adapter contract matrix
 
-| Package                            | Contract tests                      | Status                                          |
-| ---------------------------------- | ----------------------------------- | ----------------------------------------------- |
-| Core `SchemaAdapter` fixture       | Unit (sync + async)                 | **SHIPPED**                                     |
-| `@jayoncode/form-intelligence-zod` | Field errors, async refine, success | **SHIPPED**                                     |
-| Yup / Valibot / AJV                | Same contract shape                 | **PARTIAL** — deepen when packages cut releases |
+Error keys use Form Intelligence **dot paths** (`address.city`, `friends.0.name`). Form-level issues use `_form`.
+
+| Package                                | Contract harness | Nested / array paths                                      | Async                      | Status      |
+| -------------------------------------- | ---------------- | --------------------------------------------------------- | -------------------------- | ----------- |
+| Core `SchemaAdapter`                   | Unit             | Nested sole-path regression                               | Sync + async               | **SHIPPED** |
+| `@jayoncode/form-intelligence-zod`     | Yes              | Dot paths from Zod issue path                             | `refine` async             | **SHIPPED** |
+| `@jayoncode/form-intelligence-yup`     | Yes              | Bracket indexes normalized (`friends[0]` → `friends.0`)   | `.test` async              | **SHIPPED** |
+| `@jayoncode/form-intelligence-valibot` | Yes              | `getDotPath()`                                            | `pipeAsync` / `checkAsync` | **SHIPPED** |
+| `@jayoncode/form-intelligence-ajv`     | Yes              | `instancePath` + `required`/`additionalProperties` params | Compiled / `$async` fn     | **SHIPPED** |
 
 Bridge any library:
 

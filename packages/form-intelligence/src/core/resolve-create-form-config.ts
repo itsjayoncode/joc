@@ -4,6 +4,7 @@ import { readNamedFieldValue } from "../dom/field-value.js";
 import { resolveFormElement } from "../dom/resolve-form.js";
 import { ConfigurationError } from "../errors/index.js";
 import { compileSchema } from "../schema/compiler.js";
+import { collectRequiredBaseline } from "../schema/required-baseline.js";
 
 import type { FieldPath, FieldSchemaDefinition, FormConfig, Validator } from "../types/index.js";
 
@@ -11,6 +12,8 @@ export interface ResolvedCreateFormConfig<TValues extends Record<string, unknown
   readonly formConfig: FormConfig<TValues> & { readonly initialValues: TValues };
   readonly domTarget: HTMLFormElement | null;
   readonly fieldPaths: readonly FieldPath[];
+  /** Static schema/validator `required` paths seeded into Presentation (ADR-018). */
+  readonly requiredBaseline: readonly FieldPath[];
 }
 
 function buildEmptyInitialValues(paths: readonly FieldPath[]): Record<string, unknown> {
@@ -115,5 +118,6 @@ export function resolveCreateFormConfig<TValues extends Record<string, unknown>>
     formConfig,
     domTarget,
     fieldPaths,
+    requiredBaseline: collectRequiredBaseline(validators),
   };
 }

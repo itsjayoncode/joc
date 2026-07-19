@@ -8,7 +8,7 @@ import {
   watch,
 } from "vue";
 
-import { createForm } from "@jayoncode/form-intelligence";
+import { createForm, createFormController } from "@jayoncode/form-intelligence";
 import type { FieldPath } from "@jayoncode/form-intelligence";
 
 import type { UseFormConfig, UseFormReturn } from "./types.js";
@@ -19,6 +19,7 @@ export function useForm<TValues extends Record<string, unknown>>(
   const instanceRef = shallowRef(createForm(config));
   const formElement = ref<HTMLFormElement | null>(null);
   const state = shallowRef(instanceRef.value.getSnapshot());
+  const controller = createFormController(instanceRef.value);
 
   const unsubscribe = instanceRef.value.subscribe(() => {
     state.value = instanceRef.value.getSnapshot();
@@ -50,6 +51,7 @@ export function useForm<TValues extends Record<string, unknown>>(
     get instance() {
       return instanceRef.value;
     },
+    controller,
     state,
     ref: instanceRef.value.ref,
     form: () => ({
@@ -72,6 +74,7 @@ export function useForm<TValues extends Record<string, unknown>>(
           : {}),
       };
     },
+    fieldController: (path: FieldPath) => instanceRef.value.field(path),
     submit: () => {
       const instance = instanceRef.value;
       const canSubmit = instance.ui.canSubmit;
@@ -98,5 +101,6 @@ export function useForm<TValues extends Record<string, unknown>>(
           : {}),
       };
     },
+    focusFirstInvalid: () => instanceRef.value.focusFirstInvalid(),
   };
 }

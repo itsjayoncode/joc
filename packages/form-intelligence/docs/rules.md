@@ -99,17 +99,17 @@ when("country").notEquals("");
 
 ## Actions
 
-| Method                            | Effect                             |
-| --------------------------------- | ---------------------------------- |
-| `.show(...paths)`                 | Mark fields visible                |
-| `.hide(...paths)`                 | Mark fields hidden                 |
-| `.require(...paths)`              | Dynamically required               |
-| `.optional(...paths)`             | Clear dynamic required             |
-| `.enable(...paths)`               | Enable inputs                      |
-| `.disable(...paths)`              | Disable inputs                     |
-| `.disableSubmit()`                | Block submit while condition holds |
-| `.changes(loader).populate(path)` | Load options and fill a select     |
-| `.then(ctx => { … })`             | Imperative multi-action handler    |
+| Method                            | Effect                                                                    |
+| --------------------------------- | ------------------------------------------------------------------------- |
+| `.show(...paths)`                 | Mark fields visible                                                       |
+| `.hide(...paths)`                 | Mark fields hidden                                                        |
+| `.require(...paths)`              | Dynamically required (overrides schema baseline when unmatched → `false`) |
+| `.optional(...paths)`             | Clear required (including schema baseline while the rule matches)         |
+| `.enable(...paths)`               | Enable inputs                                                             |
+| `.disable(...paths)`              | Disable inputs                                                            |
+| `.disableSubmit()`                | Block submit while condition holds                                        |
+| `.changes(loader).populate(path)` | Load options and fill a select                                            |
+| `.then(ctx => { … })`             | Imperative multi-action handler                                           |
 
 ```ts
 when("customerType").equals("Business").show("companyName").require("taxNumber");
@@ -138,7 +138,13 @@ form.getPresentation().formUi.submitDisabled;
 form.field("companyName").ui.visible;
 ```
 
-`form.state.fieldUi` / `form.state.formUi` remain available. Headless UIs should honor presentation flags. With DOM enhancement, wrap fields:
+`form.state.fieldUi` / `form.state.formUi` remain available. Headless UIs should honor presentation flags.
+
+### Schema / static `required` baseline
+
+Built-in `required` from `schema` or `validators` (and `"email"` / `"password"` / `"url"` shortcuts) also seeds Presentation `field.required` — so `aria-required`, DOM `required`, and `form.ui.requiredFields` work without a `when().require()` rule. Workflow `.require()` / `.optional()` still override that baseline. See [018-schema-required-sync](https://github.com/itsjayoncode/joc/blob/master/packages/form-intelligence/engineering/018-schema-required-sync.md).
+
+With DOM enhancement, wrap fields:
 
 ```html
 <div data-form-intelligent-field="companyName">

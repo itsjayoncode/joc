@@ -6,21 +6,41 @@ export interface AjvAdapterOptions {
   readonly ajv?: Ajv;
 }
 
-function formatAjvPath(instancePath: string): string {
+function formatAjvInstancePath(instancePath: string): string {
   const trimmed = instancePath.replace(/^\//, "");
 
   if (!trimmed) {
-    return "_form";
+    return "";
   }
 
   return trimmed.replace(/\//g, ".");
+}
+
+/**
+ * Map AJV errors to Form Intelligence field paths (dot notation).
+ * `required` / `additionalProperties` attach the property name from `params`
+ * because `instancePath` is often the parent (or empty for root required).
+ */
+export function formatAjvErrorPath(error: ErrorObject): string {
+  const base = formatAjvInstancePath(error.instancePath);
+  const params = error.params as Record<string, unknown> | undefined;
+
+  if (error.keyword === "required" && typeof params?.missingProperty === "string") {
+    return base ? `${base}.${params.missingProperty}` : params.missingProperty;
+  }
+
+  if (error.keyword === "additionalProperties" && typeof params?.additionalProperty === "string") {
+    return base ? `${base}.${params.additionalProperty}` : params.additionalProperty;
+  }
+
+  return base || "_form";
 }
 
 function mapAjvErrors(errors: ErrorObject[] | null | undefined): Record<string, string> {
   const mapped: Record<string, string> = {};
 
   for (const error of errors ?? []) {
-    const path = formatAjvPath(error.instancePath);
+    const path = formatAjvErrorPath(error);
     if (!mapped[path]) {
       mapped[path] = error.message ?? "Invalid value";
     }

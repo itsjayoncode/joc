@@ -18,6 +18,7 @@ import { SandboxPage } from "../pages/SandboxPage.js";
 import { SettingsPage } from "../pages/SettingsPage.js";
 import { StateExplorerPage } from "../pages/StateExplorerPage.js";
 import { SubmissionPage } from "../pages/SubmissionPage.js";
+import { UiProjectionPage } from "../pages/UiProjectionPage.js";
 import { ValidationPage } from "../pages/ValidationPage.js";
 import { WorkflowPage } from "../pages/WorkflowPage.js";
 
@@ -28,6 +29,7 @@ export const APP_ROUTE_PATHS = [
   "/dashboard",
   "/validation",
   "/submission",
+  "/ui",
   "/workflow",
   "/state",
   "/devtools",
@@ -54,6 +56,7 @@ const routeObjects: RouteObject[] = [
       { element: <DashboardPage />, path: "dashboard" },
       { element: <ValidationPage />, path: "validation" },
       { element: <SubmissionPage />, path: "submission" },
+      { element: <UiProjectionPage />, path: "ui" },
       { element: <WorkflowPage />, path: "workflow" },
       { element: <StateExplorerPage />, path: "state" },
       { element: <DevToolsPage />, path: "devtools" },

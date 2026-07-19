@@ -33,6 +33,7 @@ export interface ConditionalEvaluationContext<TValues extends Record<string, unk
   readonly values: TValues;
   readonly fieldPaths: readonly FieldPath[];
   readonly setValue: (path: FieldPath, value: unknown) => void;
+  readonly requiredBaseline?: readonly FieldPath[];
 }
 
 export function evaluateConditionalUi<TValues extends Record<string, unknown>>(

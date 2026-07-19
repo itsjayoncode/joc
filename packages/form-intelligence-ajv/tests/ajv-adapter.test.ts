@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { createForm } from "@jayoncode/form-intelligence";
+import { createForm, isSchemaAdapter } from "@jayoncode/form-intelligence";
 
-import { ajvAdapter } from "../src/index.js";
+import { runSchemaAdapterContract } from "../../form-intelligence/tests/contracts/schema-adapter.contract.js";
+import { ajvAdapter, formatAjvErrorPath } from "../src/index.js";
 
 const signupSchema = {
   type: "object",
@@ -18,6 +19,19 @@ const signupSchema = {
 } as const;
 
 describe("ajvAdapter", () => {
+  it("satisfies SchemaAdapter contract harness", async () => {
+    const adapter = ajvAdapter(signupSchema);
+    expect(isSchemaAdapter(adapter)).toBe(true);
+
+    await runSchemaAdapterContract({
+      name: "ajv",
+      adapter,
+      validValues: { email: "user@example.com", password: "secret123" },
+      invalidValues: { email: "bad", password: "123" },
+      expectedInvalidPath: "password",
+    });
+  });
+
   it("maps AJV field errors to form paths", async () => {
     const form = createForm({
       initialValues: { email: "bad", password: "123" },
@@ -28,6 +42,20 @@ describe("ajvAdapter", () => {
     expect(valid).toBe(false);
     expect(form.errors("email")).toMatch(/pattern/i);
     expect(form.errors("password")).toMatch(/8/);
+    form.destroy();
+  });
+
+  it("maps required missingProperty to field paths (not _form)", async () => {
+    const form = createForm({
+      initialValues: {},
+      schema: ajvAdapter(signupSchema),
+    });
+
+    const valid = await form.validate();
+    expect(valid).toBe(false);
+    expect(form.errors("email")).toMatch(/required/i);
+    expect(form.errors("password")).toMatch(/required/i);
+    expect(form.errors("_form")).toBeUndefined();
     form.destroy();
   });
 
@@ -99,5 +127,67 @@ describe("ajvAdapter", () => {
     expect(valid).toBe(false);
     expect(form.errors("address.city")).toMatch(/2/);
     form.destroy();
+  });
+
+  it("maps nested required missingProperty under a parent path", async () => {
+    const schema = {
+      type: "object",
+      properties: {
+        address: {
+          type: "object",
+          properties: {
+            city: { type: "string" },
+          },
+          required: ["city"],
+          additionalProperties: false,
+        },
+      },
+      required: ["address"],
+      additionalProperties: false,
+    } as const;
+
+    const form = createForm({
+      initialValues: { address: {} },
+      schema: ajvAdapter(schema),
+    });
+
+    const valid = await form.validate();
+    expect(valid).toBe(false);
+    expect(form.errors("address.city")).toMatch(/required/i);
+    form.destroy();
+  });
+});
+
+describe("formatAjvErrorPath", () => {
+  it("joins missingProperty onto instancePath", () => {
+    expect(
+      formatAjvErrorPath({
+        keyword: "required",
+        instancePath: "",
+        schemaPath: "#/required",
+        params: { missingProperty: "email" },
+        message: "must have required property 'email'",
+      }),
+    ).toBe("email");
+
+    expect(
+      formatAjvErrorPath({
+        keyword: "required",
+        instancePath: "/address",
+        schemaPath: "#/properties/address/required",
+        params: { missingProperty: "city" },
+        message: "must have required property 'city'",
+      }),
+    ).toBe("address.city");
+
+    expect(
+      formatAjvErrorPath({
+        keyword: "minLength",
+        instancePath: "/password",
+        schemaPath: "#/properties/password/minLength",
+        params: { limit: 8 },
+        message: "too short",
+      }),
+    ).toBe("password");
   });
 });
