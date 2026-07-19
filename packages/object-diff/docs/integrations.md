@@ -2,7 +2,7 @@
 
 Use Object Diff from other packages and apps through the **public API only**. Core never depends on consumers.
 
-**Previous:** [Query](/packages/object-diff/modules/query) · **Next:** [Performance](/packages/object-diff/modules/performance)
+**Previous:** [Plugins](/packages/object-diff/modules/plugins) · **Next:** [Performance](/packages/object-diff/modules/performance)
 
 ## Principles
 
@@ -112,7 +112,7 @@ const engine = createEngine({ plugins: [/* … */] });
 engine.diff(saved, draft);
 ```
 
-Core free functions remain the default path — `createEngine` is optional.
+Core free functions remain the default path — `createEngine` is optional. Full plugin contract (matchers, formatters, merge strategies, hooks): [Plugins](/packages/object-diff/modules/plugins).
 
 ## Anti-patterns
 

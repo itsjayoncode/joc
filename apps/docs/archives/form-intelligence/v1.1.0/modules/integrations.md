@@ -1,6 +1,6 @@
 ---
 title: Integrations
-description: Form Intelligent documentation for Integrations.
+description: Form Intelligence documentation for Integrations.
 ---
 
 # Integrations
@@ -10,7 +10,7 @@ Browser session, keyboard shortcuts, analytics, and DevTools — attach with plu
 **Previous:** [Formatters](/packages/form-intelligence/modules/formatters) · **Next:** [Adapters](/packages/form-intelligence/modules/adapters)
 
 ::: tip Playground
-[Integrations →](/playground/form-intelligence/integrations) · [Plugins →](/playground/form-intelligence/plugins) · [DevTools →](/playground/form-intelligence/devtools)
+[Integrations →](/playground/form-intelligent/integrations) · [Plugins →](/playground/form-intelligent/plugins) · [DevTools →](/playground/form-intelligent/devtools)
 :::
 
 ## Browser lifecycle (draft on hide)
@@ -18,8 +18,8 @@ Browser session, keyboard shortcuts, analytics, and DevTools — attach with plu
 Optional peer: `@jayoncode/browser-lifecycle`.
 
 ```ts
-import { createForm } from "@jayoncode/form-intelligent";
-import { createBrowserLifecyclePlugin } from "@jayoncode/form-intelligent/plugins";
+import { createForm } from "@jayoncode/form-intelligence";
+import { createBrowserLifecyclePlugin } from "@jayoncode/form-intelligence/plugins";
 
 const form = createForm({
   initialValues: { notes: "" },
@@ -62,7 +62,7 @@ createForm({
 ### Via plugin
 
 ```ts
-import { createKeyboardPlugin, keyboard } from "@jayoncode/form-intelligent/plugins";
+import { createKeyboardPlugin, keyboard } from "@jayoncode/form-intelligence/plugins";
 
 form.use(
   createKeyboardPlugin([
@@ -102,7 +102,7 @@ import {
   connectFormDevToolsToGlobal,
   enableFormDevTools,
   getFormDevTools,
-} from "@jayoncode/form-intelligent/devtools";
+} from "@jayoncode/form-intelligence/devtools";
 
 enableFormDevTools(form);
 connectFormDevToolsToGlobal();
@@ -119,13 +119,13 @@ A dedicated browser extension is planned (Phase 5.4.8).
 
 ## Subpath imports
 
-| Subpath                                 | Use for                                                                                                                                                             |
-| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@jayoncode/form-intelligent/plugins`   | Lifecycle + keyboard plugins                                                                                                                                        |
-| `@jayoncode/form-intelligent/devtools`  | Inspector API                                                                                                                                                       |
-| `@jayoncode/form-intelligent/analytics` | Analytics helpers                                                                                                                                                   |
-| `@jayoncode/form-intelligent/offline`   | Offline queue primitives                                                                                                                                            |
-| `@jayoncode/form-intelligent/history`   | Undo/redo primitives                                                                                                                                                |
-| `@jayoncode/form-intelligent/rules`     | `when` + rule helpers — use when you want an explicit rules entry (see [Rules → Which import](/packages/form-intelligence/modules/rules#which-import-should-i-use)) |
+| Subpath                                  | Use for                                                                                                                                                             |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@jayoncode/form-intelligence/plugins`   | Lifecycle + keyboard plugins                                                                                                                                        |
+| `@jayoncode/form-intelligence/devtools`  | Inspector API                                                                                                                                                       |
+| `@jayoncode/form-intelligence/analytics` | Analytics helpers                                                                                                                                                   |
+| `@jayoncode/form-intelligence/offline`   | Offline queue primitives                                                                                                                                            |
+| `@jayoncode/form-intelligence/history`   | Undo/redo primitives                                                                                                                                                |
+| `@jayoncode/form-intelligence/rules`     | `when` + rule helpers — use when you want an explicit rules entry (see [Rules → Which import](/packages/form-intelligence/modules/rules#which-import-should-i-use)) |
 
 **Next:** [Adapters](/packages/form-intelligence/modules/adapters) — React, Vue, Zod, and core interfaces.

@@ -1,6 +1,6 @@
 ---
 title: Getting Started
-description: Form Intelligent documentation for Getting Started.
+description: Form Intelligence documentation for Getting Started.
 ---
 
 # Tutorial — integrate your first form
@@ -10,7 +10,7 @@ Wire a field, observe state, and submit in a few minutes.
 **Previous:** [Overview](/packages/form-intelligence/overview) · **Next:** [Core concepts](/packages/form-intelligence/modules/concepts)
 
 ::: info Playground
-Use the [Validation explorer](/playground/form-intelligence/validation) to mirror these steps without a local install.
+Use the [Validation explorer](/playground/form-intelligent/validation) to mirror these steps without a local install.
 :::
 
 **Prerequisites:** Node 20+, TypeScript or JavaScript ESM project. Copy-paste install commands live on the [Overview](/packages/form-intelligence/#install).
@@ -23,7 +23,7 @@ Use the [Validation explorer](/playground/form-intelligence/validation) to mirro
 | --------------- | ----------------------------------------------------- | -------------------------------------------------------------- |
 | **Native HTML** | Existing forms, static pages, progressive enhancement | `createForm({ target, schema, onSubmit })`                     |
 | **Headless**    | Custom UI, non-React frameworks                       | `createForm({ initialValues, validators })` + `field().bind()` |
-| **React**       | React apps                                            | `useForm()` from `@jayoncode/form-intelligence-react`          |
+| **React**       | React apps                                            | `useForm()` from `@jayoncode/form-intelligent-react`           |
 
 The steps below follow the **headless** path, then show the matching **HTML / JSX structure** so you can see how elements map to the API. For more adapter variants, see [Adapters](/packages/form-intelligence/modules/adapters).
 
@@ -32,12 +32,12 @@ The steps below follow the **headless** path, then show the matching **HTML / JS
 ## Step 1 — Install
 
 ```bash
-npm install @jayoncode/form-intelligent
+npm install @jayoncode/form-intelligence
 ```
 
 For `pnpm` / `yarn` and the React adapter, see [Overview → Install](/packages/form-intelligence/#install).
 
-**Outcome:** `@jayoncode/form-intelligent` is available to import.
+**Outcome:** `@jayoncode/form-intelligence` is available to import.
 
 ---
 
@@ -46,7 +46,7 @@ For `pnpm` / `yarn` and the React adapter, see [Overview → Install](/packages/
 Define `initialValues` and optional `validators`:
 
 ```ts
-import { createForm, email, required } from "@jayoncode/form-intelligent";
+import { createForm, email, required } from "@jayoncode/form-intelligence";
 
 const form = createForm({
   initialValues: {
@@ -140,11 +140,11 @@ form.subscribe(() => {
 ### React JSX
 
 ```bash
-npm install @jayoncode/form-intelligent @jayoncode/form-intelligence-react
+npm install @jayoncode/form-intelligence @jayoncode/form-intelligent-react
 ```
 
 ```tsx
-import { useForm } from "@jayoncode/form-intelligence-react";
+import { useForm } from "@jayoncode/form-intelligent-react";
 
 export function SignupForm() {
   const form = useForm({
@@ -247,14 +247,14 @@ While `onSubmit` runs, `form.isSubmitting()` is `true`.
 
 ## Continue
 
-| Topic                          | Guide                                                            | Playground                                                 |
-| ------------------------------ | ---------------------------------------------------------------- | ---------------------------------------------------------- |
-| Terminology and architecture   | [Core concepts](/packages/form-intelligence/modules/concepts)    | [State](/playground/form-intelligence/state)               |
-| Validation timing, async rules | [Validation](/packages/form-intelligence/modules/validation)     | [Validation](/playground/form-intelligence/validation)     |
-| Submit, cancel, offline queue  | [Submission](/packages/form-intelligence/modules/submission)     | [Submission](/playground/form-intelligence/submission)     |
-| Autosave, drafts, wizard       | [Workflow](/packages/form-intelligence/modules/workflow)         | [Workflow](/playground/form-intelligence/workflow)         |
-| Conditional `when()` rules     | [Rules](/packages/form-intelligence/modules/rules)               | [Rules](/playground/form-intelligence/rules)               |
-| Derived fields                 | [Calculations](/packages/form-intelligence/modules/calculations) | [Calculations](/playground/form-intelligence/calculations) |
-| Snapshots, undo/redo           | [State](/packages/form-intelligence/modules/state)               | [State](/playground/form-intelligence/state)               |
+| Topic                          | Guide                                                            | Playground                                                |
+| ------------------------------ | ---------------------------------------------------------------- | --------------------------------------------------------- |
+| Terminology and architecture   | [Core concepts](/packages/form-intelligence/modules/concepts)    | [State](/playground/form-intelligent/state)               |
+| Validation timing, async rules | [Validation](/packages/form-intelligence/modules/validation)     | [Validation](/playground/form-intelligent/validation)     |
+| Submit, cancel, offline queue  | [Submission](/packages/form-intelligence/modules/submission)     | [Submission](/playground/form-intelligent/submission)     |
+| Autosave, drafts, wizard       | [Workflow](/packages/form-intelligence/modules/workflow)         | [Workflow](/playground/form-intelligent/workflow)         |
+| Conditional `when()` rules     | [Rules](/packages/form-intelligence/modules/rules)               | [Rules](/playground/form-intelligent/rules)               |
+| Derived fields                 | [Calculations](/packages/form-intelligence/modules/calculations) | [Calculations](/playground/form-intelligent/calculations) |
+| Snapshots, undo/redo           | [State](/packages/form-intelligence/modules/state)               | [State](/playground/form-intelligent/state)               |
 
-Additional snippets: [Examples](/playground/form-intelligence/examples) · Integrations: [Integrations](/packages/form-intelligence/modules/integrations)
+Additional snippets: [Examples](/playground/form-intelligent/examples) · Integrations: [Integrations](/packages/form-intelligence/modules/integrations)

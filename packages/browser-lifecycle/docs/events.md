@@ -2,7 +2,7 @@
 
 Subscribe to typed lifecycle events with a small, framework-agnostic API.
 
-**Previous:** [Visibility](/packages/browser-lifecycle/modules/visibility) · **Next:** [Session core](/packages/browser-lifecycle/modules/session-core)
+**Previous:** [Page lifecycle](/packages/browser-lifecycle/modules/lifecycle) · **Next:** [Session core](/packages/browser-lifecycle/modules/session-core)
 
 ::: tip Playground
 [Open Event explorer →](/playground/browser-lifecycle/events) — watch the live event feed as you interact.
@@ -51,6 +51,61 @@ The event infrastructure is:
 - free of browser-specific logic
 
 It exists to support Browser Lifecycle Manager modules without embedding browser semantics into the event layer itself.
+
+## Event catalog
+
+`createBrowserLifecycle()` reserves the full `BrowserLifecycleEventName` union below. Each module page has the full metadata shape for its own events — this table is the at-a-glance index.
+
+| Event                  | Source module                                                                              | `current`                              |
+| ---------------------- | ------------------------------------------------------------------------------------------ | -------------------------------------- |
+| `page:visible`         | [Visibility](/packages/browser-lifecycle/modules/visibility)                               | `"visible"`                            |
+| `page:hidden`          | [Visibility](/packages/browser-lifecycle/modules/visibility)                               | `"hidden"`                             |
+| `window:focus`         | [Focus](/packages/browser-lifecycle/modules/focus)                                         | `"focused"`                            |
+| `window:blur`          | [Focus](/packages/browser-lifecycle/modules/focus)                                         | `"unfocused"`                          |
+| `connection:online`    | [Connectivity](/packages/browser-lifecycle/modules/connectivity)                           | `"online"`                             |
+| `connection:offline`   | [Connectivity](/packages/browser-lifecycle/modules/connectivity)                           | `"offline"`                            |
+| `connection:reconnect` | [Connectivity](/packages/browser-lifecycle/modules/connectivity) (derived by Session Core) | `"online"`                             |
+| `activity:detected`    | [Idle](/packages/browser-lifecycle/modules/idle)                                           | `"active"`                             |
+| `activity:reset`       | [Idle](/packages/browser-lifecycle/modules/idle)                                           | `"active"`                             |
+| `session:active`       | [Idle](/packages/browser-lifecycle/modules/idle)                                           | `"active"`                             |
+| `session:idle`         | [Idle](/packages/browser-lifecycle/modules/idle)                                           | `"idle"`                               |
+| `page:suspend`         | [Page lifecycle](/packages/browser-lifecycle/modules/lifecycle)                            | `"hidden" \| "frozen" \| "terminated"` |
+| `page:resume`          | [Page lifecycle](/packages/browser-lifecycle/modules/lifecycle)                            | `"active"`                             |
+| `session:restored`     | [Page lifecycle](/packages/browser-lifecycle/modules/lifecycle)                            | `"running" \| "stopped"`               |
+| `tab:primary`          | [Cross-tab](/packages/browser-lifecycle/modules/cross-tab)                                 | `"primary"`                            |
+| `tab:secondary`        | [Cross-tab](/packages/browser-lifecycle/modules/cross-tab)                                 | `"secondary"`                          |
+| `tab:message`          | [Cross-tab](/packages/browser-lifecycle/modules/cross-tab)                                 | `"message"`                            |
+| `plugin:registered`    | [Plugins](/packages/browser-lifecycle/modules/plugins)                                     | `"registered"`                         |
+| `plugin:removed`       | [Plugins](/packages/browser-lifecycle/modules/plugins)                                     | `"removed"`                            |
+| `plugin:error`         | [Plugins](/packages/browser-lifecycle/modules/plugins)                                     | `"error"`                              |
+| `session:started`      | [Session core](/packages/browser-lifecycle/modules/session-core)                           | `"running"`                            |
+| `session:stopped`      | [Session core](/packages/browser-lifecycle/modules/session-core)                           | `"stopped"`                            |
+
+::: warning Naming
+Connectivity events are `connection:online` / `connection:offline` / `connection:reconnect` — **not** `connectivity:*`.
+:::
+
+Every event payload shares the same envelope (`BrowserLifecycleEvent<TType, TCurrent, TPrevious, TMetadata>`):
+
+```ts
+interface BrowserLifecycleEvent<TType, TCurrent, TPrevious, TMetadata> {
+  readonly type: TType;
+  readonly current: TCurrent;
+  readonly previous: TPrevious;
+  readonly metadata: TMetadata;
+  readonly snapshot: BrowserLifecycleSnapshot; // full snapshot at emission time
+  readonly source:
+    | "activity"
+    | "connectivity"
+    | "focus"
+    | "internal"
+    | "lifecycle"
+    | "plugin"
+    | "transport"
+    | "visibility";
+  readonly timestamp: number;
+}
+```
 
 ## Public API
 

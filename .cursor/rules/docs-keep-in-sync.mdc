@@ -1,0 +1,50 @@
+---
+description: When changing packages or monorepo APIs, update related user docs and fix links
+alwaysApply: true
+---
+
+# Keep docs in sync with code changes
+
+When you introduce, change, or remove a **feature, public API, option, default, event name, export path, or behavior** in this monorepo, treat documentation as part of the same change — not a follow-up.
+
+## Required impact check
+
+Before finishing the work, identify what is affected and update it:
+
+1. **Package user docs** — `packages/<pkg>/docs/*.md` (source of truth; synced into VitePress)
+2. **Adapter / sibling package docs** — `packages/<pkg>-*/README.md` and `docs/README.md` when the core contract changes
+3. **Site guides** that are **not** synced from package docs — e.g. `apps/docs/docs/packages/<pkg>/guides|faq|tutorials|best-practices/**` — fix invented or stale examples
+4. **Sidebars** — `apps/docs/docs/.vitepress/*-sidebar.ts` when adding/renaming/removing module pages
+5. **Cross-links** — overview learning paths, “Related”, “Previous/Next”, entrypoint tables, playground deep links
+6. **Playground** copy/examples only when they document the changed API
+
+Engineering notes under `packages/<pkg>/engineering/` and `_construction/` are maintainer-only — do **not** treat them as user docs, but do update user docs when an ADR ships.
+
+## What “complete docs” means
+
+For each new or changed public surface:
+
+- Document **options, defaults, and failure modes** (not only a happy-path snippet)
+- Prefer **option tables** next to factories/config objects
+- Call out **gotchas** (quirks, version selection, SSR, offline, naming mismatches)
+- Keep examples matching **real types/exports** — never invent config shapes
+- Fix or remove **stale** claims (“not yet”, wrong event names, wrong snapshot fields)
+- After editing package docs, run `node scripts/sync-documentation.mjs` (or `pnpm` docs sync) when verifying the live site
+
+IA and sync model: `packages/form-intelligence/engineering/010-documentation-standard.md`.
+
+## Do not
+
+- Ship a public API change with docs that only name-drop the feature
+- Update TypeScript types/exports without the matching guide (or mark the gap explicitly if the user scoped docs out)
+- Leave broken internal links or sidebar entries pointing at removed pages
+- Duplicate the same how-to as both a Concept and a Guide
+
+## Quick examples
+
+| Code change | Docs to touch |
+| ----------- | ------------- |
+| New form option / plugin | Guide page + `entrypoints.md` / integrations if import path changes + related cross-links |
+| Renamed event (`connectivity:*` → `connection:*`) | Module guide, overview, concepts, site FAQ/guides, playground copy |
+| New package docs page | New `packages/<pkg>/docs/<page>.md` + sidebar entry + overview learning path |
+| Adapter API change | Adapter `README.md` + `docs/README.md` + core `adapters.md` if it describes that adapter |

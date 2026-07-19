@@ -14,17 +14,18 @@ Form Intelligence owns the workflow. This adapter wires Angular DI, signals, and
 
 ## What you get
 
-| API                                                         | Purpose                                                                  |
-| ----------------------------------------------------------- | ------------------------------------------------------------------------ |
-| `provideFormIntelligent(config)`                            | Provide a form from component `providers` (same options as `createForm`) |
-| `injectForm()`                                              | Inject the reactive form handle in the component tree                    |
-| `FormIntelligentService`                                    | Imperative `create(config, destroyRef)` for headless setups              |
-| `fiForm` directive                                          | Bind the host `<form>` to the engine (`ref`, submit)                     |
-| `fiField` directive                                         | Sync `name` + projection `aria-invalid` / `data-fi-status`               |
-| `form.controller` / `fieldController` / `focusFirstInvalid` | Same controller contract as React                                        |
-| `form.state()`                                              | Signal snapshot: values, errors, `isValid`, `isSubmitting`, …            |
-| `form.submit()` / `submitButton()`                          | Button UX from `form.ui.canSubmit`                                       |
-| `selectFormState(form, selector)`                           | Computed signal for a state slice                                        |
+| API                                                         | Purpose                                                                                                                                                                                                                    |
+| ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `provideFormIntelligent(config)`                            | Provide a form from component `providers` (same options as `createForm`)                                                                                                                                                   |
+| `injectForm()`                                              | Inject the reactive form handle in the component tree                                                                                                                                                                      |
+| `FORM_INTELLIGENT_FORM`                                     | The `InjectionToken` behind `provideFormIntelligent()` / `injectForm()` — inject it directly (with `{ optional: true }` if you need to check for absence) when you don't want the `injectForm()` throw-if-missing behavior |
+| `FormIntelligentService` (alias: `FormService`)             | Imperative `create(config, destroyRef)` for headless setups                                                                                                                                                                |
+| `fiForm` directive                                          | Bind the host `<form>` to the engine (`ref`, submit)                                                                                                                                                                       |
+| `fiField` directive                                         | Sync `name` + projection `aria-invalid` / `data-fi-status`                                                                                                                                                                 |
+| `form.controller` / `fieldController` / `focusFirstInvalid` | Same controller contract as React                                                                                                                                                                                          |
+| `form.state()`                                              | Signal snapshot: values, errors, `isValid`, `isSubmitting`, …                                                                                                                                                              |
+| `form.submit()` / `submitButton()`                          | Button UX from `form.ui.canSubmit`                                                                                                                                                                                         |
+| `selectFormState(form, selector)`                           | Computed signal for a state slice                                                                                                                                                                                          |
 
 Core config still includes: schema/validators, `validateOn`, `when()` rules, autosave, drafts, wizard, plugins, async validation, formatters.
 
@@ -97,7 +98,25 @@ readonly form = inject(FormIntelligentService).create(
 readonly emailError = selectFormState(this.form, (s) => s.errors.email);
 ```
 
+`FormIntelligentService` is also exported as `FormService` — a shorter alias for the same injectable:
+
+```typescript
+import { FormService } from "@jayoncode/form-intelligence-angular";
+
+readonly form = inject(FormService).create({ schema: { email: "email" }, onSubmit }, inject(DestroyRef));
+```
+
 Call `form.instance.ref(element)` when you are not using `fiForm`.
+
+### Injecting the token directly
+
+`injectForm()` is a thin wrapper around the `FORM_INTELLIGENT_FORM` injection token that throws when `provideFormIntelligent()` is missing from an ancestor's providers. Inject the token directly when you want to handle the "no form provided" case yourself:
+
+```typescript
+import { FORM_INTELLIGENT_FORM } from "@jayoncode/form-intelligence-angular";
+
+readonly form = inject(FORM_INTELLIGENT_FORM, { optional: true });
+```
 
 ## Docs
 

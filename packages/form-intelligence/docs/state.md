@@ -129,11 +129,52 @@ form.changedSinceSubmitFields(); // vs last successful submit
 Value history is recorded on `setValue` (opt out with `{ recordHistory: false }`).
 
 ```ts
+form.setValue("email", "a@b.com"); // records history, marks dirty
+form.setValue("email", "a@b.com", { recordHistory: false, markDirty: false });
+
 form.undo();
 form.redo();
+
+form.reset(); // back to initial values
+form.reset({ values: { email: "" }, keepDirty: true });
 ```
 
+| API / option                    | Effect                                                   |
+| ------------------------------- | -------------------------------------------------------- |
+| `setValue(path, value)`         | Updates value; records history; marks dirty by default   |
+| `SetValueOptions.recordHistory` | Default `true` — set `false` for silent patches          |
+| `SetValueOptions.markDirty`     | Default `true` — set `false` to keep dirty map unchanged |
+| `ResetOptions.values`           | Partial override used as the new baseline                |
+| `ResetOptions.keepDirty`        | When `true`, do not clear dirty flags after reset        |
+
 Wire shortcuts via [Integrations](/packages/form-intelligence/modules/integrations) (`workflow.keyboard` or `createKeyboardPlugin`).
+
+---
+
+## Checkpoints
+
+Durable snapshots for “save progress / restore later” — **not** the same as `getSnapshot()` (external-store identity for React/`useSyncExternalStore`).
+
+```ts
+const checkpoint = form.createCheckpoint({
+  include: ["values", "errors", "touched", "dirty", "visited", "fieldUi", "workflow"],
+});
+
+form.restoreCheckpoint(checkpoint, {
+  restoreMeta: true, // restore touched/dirty/visited/errors/fieldUi/workflow when present
+  recordHistory: true, // push restore onto undo stack
+});
+```
+
+| API                                      | Notes                                                                                                                     |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `createCheckpoint(options?)`             | Returns `{ version: 1, kind: "checkpoint", capturedAt, values, … }`                                                       |
+| `include`                                | Default **`["values"]` only** — add `"errors"`, `"touched"`, `"dirty"`, `"visited"`, `"fieldUi"`, `"workflow"` explicitly |
+| `restoreCheckpoint(cp, opts?)`           | Applies values; `restoreMeta` defaults **true** when slices were captured                                                 |
+| `RestoreCheckpointOptions.recordHistory` | Push restore onto undo stack when `true`                                                                                  |
+| `getSnapshot()` / `form.state`           | Live store view — identity may change; not durable serialization                                                          |
+
+Prefer checkpoints for explicit save/restore UX. Prefer `getSnapshot()` for subscriptions and DevTools.
 
 ---
 
@@ -142,12 +183,23 @@ Wire shortcuts via [Integrations](/packages/form-intelligence/modules/integratio
 Optional peer `@jayoncode/object-diff`:
 
 ```ts
-const fromDefaults = await form.diffFromDefaults();
+const fromDefaults = await form.diffFromDefaults({
+  maxDepth: 8,
+  treatUndefinedAsMissing: true,
+});
 const vsBaseline = await form.diffFrom(savedSnapshot);
 
 // Or include a diff in submit meta:
 await form.submit({ includeDiff: true });
 ```
+
+| `FormDiffOptions`         | Meaning                                    |
+| ------------------------- | ------------------------------------------ |
+| `maxDepth`                | Cap recursion depth                        |
+| `includeUnchanged`        | Include `unchanged` records                |
+| `treatUndefinedAsMissing` | Passed through to `@jayoncode/object-diff` |
+
+For submit-time audit callbacks, see [`createObjectDiffPlugin`](/packages/form-intelligence/modules/integrations#object-diff-plugin) in Integrations.
 
 ---
 

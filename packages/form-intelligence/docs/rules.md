@@ -234,10 +234,34 @@ createForm({
     province: "country",
     city: ["province"],
   }),
+  // Optional per-child action overrides (default: clear + revalidate)
+  dependencyActions: {
+    province: ["clear", "revalidate", "reloadOptions"],
+    city: ["clear", "revalidate"],
+  },
 });
 ```
 
-Parent changes **clear** children and can **revalidate** them (default). Cycles in this map throw `ConfigurationError`. `field(..., { dependsOn })` still works for revalidate-only inferred edges.
+Parent changes run the child’s **dependency actions**. Default for an explicit `dependencies` map: `["clear", "revalidate"]`. Cycles throw `ConfigurationError`.
+
+`field(..., { dependsOn })` still works for **inferred** edges — those are **revalidate-only** (they do not clear), so SHIPPED clear behavior stays opt-in via the map.
+
+#### `dependencyActions`
+
+| Action          | Effect                                                             |
+| --------------- | ------------------------------------------------------------------ |
+| `clear`         | Reset child value (default clear value `""`, or edge `clearValue`) |
+| `revalidate`    | Re-run validators for the child                                    |
+| `reloadOptions` | Re-run populate / option loaders tied to the child                 |
+| `recompute`     | Re-run calculations that depend on the child                       |
+| `preserve`      | Skip other actions for that child (wins when merged)               |
+
+```ts
+dependencyActions: {
+  province: ["clear", "reloadOptions", "revalidate"],
+  notes: ["preserve"], // parent change does not clear notes
+}
+```
 
 [Dependencies playground →](/playground/form-intelligence/dependencies)
 

@@ -16,6 +16,7 @@ Tree-shakeable imports for `@jayoncode/form-intelligence`. Prefer the **narrowes
 | Phone/currency **masks**, `formatSlug`, `trim`, `composeFormatters` | `@jayoncode/form-intelligence/format`     |
 | DevTools inspector                                                  | `@jayoncode/form-intelligence/devtools`   |
 | Derived UI projection (`showError`, `canSubmit`, `status`, …)       | `@jayoncode/form-intelligence/ui`         |
+| CAPTCHA Security Stage (`captcha`, providers)                       | `@jayoncode/form-intelligence/captcha`    |
 | Browser-lifecycle / keyboard plugins                                | `@jayoncode/form-intelligence/plugins`    |
 | Error helpers (`toNormalizedErrors`, …)                             | `@jayoncode/form-intelligence/validation` |
 
@@ -42,6 +43,7 @@ Formatter masks use a `format*` prefix on `/format` only (`formatPhone`, `format
 | `…/plugins`                    | `createBrowserLifecyclePlugin`, `createKeyboardPlugin`, …                                                                                            | **Plugins: this path**                           |
 | `…/devtools`                   | `enableFormDevTools`, `getFormDevTools`                                                                                                              | **DevTools: this path only**                     |
 | `…/ui`                         | Derived UI projection: `ui()`, `showError`, `canSubmit`, `status`, `explain()`                                                                       | **Projection: this path**                        |
+| `…/captcha`                    | CAPTCHA Security Stage: `captcha()`, `turnstile()`, `recaptcha()`, `hcaptcha()`, `mockCaptcha()`                                                     | **CAPTCHA: this path only**                      |
 | `…/analytics`                  | Analytics module                                                                                                                                     | Prefer integrations guide                        |
 | `…/adapters`                   | Adapter types, `createFormController`                                                                                                                | Controller also on main                          |
 | `…/dependency`                 | Dependency engine                                                                                                                                    | `dependencies` also on main                      |

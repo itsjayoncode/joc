@@ -12,11 +12,13 @@ export function AppShell() {
   const getClassName = (className: keyof typeof styles): string => styles[className] ?? "";
   const headerClasses = {
     eyebrow: getClassName("eyebrow"),
+    eyebrowRow: getClassName("eyebrowRow"),
     header: getClassName("header"),
     headerActions: getClassName("headerActions"),
     headerCopy: getClassName("headerCopy"),
     headerTitleBlock: getClassName("headerTitleBlock"),
     iconButton: getClassName("iconButton"),
+    packageName: getClassName("packageName"),
     subtitle: getClassName("subtitle"),
     title: getClassName("title"),
   };

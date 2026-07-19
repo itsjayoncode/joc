@@ -166,6 +166,8 @@ export type {
   SetValueOptions,
   SubmissionQueueState,
   SubmitMeta,
+  SubmitSecurityCaptcha,
+  SubmitSecurityMeta,
   SubmitOptions,
   SubmitPhase,
   TtlInput,

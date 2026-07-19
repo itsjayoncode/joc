@@ -1,8 +1,8 @@
-**@jayoncode/form-intelligent API**
+**@jayoncode/form-intelligence API**
 
 ---
 
-# @jayoncode/form-intelligent API
+# @jayoncode/form-intelligence API
 
 ## Classes
 
@@ -1339,7 +1339,7 @@ Defined in: adapters/persistence-adapter.ts:24
 
 Defined in: adapters/schema-adapter.ts:6
 
-Bridge any validation library into Form Intelligent.
+Bridge any validation library into Form Intelligence.
 Schema adapters are optional — core never depends on Zod/Yup/etc.
 Error keys are field paths (dot notation).
 
@@ -2120,44 +2120,48 @@ Defined in: engines/workflow/types.ts:3
 
 #### Properties
 
-| Property                           | Type                     | Description                                                                | Defined in                   |
-| ---------------------------------- | ------------------------ | -------------------------------------------------------------------------- | ---------------------------- |
-| <a id="visible"></a> `visible`     | `boolean`                | -                                                                          | engines/workflow/types.ts:4  |
-| <a id="disabled"></a> `disabled`   | `boolean`                | -                                                                          | engines/workflow/types.ts:5  |
-| <a id="required-1"></a> `required` | `undefined` \| `boolean` | -                                                                          | engines/workflow/types.ts:6  |
-| <a id="readonly"></a> `readOnly?`  | `boolean`                | Additive — when true, controls should be non-editable but still focusable. | engines/workflow/types.ts:8  |
-| <a id="busy"></a> `busy?`          | `boolean`                | Additive — e.g. async option load / validating.                            | engines/workflow/types.ts:10 |
+| Property                                  | Type                                                   | Description                                                                                                   | Defined in                   |
+| ----------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------- | ---------------------------- |
+| <a id="visible"></a> `visible`            | `boolean`                                              | -                                                                                                             | engines/workflow/types.ts:4  |
+| <a id="disabled"></a> `disabled`          | `boolean`                                              | -                                                                                                             | engines/workflow/types.ts:5  |
+| <a id="required-1"></a> `required`        | `undefined` \| `boolean`                               | -                                                                                                             | engines/workflow/types.ts:6  |
+| <a id="readonly"></a> `readOnly?`         | `boolean`                                              | Additive — when true, controls should be non-editable but still focusable.                                    | engines/workflow/types.ts:8  |
+| <a id="busy"></a> `busy?`                 | `boolean`                                              | Additive — e.g. async option load / validating.                                                               | engines/workflow/types.ts:10 |
+| <a id="haserror"></a> `hasError?`         | `boolean`                                              | Derived UI projection (validation state): raw error present. Distinct from `showError` (whether to display).  | engines/workflow/types.ts:15 |
+| <a id="errormessage"></a> `errorMessage?` | `string`                                               | Derived UI projection: error string when present.                                                             | engines/workflow/types.ts:17 |
+| <a id="showerror"></a> `showError?`       | `boolean`                                              | Derived UI projection (UI state): whether the error should be displayed under the active errorDisplay policy. | engines/workflow/types.ts:22 |
+| <a id="status"></a> `status?`             | `"validating"` \| `"error"` \| `"success"` \| `"idle"` | Derived UI projection: exactly one of validating                                                              | error                        | success | idle. | engines/workflow/types.ts:26 |
 
 ---
 
 ### FormUiState
 
-Defined in: engines/workflow/types.ts:13
+Defined in: engines/workflow/types.ts:29
 
 #### Properties
 
 | Property                                     | Modifier   | Type      | Defined in                   |
 | -------------------------------------------- | ---------- | --------- | ---------------------------- |
-| <a id="submitdisabled"></a> `submitDisabled` | `readonly` | `boolean` | engines/workflow/types.ts:14 |
+| <a id="submitdisabled"></a> `submitDisabled` | `readonly` | `boolean` | engines/workflow/types.ts:30 |
 
 ---
 
 ### FieldOption
 
-Defined in: engines/workflow/types.ts:17
+Defined in: engines/workflow/types.ts:33
 
 #### Properties
 
 | Property                   | Modifier   | Type     | Defined in                   |
 | -------------------------- | ---------- | -------- | ---------------------------- |
-| <a id="label"></a> `label` | `readonly` | `string` | engines/workflow/types.ts:18 |
-| <a id="value"></a> `value` | `readonly` | `string` | engines/workflow/types.ts:19 |
+| <a id="label"></a> `label` | `readonly` | `string` | engines/workflow/types.ts:34 |
+| <a id="value"></a> `value` | `readonly` | `string` | engines/workflow/types.ts:35 |
 
 ---
 
 ### RuleContext\<TValues\>
 
-Defined in: engines/workflow/types.ts:22
+Defined in: engines/workflow/types.ts:38
 
 #### Type Parameters
 
@@ -2169,7 +2173,7 @@ Defined in: engines/workflow/types.ts:22
 
 | Property                       | Modifier   | Type      | Defined in                   |
 | ------------------------------ | ---------- | --------- | ---------------------------- |
-| <a id="values-1"></a> `values` | `readonly` | `TValues` | engines/workflow/types.ts:23 |
+| <a id="values-1"></a> `values` | `readonly` | `TValues` | engines/workflow/types.ts:39 |
 
 #### Methods
 
@@ -2179,7 +2183,7 @@ Defined in: engines/workflow/types.ts:22
 show(...paths: readonly string[]): void;
 ```
 
-Defined in: engines/workflow/types.ts:24
+Defined in: engines/workflow/types.ts:40
 
 ###### Parameters
 
@@ -2197,7 +2201,7 @@ Defined in: engines/workflow/types.ts:24
 hide(...paths: readonly string[]): void;
 ```
 
-Defined in: engines/workflow/types.ts:25
+Defined in: engines/workflow/types.ts:41
 
 ###### Parameters
 
@@ -2215,7 +2219,7 @@ Defined in: engines/workflow/types.ts:25
 require(...paths: readonly string[]): void;
 ```
 
-Defined in: engines/workflow/types.ts:26
+Defined in: engines/workflow/types.ts:42
 
 ###### Parameters
 
@@ -2233,7 +2237,7 @@ Defined in: engines/workflow/types.ts:26
 optional(...paths: readonly string[]): void;
 ```
 
-Defined in: engines/workflow/types.ts:27
+Defined in: engines/workflow/types.ts:43
 
 ###### Parameters
 
@@ -2251,7 +2255,7 @@ Defined in: engines/workflow/types.ts:27
 enable(...paths: readonly string[]): void;
 ```
 
-Defined in: engines/workflow/types.ts:28
+Defined in: engines/workflow/types.ts:44
 
 ###### Parameters
 
@@ -2269,7 +2273,7 @@ Defined in: engines/workflow/types.ts:28
 disable(...paths: readonly string[]): void;
 ```
 
-Defined in: engines/workflow/types.ts:29
+Defined in: engines/workflow/types.ts:45
 
 ###### Parameters
 
@@ -2287,7 +2291,7 @@ Defined in: engines/workflow/types.ts:29
 disableSubmit(): void;
 ```
 
-Defined in: engines/workflow/types.ts:30
+Defined in: engines/workflow/types.ts:46
 
 ###### Returns
 
@@ -2299,7 +2303,7 @@ Defined in: engines/workflow/types.ts:30
 enableSubmit(): void;
 ```
 
-Defined in: engines/workflow/types.ts:31
+Defined in: engines/workflow/types.ts:47
 
 ###### Returns
 
@@ -2311,7 +2315,7 @@ Defined in: engines/workflow/types.ts:31
 setValue(path: string, value: unknown): void;
 ```
 
-Defined in: engines/workflow/types.ts:32
+Defined in: engines/workflow/types.ts:48
 
 ###### Parameters
 
@@ -2328,7 +2332,7 @@ Defined in: engines/workflow/types.ts:32
 
 ### FormRuleDefinition\<TValues\>
 
-Defined in: engines/workflow/types.ts:35
+Defined in: engines/workflow/types.ts:51
 
 #### Type Parameters
 
@@ -2340,45 +2344,45 @@ Defined in: engines/workflow/types.ts:35
 
 | Property                                      | Modifier   | Type                                                                                                                                              | Defined in                   |
 | --------------------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
-| <a id="watch"></a> `watch`                    | `readonly` | `string`                                                                                                                                          | engines/workflow/types.ts:38 |
-| <a id="equals"></a> `equals?`                 | `readonly` | `unknown`                                                                                                                                         | engines/workflow/types.ts:39 |
-| <a id="notequals"></a> `notEquals?`           | `readonly` | `unknown`                                                                                                                                         | engines/workflow/types.ts:40 |
-| <a id="greaterthan"></a> `greaterThan?`       | `readonly` | `number`                                                                                                                                          | engines/workflow/types.ts:41 |
-| <a id="lessthan"></a> `lessThan?`             | `readonly` | `number`                                                                                                                                          | engines/workflow/types.ts:42 |
-| <a id="show-2"></a> `show?`                   | `readonly` | readonly `string`[]                                                                                                                               | engines/workflow/types.ts:43 |
-| <a id="hide-2"></a> `hide?`                   | `readonly` | readonly `string`[]                                                                                                                               | engines/workflow/types.ts:44 |
-| <a id="require-2"></a> `require?`             | `readonly` | readonly `string`[]                                                                                                                               | engines/workflow/types.ts:45 |
-| <a id="optional-2"></a> `optional?`           | `readonly` | readonly `string`[]                                                                                                                               | engines/workflow/types.ts:46 |
-| <a id="enable-2"></a> `enable?`               | `readonly` | readonly `string`[]                                                                                                                               | engines/workflow/types.ts:47 |
-| <a id="disable-2"></a> `disable?`             | `readonly` | readonly `string`[]                                                                                                                               | engines/workflow/types.ts:48 |
-| <a id="disablesubmit-2"></a> `disableSubmit?` | `readonly` | `boolean`                                                                                                                                         | engines/workflow/types.ts:49 |
-| <a id="changes"></a> `changes?`               | `readonly` | (`value`: `unknown`, `values`: `TValues`) => \| readonly [`FieldOption`](#fieldoption)[] \| `Promise`\<readonly [`FieldOption`](#fieldoption)[]\> | engines/workflow/types.ts:50 |
-| <a id="populate"></a> `populate?`             | `readonly` | `string`                                                                                                                                          | engines/workflow/types.ts:54 |
-| <a id="then"></a> `then?`                     | `readonly` | (`context`: [`RuleContext`](#rulecontext)\<`TValues`\>) => `void`                                                                                 | engines/workflow/types.ts:55 |
+| <a id="watch"></a> `watch`                    | `readonly` | `string`                                                                                                                                          | engines/workflow/types.ts:54 |
+| <a id="equals"></a> `equals?`                 | `readonly` | `unknown`                                                                                                                                         | engines/workflow/types.ts:55 |
+| <a id="notequals"></a> `notEquals?`           | `readonly` | `unknown`                                                                                                                                         | engines/workflow/types.ts:56 |
+| <a id="greaterthan"></a> `greaterThan?`       | `readonly` | `number`                                                                                                                                          | engines/workflow/types.ts:57 |
+| <a id="lessthan"></a> `lessThan?`             | `readonly` | `number`                                                                                                                                          | engines/workflow/types.ts:58 |
+| <a id="show-2"></a> `show?`                   | `readonly` | readonly `string`[]                                                                                                                               | engines/workflow/types.ts:59 |
+| <a id="hide-2"></a> `hide?`                   | `readonly` | readonly `string`[]                                                                                                                               | engines/workflow/types.ts:60 |
+| <a id="require-2"></a> `require?`             | `readonly` | readonly `string`[]                                                                                                                               | engines/workflow/types.ts:61 |
+| <a id="optional-2"></a> `optional?`           | `readonly` | readonly `string`[]                                                                                                                               | engines/workflow/types.ts:62 |
+| <a id="enable-2"></a> `enable?`               | `readonly` | readonly `string`[]                                                                                                                               | engines/workflow/types.ts:63 |
+| <a id="disable-2"></a> `disable?`             | `readonly` | readonly `string`[]                                                                                                                               | engines/workflow/types.ts:64 |
+| <a id="disablesubmit-2"></a> `disableSubmit?` | `readonly` | `boolean`                                                                                                                                         | engines/workflow/types.ts:65 |
+| <a id="changes"></a> `changes?`               | `readonly` | (`value`: `unknown`, `values`: `TValues`) => \| readonly [`FieldOption`](#fieldoption)[] \| `Promise`\<readonly [`FieldOption`](#fieldoption)[]\> | engines/workflow/types.ts:66 |
+| <a id="populate"></a> `populate?`             | `readonly` | `string`                                                                                                                                          | engines/workflow/types.ts:70 |
+| <a id="then"></a> `then?`                     | `readonly` | (`context`: [`RuleContext`](#rulecontext)\<`TValues`\>) => `void`                                                                                 | engines/workflow/types.ts:71 |
 
 ---
 
 ### WizardStep
 
-Defined in: engines/workflow/types.ts:60
+Defined in: engines/workflow/types.ts:76
 
 #### Properties
 
 | Property                            | Modifier   | Type                                                                                        | Description                                                          | Defined in                   |
 | ----------------------------------- | ---------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | ---------------------------- |
-| <a id="id-1"></a> `id?`             | `readonly` | `string`                                                                                    | -                                                                    | engines/workflow/types.ts:61 |
-| <a id="fields"></a> `fields?`       | `readonly` | readonly `string`[]                                                                         | -                                                                    | engines/workflow/types.ts:62 |
-| <a id="validate-2"></a> `validate?` | `readonly` | `boolean`                                                                                   | -                                                                    | engines/workflow/types.ts:63 |
-| <a id="when"></a> `when?`           | `readonly` | (`values`: `Record`\<`string`, `unknown`\>) => `boolean`                                    | Skip this step when predicate returns false (conditional steps MVP). | engines/workflow/types.ts:65 |
-| <a id="next"></a> `next?`           | `readonly` | \| `string` \| (`values`: `Record`\<`string`, `unknown`\>) => `undefined` \| `string`       | Explicit next step id, or resolver from values.                      | engines/workflow/types.ts:67 |
-| <a id="canleave"></a> `canLeave?`   | `readonly` | (`ctx`: [`WizardGuardContext`](#wizardguardcontext)) => `boolean` \| `Promise`\<`boolean`\> | -                                                                    | engines/workflow/types.ts:68 |
-| <a id="canenter"></a> `canEnter?`   | `readonly` | (`ctx`: [`WizardGuardContext`](#wizardguardcontext)) => `boolean` \| `Promise`\<`boolean`\> | -                                                                    | engines/workflow/types.ts:69 |
+| <a id="id-1"></a> `id?`             | `readonly` | `string`                                                                                    | -                                                                    | engines/workflow/types.ts:77 |
+| <a id="fields"></a> `fields?`       | `readonly` | readonly `string`[]                                                                         | -                                                                    | engines/workflow/types.ts:78 |
+| <a id="validate-2"></a> `validate?` | `readonly` | `boolean`                                                                                   | -                                                                    | engines/workflow/types.ts:79 |
+| <a id="when"></a> `when?`           | `readonly` | (`values`: `Record`\<`string`, `unknown`\>) => `boolean`                                    | Skip this step when predicate returns false (conditional steps MVP). | engines/workflow/types.ts:81 |
+| <a id="next"></a> `next?`           | `readonly` | \| `string` \| (`values`: `Record`\<`string`, `unknown`\>) => `undefined` \| `string`       | Explicit next step id, or resolver from values.                      | engines/workflow/types.ts:83 |
+| <a id="canleave"></a> `canLeave?`   | `readonly` | (`ctx`: [`WizardGuardContext`](#wizardguardcontext)) => `boolean` \| `Promise`\<`boolean`\> | -                                                                    | engines/workflow/types.ts:84 |
+| <a id="canenter"></a> `canEnter?`   | `readonly` | (`ctx`: [`WizardGuardContext`](#wizardguardcontext)) => `boolean` \| `Promise`\<`boolean`\> | -                                                                    | engines/workflow/types.ts:85 |
 
 ---
 
 ### WizardGuardContext\<TValues\>
 
-Defined in: engines/workflow/types.ts:72
+Defined in: engines/workflow/types.ts:88
 
 #### Type Parameters
 
@@ -2390,51 +2394,51 @@ Defined in: engines/workflow/types.ts:72
 
 | Property                             | Modifier   | Type                    | Defined in                   |
 | ------------------------------------ | ---------- | ----------------------- | ---------------------------- |
-| <a id="values-2"></a> `values`       | `readonly` | `TValues`               | engines/workflow/types.ts:75 |
-| <a id="fromstepid"></a> `fromStepId` | `readonly` | `undefined` \| `string` | engines/workflow/types.ts:76 |
-| <a id="tostepid"></a> `toStepId`     | `readonly` | `string`                | engines/workflow/types.ts:77 |
-| <a id="signal-1"></a> `signal`       | `readonly` | `AbortSignal`           | engines/workflow/types.ts:78 |
+| <a id="values-2"></a> `values`       | `readonly` | `TValues`               | engines/workflow/types.ts:91 |
+| <a id="fromstepid"></a> `fromStepId` | `readonly` | `undefined` \| `string` | engines/workflow/types.ts:92 |
+| <a id="tostepid"></a> `toStepId`     | `readonly` | `string`                | engines/workflow/types.ts:93 |
+| <a id="signal-1"></a> `signal`       | `readonly` | `AbortSignal`           | engines/workflow/types.ts:94 |
 
 ---
 
 ### WizardConfig
 
-Defined in: engines/workflow/types.ts:86
+Defined in: engines/workflow/types.ts:102
 
 #### Properties
 
-| Property                                              | Modifier   | Type                                                    | Description                                                                                                                                             | Defined in                   |
-| ----------------------------------------------------- | ---------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
-| <a id="steps"></a> `steps`                            | `readonly` | readonly [`WizardStep`](#wizardstep)[]                  | -                                                                                                                                                       | engines/workflow/types.ts:87 |
-| <a id="initialstep"></a> `initialStep?`               | `readonly` | `number`                                                | -                                                                                                                                                       | engines/workflow/types.ts:88 |
-| <a id="gotovalidation"></a> `goToValidation?`         | `readonly` | [`WizardNavigateValidation`](#wizardnavigatevalidation) | Default validation for `goTo`. - `all` — validate entire form (SHIPPED default) - `step` — validate current step fields only - `none` — skip validation | engines/workflow/types.ts:95 |
-| <a id="persiststepindraft"></a> `persistStepInDraft?` | `readonly` | `boolean`                                               | When true, draft save/restore includes `currentStep`.                                                                                                   | engines/workflow/types.ts:97 |
+| Property                                              | Modifier   | Type                                                    | Description                                                                                                                                             | Defined in                    |
+| ----------------------------------------------------- | ---------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| <a id="steps"></a> `steps`                            | `readonly` | readonly [`WizardStep`](#wizardstep)[]                  | -                                                                                                                                                       | engines/workflow/types.ts:103 |
+| <a id="initialstep"></a> `initialStep?`               | `readonly` | `number`                                                | -                                                                                                                                                       | engines/workflow/types.ts:104 |
+| <a id="gotovalidation"></a> `goToValidation?`         | `readonly` | [`WizardNavigateValidation`](#wizardnavigatevalidation) | Default validation for `goTo`. - `all` — validate entire form (SHIPPED default) - `step` — validate current step fields only - `none` — skip validation | engines/workflow/types.ts:111 |
+| <a id="persiststepindraft"></a> `persistStepInDraft?` | `readonly` | `boolean`                                               | When true, draft save/restore includes `currentStep`.                                                                                                   | engines/workflow/types.ts:113 |
 
 ---
 
 ### WizardStepGraphNode
 
-Defined in: engines/workflow/types.ts:100
+Defined in: engines/workflow/types.ts:116
 
 #### Properties
 
 | Property                       | Modifier   | Type                | Defined in                    |
 | ------------------------------ | ---------- | ------------------- | ----------------------------- |
-| <a id="id-2"></a> `id`         | `readonly` | `string`            | engines/workflow/types.ts:101 |
-| <a id="index"></a> `index`     | `readonly` | `number`            | engines/workflow/types.ts:102 |
-| <a id="nextids"></a> `nextIds` | `readonly` | readonly `string`[] | engines/workflow/types.ts:103 |
+| <a id="id-2"></a> `id`         | `readonly` | `string`            | engines/workflow/types.ts:117 |
+| <a id="index"></a> `index`     | `readonly` | `number`            | engines/workflow/types.ts:118 |
+| <a id="nextids"></a> `nextIds` | `readonly` | readonly `string`[] | engines/workflow/types.ts:119 |
 
 ---
 
 ### WizardStepGraph
 
-Defined in: engines/workflow/types.ts:106
+Defined in: engines/workflow/types.ts:122
 
 #### Properties
 
 | Property                     | Modifier   | Type                                                     | Defined in                    |
 | ---------------------------- | ---------- | -------------------------------------------------------- | ----------------------------- |
-| <a id="nodes-1"></a> `nodes` | `readonly` | readonly [`WizardStepGraphNode`](#wizardstepgraphnode)[] | engines/workflow/types.ts:107 |
+| <a id="nodes-1"></a> `nodes` | `readonly` | readonly [`WizardStepGraphNode`](#wizardstepgraphnode)[] | engines/workflow/types.ts:123 |
 
 ---
 
@@ -2590,7 +2594,7 @@ Defined in: types/async-validation.ts:48
 | <a id="cachekey-1"></a> `cacheKey`   | `readonly` | `string`                                                                                | types/async-validation.ts:52 |
 | <a id="signal-3"></a> `signal`       | `readonly` | `AbortSignal`                                                                           | types/async-validation.ts:53 |
 | <a id="startedat"></a> `startedAt`   | `readonly` | `number`                                                                                | types/async-validation.ts:54 |
-| <a id="status"></a> `status`         | `readonly` | `"scheduled"` \| `"running"` \| `"settled"` \| `"aborted"` \| `"timeout"` \| `"queued"` | types/async-validation.ts:55 |
+| <a id="status-1"></a> `status`       | `readonly` | `"scheduled"` \| `"running"` \| `"settled"` \| `"aborted"` \| `"timeout"` \| `"queued"` | types/async-validation.ts:55 |
 
 ---
 
@@ -2611,7 +2615,7 @@ Defined in: types/index.ts:3
 
 ### ValidationFormAccessor\<TValues\>
 
-Defined in: types/index.ts:62
+Defined in: types/index.ts:69
 
 #### Type Parameters
 
@@ -2627,7 +2631,7 @@ Defined in: types/index.ts:62
 get(path: string): unknown;
 ```
 
-Defined in: types/index.ts:63
+Defined in: types/index.ts:70
 
 ###### Parameters
 
@@ -2645,7 +2649,7 @@ Defined in: types/index.ts:63
 values(): TValues;
 ```
 
-Defined in: types/index.ts:64
+Defined in: types/index.ts:71
 
 ###### Returns
 
@@ -2655,7 +2659,7 @@ Defined in: types/index.ts:64
 
 ### ValidationContext\<TValues\>
 
-Defined in: types/index.ts:67
+Defined in: types/index.ts:74
 
 #### Type Parameters
 
@@ -2667,16 +2671,16 @@ Defined in: types/index.ts:67
 
 | Property                        | Modifier   | Type                                                             | Description                                                           | Defined in        |
 | ------------------------------- | ---------- | ---------------------------------------------------------------- | --------------------------------------------------------------------- | ----------------- |
-| <a id="values-5"></a> `values`  | `readonly` | `TValues`                                                        | -                                                                     | types/index.ts:68 |
-| <a id="path-4"></a> `path`      | `readonly` | `string`                                                         | -                                                                     | types/index.ts:69 |
-| <a id="form-3"></a> `form`      | `readonly` | [`ValidationFormAccessor`](#validationformaccessor)\<`TValues`\> | -                                                                     | types/index.ts:70 |
-| <a id="signal-4"></a> `signal?` | `readonly` | `AbortSignal`                                                    | Present when validation is tied to an in-flight async job (Phase 4A). | types/index.ts:72 |
+| <a id="values-5"></a> `values`  | `readonly` | `TValues`                                                        | -                                                                     | types/index.ts:75 |
+| <a id="path-4"></a> `path`      | `readonly` | `string`                                                         | -                                                                     | types/index.ts:76 |
+| <a id="form-3"></a> `form`      | `readonly` | [`ValidationFormAccessor`](#validationformaccessor)\<`TValues`\> | -                                                                     | types/index.ts:77 |
+| <a id="signal-4"></a> `signal?` | `readonly` | `AbortSignal`                                                    | Present when validation is tied to an in-flight async job (Phase 4A). | types/index.ts:79 |
 
 ---
 
 ### CustomFieldValidatorContext\<TValues\>
 
-Defined in: types/index.ts:103
+Defined in: types/index.ts:110
 
 #### Type Parameters
 
@@ -2688,35 +2692,35 @@ Defined in: types/index.ts:103
 
 | Property                     | Modifier   | Type                                                             | Defined in         |
 | ---------------------------- | ---------- | ---------------------------------------------------------------- | ------------------ |
-| <a id="value-1"></a> `value` | `readonly` | `unknown`                                                        | types/index.ts:104 |
-| <a id="path-5"></a> `path`   | `readonly` | `string`                                                         | types/index.ts:105 |
-| <a id="form-4"></a> `form`   | `readonly` | [`ValidationFormAccessor`](#validationformaccessor)\<`TValues`\> | types/index.ts:106 |
+| <a id="value-1"></a> `value` | `readonly` | `unknown`                                                        | types/index.ts:111 |
+| <a id="path-5"></a> `path`   | `readonly` | `string`                                                         | types/index.ts:112 |
+| <a id="form-4"></a> `form`   | `readonly` | [`ValidationFormAccessor`](#validationformaccessor)\<`TValues`\> | types/index.ts:113 |
 
 ---
 
 ### FieldSchemaConfig
 
-Defined in: types/index.ts:113
+Defined in: types/index.ts:120
 
 #### Properties
 
 | Property                              | Modifier   | Type                                                                                                             | Defined in         |
 | ------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------- | ------------------ |
-| <a id="type"></a> `type?`             | `readonly` | [`BuiltInFieldType`](#builtinfieldtype)                                                                          | types/index.ts:114 |
-| <a id="required-2"></a> `required?`   | `readonly` | `boolean`                                                                                                        | types/index.ts:115 |
-| <a id="email"></a> `email?`           | `readonly` | `boolean`                                                                                                        | types/index.ts:116 |
-| <a id="password"></a> `password?`     | `readonly` | `boolean`                                                                                                        | types/index.ts:117 |
-| <a id="url"></a> `url?`               | `readonly` | `boolean`                                                                                                        | types/index.ts:118 |
-| <a id="minlength"></a> `minLength?`   | `readonly` | `number`                                                                                                         | types/index.ts:119 |
-| <a id="validate-4"></a> `validate?`   | `readonly` | `FieldValidateRules`                                                                                             | types/index.ts:120 |
-| <a id="validators"></a> `validators?` | `readonly` | readonly [`CustomFieldValidator`](#customfieldvalidator)\<`Record`\<`string`, `unknown`\>\>[]                    | types/index.ts:121 |
-| <a id="format"></a> `format?`         | `readonly` | \| [`Formatter`](#formatter) \| `"phone"` \| `"currency"` \| `"slug"` \| `"philippine-phone"` \| `"credit-card"` | types/index.ts:122 |
+| <a id="type"></a> `type?`             | `readonly` | [`BuiltInFieldType`](#builtinfieldtype)                                                                          | types/index.ts:121 |
+| <a id="required-2"></a> `required?`   | `readonly` | `boolean`                                                                                                        | types/index.ts:122 |
+| <a id="email"></a> `email?`           | `readonly` | `boolean`                                                                                                        | types/index.ts:123 |
+| <a id="password"></a> `password?`     | `readonly` | `boolean`                                                                                                        | types/index.ts:124 |
+| <a id="url"></a> `url?`               | `readonly` | `boolean`                                                                                                        | types/index.ts:125 |
+| <a id="minlength"></a> `minLength?`   | `readonly` | `number`                                                                                                         | types/index.ts:126 |
+| <a id="validate-4"></a> `validate?`   | `readonly` | `FieldValidateRules`                                                                                             | types/index.ts:127 |
+| <a id="validators"></a> `validators?` | `readonly` | readonly [`CustomFieldValidator`](#customfieldvalidator)\<`Record`\<`string`, `unknown`\>\>[]                    | types/index.ts:128 |
+| <a id="format"></a> `format?`         | `readonly` | \| [`Formatter`](#formatter) \| `"phone"` \| `"currency"` \| `"slug"` \| `"philippine-phone"` \| `"credit-card"` | types/index.ts:129 |
 
 ---
 
 ### FieldOptions\<TValues\>
 
-Defined in: types/index.ts:134
+Defined in: types/index.ts:141
 
 #### Type Parameters
 
@@ -2728,25 +2732,25 @@ Defined in: types/index.ts:134
 
 | Property                                        | Modifier   | Type                                                                                                                | Description                                                                                                                                                 | Defined in         |
 | ----------------------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
-| <a id="defaultvalue"></a> `defaultValue?`       | `readonly` | `unknown`                                                                                                           | -                                                                                                                                                           | types/index.ts:135 |
-| <a id="validators-1"></a> `validators?`         | `readonly` | readonly [`Validator`](#validator)\<`TValues`\>[]                                                                   | -                                                                                                                                                           | types/index.ts:136 |
-| <a id="validateon"></a> `validateOn?`           | `readonly` | [`ValidationMode`](#validationmode)                                                                                 | -                                                                                                                                                           | types/index.ts:137 |
-| <a id="dependson"></a> `dependsOn?`             | `readonly` | readonly `string`[]                                                                                                 | -                                                                                                                                                           | types/index.ts:138 |
-| <a id="format-1"></a> `format?`                 | `readonly` | [`Formatter`](#formatter)                                                                                           | -                                                                                                                                                           | types/index.ts:139 |
-| <a id="parse-1"></a> `parse?`                   | `readonly` | [`Parser`](#parser)                                                                                                 | -                                                                                                                                                           | types/index.ts:140 |
-| <a id="formatondisplay"></a> `formatOnDisplay?` | `readonly` | `boolean`                                                                                                           | -                                                                                                                                                           | types/index.ts:141 |
-| <a id="parseoninput"></a> `parseOnInput?`       | `readonly` | `boolean`                                                                                                           | -                                                                                                                                                           | types/index.ts:142 |
-| <a id="transform"></a> `transform?`             | `readonly` | \| [`TransformPipelineOptions`](#transformpipelineoptions) \| readonly [`TransformFn`](#transformfn)\<`TValues`\>[] | Canonical inbound transforms (trim/normalize/sanitize/parse/stages). Distinct from display `format`/`parse` — see `/transform` and TRANSFORM_INBOUND_ORDER. | types/index.ts:147 |
-| <a id="label-2"></a> `label?`                   | `readonly` | `string`                                                                                                            | -                                                                                                                                                           | types/index.ts:150 |
-| <a id="description-1"></a> `description?`       | `readonly` | `string`                                                                                                            | -                                                                                                                                                           | types/index.ts:151 |
-| <a id="hidden-1"></a> `hidden?`                 | `readonly` | `boolean`                                                                                                           | -                                                                                                                                                           | types/index.ts:152 |
-| <a id="metadata"></a> `metadata?`               | `readonly` | `Readonly`\<`Record`\<`string`, `unknown`\>\>                                                                       | -                                                                                                                                                           | types/index.ts:153 |
+| <a id="defaultvalue"></a> `defaultValue?`       | `readonly` | `unknown`                                                                                                           | -                                                                                                                                                           | types/index.ts:142 |
+| <a id="validators-1"></a> `validators?`         | `readonly` | readonly [`Validator`](#validator)\<`TValues`\>[]                                                                   | -                                                                                                                                                           | types/index.ts:143 |
+| <a id="validateon"></a> `validateOn?`           | `readonly` | [`ValidationMode`](#validationmode)                                                                                 | -                                                                                                                                                           | types/index.ts:144 |
+| <a id="dependson"></a> `dependsOn?`             | `readonly` | readonly `string`[]                                                                                                 | -                                                                                                                                                           | types/index.ts:145 |
+| <a id="format-1"></a> `format?`                 | `readonly` | [`Formatter`](#formatter)                                                                                           | -                                                                                                                                                           | types/index.ts:146 |
+| <a id="parse-1"></a> `parse?`                   | `readonly` | [`Parser`](#parser)                                                                                                 | -                                                                                                                                                           | types/index.ts:147 |
+| <a id="formatondisplay"></a> `formatOnDisplay?` | `readonly` | `boolean`                                                                                                           | -                                                                                                                                                           | types/index.ts:148 |
+| <a id="parseoninput"></a> `parseOnInput?`       | `readonly` | `boolean`                                                                                                           | -                                                                                                                                                           | types/index.ts:149 |
+| <a id="transform"></a> `transform?`             | `readonly` | \| [`TransformPipelineOptions`](#transformpipelineoptions) \| readonly [`TransformFn`](#transformfn)\<`TValues`\>[] | Canonical inbound transforms (trim/normalize/sanitize/parse/stages). Distinct from display `format`/`parse` — see `/transform` and TRANSFORM_INBOUND_ORDER. | types/index.ts:154 |
+| <a id="label-2"></a> `label?`                   | `readonly` | `string`                                                                                                            | -                                                                                                                                                           | types/index.ts:157 |
+| <a id="description-1"></a> `description?`       | `readonly` | `string`                                                                                                            | -                                                                                                                                                           | types/index.ts:158 |
+| <a id="hidden-1"></a> `hidden?`                 | `readonly` | `boolean`                                                                                                           | -                                                                                                                                                           | types/index.ts:159 |
+| <a id="metadata"></a> `metadata?`               | `readonly` | `Readonly`\<`Record`\<`string`, `unknown`\>\>                                                                       | -                                                                                                                                                           | types/index.ts:160 |
 
 ---
 
 ### FieldHandle\<_TValues\>
 
-Defined in: types/index.ts:156
+Defined in: types/index.ts:163
 
 #### Type Parameters
 
@@ -2758,15 +2762,15 @@ Defined in: types/index.ts:156
 
 | Property                       | Modifier   | Type                                                              | Description                                                                                                                   | Defined in         |
 | ------------------------------ | ---------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------ |
-| <a id="path-6"></a> `path`     | `readonly` | `string`                                                          | -                                                                                                                             | types/index.ts:157 |
-| <a id="value-2"></a> `value`   | `readonly` | `unknown`                                                         | -                                                                                                                             | types/index.ts:158 |
-| <a id="error-2"></a> `error`   | `readonly` | `undefined` \| `string`                                           | -                                                                                                                             | types/index.ts:159 |
-| <a id="touched"></a> `touched` | `readonly` | `boolean`                                                         | -                                                                                                                             | types/index.ts:160 |
-| <a id="dirty"></a> `dirty`     | `readonly` | `boolean`                                                         | -                                                                                                                             | types/index.ts:161 |
-| <a id="visited"></a> `visited` | `readonly` | `boolean`                                                         | -                                                                                                                             | types/index.ts:162 |
-| <a id="ui"></a> `ui`           | `readonly` | [`FieldUiState`](#fielduistate)                                   | Presentation flags for this path (defaults when missing from `fieldUi`).                                                      | types/index.ts:164 |
-| <a id="meta-1"></a> `meta`     | `readonly` | [`FieldState`](#fieldstate) & [`FieldMetaState`](#fieldmetastate) | Field state + meta (controller surface).                                                                                      | types/index.ts:166 |
-| <a id="aria-1"></a> `aria`     | `readonly` | [`FieldAriaResult`](#fieldariaresult)                             | Accessibility snapshot + spread attributes. Register element ids via `setAriaIds` so `aria-describedby` can link errors/help. | types/index.ts:171 |
+| <a id="path-6"></a> `path`     | `readonly` | `string`                                                          | -                                                                                                                             | types/index.ts:164 |
+| <a id="value-2"></a> `value`   | `readonly` | `unknown`                                                         | -                                                                                                                             | types/index.ts:165 |
+| <a id="error-2"></a> `error`   | `readonly` | `undefined` \| `string`                                           | -                                                                                                                             | types/index.ts:166 |
+| <a id="touched"></a> `touched` | `readonly` | `boolean`                                                         | -                                                                                                                             | types/index.ts:167 |
+| <a id="dirty"></a> `dirty`     | `readonly` | `boolean`                                                         | -                                                                                                                             | types/index.ts:168 |
+| <a id="visited"></a> `visited` | `readonly` | `boolean`                                                         | -                                                                                                                             | types/index.ts:169 |
+| <a id="ui"></a> `ui`           | `readonly` | `FieldUiView`                                                     | Full presentation maps (same sources as `state.fieldUi` / `formUi` / `fieldOptions`).                                         | types/index.ts:171 |
+| <a id="meta-1"></a> `meta`     | `readonly` | [`FieldState`](#fieldstate) & [`FieldMetaState`](#fieldmetastate) | Field state + meta (controller surface).                                                                                      | types/index.ts:173 |
+| <a id="aria-1"></a> `aria`     | `readonly` | [`FieldAriaResult`](#fieldariaresult)                             | Accessibility snapshot + spread attributes. Register element ids via `setAriaIds` so `aria-describedby` can link errors/help. | types/index.ts:178 |
 
 #### Methods
 
@@ -2776,7 +2780,7 @@ Defined in: types/index.ts:156
 setValue(value: unknown): void;
 ```
 
-Defined in: types/index.ts:172
+Defined in: types/index.ts:179
 
 ###### Parameters
 
@@ -2794,7 +2798,7 @@ Defined in: types/index.ts:172
 setTouched(touched?: boolean): void;
 ```
 
-Defined in: types/index.ts:173
+Defined in: types/index.ts:180
 
 ###### Parameters
 
@@ -2812,7 +2816,7 @@ Defined in: types/index.ts:173
 setVisited(visited?: boolean): void;
 ```
 
-Defined in: types/index.ts:174
+Defined in: types/index.ts:181
 
 ###### Parameters
 
@@ -2830,7 +2834,7 @@ Defined in: types/index.ts:174
 setAriaIds(ids: FieldAriaIds): void;
 ```
 
-Defined in: types/index.ts:176
+Defined in: types/index.ts:183
 
 Register error/description element ids for `aria-describedby`.
 
@@ -2850,7 +2854,7 @@ Register error/description element ids for `aria-describedby`.
 onBlur(): void;
 ```
 
-Defined in: types/index.ts:177
+Defined in: types/index.ts:184
 
 ###### Returns
 
@@ -2862,7 +2866,7 @@ Defined in: types/index.ts:177
 onFocus(): void;
 ```
 
-Defined in: types/index.ts:178
+Defined in: types/index.ts:185
 
 ###### Returns
 
@@ -2874,7 +2878,7 @@ Defined in: types/index.ts:178
 validate(): Promise<boolean>;
 ```
 
-Defined in: types/index.ts:179
+Defined in: types/index.ts:186
 
 ###### Returns
 
@@ -2886,7 +2890,7 @@ Defined in: types/index.ts:179
 bind(): FieldBinding;
 ```
 
-Defined in: types/index.ts:180
+Defined in: types/index.ts:187
 
 ###### Returns
 
@@ -2896,285 +2900,317 @@ Defined in: types/index.ts:180
 
 ### FieldBinding
 
-Defined in: types/index.ts:183
+Defined in: types/index.ts:190
 
 #### Properties
 
 | Property                         | Modifier   | Type                           | Defined in         |
 | -------------------------------- | ---------- | ------------------------------ | ------------------ |
-| <a id="name-6"></a> `name`       | `readonly` | `string`                       | types/index.ts:184 |
-| <a id="value-3"></a> `value`     | `readonly` | `unknown`                      | types/index.ts:185 |
-| <a id="onchange"></a> `onChange` | `readonly` | (`value`: `unknown`) => `void` | types/index.ts:186 |
-| <a id="onblur-2"></a> `onBlur`   | `readonly` | () => `void`                   | types/index.ts:187 |
-| <a id="onfocus-2"></a> `onFocus` | `readonly` | () => `void`                   | types/index.ts:188 |
+| <a id="name-6"></a> `name`       | `readonly` | `string`                       | types/index.ts:191 |
+| <a id="value-3"></a> `value`     | `readonly` | `unknown`                      | types/index.ts:192 |
+| <a id="onchange"></a> `onChange` | `readonly` | (`value`: `unknown`) => `void` | types/index.ts:193 |
+| <a id="onblur-2"></a> `onBlur`   | `readonly` | () => `void`                   | types/index.ts:194 |
+| <a id="onfocus-2"></a> `onFocus` | `readonly` | () => `void`                   | types/index.ts:195 |
 
 ---
 
 ### AutosaveConfig
 
-Defined in: types/index.ts:195
+Defined in: types/index.ts:202
 
 #### Properties
 
 | Property                              | Modifier   | Type                                                                         | Defined in         |
 | ------------------------------------- | ---------- | ---------------------------------------------------------------------------- | ------------------ |
-| <a id="enabled"></a> `enabled?`       | `readonly` | `boolean`                                                                    | types/index.ts:196 |
-| <a id="debouncems"></a> `debounceMs?` | `readonly` | `number`                                                                     | types/index.ts:197 |
-| <a id="onsave"></a> `onSave`          | `readonly` | (`values`: `Record`\<`string`, `unknown`\>) => `void` \| `Promise`\<`void`\> | types/index.ts:198 |
+| <a id="enabled"></a> `enabled?`       | `readonly` | `boolean`                                                                    | types/index.ts:203 |
+| <a id="debouncems"></a> `debounceMs?` | `readonly` | `number`                                                                     | types/index.ts:204 |
+| <a id="onsave"></a> `onSave`          | `readonly` | (`values`: `Record`\<`string`, `unknown`\>) => `void` \| `Promise`\<`void`\> | types/index.ts:205 |
 
 ---
 
 ### DraftConfig
 
-Defined in: types/index.ts:201
+Defined in: types/index.ts:208
 
 #### Properties
 
 | Property                                        | Modifier   | Type                                                     | Description                                                            | Defined in         |
 | ----------------------------------------------- | ---------- | -------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------ |
-| <a id="enabled-1"></a> `enabled?`               | `readonly` | `boolean`                                                | -                                                                      | types/index.ts:202 |
-| <a id="storagekey"></a> `storageKey?`           | `readonly` | `string`                                                 | -                                                                      | types/index.ts:203 |
-| <a id="storage-1"></a> `storage?`               | `readonly` | `DraftStorageKind`                                       | -                                                                      | types/index.ts:204 |
-| <a id="adapter"></a> `adapter?`                 | `readonly` | `DraftStorageAdapter`                                    | -                                                                      | types/index.ts:205 |
-| <a id="onrestore"></a> `onRestore?`             | `readonly` | (`values`: `Record`\<`string`, `unknown`\>) => `void`    | -                                                                      | types/index.ts:206 |
-| <a id="promptonrestore"></a> `promptOnRestore?` | `readonly` | `boolean`                                                | -                                                                      | types/index.ts:207 |
-| <a id="onrestoreprompt"></a> `onRestorePrompt?` | `readonly` | (`values`: `Record`\<`string`, `unknown`\>) => `boolean` | -                                                                      | types/index.ts:208 |
-| <a id="versioning"></a> `versioning?`           | `readonly` | `boolean`                                                | Persist versioned envelopes (`DraftEnvelopeV1`) instead of raw values. | types/index.ts:210 |
-| <a id="schemaversion"></a> `schemaVersion?`     | `readonly` | `string`                                                 | App schema id compared / migrated when envelopes are enabled.          | types/index.ts:212 |
-| <a id="migratedraft"></a> `migrateDraft?`       | `readonly` | (`envelope`: `DraftEnvelopeV1`) => `DraftEnvelopeV1`     | Migrate an envelope before restore; throw to reject restore.           | types/index.ts:214 |
+| <a id="enabled-1"></a> `enabled?`               | `readonly` | `boolean`                                                | -                                                                      | types/index.ts:209 |
+| <a id="storagekey"></a> `storageKey?`           | `readonly` | `string`                                                 | -                                                                      | types/index.ts:210 |
+| <a id="storage-1"></a> `storage?`               | `readonly` | `DraftStorageKind`                                       | -                                                                      | types/index.ts:211 |
+| <a id="adapter"></a> `adapter?`                 | `readonly` | `DraftStorageAdapter`                                    | -                                                                      | types/index.ts:212 |
+| <a id="onrestore"></a> `onRestore?`             | `readonly` | (`values`: `Record`\<`string`, `unknown`\>) => `void`    | -                                                                      | types/index.ts:213 |
+| <a id="promptonrestore"></a> `promptOnRestore?` | `readonly` | `boolean`                                                | -                                                                      | types/index.ts:214 |
+| <a id="onrestoreprompt"></a> `onRestorePrompt?` | `readonly` | (`values`: `Record`\<`string`, `unknown`\>) => `boolean` | -                                                                      | types/index.ts:215 |
+| <a id="versioning"></a> `versioning?`           | `readonly` | `boolean`                                                | Persist versioned envelopes (`DraftEnvelopeV1`) instead of raw values. | types/index.ts:217 |
+| <a id="schemaversion"></a> `schemaVersion?`     | `readonly` | `string`                                                 | App schema id compared / migrated when envelopes are enabled.          | types/index.ts:219 |
+| <a id="migratedraft"></a> `migrateDraft?`       | `readonly` | (`envelope`: `DraftEnvelopeV1`) => `DraftEnvelopeV1`     | Migrate an envelope before restore; throw to reject restore.           | types/index.ts:221 |
 
 ---
 
 ### RestoreDraftOptions
 
-Defined in: types/index.ts:219
+Defined in: types/index.ts:226
 
 #### Properties
 
 | Property                      | Modifier   | Type                       | Description                                                                      | Defined in         |
 | ----------------------------- | ---------- | -------------------------- | -------------------------------------------------------------------------------- | ------------------ |
-| <a id="force"></a> `force?`   | `readonly` | `boolean`                  | Default false — if the form is dirty, no-op unless force (D-RESTORE-RACE).       | types/index.ts:221 |
-| <a id="prompt"></a> `prompt?` | `readonly` | `boolean`                  | Default false — if true, call `DraftConfig.onRestorePrompt` when set.            | types/index.ts:223 |
-| <a id="merge"></a> `merge?`   | `readonly` | `"overlay"` \| `"replace"` | Default `overlay` — `{ ...defaults, ...draft }`. `replace` uses draft keys only. | types/index.ts:225 |
+| <a id="force"></a> `force?`   | `readonly` | `boolean`                  | Default false — if the form is dirty, no-op unless force (D-RESTORE-RACE).       | types/index.ts:228 |
+| <a id="prompt"></a> `prompt?` | `readonly` | `boolean`                  | Default false — if true, call `DraftConfig.onRestorePrompt` when set.            | types/index.ts:230 |
+| <a id="merge"></a> `merge?`   | `readonly` | `"overlay"` \| `"replace"` | Default `overlay` — `{ ...defaults, ...draft }`. `replace` uses draft keys only. | types/index.ts:232 |
 
 ---
 
 ### AnalyticsConfig
 
-Defined in: types/index.ts:228
+Defined in: types/index.ts:235
 
 #### Properties
 
 | Property                                  | Modifier   | Type                                                                      | Description                                                                                                                   | Defined in         |
 | ----------------------------------------- | ---------- | ------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------ |
-| <a id="enabled-2"></a> `enabled?`         | `readonly` | `boolean`                                                                 | -                                                                                                                             | types/index.ts:229 |
-| <a id="includepaths"></a> `includePaths?` | `readonly` | readonly `string`[]                                                       | When set, only these paths appear in path-keyed metrics (deny-by-default for others). Values are never captured — paths only. | types/index.ts:234 |
-| <a id="excludepaths"></a> `excludePaths?` | `readonly` | readonly `string`[]                                                       | Paths omitted from path-keyed metrics.                                                                                        | types/index.ts:236 |
-| <a id="onsnapshot"></a> `onSnapshot?`     | `readonly` | (`snapshot`: [`FormAnalyticsSnapshot`](#formanalyticssnapshot)) => `void` | Invoked whenever a snapshot is produced via `getAnalytics()`.                                                                 | types/index.ts:238 |
+| <a id="enabled-2"></a> `enabled?`         | `readonly` | `boolean`                                                                 | -                                                                                                                             | types/index.ts:236 |
+| <a id="includepaths"></a> `includePaths?` | `readonly` | readonly `string`[]                                                       | When set, only these paths appear in path-keyed metrics (deny-by-default for others). Values are never captured — paths only. | types/index.ts:241 |
+| <a id="excludepaths"></a> `excludePaths?` | `readonly` | readonly `string`[]                                                       | Paths omitted from path-keyed metrics.                                                                                        | types/index.ts:243 |
+| <a id="onsnapshot"></a> `onSnapshot?`     | `readonly` | (`snapshot`: [`FormAnalyticsSnapshot`](#formanalyticssnapshot)) => `void` | Invoked whenever a snapshot is produced via `getAnalytics()`.                                                                 | types/index.ts:245 |
 
 ---
 
 ### FormAnalyticsSnapshot
 
-Defined in: types/index.ts:241
+Defined in: types/index.ts:248
 
 #### Properties
 
 | Property                                             | Modifier   | Type                                                          | Defined in         |
 | ---------------------------------------------------- | ---------- | ------------------------------------------------------------- | ------------------ |
-| <a id="startedat-1"></a> `startedAt`                 | `readonly` | `number`                                                      | types/index.ts:242 |
-| <a id="completedat"></a> `completedAt`               | `readonly` | `null` \| `number`                                            | types/index.ts:243 |
-| <a id="errorcount"></a> `errorCount`                 | `readonly` | `number`                                                      | types/index.ts:244 |
-| <a id="errorsbyfield"></a> `errorsByField`           | `readonly` | `Readonly`\<`Record`\<[`FieldPath`](#fieldpath), `number`\>\> | types/index.ts:245 |
-| <a id="abandonedat"></a> `abandonedAt`               | `readonly` | `null` \| `number`                                            | types/index.ts:246 |
-| <a id="currentstep"></a> `currentStep`               | `readonly` | `number`                                                      | types/index.ts:247 |
-| <a id="fieldviews"></a> `fieldViews`                 | `readonly` | `Readonly`\<`Record`\<[`FieldPath`](#fieldpath), `number`\>\> | types/index.ts:248 |
-| <a id="dropofffield"></a> `dropOffField`             | `readonly` | `null` \| `string`                                            | types/index.ts:249 |
-| <a id="timetocompletems"></a> `timeToCompleteMs`     | `readonly` | `null` \| `number`                                            | types/index.ts:250 |
-| <a id="timetofirsterrorms"></a> `timeToFirstErrorMs` | `readonly` | `null` \| `number`                                            | types/index.ts:251 |
+| <a id="startedat-1"></a> `startedAt`                 | `readonly` | `number`                                                      | types/index.ts:249 |
+| <a id="completedat"></a> `completedAt`               | `readonly` | `null` \| `number`                                            | types/index.ts:250 |
+| <a id="errorcount"></a> `errorCount`                 | `readonly` | `number`                                                      | types/index.ts:251 |
+| <a id="errorsbyfield"></a> `errorsByField`           | `readonly` | `Readonly`\<`Record`\<[`FieldPath`](#fieldpath), `number`\>\> | types/index.ts:252 |
+| <a id="abandonedat"></a> `abandonedAt`               | `readonly` | `null` \| `number`                                            | types/index.ts:253 |
+| <a id="currentstep"></a> `currentStep`               | `readonly` | `number`                                                      | types/index.ts:254 |
+| <a id="fieldviews"></a> `fieldViews`                 | `readonly` | `Readonly`\<`Record`\<[`FieldPath`](#fieldpath), `number`\>\> | types/index.ts:255 |
+| <a id="dropofffield"></a> `dropOffField`             | `readonly` | `null` \| `string`                                            | types/index.ts:256 |
+| <a id="timetocompletems"></a> `timeToCompleteMs`     | `readonly` | `null` \| `number`                                            | types/index.ts:257 |
+| <a id="timetofirsterrorms"></a> `timeToFirstErrorMs` | `readonly` | `null` \| `number`                                            | types/index.ts:258 |
 
 ---
 
 ### OfflineQueueConfig
 
-Defined in: types/index.ts:254
+Defined in: types/index.ts:261
 
 #### Properties
 
 | Property                                      | Modifier   | Type                                                                                                                                                                       | Description                                                                                                                                                                   | Defined in         |
 | --------------------------------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
-| <a id="enabled-3"></a> `enabled?`             | `readonly` | `boolean`                                                                                                                                                                  | -                                                                                                                                                                             | types/index.ts:255 |
-| <a id="storagekey-1"></a> `storageKey?`       | `readonly` | `string`                                                                                                                                                                   | -                                                                                                                                                                             | types/index.ts:256 |
-| <a id="maxitems"></a> `maxItems?`             | `readonly` | `number`                                                                                                                                                                   | Soft cap on queued items.                                                                                                                                                     | types/index.ts:258 |
-| <a id="overflow"></a> `overflow?`             | `readonly` | `OfflineOverflowPolicy`                                                                                                                                                    | Behavior when `maxItems` is exceeded. Default: `drop-oldest`.                                                                                                                 | types/index.ts:263 |
-| <a id="idempotencykey"></a> `idempotencyKey?` | `readonly` | (`values`: `Record`\<`string`, `unknown`\>) => `string`                                                                                                                    | Deduplicate pending items with the same key (skip enqueue).                                                                                                                   | types/index.ts:265 |
-| <a id="onconflict"></a> `onConflict?`         | `readonly` | (`local`: `QueuedSubmission`\<`Record`\<`string`, `unknown`\>\>, `error`: `unknown`) => \| `void` \| `OfflineConflictAction` \| `Promise`\<void \| OfflineConflictAction\> | Called when a queued item fails during flush. - `keep` (default) — leave at head, stop flush - `drop` — discard and continue - `retry` — keep at head and continue attempting | types/index.ts:272 |
-| <a id="onoverflow"></a> `onOverflow?`         | `readonly` | (`dropped`: `QueuedSubmission`\<`Record`\<`string`, `unknown`\>\>, `policy`: `OfflineOverflowPolicy`) => `void`                                                            | -                                                                                                                                                                             | types/index.ts:279 |
+| <a id="enabled-3"></a> `enabled?`             | `readonly` | `boolean`                                                                                                                                                                  | -                                                                                                                                                                             | types/index.ts:262 |
+| <a id="storagekey-1"></a> `storageKey?`       | `readonly` | `string`                                                                                                                                                                   | -                                                                                                                                                                             | types/index.ts:263 |
+| <a id="maxitems"></a> `maxItems?`             | `readonly` | `number`                                                                                                                                                                   | Soft cap on queued items.                                                                                                                                                     | types/index.ts:265 |
+| <a id="overflow"></a> `overflow?`             | `readonly` | `OfflineOverflowPolicy`                                                                                                                                                    | Behavior when `maxItems` is exceeded. Default: `drop-oldest`.                                                                                                                 | types/index.ts:270 |
+| <a id="idempotencykey"></a> `idempotencyKey?` | `readonly` | (`values`: `Record`\<`string`, `unknown`\>) => `string`                                                                                                                    | Deduplicate pending items with the same key (skip enqueue).                                                                                                                   | types/index.ts:272 |
+| <a id="onconflict"></a> `onConflict?`         | `readonly` | (`local`: `QueuedSubmission`\<`Record`\<`string`, `unknown`\>\>, `error`: `unknown`) => \| `void` \| `OfflineConflictAction` \| `Promise`\<void \| OfflineConflictAction\> | Called when a queued item fails during flush. - `keep` (default) — leave at head, stop flush - `drop` — discard and continue - `retry` — keep at head and continue attempting | types/index.ts:279 |
+| <a id="onoverflow"></a> `onOverflow?`         | `readonly` | (`dropped`: `QueuedSubmission`\<`Record`\<`string`, `unknown`\>\>, `policy`: `OfflineOverflowPolicy`) => `void`                                                            | -                                                                                                                                                                             | types/index.ts:286 |
 
 ---
 
 ### KeyboardShortcutConfig
 
-Defined in: types/index.ts:285
+Defined in: types/index.ts:292
 
 #### Properties
 
 | Property                     | Modifier   | Type                                                | Defined in         |
 | ---------------------------- | ---------- | --------------------------------------------------- | ------------------ |
-| <a id="combo"></a> `combo`   | `readonly` | `string`                                            | types/index.ts:286 |
-| <a id="action"></a> `action` | `readonly` | `"submit"` \| `"saveDraft"` \| `"undo"` \| `"redo"` | types/index.ts:287 |
+| <a id="combo"></a> `combo`   | `readonly` | `string`                                            | types/index.ts:293 |
+| <a id="action"></a> `action` | `readonly` | `"submit"` \| `"saveDraft"` \| `"undo"` \| `"redo"` | types/index.ts:294 |
 
 ---
 
 ### WorkflowConfig
 
-Defined in: types/index.ts:290
+Defined in: types/index.ts:297
 
 #### Properties
 
 | Property                                  | Modifier   | Type                                                           | Defined in         |
 | ----------------------------------------- | ---------- | -------------------------------------------------------------- | ------------------ |
-| <a id="autosave"></a> `autosave?`         | `readonly` | [`AutosaveConfig`](#autosaveconfig)                            | types/index.ts:291 |
-| <a id="draft"></a> `draft?`               | `readonly` | [`DraftConfig`](#draftconfig)                                  | types/index.ts:292 |
-| <a id="wizard"></a> `wizard?`             | `readonly` | [`WizardConfig`](#wizardconfig)                                | types/index.ts:293 |
-| <a id="analytics"></a> `analytics?`       | `readonly` | [`AnalyticsConfig`](#analyticsconfig)                          | types/index.ts:294 |
-| <a id="offlinequeue"></a> `offlineQueue?` | `readonly` | [`OfflineQueueConfig`](#offlinequeueconfig)                    | types/index.ts:295 |
-| <a id="keyboard"></a> `keyboard?`         | `readonly` | readonly [`KeyboardShortcutConfig`](#keyboardshortcutconfig)[] | types/index.ts:296 |
+| <a id="autosave"></a> `autosave?`         | `readonly` | [`AutosaveConfig`](#autosaveconfig)                            | types/index.ts:298 |
+| <a id="draft"></a> `draft?`               | `readonly` | [`DraftConfig`](#draftconfig)                                  | types/index.ts:299 |
+| <a id="wizard"></a> `wizard?`             | `readonly` | [`WizardConfig`](#wizardconfig)                                | types/index.ts:300 |
+| <a id="analytics"></a> `analytics?`       | `readonly` | [`AnalyticsConfig`](#analyticsconfig)                          | types/index.ts:301 |
+| <a id="offlinequeue"></a> `offlineQueue?` | `readonly` | [`OfflineQueueConfig`](#offlinequeueconfig)                    | types/index.ts:302 |
+| <a id="keyboard"></a> `keyboard?`         | `readonly` | readonly [`KeyboardShortcutConfig`](#keyboardshortcutconfig)[] | types/index.ts:303 |
 
 ---
 
 ### SubmissionQueueState
 
-Defined in: types/index.ts:299
+Defined in: types/index.ts:306
 
 #### Properties
 
 | Property                         | Modifier   | Type      | Defined in         |
 | -------------------------------- | ---------- | --------- | ------------------ |
-| <a id="pending"></a> `pending`   | `readonly` | `number`  | types/index.ts:300 |
-| <a id="flushing"></a> `flushing` | `readonly` | `boolean` | types/index.ts:301 |
+| <a id="pending"></a> `pending`   | `readonly` | `number`  | types/index.ts:307 |
+| <a id="flushing"></a> `flushing` | `readonly` | `boolean` | types/index.ts:308 |
 
 ---
 
 ### SetValueOptions
 
-Defined in: types/index.ts:304
+Defined in: types/index.ts:311
 
 #### Properties
 
 | Property                                    | Modifier   | Type      | Defined in         |
 | ------------------------------------------- | ---------- | --------- | ------------------ |
-| <a id="recordhistory"></a> `recordHistory?` | `readonly` | `boolean` | types/index.ts:305 |
-| <a id="markdirty-4"></a> `markDirty?`       | `readonly` | `boolean` | types/index.ts:306 |
+| <a id="recordhistory"></a> `recordHistory?` | `readonly` | `boolean` | types/index.ts:312 |
+| <a id="markdirty-4"></a> `markDirty?`       | `readonly` | `boolean` | types/index.ts:313 |
 
 ---
 
 ### SubmitOptions
 
-Defined in: types/index.ts:309
+Defined in: types/index.ts:316
 
 #### Properties
 
 | Property                                                | Modifier   | Type                      | Defined in         |
 | ------------------------------------------------------- | ---------- | ------------------------- | ------------------ |
-| <a id="preventdoublesubmit"></a> `preventDoubleSubmit?` | `readonly` | `boolean`                 | types/index.ts:310 |
-| <a id="includediff"></a> `includeDiff?`                 | `readonly` | `boolean`                 | types/index.ts:311 |
-| <a id="retry-2"></a> `retry?`                           | `readonly` | `number` \| `RetryPolicy` | types/index.ts:312 |
+| <a id="preventdoublesubmit"></a> `preventDoubleSubmit?` | `readonly` | `boolean`                 | types/index.ts:317 |
+| <a id="includediff"></a> `includeDiff?`                 | `readonly` | `boolean`                 | types/index.ts:318 |
+| <a id="retry-2"></a> `retry?`                           | `readonly` | `number` \| `RetryPolicy` | types/index.ts:319 |
 
 ---
 
 ### FormChangeRecord
 
-Defined in: types/index.ts:320
+Defined in: types/index.ts:327
 
 #### Properties
 
 | Property                          | Modifier   | Type             | Description                                   | Defined in         |
 | --------------------------------- | ---------- | ---------------- | --------------------------------------------- | ------------------ |
-| <a id="path-7"></a> `path`        | `readonly` | `string`         | -                                             | types/index.ts:321 |
-| <a id="type-1"></a> `type`        | `readonly` | `FormChangeType` | -                                             | types/index.ts:322 |
-| <a id="previous"></a> `previous?` | `readonly` | `unknown`        | -                                             | types/index.ts:323 |
-| <a id="current"></a> `current?`   | `readonly` | `unknown`        | -                                             | types/index.ts:324 |
-| <a id="from-4"></a> `from?`       | `readonly` | `string`         | Present when `type` is `moved` (source path). | types/index.ts:326 |
+| <a id="path-7"></a> `path`        | `readonly` | `string`         | -                                             | types/index.ts:328 |
+| <a id="type-1"></a> `type`        | `readonly` | `FormChangeType` | -                                             | types/index.ts:329 |
+| <a id="previous"></a> `previous?` | `readonly` | `unknown`        | -                                             | types/index.ts:330 |
+| <a id="current"></a> `current?`   | `readonly` | `unknown`        | -                                             | types/index.ts:331 |
+| <a id="from-4"></a> `from?`       | `readonly` | `string`         | Present when `type` is `moved` (source path). | types/index.ts:333 |
 
 ---
 
 ### FormDiffMetadata
 
-Defined in: types/index.ts:329
+Defined in: types/index.ts:336
 
 #### Properties
 
 | Property                                     | Modifier   | Type     | Defined in         |
 | -------------------------------------------- | ---------- | -------- | ------------------ |
-| <a id="durationms"></a> `durationMs`         | `readonly` | `number` | types/index.ts:330 |
-| <a id="changecount"></a> `changeCount`       | `readonly` | `number` | types/index.ts:331 |
-| <a id="addedcount"></a> `addedCount`         | `readonly` | `number` | types/index.ts:332 |
-| <a id="removedcount"></a> `removedCount`     | `readonly` | `number` | types/index.ts:333 |
-| <a id="changedcount"></a> `changedCount`     | `readonly` | `number` | types/index.ts:334 |
-| <a id="unchangedcount"></a> `unchangedCount` | `readonly` | `number` | types/index.ts:335 |
-| <a id="movedcount"></a> `movedCount`         | `readonly` | `number` | types/index.ts:336 |
+| <a id="durationms"></a> `durationMs`         | `readonly` | `number` | types/index.ts:337 |
+| <a id="changecount"></a> `changeCount`       | `readonly` | `number` | types/index.ts:338 |
+| <a id="addedcount"></a> `addedCount`         | `readonly` | `number` | types/index.ts:339 |
+| <a id="removedcount"></a> `removedCount`     | `readonly` | `number` | types/index.ts:340 |
+| <a id="changedcount"></a> `changedCount`     | `readonly` | `number` | types/index.ts:341 |
+| <a id="unchangedcount"></a> `unchangedCount` | `readonly` | `number` | types/index.ts:342 |
+| <a id="movedcount"></a> `movedCount`         | `readonly` | `number` | types/index.ts:343 |
 
 ---
 
 ### FormDiffResult
 
-Defined in: types/index.ts:339
+Defined in: types/index.ts:346
 
 #### Properties
 
 | Property                             | Modifier   | Type                                               | Defined in         |
 | ------------------------------------ | ---------- | -------------------------------------------------- | ------------------ |
-| <a id="changes-1"></a> `changes`     | `readonly` | readonly [`FormChangeRecord`](#formchangerecord)[] | types/index.ts:340 |
-| <a id="haschanges"></a> `hasChanges` | `readonly` | `boolean`                                          | types/index.ts:341 |
-| <a id="metadata-1"></a> `metadata`   | `readonly` | [`FormDiffMetadata`](#formdiffmetadata)            | types/index.ts:342 |
+| <a id="changes-1"></a> `changes`     | `readonly` | readonly [`FormChangeRecord`](#formchangerecord)[] | types/index.ts:347 |
+| <a id="haschanges"></a> `hasChanges` | `readonly` | `boolean`                                          | types/index.ts:348 |
+| <a id="metadata-1"></a> `metadata`   | `readonly` | [`FormDiffMetadata`](#formdiffmetadata)            | types/index.ts:349 |
 
 ---
 
 ### FormDiffOptions
 
-Defined in: types/index.ts:345
+Defined in: types/index.ts:352
 
 #### Properties
 
 | Property                                                        | Modifier   | Type      | Defined in         |
 | --------------------------------------------------------------- | ---------- | --------- | ------------------ |
-| <a id="maxdepth"></a> `maxDepth?`                               | `readonly` | `number`  | types/index.ts:346 |
-| <a id="includeunchanged"></a> `includeUnchanged?`               | `readonly` | `boolean` | types/index.ts:347 |
-| <a id="treatundefinedasmissing"></a> `treatUndefinedAsMissing?` | `readonly` | `boolean` | types/index.ts:348 |
+| <a id="maxdepth"></a> `maxDepth?`                               | `readonly` | `number`  | types/index.ts:353 |
+| <a id="includeunchanged"></a> `includeUnchanged?`               | `readonly` | `boolean` | types/index.ts:354 |
+| <a id="treatundefinedasmissing"></a> `treatUndefinedAsMissing?` | `readonly` | `boolean` | types/index.ts:355 |
+
+---
+
+### SubmitSecurityCaptcha
+
+Defined in: types/index.ts:359
+
+CAPTCHA token under the submission security namespace (ADR-CAP-001).
+
+#### Properties
+
+| Property                            | Modifier   | Type     | Defined in         |
+| ----------------------------------- | ---------- | -------- | ------------------ |
+| <a id="provider"></a> `provider`    | `readonly` | `string` | types/index.ts:360 |
+| <a id="token"></a> `token`          | `readonly` | `string` | types/index.ts:361 |
+| <a id="expiresat"></a> `expiresAt?` | `readonly` | `number` | types/index.ts:362 |
+
+---
+
+### SubmitSecurityMeta
+
+Defined in: types/index.ts:369
+
+Security namespace on submit meta.
+Stable path: `meta.security.captcha` (future: CSRF, OTP, …).
+
+#### Properties
+
+| Property                        | Modifier   | Type                                              | Defined in         |
+| ------------------------------- | ---------- | ------------------------------------------------- | ------------------ |
+| <a id="captcha"></a> `captcha?` | `readonly` | [`SubmitSecurityCaptcha`](#submitsecuritycaptcha) | types/index.ts:370 |
 
 ---
 
 ### SubmitMeta
 
-Defined in: types/index.ts:351
+Defined in: types/index.ts:373
 
 #### Properties
 
-| Property                                    | Modifier   | Type                                | Defined in         |
-| ------------------------------------------- | ---------- | ----------------------------------- | ------------------ |
-| <a id="changedfields"></a> `changedFields?` | `readonly` | readonly `string`[]                 | types/index.ts:352 |
-| <a id="diff"></a> `diff?`                   | `readonly` | [`FormDiffResult`](#formdiffresult) | types/index.ts:353 |
-| <a id="signal-5"></a> `signal?`             | `readonly` | `AbortSignal`                       | types/index.ts:354 |
+| Property                                    | Modifier   | Type                                        | Description                                            | Defined in         |
+| ------------------------------------------- | ---------- | ------------------------------------------- | ------------------------------------------------------ | ------------------ |
+| <a id="changedfields"></a> `changedFields?` | `readonly` | readonly `string`[]                         | -                                                      | types/index.ts:374 |
+| <a id="diff"></a> `diff?`                   | `readonly` | [`FormDiffResult`](#formdiffresult)         | -                                                      | types/index.ts:375 |
+| <a id="signal-5"></a> `signal?`             | `readonly` | `AbortSignal`                               | -                                                      | types/index.ts:376 |
+| <a id="security"></a> `security?`           | `readonly` | [`SubmitSecurityMeta`](#submitsecuritymeta) | Populated by the Security Stage (e.g. CAPTCHA plugin). | types/index.ts:378 |
 
 ---
 
 ### ValidateOptions
 
-Defined in: types/index.ts:357
+Defined in: types/index.ts:381
 
 #### Properties
 
 | Property                    | Modifier   | Type                                | Defined in         |
 | --------------------------- | ---------- | ----------------------------------- | ------------------ |
-| <a id="paths"></a> `paths?` | `readonly` | readonly `string`[]                 | types/index.ts:358 |
-| <a id="mode"></a> `mode?`   | `readonly` | [`ValidationMode`](#validationmode) | types/index.ts:359 |
+| <a id="paths"></a> `paths?` | `readonly` | readonly `string`[]                 | types/index.ts:382 |
+| <a id="mode"></a> `mode?`   | `readonly` | [`ValidationMode`](#validationmode) | types/index.ts:383 |
 
 ---
 
 ### ResetOptions\<TValues\>
 
-Defined in: types/index.ts:362
+Defined in: types/index.ts:386
 
 #### Type Parameters
 
@@ -3186,14 +3222,14 @@ Defined in: types/index.ts:362
 
 | Property                            | Modifier   | Type                   | Defined in         |
 | ----------------------------------- | ---------- | ---------------------- | ------------------ |
-| <a id="values-6"></a> `values?`     | `readonly` | `Partial`\<`TValues`\> | types/index.ts:363 |
-| <a id="keepdirty"></a> `keepDirty?` | `readonly` | `boolean`              | types/index.ts:364 |
+| <a id="values-6"></a> `values?`     | `readonly` | `Partial`\<`TValues`\> | types/index.ts:387 |
+| <a id="keepdirty"></a> `keepDirty?` | `readonly` | `boolean`              | types/index.ts:388 |
 
 ---
 
 ### FormConfig\<TValues\>
 
-Defined in: types/index.ts:367
+Defined in: types/index.ts:399
 
 #### Type Parameters
 
@@ -3203,47 +3239,48 @@ Defined in: types/index.ts:367
 
 #### Properties
 
-| Property                                                  | Modifier   | Type                                                                                                                                                            | Description                                                                                                                                                                                      | Defined in         |
-| --------------------------------------------------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------ |
-| <a id="initialvalues"></a> `initialValues?`               | `readonly` | `TValues`                                                                                                                                                       | -                                                                                                                                                                                                | types/index.ts:368 |
-| <a id="target"></a> `target?`                             | `readonly` | `string` \| `HTMLElement`                                                                                                                                       | -                                                                                                                                                                                                | types/index.ts:369 |
-| <a id="form-5"></a> `form?`                               | `readonly` | `string` \| `HTMLElement`                                                                                                                                       | -                                                                                                                                                                                                | types/index.ts:370 |
-| <a id="schema"></a> `schema?`                             | `readonly` | \| [`SchemaAdapter`](#schemaadapter)\<`Record`\<`string`, `unknown`\>\> \| `Partial`\<`Record`\<`string`, [`FieldSchemaDefinition`](#fieldschemadefinition)\>\> | -                                                                                                                                                                                                | types/index.ts:371 |
-| <a id="onsubmit"></a> `onSubmit?`                         | `readonly` | (`values`: `TValues`, `meta?`: [`SubmitMeta`](#submitmeta)) => `void` \| `Promise`\<`void`\>                                                                    | -                                                                                                                                                                                                | types/index.ts:372 |
-| <a id="onsubmiterror"></a> `onSubmitError?`               | `readonly` | (`error`: `unknown`) => `void`                                                                                                                                  | -                                                                                                                                                                                                | types/index.ts:373 |
-| <a id="onpluginerror"></a> `onPluginError?`               | `readonly` | [`PluginErrorHandler`](#pluginerrorhandler)                                                                                                                     | Receives isolated plugin/hook failures (setup, hooks, destroy). Does not rethrow — form continues per Phase 15 isolation policy.                                                                 | types/index.ts:378 |
-| <a id="validateon-1"></a> `validateOn?`                   | `readonly` | [`ValidationMode`](#validationmode)                                                                                                                             | -                                                                                                                                                                                                | types/index.ts:379 |
-| <a id="validators-2"></a> `validators?`                   | `readonly` | `Partial`\<`Record`\<`string`, \| [`Validator`](#validator)\<`TValues`\> \| readonly [`Validator`](#validator)\<`TValues`\>[]\>\>                               | -                                                                                                                                                                                                | types/index.ts:380 |
-| <a id="crossfieldvalidators"></a> `crossFieldValidators?` | `readonly` | readonly `CrossFieldRule`\<`TValues`\>[]                                                                                                                        | -                                                                                                                                                                                                | types/index.ts:383 |
-| <a id="formvalidators"></a> `formValidators?`             | `readonly` | readonly `CrossFieldValidator`\<`TValues`\>[]                                                                                                                   | -                                                                                                                                                                                                | types/index.ts:384 |
-| <a id="workflow"></a> `workflow?`                         | `readonly` | [`WorkflowConfig`](#workflowconfig)                                                                                                                             | -                                                                                                                                                                                                | types/index.ts:385 |
-| <a id="autosave-1"></a> `autoSave?`                       | `readonly` | [`AutosaveConfig`](#autosaveconfig) & \{ `every?`: `string`; \}                                                                                                 | -                                                                                                                                                                                                | types/index.ts:386 |
-| <a id="wizard-1"></a> `wizard?`                           | `readonly` | `boolean` \| [`WizardConfig`](#wizardconfig)                                                                                                                    | -                                                                                                                                                                                                | types/index.ts:387 |
-| <a id="rules"></a> `rules?`                               | `readonly` | readonly [`FormRuleDefinition`](#formruledefinition)\<`TValues`\>[]                                                                                             | -                                                                                                                                                                                                | types/index.ts:388 |
-| <a id="plugins"></a> `plugins?`                           | `readonly` | readonly [`FormPlugin`](#formplugin)\<`TValues`\>[]                                                                                                             | Plugins registered at create time (same as calling `form.use(plugin)` for each entry, in order). Prefer this for declarative setup; use `form.use()` later for conditional or late registration. | types/index.ts:393 |
-| <a id="dependencies-3"></a> `dependencies?`               | `readonly` | `Readonly`\<`Record`\<`string`, `string` \| readonly `string`[]\>\>                                                                                             | Explicit dependency map: child → parent(s). Cycles throw `ConfigurationError` at registration (ADR-007).                                                                                         | types/index.ts:398 |
-| <a id="dependencyactions"></a> `dependencyActions?`       | `readonly` | `Partial`\<`Record`\<`string`, readonly [`DependencyAction`](#dependencyaction)[]\>\>                                                                           | Per-child action overrides for `dependencies` (default `["clear","revalidate"]`).                                                                                                                | types/index.ts:400 |
+| Property                                                  | Modifier   | Type                                                                                                                                                            | Description                                                                                                                                                                                                                                                                                                                                 | Defined in         |
+| --------------------------------------------------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| <a id="initialvalues"></a> `initialValues?`               | `readonly` | `TValues`                                                                                                                                                       | -                                                                                                                                                                                                                                                                                                                                           | types/index.ts:400 |
+| <a id="target"></a> `target?`                             | `readonly` | `string` \| `HTMLElement`                                                                                                                                       | -                                                                                                                                                                                                                                                                                                                                           | types/index.ts:401 |
+| <a id="form-5"></a> `form?`                               | `readonly` | `string` \| `HTMLElement`                                                                                                                                       | -                                                                                                                                                                                                                                                                                                                                           | types/index.ts:402 |
+| <a id="schema"></a> `schema?`                             | `readonly` | \| [`SchemaAdapter`](#schemaadapter)\<`Record`\<`string`, `unknown`\>\> \| `Partial`\<`Record`\<`string`, [`FieldSchemaDefinition`](#fieldschemadefinition)\>\> | -                                                                                                                                                                                                                                                                                                                                           | types/index.ts:403 |
+| <a id="onsubmit"></a> `onSubmit?`                         | `readonly` | (`values`: `TValues`, `meta?`: [`SubmitMeta`](#submitmeta)) => `void` \| `Promise`\<`void`\>                                                                    | -                                                                                                                                                                                                                                                                                                                                           | types/index.ts:404 |
+| <a id="onsubmiterror"></a> `onSubmitError?`               | `readonly` | (`error`: `unknown`) => `void`                                                                                                                                  | -                                                                                                                                                                                                                                                                                                                                           | types/index.ts:405 |
+| <a id="onpluginerror"></a> `onPluginError?`               | `readonly` | [`PluginErrorHandler`](#pluginerrorhandler)                                                                                                                     | Receives isolated plugin/hook failures (setup, hooks, destroy). Does not rethrow — form continues per Phase 15 isolation policy.                                                                                                                                                                                                            | types/index.ts:410 |
+| <a id="validateon-1"></a> `validateOn?`                   | `readonly` | [`ValidationMode`](#validationmode)                                                                                                                             | -                                                                                                                                                                                                                                                                                                                                           | types/index.ts:411 |
+| <a id="validators-2"></a> `validators?`                   | `readonly` | `Partial`\<`Record`\<`string`, \| [`Validator`](#validator)\<`TValues`\> \| readonly [`Validator`](#validator)\<`TValues`\>[]\>\>                               | -                                                                                                                                                                                                                                                                                                                                           | types/index.ts:412 |
+| <a id="crossfieldvalidators"></a> `crossFieldValidators?` | `readonly` | readonly `CrossFieldRule`\<`TValues`\>[]                                                                                                                        | -                                                                                                                                                                                                                                                                                                                                           | types/index.ts:415 |
+| <a id="formvalidators"></a> `formValidators?`             | `readonly` | readonly `CrossFieldValidator`\<`TValues`\>[]                                                                                                                   | -                                                                                                                                                                                                                                                                                                                                           | types/index.ts:416 |
+| <a id="workflow"></a> `workflow?`                         | `readonly` | [`WorkflowConfig`](#workflowconfig)                                                                                                                             | -                                                                                                                                                                                                                                                                                                                                           | types/index.ts:417 |
+| <a id="autosave-1"></a> `autoSave?`                       | `readonly` | [`AutosaveConfig`](#autosaveconfig) & \{ `every?`: `string`; \}                                                                                                 | -                                                                                                                                                                                                                                                                                                                                           | types/index.ts:418 |
+| <a id="wizard-1"></a> `wizard?`                           | `readonly` | `boolean` \| [`WizardConfig`](#wizardconfig)                                                                                                                    | -                                                                                                                                                                                                                                                                                                                                           | types/index.ts:419 |
+| <a id="rules"></a> `rules?`                               | `readonly` | readonly [`FormRuleInput`](#formruleinput)\<`TValues`\>[]                                                                                                       | -                                                                                                                                                                                                                                                                                                                                           | types/index.ts:420 |
+| <a id="plugins"></a> `plugins?`                           | `readonly` | readonly [`FormPlugin`](#formplugin)\<`TValues`\>[]                                                                                                             | Plugins registered at create time (same as calling `form.use(plugin)` for each entry, in order). Prefer this for declarative setup; use `form.use()` later for conditional or late registration.                                                                                                                                            | types/index.ts:425 |
+| <a id="subscribe-2"></a> `subscribe?`                     | `readonly` | \| [`FormSubscribeListener`](#formsubscribelistener)\<`TValues`\> \| readonly [`FormSubscribeListener`](#formsubscribelistener)\<`TValues`\>[]                  | State listeners registered at create time (same store as `form.subscribe()`). Pass one listener or an array. Each receives the form instance, is invoked once after create (so UI can sync immediately), then on every state notify. Lives until `form.destroy()`. Prefer framework adapters for React/Vue; use this for vanilla / host UI. | types/index.ts:432 |
+| <a id="dependencies-3"></a> `dependencies?`               | `readonly` | `Readonly`\<`Record`\<`string`, `string` \| readonly `string`[]\>\>                                                                                             | Explicit dependency map: child → parent(s). Cycles throw `ConfigurationError` at registration (ADR-007).                                                                                                                                                                                                                                    | types/index.ts:437 |
+| <a id="dependencyactions"></a> `dependencyActions?`       | `readonly` | `Partial`\<`Record`\<`string`, readonly [`DependencyAction`](#dependencyaction)[]\>\>                                                                           | Per-child action overrides for `dependencies` (default `["clear","revalidate"]`).                                                                                                                                                                                                                                                           | types/index.ts:439 |
 
 ---
 
 ### FieldState
 
-Defined in: types/index.ts:405
+Defined in: types/index.ts:444
 
 #### Properties
 
 | Property                         | Modifier   | Type      | Defined in         |
 | -------------------------------- | ---------- | --------- | ------------------ |
-| <a id="touched-1"></a> `touched` | `readonly` | `boolean` | types/index.ts:406 |
-| <a id="dirty-1"></a> `dirty`     | `readonly` | `boolean` | types/index.ts:407 |
-| <a id="visited-1"></a> `visited` | `readonly` | `boolean` | types/index.ts:408 |
-| <a id="changed"></a> `changed`   | `readonly` | `boolean` | types/index.ts:409 |
+| <a id="touched-1"></a> `touched` | `readonly` | `boolean` | types/index.ts:445 |
+| <a id="dirty-1"></a> `dirty`     | `readonly` | `boolean` | types/index.ts:446 |
+| <a id="visited-1"></a> `visited` | `readonly` | `boolean` | types/index.ts:447 |
+| <a id="changed"></a> `changed`   | `readonly` | `boolean` | types/index.ts:448 |
 
 ---
 
 ### FormState\<TValues\>
 
-Defined in: types/index.ts:412
+Defined in: types/index.ts:451
 
 #### Type Parameters
 
@@ -3255,49 +3292,49 @@ Defined in: types/index.ts:412
 
 | Property                                       | Modifier   | Type                                                                                          | Description                            | Defined in         |
 | ---------------------------------------------- | ---------- | --------------------------------------------------------------------------------------------- | -------------------------------------- | ------------------ |
-| <a id="values-7"></a> `values`                 | `readonly` | `TValues`                                                                                     | -                                      | types/index.ts:413 |
-| <a id="errors"></a> `errors`                   | `readonly` | `Readonly`\<`Record`\<[`FieldPath`](#fieldpath), `string`\>\>                                 | -                                      | types/index.ts:414 |
-| <a id="touched-2"></a> `touched`               | `readonly` | `Readonly`\<`Record`\<[`FieldPath`](#fieldpath), `boolean`\>\>                                | -                                      | types/index.ts:415 |
-| <a id="dirty-2"></a> `dirty`                   | `readonly` | `Readonly`\<`Record`\<[`FieldPath`](#fieldpath), `boolean`\>\>                                | -                                      | types/index.ts:416 |
-| <a id="visited-2"></a> `visited`               | `readonly` | `Readonly`\<`Record`\<[`FieldPath`](#fieldpath), `boolean`\>\>                                | -                                      | types/index.ts:417 |
-| <a id="changed-1"></a> `changed`               | `readonly` | `Readonly`\<`Record`\<[`FieldPath`](#fieldpath), `boolean`\>\>                                | -                                      | types/index.ts:418 |
-| <a id="issubmitting"></a> `isSubmitting`       | `readonly` | `boolean`                                                                                     | -                                      | types/index.ts:419 |
-| <a id="isvalidating-1"></a> `isValidating`     | `readonly` | `boolean`                                                                                     | -                                      | types/index.ts:420 |
-| <a id="isvalid"></a> `isValid`                 | `readonly` | `boolean`                                                                                     | -                                      | types/index.ts:421 |
-| <a id="isdirty"></a> `isDirty`                 | `readonly` | `boolean`                                                                                     | -                                      | types/index.ts:422 |
-| <a id="ischanged"></a> `isChanged`             | `readonly` | `boolean`                                                                                     | -                                      | types/index.ts:423 |
-| <a id="submitcount"></a> `submitCount`         | `readonly` | `number`                                                                                      | -                                      | types/index.ts:424 |
-| <a id="submitphase-1"></a> `submitPhase`       | `readonly` | [`SubmitPhase`](#submitphase)                                                                 | Last / current submit lifecycle phase. | types/index.ts:426 |
-| <a id="workflow-1"></a> `workflow`             | `readonly` | [`WorkflowState`](#workflowstate)                                                             | -                                      | types/index.ts:427 |
-| <a id="fieldui-1"></a> `fieldUi`               | `readonly` | [`FieldUiMap`](#fielduimap)                                                                   | -                                      | types/index.ts:428 |
-| <a id="formui-1"></a> `formUi`                 | `readonly` | [`FormUiState`](#formuistate)                                                                 | -                                      | types/index.ts:429 |
-| <a id="fieldmeta"></a> `fieldMeta`             | `readonly` | `Readonly`\<`Record`\<[`FieldPath`](#fieldpath), [`FieldMetaState`](#fieldmetastate)\>\>      | -                                      | types/index.ts:430 |
-| <a id="fieldoptions-2"></a> `fieldOptions`     | `readonly` | `Readonly`\<`Record`\<[`FieldPath`](#fieldpath), readonly [`FieldOption`](#fieldoption)[]\>\> | -                                      | types/index.ts:431 |
-| <a id="submissionqueue"></a> `submissionQueue` | `readonly` | [`SubmissionQueueState`](#submissionqueuestate)                                               | -                                      | types/index.ts:432 |
+| <a id="values-7"></a> `values`                 | `readonly` | `TValues`                                                                                     | -                                      | types/index.ts:452 |
+| <a id="errors"></a> `errors`                   | `readonly` | `Readonly`\<`Record`\<[`FieldPath`](#fieldpath), `string`\>\>                                 | -                                      | types/index.ts:453 |
+| <a id="touched-2"></a> `touched`               | `readonly` | `Readonly`\<`Record`\<[`FieldPath`](#fieldpath), `boolean`\>\>                                | -                                      | types/index.ts:454 |
+| <a id="dirty-2"></a> `dirty`                   | `readonly` | `Readonly`\<`Record`\<[`FieldPath`](#fieldpath), `boolean`\>\>                                | -                                      | types/index.ts:455 |
+| <a id="visited-2"></a> `visited`               | `readonly` | `Readonly`\<`Record`\<[`FieldPath`](#fieldpath), `boolean`\>\>                                | -                                      | types/index.ts:456 |
+| <a id="changed-1"></a> `changed`               | `readonly` | `Readonly`\<`Record`\<[`FieldPath`](#fieldpath), `boolean`\>\>                                | -                                      | types/index.ts:457 |
+| <a id="issubmitting"></a> `isSubmitting`       | `readonly` | `boolean`                                                                                     | -                                      | types/index.ts:458 |
+| <a id="isvalidating-1"></a> `isValidating`     | `readonly` | `boolean`                                                                                     | -                                      | types/index.ts:459 |
+| <a id="isvalid"></a> `isValid`                 | `readonly` | `boolean`                                                                                     | -                                      | types/index.ts:460 |
+| <a id="isdirty"></a> `isDirty`                 | `readonly` | `boolean`                                                                                     | -                                      | types/index.ts:461 |
+| <a id="ischanged"></a> `isChanged`             | `readonly` | `boolean`                                                                                     | -                                      | types/index.ts:462 |
+| <a id="submitcount"></a> `submitCount`         | `readonly` | `number`                                                                                      | -                                      | types/index.ts:463 |
+| <a id="submitphase-1"></a> `submitPhase`       | `readonly` | [`SubmitPhase`](#submitphase)                                                                 | Last / current submit lifecycle phase. | types/index.ts:465 |
+| <a id="workflow-1"></a> `workflow`             | `readonly` | [`WorkflowState`](#workflowstate)                                                             | -                                      | types/index.ts:466 |
+| <a id="fieldui-1"></a> `fieldUi`               | `readonly` | [`FieldUiMap`](#fielduimap)                                                                   | -                                      | types/index.ts:467 |
+| <a id="formui-1"></a> `formUi`                 | `readonly` | [`FormUiState`](#formuistate)                                                                 | -                                      | types/index.ts:468 |
+| <a id="fieldmeta"></a> `fieldMeta`             | `readonly` | `Readonly`\<`Record`\<[`FieldPath`](#fieldpath), [`FieldMetaState`](#fieldmetastate)\>\>      | -                                      | types/index.ts:469 |
+| <a id="fieldoptions-2"></a> `fieldOptions`     | `readonly` | `Readonly`\<`Record`\<[`FieldPath`](#fieldpath), readonly [`FieldOption`](#fieldoption)[]\>\> | -                                      | types/index.ts:470 |
+| <a id="submissionqueue"></a> `submissionQueue` | `readonly` | [`SubmissionQueueState`](#submissionqueuestate)                                               | -                                      | types/index.ts:471 |
 
 ---
 
 ### WorkflowState
 
-Defined in: types/index.ts:435
+Defined in: types/index.ts:474
 
 #### Properties
 
 | Property                                     | Modifier   | Type               | Defined in         |
 | -------------------------------------------- | ---------- | ------------------ | ------------------ |
-| <a id="currentstep-1"></a> `currentStep`     | `readonly` | `number`           | types/index.ts:436 |
-| <a id="totalsteps"></a> `totalSteps`         | `readonly` | `number`           | types/index.ts:437 |
-| <a id="cangonext"></a> `canGoNext`           | `readonly` | `boolean`          | types/index.ts:438 |
-| <a id="cangoprev"></a> `canGoPrev`           | `readonly` | `boolean`          | types/index.ts:439 |
-| <a id="progress"></a> `progress`             | `readonly` | `number`           | types/index.ts:440 |
-| <a id="isautosaving"></a> `isAutosaving`     | `readonly` | `boolean`          | types/index.ts:441 |
-| <a id="lastautosaveat"></a> `lastAutosaveAt` | `readonly` | `null` \| `number` | types/index.ts:442 |
+| <a id="currentstep-1"></a> `currentStep`     | `readonly` | `number`           | types/index.ts:475 |
+| <a id="totalsteps"></a> `totalSteps`         | `readonly` | `number`           | types/index.ts:476 |
+| <a id="cangonext"></a> `canGoNext`           | `readonly` | `boolean`          | types/index.ts:477 |
+| <a id="cangoprev"></a> `canGoPrev`           | `readonly` | `boolean`          | types/index.ts:478 |
+| <a id="progress"></a> `progress`             | `readonly` | `number`           | types/index.ts:479 |
+| <a id="isautosaving"></a> `isAutosaving`     | `readonly` | `boolean`          | types/index.ts:480 |
+| <a id="lastautosaveat"></a> `lastAutosaveAt` | `readonly` | `null` \| `number` | types/index.ts:481 |
 
 ---
 
 ### FormCheckpoint\<TValues\>
 
-Defined in: types/index.ts:450
+Defined in: types/index.ts:489
 
 Durable form checkpoint — distinct from `getSnapshot()` (external-store identity).
 
@@ -3311,48 +3348,48 @@ Durable form checkpoint — distinct from `getSnapshot()` (external-store identi
 
 | Property                             | Modifier   | Type                                                                | Defined in         |
 | ------------------------------------ | ---------- | ------------------------------------------------------------------- | ------------------ |
-| <a id="version"></a> `version`       | `readonly` | `1`                                                                 | types/index.ts:451 |
-| <a id="kind"></a> `kind`             | `readonly` | `"checkpoint"`                                                      | types/index.ts:452 |
-| <a id="capturedat"></a> `capturedAt` | `readonly` | `number`                                                            | types/index.ts:453 |
-| <a id="values-8"></a> `values`       | `readonly` | `TValues`                                                           | types/index.ts:454 |
-| <a id="errors-1"></a> `errors?`      | `readonly` | `Readonly`\<`Record`\<`string`, `string`\>\>                        | types/index.ts:455 |
-| <a id="touched-3"></a> `touched?`    | `readonly` | `Readonly`\<`Record`\<`string`, `boolean`\>\>                       | types/index.ts:456 |
-| <a id="dirty-3"></a> `dirty?`        | `readonly` | `Readonly`\<`Record`\<`string`, `boolean`\>\>                       | types/index.ts:457 |
-| <a id="visited-3"></a> `visited?`    | `readonly` | `Readonly`\<`Record`\<`string`, `boolean`\>\>                       | types/index.ts:458 |
-| <a id="fieldui-2"></a> `fieldUi?`    | `readonly` | `Readonly`\<`Record`\<`string`, [`FieldUiState`](#fielduistate)\>\> | types/index.ts:459 |
-| <a id="workflow-2"></a> `workflow?`  | `readonly` | \{ `currentStep`: `number`; \}                                      | types/index.ts:460 |
-| `workflow.currentStep`               | `readonly` | `number`                                                            | types/index.ts:460 |
+| <a id="version"></a> `version`       | `readonly` | `1`                                                                 | types/index.ts:490 |
+| <a id="kind"></a> `kind`             | `readonly` | `"checkpoint"`                                                      | types/index.ts:491 |
+| <a id="capturedat"></a> `capturedAt` | `readonly` | `number`                                                            | types/index.ts:492 |
+| <a id="values-8"></a> `values`       | `readonly` | `TValues`                                                           | types/index.ts:493 |
+| <a id="errors-1"></a> `errors?`      | `readonly` | `Readonly`\<`Record`\<`string`, `string`\>\>                        | types/index.ts:494 |
+| <a id="touched-3"></a> `touched?`    | `readonly` | `Readonly`\<`Record`\<`string`, `boolean`\>\>                       | types/index.ts:495 |
+| <a id="dirty-3"></a> `dirty?`        | `readonly` | `Readonly`\<`Record`\<`string`, `boolean`\>\>                       | types/index.ts:496 |
+| <a id="visited-3"></a> `visited?`    | `readonly` | `Readonly`\<`Record`\<`string`, `boolean`\>\>                       | types/index.ts:497 |
+| <a id="fieldui-2"></a> `fieldUi?`    | `readonly` | `Readonly`\<`Record`\<`string`, [`FieldUiState`](#fielduistate)\>\> | types/index.ts:498 |
+| <a id="workflow-2"></a> `workflow?`  | `readonly` | \{ `currentStep`: `number`; \}                                      | types/index.ts:499 |
+| `workflow.currentStep`               | `readonly` | `number`                                                            | types/index.ts:499 |
 
 ---
 
 ### CreateCheckpointOptions
 
-Defined in: types/index.ts:463
+Defined in: types/index.ts:502
 
 #### Properties
 
 | Property                        | Modifier   | Type                                                                                                                | Defined in         |
 | ------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------- | ------------------ |
-| <a id="include"></a> `include?` | `readonly` | readonly ( \| `"values"` \| `"workflow"` \| `"errors"` \| `"touched"` \| `"dirty"` \| `"visited"` \| `"fieldUi"`)[] | types/index.ts:464 |
+| <a id="include"></a> `include?` | `readonly` | readonly ( \| `"values"` \| `"workflow"` \| `"touched"` \| `"errors"` \| `"dirty"` \| `"visited"` \| `"fieldUi"`)[] | types/index.ts:503 |
 
 ---
 
 ### RestoreCheckpointOptions
 
-Defined in: types/index.ts:469
+Defined in: types/index.ts:508
 
 #### Properties
 
 | Property                                      | Modifier   | Type      | Defined in         |
 | --------------------------------------------- | ---------- | --------- | ------------------ |
-| <a id="recordhistory-1"></a> `recordHistory?` | `readonly` | `boolean` | types/index.ts:470 |
-| <a id="restoremeta"></a> `restoreMeta?`       | `readonly` | `boolean` | types/index.ts:471 |
+| <a id="recordhistory-1"></a> `recordHistory?` | `readonly` | `boolean` | types/index.ts:509 |
+| <a id="restoremeta"></a> `restoreMeta?`       | `readonly` | `boolean` | types/index.ts:510 |
 
 ---
 
 ### FormInstance\<TValues\>
 
-Defined in: types/index.ts:474
+Defined in: types/index.ts:513
 
 #### Type Parameters
 
@@ -3362,17 +3399,18 @@ Defined in: types/index.ts:474
 
 #### Properties
 
-| Property                           | Modifier   | Type                                                                                                                                                                              | Description                                       | Defined in         |
-| ---------------------------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- | ------------------ |
-| <a id="id-4"></a> `id`             | `readonly` | `string`                                                                                                                                                                          | -                                                 | types/index.ts:475 |
-| <a id="ref"></a> `ref`             | `readonly` | [`FormRef`](#formref)                                                                                                                                                             | -                                                 | types/index.ts:476 |
-| <a id="state-1"></a> `state`       | `readonly` | [`FormState`](#formstate)\<`TValues`\>                                                                                                                                            | Current form snapshot — same as `getFormState()`. | types/index.ts:509 |
-| <a id="workflow-3"></a> `workflow` | `public`   | \{ `next`: `Promise`\<`boolean`\>; `prev`: `void`; `goTo`: `Promise`\<`boolean`\>; `getStepGraph`: [`WizardStepGraph`](#wizardstepgraph); `visibleSteps`: readonly `string`[]; \} | -                                                 | types/index.ts:570 |
-| `workflow.next`                    | `public`   | `Promise`\<`boolean`\>                                                                                                                                                            | -                                                 | types/index.ts:571 |
-| `workflow.prev`                    | `public`   | `void`                                                                                                                                                                            | -                                                 | types/index.ts:572 |
-| `workflow.goTo`                    | `public`   | `Promise`\<`boolean`\>                                                                                                                                                            | -                                                 | types/index.ts:573 |
-| `workflow.getStepGraph`            | `public`   | [`WizardStepGraph`](#wizardstepgraph)                                                                                                                                             | -                                                 | types/index.ts:577 |
-| `workflow.visibleSteps`            | `public`   | readonly `string`[]                                                                                                                                                               | -                                                 | types/index.ts:578 |
+| Property                           | Modifier   | Type                                                                                                                                                                              | Description                                                                                                                  | Defined in         |
+| ---------------------------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| <a id="id-4"></a> `id`             | `readonly` | `string`                                                                                                                                                                          | -                                                                                                                            | types/index.ts:514 |
+| <a id="ref"></a> `ref`             | `readonly` | [`FormRef`](#formref)                                                                                                                                                             | -                                                                                                                            | types/index.ts:515 |
+| <a id="ui-1"></a> `ui`             | `readonly` | `FormUiProjection`\<`TValues`\>                                                                                                                                                   | Derived UI projection (`@jayoncode/form-intelligence/ui`). Uses registered policies from `ui()` plugin, or package defaults. | types/index.ts:528 |
+| <a id="state-1"></a> `state`       | `readonly` | [`FormState`](#formstate)\<`TValues`\>                                                                                                                                            | Current form snapshot — same as `getFormState()`.                                                                            | types/index.ts:555 |
+| <a id="workflow-3"></a> `workflow` | `public`   | \{ `next`: `Promise`\<`boolean`\>; `prev`: `void`; `goTo`: `Promise`\<`boolean`\>; `getStepGraph`: [`WizardStepGraph`](#wizardstepgraph); `visibleSteps`: readonly `string`[]; \} | -                                                                                                                            | types/index.ts:626 |
+| `workflow.next`                    | `public`   | `Promise`\<`boolean`\>                                                                                                                                                            | -                                                                                                                            | types/index.ts:627 |
+| `workflow.prev`                    | `public`   | `void`                                                                                                                                                                            | -                                                                                                                            | types/index.ts:628 |
+| `workflow.goTo`                    | `public`   | `Promise`\<`boolean`\>                                                                                                                                                            | -                                                                                                                            | types/index.ts:629 |
+| `workflow.getStepGraph`            | `public`   | [`WizardStepGraph`](#wizardstepgraph)                                                                                                                                             | -                                                                                                                            | types/index.ts:633 |
+| `workflow.visibleSteps`            | `public`   | readonly `string`[]                                                                                                                                                               | -                                                                                                                            | types/index.ts:634 |
 
 #### Methods
 
@@ -3382,7 +3420,7 @@ Defined in: types/index.ts:474
 field(path: string, options?: FieldOptions<TValues>): FieldHandle<TValues>;
 ```
 
-Defined in: types/index.ts:477
+Defined in: types/index.ts:516
 
 ###### Parameters
 
@@ -3401,7 +3439,7 @@ Defined in: types/index.ts:477
 firstInvalidPath(): undefined | string;
 ```
 
-Defined in: types/index.ts:479
+Defined in: types/index.ts:518
 
 First path with a non-empty error (stable key order).
 
@@ -3415,7 +3453,7 @@ First path with a non-empty error (stable key order).
 focusFirstInvalid(): undefined | string;
 ```
 
-Defined in: types/index.ts:484
+Defined in: types/index.ts:523
 
 Focus first invalid control when `document` exists; SSR-safe no-op.
 Returns the focused path or `undefined`.
@@ -3424,13 +3462,27 @@ Returns the focused path or `undefined`.
 
 `undefined` \| `string`
 
+##### registeredFieldPaths()
+
+```ts
+registeredFieldPaths(): readonly string[];
+```
+
+Defined in: types/index.ts:530
+
+Paths registered via `field()` in registration order.
+
+###### Returns
+
+readonly `string`[]
+
 ##### pushField()
 
 ```ts
 pushField(arrayPath: string, item?: unknown): string;
 ```
 
-Defined in: types/index.ts:485
+Defined in: types/index.ts:531
 
 ###### Parameters
 
@@ -3449,7 +3501,7 @@ Defined in: types/index.ts:485
 removeField(arrayPath: string, index: number): void;
 ```
 
-Defined in: types/index.ts:486
+Defined in: types/index.ts:532
 
 ###### Parameters
 
@@ -3471,7 +3523,7 @@ insertField(
    item?: unknown): string;
 ```
 
-Defined in: types/index.ts:487
+Defined in: types/index.ts:533
 
 ###### Parameters
 
@@ -3491,7 +3543,7 @@ Defined in: types/index.ts:487
 submit(options?: SubmitOptions): Promise<boolean>;
 ```
 
-Defined in: types/index.ts:488
+Defined in: types/index.ts:534
 
 ###### Parameters
 
@@ -3509,7 +3561,7 @@ Defined in: types/index.ts:488
 cancelSubmit(): void;
 ```
 
-Defined in: types/index.ts:489
+Defined in: types/index.ts:535
 
 ###### Returns
 
@@ -3521,7 +3573,7 @@ Defined in: types/index.ts:489
 useMiddleware(middleware: MiddlewareInput<TValues>): () => void;
 ```
 
-Defined in: types/index.ts:494
+Defined in: types/index.ts:540
 
 Register onion middleware for submit/validate phases.
 Same stack as plugin hooks — see `MIDDLEWARE_HOOK_MAP`.
@@ -3548,7 +3600,7 @@ Same stack as plugin hooks — see `MIDDLEWARE_HOOK_MAP`.
 reset(options?: ResetOptions<TValues>): void;
 ```
 
-Defined in: types/index.ts:497
+Defined in: types/index.ts:543
 
 ###### Parameters
 
@@ -3566,7 +3618,7 @@ Defined in: types/index.ts:497
 validate(options?: ValidateOptions): Promise<boolean>;
 ```
 
-Defined in: types/index.ts:498
+Defined in: types/index.ts:544
 
 ###### Parameters
 
@@ -3586,7 +3638,7 @@ Defined in: types/index.ts:498
 values(): TValues;
 ```
 
-Defined in: types/index.ts:499
+Defined in: types/index.ts:545
 
 ###### Returns
 
@@ -3598,7 +3650,7 @@ Defined in: types/index.ts:499
 values(path: string): unknown;
 ```
 
-Defined in: types/index.ts:500
+Defined in: types/index.ts:546
 
 ###### Parameters
 
@@ -3616,7 +3668,7 @@ Defined in: types/index.ts:500
 get(path: string): unknown;
 ```
 
-Defined in: types/index.ts:501
+Defined in: types/index.ts:547
 
 ###### Parameters
 
@@ -3634,7 +3686,7 @@ Defined in: types/index.ts:501
 errors(path?: string): undefined | string | Readonly<Record<string, string>>;
 ```
 
-Defined in: types/index.ts:502
+Defined in: types/index.ts:548
 
 ###### Parameters
 
@@ -3655,7 +3707,7 @@ setValue(
    options?: SetValueOptions): void;
 ```
 
-Defined in: types/index.ts:503
+Defined in: types/index.ts:549
 
 ###### Parameters
 
@@ -3675,7 +3727,7 @@ Defined in: types/index.ts:503
 setError(path: string, message: string): void;
 ```
 
-Defined in: types/index.ts:504
+Defined in: types/index.ts:550
 
 ###### Parameters
 
@@ -3694,7 +3746,7 @@ Defined in: types/index.ts:504
 clearErrors(path?: string): void;
 ```
 
-Defined in: types/index.ts:505
+Defined in: types/index.ts:551
 
 ###### Parameters
 
@@ -3712,7 +3764,7 @@ Defined in: types/index.ts:505
 getFieldState(path: string): FieldState;
 ```
 
-Defined in: types/index.ts:506
+Defined in: types/index.ts:552
 
 ###### Parameters
 
@@ -3730,7 +3782,7 @@ Defined in: types/index.ts:506
 getFieldMeta(path: string): FieldMetaState;
 ```
 
-Defined in: types/index.ts:507
+Defined in: types/index.ts:553
 
 ###### Parameters
 
@@ -3748,7 +3800,7 @@ Defined in: types/index.ts:507
 getFormState(): FormState<TValues>;
 ```
 
-Defined in: types/index.ts:510
+Defined in: types/index.ts:556
 
 ###### Returns
 
@@ -3760,7 +3812,7 @@ Defined in: types/index.ts:510
 getSnapshot(): FormState<TValues>;
 ```
 
-Defined in: types/index.ts:512
+Defined in: types/index.ts:558
 
 For `useSyncExternalStore(form.subscribe, form.getSnapshot)`. Not a durable checkpoint.
 
@@ -3776,7 +3828,7 @@ For `useSyncExternalStore(form.subscribe, form.getSnapshot)`. Not a durable chec
 getPresentation(path: string): PresentationState;
 ```
 
-Defined in: types/index.ts:514
+Defined in: types/index.ts:560
 
 Per-path presentation (field UI + options + form UI).
 
@@ -3796,7 +3848,7 @@ Per-path presentation (field UI + options + form UI).
 getPresentation(): PresentationSnapshot;
 ```
 
-Defined in: types/index.ts:516
+Defined in: types/index.ts:562
 
 Full presentation maps (same sources as `state.fieldUi` / `formUi` / `fieldOptions`).
 
@@ -3810,7 +3862,7 @@ Full presentation maps (same sources as `state.fieldUi` / `formUi` / `fieldOptio
 createCheckpoint(options?: CreateCheckpointOptions): FormCheckpoint<TValues>;
 ```
 
-Defined in: types/index.ts:518
+Defined in: types/index.ts:564
 
 Durable checkpoint for undo/restore flows — see `restoreCheckpoint`.
 
@@ -3830,7 +3882,7 @@ Durable checkpoint for undo/restore flows — see `restoreCheckpoint`.
 restoreCheckpoint(checkpoint: FormCheckpoint<TValues>, options?: RestoreCheckpointOptions): void;
 ```
 
-Defined in: types/index.ts:519
+Defined in: types/index.ts:565
 
 ###### Parameters
 
@@ -3849,7 +3901,7 @@ Defined in: types/index.ts:519
 getValues(): TValues;
 ```
 
-Defined in: types/index.ts:520
+Defined in: types/index.ts:566
 
 ###### Returns
 
@@ -3861,7 +3913,7 @@ Defined in: types/index.ts:520
 getErrors(): Readonly<Record<FieldPath, string>>;
 ```
 
-Defined in: types/index.ts:521
+Defined in: types/index.ts:567
 
 ###### Returns
 
@@ -3873,7 +3925,7 @@ Defined in: types/index.ts:521
 isValid(): boolean;
 ```
 
-Defined in: types/index.ts:522
+Defined in: types/index.ts:568
 
 ###### Returns
 
@@ -3885,11 +3937,32 @@ Defined in: types/index.ts:522
 isSubmitting(): boolean;
 ```
 
-Defined in: types/index.ts:523
+Defined in: types/index.ts:569
 
 ###### Returns
 
 `boolean`
+
+##### submissionGuard()
+
+```ts
+submissionGuard(options?: Pick<SubmitOptions, "preventDoubleSubmit">): SubmissionGuardResult;
+```
+
+Defined in: types/index.ts:574
+
+Hard submission eligibility (enforced by `submit()`).
+Distinct from `form.ui.canSubmit` (UX projection + `disableSubmitWhen`).
+
+###### Parameters
+
+| Parameter  | Type                                                                 |
+| ---------- | -------------------------------------------------------------------- |
+| `options?` | `Pick`\<[`SubmitOptions`](#submitoptions), `"preventDoubleSubmit"`\> |
+
+###### Returns
+
+`SubmissionGuardResult`
 
 ##### isDirty()
 
@@ -3897,7 +3970,7 @@ Defined in: types/index.ts:523
 isDirty(): boolean;
 ```
 
-Defined in: types/index.ts:524
+Defined in: types/index.ts:577
 
 ###### Returns
 
@@ -3909,7 +3982,7 @@ Defined in: types/index.ts:524
 changedFields(): readonly string[];
 ```
 
-Defined in: types/index.ts:525
+Defined in: types/index.ts:578
 
 ###### Returns
 
@@ -3921,7 +3994,7 @@ readonly `string`[]
 changedSinceSubmitFields(): readonly string[];
 ```
 
-Defined in: types/index.ts:526
+Defined in: types/index.ts:579
 
 ###### Returns
 
@@ -3933,7 +4006,7 @@ readonly `string`[]
 diffFromDefaults(options?: FormDiffOptions): Promise<FormDiffResult>;
 ```
 
-Defined in: types/index.ts:527
+Defined in: types/index.ts:580
 
 ###### Parameters
 
@@ -3951,7 +4024,7 @@ Defined in: types/index.ts:527
 diffFrom(baseline: Record<string, unknown>, options?: FormDiffOptions): Promise<FormDiffResult>;
 ```
 
-Defined in: types/index.ts:528
+Defined in: types/index.ts:581
 
 ###### Parameters
 
@@ -3970,7 +4043,7 @@ Defined in: types/index.ts:528
 when(field: string): WhenRuleBuilder<TValues>;
 ```
 
-Defined in: types/index.ts:529
+Defined in: types/index.ts:582
 
 ###### Parameters
 
@@ -3990,7 +4063,7 @@ Defined in: types/index.ts:529
 dependencies(map: Readonly<Record<string, string | readonly string[]>>): void;
 ```
 
-Defined in: types/index.ts:531
+Defined in: types/index.ts:584
 
 Register explicit dependency map (fail-fast on cycles).
 
@@ -4010,7 +4083,7 @@ Register explicit dependency map (fail-fast on cycles).
 dependencies(): DependencyRegistrar<TValues>;
 ```
 
-Defined in: types/index.ts:533
+Defined in: types/index.ts:586
 
 Fluent dependency registrar + `inspect()`.
 
@@ -4026,7 +4099,7 @@ Fluent dependency registrar + `inspect()`.
 calculate(path: string): CalculationBuilder<TValues>;
 ```
 
-Defined in: types/index.ts:535
+Defined in: types/index.ts:588
 
 Fluent derived field: `form.calculate("total").from("price","qty").compute(...)`.
 
@@ -4050,7 +4123,7 @@ calculate(path: string, options:
 }) => unknown): void;
 ```
 
-Defined in: types/index.ts:536
+Defined in: types/index.ts:589
 
 ###### Parameters
 
@@ -4071,7 +4144,7 @@ Defined in: types/index.ts:536
 transform(path: string): TransformPipelineHandle;
 ```
 
-Defined in: types/index.ts:541
+Defined in: types/index.ts:594
 
 Register inbound transform stages for a path.
 
@@ -4091,7 +4164,7 @@ Register inbound transform stages for a path.
 transform(path: string, stages: readonly TransformFn<TValues>[]): void;
 ```
 
-Defined in: types/index.ts:542
+Defined in: types/index.ts:595
 
 ###### Parameters
 
@@ -4110,7 +4183,7 @@ Defined in: types/index.ts:542
 saveDraft(): void;
 ```
 
-Defined in: types/index.ts:546
+Defined in: types/index.ts:599
 
 ###### Returns
 
@@ -4122,7 +4195,7 @@ Defined in: types/index.ts:546
 restoreDraft(options?: RestoreDraftOptions): Promise<boolean>;
 ```
 
-Defined in: types/index.ts:552
+Defined in: types/index.ts:605
 
 Restore persisted draft into the live form (after mount).
 Returns `true` when values were applied; `false` when skipped
@@ -4144,7 +4217,7 @@ Returns `true` when values were applied; `false` when skipped
 undo(): boolean;
 ```
 
-Defined in: types/index.ts:553
+Defined in: types/index.ts:606
 
 ###### Returns
 
@@ -4156,7 +4229,7 @@ Defined in: types/index.ts:553
 redo(): boolean;
 ```
 
-Defined in: types/index.ts:554
+Defined in: types/index.ts:607
 
 ###### Returns
 
@@ -4168,7 +4241,7 @@ Defined in: types/index.ts:554
 getAnalytics(): FormAnalyticsSnapshot;
 ```
 
-Defined in: types/index.ts:555
+Defined in: types/index.ts:608
 
 ###### Returns
 
@@ -4183,7 +4256,7 @@ flushOfflineQueue(): Promise<{
 }>;
 ```
 
-Defined in: types/index.ts:556
+Defined in: types/index.ts:609
 
 ###### Returns
 
@@ -4200,7 +4273,7 @@ Defined in: types/index.ts:556
 use(plugin: FormPlugin<TValues>): void;
 ```
 
-Defined in: types/index.ts:557
+Defined in: types/index.ts:610
 
 ###### Parameters
 
@@ -4218,7 +4291,7 @@ Defined in: types/index.ts:557
 use<TSelected>(selector: FormSelector<TValues, TSelected>): TSelected;
 ```
 
-Defined in: types/index.ts:558
+Defined in: types/index.ts:611
 
 ###### Type Parameters
 
@@ -4246,7 +4319,7 @@ listPlugins(): readonly {
 }[];
 ```
 
-Defined in: types/index.ts:560
+Defined in: types/index.ts:613
 
 Registered plugins (name / order / version) for DevTools introspection.
 
@@ -4264,9 +4337,10 @@ readonly \{
 subscribe(listener: () => void): () => void;
 ```
 
-Defined in: types/index.ts:566
+Defined in: types/index.ts:622
 
 Advanced: reactive UI updates. Framework adapters call this internally.
+For declarative create-time listeners, prefer `createForm({ subscribe })`.
 
 ###### Parameters
 
@@ -4290,7 +4364,7 @@ Advanced: reactive UI updates. Framework adapters call this internally.
 on(event: FormEvent, listener: () => void): () => void;
 ```
 
-Defined in: types/index.ts:567
+Defined in: types/index.ts:623
 
 ###### Parameters
 
@@ -4315,7 +4389,7 @@ Defined in: types/index.ts:567
 destroy(): void;
 ```
 
-Defined in: types/index.ts:568
+Defined in: types/index.ts:624
 
 ###### Returns
 
@@ -4327,7 +4401,7 @@ Defined in: types/index.ts:568
 registerPlugin(plugin: FormPlugin<TValues>): void;
 ```
 
-Defined in: types/index.ts:569
+Defined in: types/index.ts:625
 
 ###### Parameters
 
@@ -4343,19 +4417,19 @@ Defined in: types/index.ts:569
 
 ### FormPluginSetupResult
 
-Defined in: types/index.ts:582
+Defined in: types/index.ts:638
 
 #### Properties
 
 | Property                            | Modifier   | Type         | Defined in         |
 | ----------------------------------- | ---------- | ------------ | ------------------ |
-| <a id="ondestroy"></a> `onDestroy?` | `readonly` | () => `void` | types/index.ts:583 |
+| <a id="ondestroy"></a> `onDestroy?` | `readonly` | () => `void` | types/index.ts:639 |
 
 ---
 
 ### FormPlugin\<TValues\>
 
-Defined in: types/index.ts:586
+Defined in: types/index.ts:642
 
 #### Type Parameters
 
@@ -4365,12 +4439,12 @@ Defined in: types/index.ts:586
 
 #### Properties
 
-| Property                          | Modifier   | Type     | Description                                                                                                      | Defined in         |
-| --------------------------------- | ---------- | -------- | ---------------------------------------------------------------------------------------------------------------- | ------------------ |
-| <a id="name-7"></a> `name`        | `readonly` | `string` | -                                                                                                                | types/index.ts:587 |
-| <a id="version-1"></a> `version?` | `readonly` | `string` | Plugin package/semver label (metadata only).                                                                     | types/index.ts:589 |
-| <a id="engines"></a> `engines?`   | `readonly` | `string` | Semver range against `@jayoncode/form-intelligent` (`>=3.1.0`, `^3.1.0`, or exact). Checked at `register`/`use`. | types/index.ts:594 |
-| <a id="order-2"></a> `order?`     | `readonly` | `number` | -                                                                                                                | types/index.ts:595 |
+| Property                          | Modifier   | Type     | Description                                                                                                       | Defined in         |
+| --------------------------------- | ---------- | -------- | ----------------------------------------------------------------------------------------------------------------- | ------------------ |
+| <a id="name-7"></a> `name`        | `readonly` | `string` | -                                                                                                                 | types/index.ts:643 |
+| <a id="version-1"></a> `version?` | `readonly` | `string` | Plugin package/semver label (metadata only).                                                                      | types/index.ts:645 |
+| <a id="engines"></a> `engines?`   | `readonly` | `string` | Semver range against `@jayoncode/form-intelligence` (`>=3.1.0`, `^3.1.0`, or exact). Checked at `register`/`use`. | types/index.ts:650 |
+| <a id="order-2"></a> `order?`     | `readonly` | `number` | -                                                                                                                 | types/index.ts:651 |
 
 #### Methods
 
@@ -4380,7 +4454,7 @@ Defined in: types/index.ts:586
 setup(form: FormInstance<TValues>, api: FormPluginApi<TValues>): void | FormPluginSetupResult | () => void;
 ```
 
-Defined in: types/index.ts:596
+Defined in: types/index.ts:652
 
 ###### Parameters
 
@@ -4469,7 +4543,7 @@ Defined in: engines/transform/types.ts:36
 type FieldUiMap = Readonly<Record<string, FieldUiState>>;
 ```
 
-Defined in: engines/workflow/types.ts:58
+Defined in: engines/workflow/types.ts:74
 
 ---
 
@@ -4479,7 +4553,7 @@ Defined in: engines/workflow/types.ts:58
 type WizardNavigateValidation = "step" | "all" | "none";
 ```
 
-Defined in: engines/workflow/types.ts:82
+Defined in: engines/workflow/types.ts:98
 
 Validation scope for `workflow.goTo`. Default `"all"` preserves SHIPPED behavior.
 
@@ -4668,13 +4742,32 @@ Defined in: types/index.ts:1
 
 ---
 
+### FormRuleInput\<TValues\>
+
+```ts
+type FormRuleInput<TValues> =
+  FormRuleDefinition<TValues> | WhenRuleBuilder<TValues> | WhenRuleBuilder;
+```
+
+Defined in: types/index.ts:48
+
+Plain rule object or a `when()` builder (`createForm` calls `.build()` for builders).
+
+#### Type Parameters
+
+| Type Parameter                                      | Default type                    |
+| --------------------------------------------------- | ------------------------------- |
+| `TValues` _extends_ `Record`\<`string`, `unknown`\> | `Record`\<`string`, `unknown`\> |
+
+---
+
 ### ValidationMode
 
 ```ts
 type ValidationMode = "onChange" | "onBlur" | "onSubmit" | "onTouched" | "all";
 ```
 
-Defined in: types/index.ts:47
+Defined in: types/index.ts:54
 
 ---
 
@@ -4693,7 +4786,7 @@ type FormEvent =
   | "draft";
 ```
 
-Defined in: types/index.ts:49
+Defined in: types/index.ts:56
 
 ---
 
@@ -4703,7 +4796,7 @@ Defined in: types/index.ts:49
 type ValidatorResult = true | false | string | undefined;
 ```
 
-Defined in: types/index.ts:60
+Defined in: types/index.ts:67
 
 ---
 
@@ -4713,7 +4806,7 @@ Defined in: types/index.ts:60
 type BuiltInFieldType = "text" | "email" | "password" | "url";
 ```
 
-Defined in: types/index.ts:92
+Defined in: types/index.ts:99
 
 ---
 
@@ -4725,7 +4818,7 @@ type CustomFieldValidator<TValues> = (
 ) => ValidatorResult | Promise<ValidatorResult>;
 ```
 
-Defined in: types/index.ts:109
+Defined in: types/index.ts:116
 
 #### Type Parameters
 
@@ -4752,7 +4845,7 @@ Defined in: types/index.ts:109
 type FormRef = (element: HTMLFormElement | null) => void;
 ```
 
-Defined in: types/index.ts:125
+Defined in: types/index.ts:132
 
 #### Parameters
 
@@ -4772,7 +4865,7 @@ Defined in: types/index.ts:125
 type FieldSchemaDefinition = BuiltInFieldType | FieldSchemaConfig;
 ```
 
-Defined in: types/index.ts:127
+Defined in: types/index.ts:134
 
 ---
 
@@ -4785,7 +4878,7 @@ type Validator<TValues> = (
 ) => ValidatorResult | Promise<ValidatorResult>;
 ```
 
-Defined in: types/index.ts:129
+Defined in: types/index.ts:136
 
 #### Type Parameters
 
@@ -4813,9 +4906,38 @@ Defined in: types/index.ts:129
 type SubmitPhase = "idle" | "validating" | "submitting" | "success" | "error";
 ```
 
-Defined in: types/index.ts:316
+Defined in: types/index.ts:323
 
 Submit lifecycle phase (Phase 10). `isSubmitting` remains the boolean loading flag.
+
+---
+
+### FormSubscribeListener()\<TValues\>
+
+```ts
+type FormSubscribeListener<TValues> = (form: FormInstance<TValues>) => void;
+```
+
+Defined in: types/index.ts:395
+
+State listener for `createForm({ subscribe })`. Receives the form instance.
+Lives until `form.destroy()` — use `form.subscribe()` when you need unsubscribe.
+
+#### Type Parameters
+
+| Type Parameter                                      | Default type                    |
+| --------------------------------------------------- | ------------------------------- |
+| `TValues` _extends_ `Record`\<`string`, `unknown`\> | `Record`\<`string`, `unknown`\> |
+
+#### Parameters
+
+| Parameter | Type                                         |
+| --------- | -------------------------------------------- |
+| `form`    | [`FormInstance`](#forminstance)\<`TValues`\> |
+
+#### Returns
+
+`void`
 
 ---
 
@@ -4825,7 +4947,7 @@ Submit lifecycle phase (Phase 10). `isSubmitting` remains the boolean loading fl
 type FormSelector<TValues, TSelected> = (state: FormState<TValues>) => TSelected;
 ```
 
-Defined in: types/index.ts:445
+Defined in: types/index.ts:484
 
 #### Type Parameters
 
@@ -4910,25 +5032,26 @@ Defaults when a path is missing from `fieldUi` (API freeze §5).
 
 ```ts
 const PRESENTATION_OWNERSHIP: {
-  producers: readonly ["workflow.rules", "dependency.populate"];
+  producers: readonly ["workflow.rules", "dependency.populate", "schema.requiredBaseline"];
   consumers: readonly ["dom.enhancer", "framework.adapters", "a11y"];
   nonWriters: readonly ["validation", "transform", "format"];
 };
 ```
 
-Defined in: engines/presentation/resolve.ts:69
+Defined in: engines/presentation/resolve.ts:70
 
-Ownership note (Phase 9): Workflow rules produce UI intents; Presentation
-exposes them. Validation must not write `visible`/`hidden`. DOM enhancer
-and adapters consume `getPresentation` / `field.ui` only.
+Ownership note (Phase 9 / ADR-018): Workflow rules and schema/static
+`required` baseline produce UI intents; Presentation exposes them.
+Validation must not write `visible`/`hidden`/`required` on validate ticks.
+DOM enhancer and adapters consume `getPresentation` / `field.ui` only.
 
 #### Type declaration
 
-| Name                                 | Type                                                            | Defined in                         |
-| ------------------------------------ | --------------------------------------------------------------- | ---------------------------------- |
-| <a id="producers"></a> `producers`   | readonly \[`"workflow.rules"`, `"dependency.populate"`\]        | engines/presentation/resolve.ts:70 |
-| <a id="consumers"></a> `consumers`   | readonly \[`"dom.enhancer"`, `"framework.adapters"`, `"a11y"`\] | engines/presentation/resolve.ts:71 |
-| <a id="nonwriters"></a> `nonWriters` | readonly \[`"validation"`, `"transform"`, `"format"`\]          | engines/presentation/resolve.ts:72 |
+| Name                                 | Type                                                                                  | Defined in                         |
+| ------------------------------------ | ------------------------------------------------------------------------------------- | ---------------------------------- |
+| <a id="producers"></a> `producers`   | readonly \[`"workflow.rules"`, `"dependency.populate"`, `"schema.requiredBaseline"`\] | engines/presentation/resolve.ts:71 |
+| <a id="consumers"></a> `consumers`   | readonly \[`"dom.enhancer"`, `"framework.adapters"`, `"a11y"`\]                       | engines/presentation/resolve.ts:72 |
+| <a id="nonwriters"></a> `nonWriters` | readonly \[`"validation"`, `"transform"`, `"format"`\]                                | engines/presentation/resolve.ts:73 |
 
 ---
 
@@ -5046,7 +5169,7 @@ Defaults when the options-object overload is used (API_SIGNATURE_FREEZE §1).
 const email: Validator;
 ```
 
-Defined in: validation/validators/email.ts:3
+Defined in: validation/validators/email.ts:36
 
 ---
 
@@ -5196,7 +5319,7 @@ Defined in: adapters/submit-transport-adapter.ts:15
 function createForm<TValues>(config: FormConfig<TValues>): FormInstance<TValues>;
 ```
 
-Defined in: core/create-form.ts:1826
+Defined in: core/create-form.ts:2019
 
 Create a form workflow instance. Pass `target` + `schema` to enhance native HTML,
 or `initialValues` for headless usage.

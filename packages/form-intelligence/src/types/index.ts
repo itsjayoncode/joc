@@ -355,10 +355,27 @@ export interface FormDiffOptions {
   readonly treatUndefinedAsMissing?: boolean;
 }
 
+/** CAPTCHA token under the submission security namespace (ADR-CAP-001). */
+export interface SubmitSecurityCaptcha {
+  readonly provider: string;
+  readonly token: string;
+  readonly expiresAt?: number;
+}
+
+/**
+ * Security namespace on submit meta.
+ * Stable path: `meta.security.captcha` (future: CSRF, OTP, …).
+ */
+export interface SubmitSecurityMeta {
+  readonly captcha?: SubmitSecurityCaptcha;
+}
+
 export interface SubmitMeta {
   readonly changedFields?: readonly FieldPath[];
   readonly diff?: FormDiffResult;
   readonly signal?: AbortSignal;
+  /** Populated by the Security Stage (e.g. CAPTCHA plugin). */
+  readonly security?: SubmitSecurityMeta;
 }
 
 export interface ValidateOptions {

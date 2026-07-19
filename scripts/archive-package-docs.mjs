@@ -21,6 +21,7 @@ import {
   readPackageVersion,
   readPendingBumpType,
   readVersionsManifest,
+  readManifestArchiveConfig,
   shouldArchiveForBumpType,
   syncAllPackageVersionsMeta,
   syncPackageVersionsMeta,
@@ -181,7 +182,7 @@ function archivePackage(pkg, options) {
 
   if (options.beforeRelease) {
     const bumpType = readPendingBumpType(pkg.npmName);
-    if (!shouldArchiveForBumpType(currentVersion, bumpType, manifest.archivePolicy)) {
+    if (!shouldArchiveForBumpType(currentVersion, bumpType, readManifestArchiveConfig(manifest))) {
       console.log(
         `Skipping ${pkg.id} doc archive for ${currentVersion} (${bumpType ?? "no"} changeset bump).`,
       );

@@ -23,7 +23,7 @@ const FORM_OS_FEATURES = [
   { label: "State & validation", paths: ["/validation", "/state", "/devtools"] },
   { label: "Rules & dependencies", paths: ["/rules", "/dependencies"] },
   { label: "Calculations & formatters", paths: ["/calculations", "/formatters"] },
-  { label: "Workflow & submission", paths: ["/workflow", "/submission"] },
+  { label: "Workflow & submission", paths: ["/workflow", "/submission", "/captcha"] },
   { label: "Integrations", paths: ["/integrations", "/plugins"] },
   { label: "Performance", paths: ["/performance"] },
 ] as const;

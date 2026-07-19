@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/browser-session-playground",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
   "description": "Official Browser Lifecycle playground for development, manual QA, and interactive documentation.",

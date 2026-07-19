@@ -2,10 +2,12 @@
 
 ## Recommended
 
-Choose idle thresholds based on product risk, not library defaults:
+Choose idle timeouts based on product risk, not library defaults (`idleTimeout` defaults to **off**):
 
 ```ts
-idle: { enabled: true, thresholdMs: 300_000 }
+createBrowserLifecycle({
+  idleTimeout: 300_000, // 5 minutes
+});
 ```
 
 ## Not recommended
@@ -15,3 +17,8 @@ Using idle detection as a security boundary without re-authentication.
 ## Playground
 
 [Idle Playground](/playground/browser-lifecycle/idle)
+
+## Related
+
+- [Idle module](/packages/browser-lifecycle/modules/idle)
+- [Configuration](/packages/browser-lifecycle/guides/configuration)

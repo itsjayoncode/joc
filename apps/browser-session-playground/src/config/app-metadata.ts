@@ -16,6 +16,7 @@ export interface PlaygroundEnvironment {
 
 export interface PlaygroundMetadata {
   readonly applicationName: string;
+  readonly packageName: "@jayoncode/browser-lifecycle";
   readonly browserLifecyclePackageName: "@jayoncode/browser-lifecycle";
   readonly environment: PlaygroundEnvironment;
   readonly versions: PlaygroundVersions;
@@ -24,6 +25,7 @@ export interface PlaygroundMetadata {
 export function getPlaygroundMetadata(): PlaygroundMetadata {
   return {
     applicationName: "Browser Lifecycle Playground",
+    packageName: "@jayoncode/browser-lifecycle",
     browserLifecyclePackageName: "@jayoncode/browser-lifecycle",
     environment: {
       enableDebugTools: import.meta.env.VITE_PLAYGROUND_ENABLE_DEBUG_TOOLS === "true",

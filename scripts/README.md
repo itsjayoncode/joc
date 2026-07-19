@@ -88,7 +88,13 @@ pnpm --filter @jayoncode/docs docs:stage-archives
 pnpm release:version
 ```
 
-Archive policy (`archivePolicy: "minor"`): on `0.x`, archive on minor/major; on `1.x+`, archive on major only (patches never archive).
+Archive policy (default `archive` flags): **major + minor** create a docs snapshot; **patch** never does. Prefer:
+
+```json
+{ "archive": { "major": true, "minor": true, "patch": false } }
+```
+
+Legacy string `archivePolicy` values (`"minor-major"`, `"major"`, deprecated `"minor"`) still resolve. Detail: [`engineering/014-versioning-policy.md`](../engineering/014-versioning-policy.md).
 
 **New package checklist** (required):
 

@@ -2,7 +2,7 @@
 
 Configuration, capability detection, and SSR-safe utilities.
 
-**Previous:** [Session core](/packages/browser-lifecycle/modules/session-core) · **Back to:** [Overview](/packages/browser-lifecycle/)
+**Previous:** [Plugins](/packages/browser-lifecycle/modules/plugins) · **Back to:** [Overview](/packages/browser-lifecycle/)
 
 ::: tip Playground
 [Open Configuration playground →](/playground/browser-lifecycle/configuration) — tweak options and inspect capabilities.
@@ -15,6 +15,9 @@ import {
   createBrowserLifecycle,
   createBrowserLifecycleConfig,
   supportsVisibility,
+  supportsFocus,
+  supportsIdle,
+  supportsConnectivity,
 } from "@jayoncode/browser-lifecycle";
 ```
 
@@ -44,6 +47,36 @@ if (supportsVisibility()) {
 This document covers the public exports introduced in Phase `2.2.0`.
 
 ## Configuration
+
+### `BrowserLifecycleConfig` options
+
+Every field is optional — `createBrowserLifecycleConfig()` fills in the defaults below.
+
+| Option             | Type                                                              | Default                                                                           | Notes                                                                                  |
+| ------------------ | ----------------------------------------------------------------- | --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `activityDebounce` | `number` (ms)                                                     | `250`                                                                             | Debounce applied to activity signals before the [Idle](./idle.md) module records them. |
+| `activityEvents`   | `"default" \| readonly BrowserLifecycleActivityEventName[]`       | `"default"` (`pointerdown`, `keydown`, `touchstart`, `visibilitychange`, `focus`) | See [Idle](./idle.md) for the full allowed event list.                                 |
+| `autoStart`        | `boolean`                                                         | `true`                                                                            | Starts the session immediately on construction.                                        |
+| `crossTab`         | `boolean \| { channelName?, heartbeatInterval?, leaderTimeout? }` | `false`                                                                           | See [Cross-tab](./cross-tab.md) for the nested defaults and constraints.               |
+| `debug`            | `boolean`                                                         | `false`                                                                           | Surfaced on `getRuntimeDiagnostics()`; does not change runtime behavior on its own.    |
+| `emitInitialState` | `boolean`                                                         | `false`                                                                           | Replays each module's startup state as a public event once, after `session:started`.   |
+| `eventBufferSize`  | `number`                                                          | `0`                                                                               | Surfaced on `getRuntimeDiagnostics()` for event buffering tooling.                     |
+| `idleTimeout`      | `false \| number` (ms)                                            | `false`                                                                           | `false` disables the [Idle](./idle.md) module entirely.                                |
+| `plugins`          | `readonly BrowserLifecyclePlugin[]`                               | `[]`                                                                              | See [Plugins](./plugins.md) for the full contract.                                     |
+
+```ts
+import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
+
+const lifecycle = createBrowserLifecycle({
+  autoStart: false,
+  emitInitialState: true,
+  idleTimeout: 30_000,
+  activityDebounce: 500,
+  crossTab: true,
+});
+```
+
+Passing an unknown key, an out-of-range value, or an invalid `crossTab` / `activityEvents` / `plugins` shape throws `ConfigurationError` with a list of `{ message, path }` issues.
 
 ### `createBrowserLifecycleConfig(input?)`
 
@@ -90,6 +123,20 @@ Returns whether the environment supports `requestIdleCallback`.
 ### `supportsAbortController(environment?)`
 
 Returns whether the environment supports `AbortController`.
+
+### `supportsFocus(environment?)`
+
+Returns whether the environment can observe window focus/blur (`addEventListener` on `window` + `document.hasFocus`). Used by the [Focus](./focus.md) module.
+
+### `supportsIdle(environment?)`
+
+Returns whether the environment can observe activity for idle detection (`window` listeners + `document`). Required when `idleTimeout` is enabled — see [Idle](./idle.md).
+
+### `supportsConnectivity(environment?)`
+
+Returns whether the environment exposes advisory online/offline (`navigator.onLine` + `window` online/offline events). See [Connectivity](./connectivity.md).
+
+`BrowserLifecycleCapabilities` on the session snapshot includes all eight flags: `visibility`, `focus`, `idle`, `connectivity`, `broadcastChannel`, `pageLifecycle`, `requestIdleCallback`, `abortController`.
 
 ## Utilities
 
@@ -139,19 +186,32 @@ Thrown when a required feature is unavailable.
 
 Thrown when initialization cannot proceed.
 
+### `LifecycleError`
+
+Thrown for invalid session lifecycle transitions (e.g. operating on a disposed session).
+
+### `ModuleRegistryError`
+
+Thrown when module registration fails (duplicate module, missing capability, etc.).
+
 ### `PluginError`
 
-Placeholder plugin error for the pre-plugin milestone.
+Thrown by the [plugin runtime](./plugins.md) — duplicate plugin ids, registering after start, using an unregistered plugin id with `setPluginEnabled()`, etc. Also carried as `previous`/context metadata on the `plugin:error` event when a plugin hook throws.
 
 ## Exported Types
 
-The root package currently exports:
+The root package currently exports, from `./types/index.js`:
 
 - `BrowserFeatureEnvironment`
+- `BrowserLifecycleActivityEventName`
 - `BrowserLifecycleCapabilities`
 - `BrowserLifecycleConfig`
 - `BrowserLifecycleCrossTabConfig`
 - `BrowserLifecycleCrossTabConfigInput`
 - `BrowserLifecycleErrorCode`
 - `BrowserLifecyclePlugin`
+- `BrowserLifecyclePluginRuntimeContext`
+- `BrowserLifecycleValidationIssue`
 - `ResolvedBrowserLifecycleConfig`
+
+See [Plugins](./plugins.md), [Session core](./session-core.md), and [Events](/packages/browser-lifecycle/modules/events) for the module/session/event types exported alongside these.

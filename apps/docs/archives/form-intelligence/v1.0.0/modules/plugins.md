@@ -1,6 +1,6 @@
 ---
 title: Plugins
-description: Form Intelligent documentation for Plugins.
+description: Form Intelligence documentation for Plugins.
 ---
 
 # Plugins
@@ -10,7 +10,7 @@ Add cross-cutting behavior — analytics, guards, or integrations — without fo
 **Previous:** [Adapters](/packages/form-intelligence/modules/adapters) · **Next:** [Patterns](/packages/form-intelligence/modules/patterns)
 
 ::: tip Playground
-[Plugins explorer →](/playground/form-intelligence/plugins) — register hooks and inspect the event log.
+[Plugins explorer →](/playground/form-intelligent/plugins) — register hooks and inspect the event log.
 :::
 
 ## Overview
@@ -18,7 +18,7 @@ Add cross-cutting behavior — analytics, guards, or integrations — without fo
 Plugins receive the form instance and a typed hook API. Return a cleanup function or `{ onDestroy }` for teardown.
 
 ```ts
-import type { FormPlugin } from "@jayoncode/form-intelligent";
+import type { FormPlugin } from "@jayoncode/form-intelligence";
 
 const audit: FormPlugin = {
   name: "audit",
@@ -89,7 +89,7 @@ import {
   createDevToolsPlugin,
   createKeyboardPlugin,
   keyboard,
-} from "@jayoncode/form-intelligent/plugins";
+} from "@jayoncode/form-intelligence/plugins";
 
 form.use(createBrowserLifecyclePlugin({ saveDraftOnHidden: true }));
 form.use(createDevToolsPlugin());

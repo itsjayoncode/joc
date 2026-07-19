@@ -1,6 +1,6 @@
 ---
 title: Submission
-description: Form Intelligent documentation for Submission.
+description: Form Intelligence documentation for Submission.
 ---
 
 # Submission
@@ -10,7 +10,7 @@ Send valid data to your API — with loading state, cancel, retries, and offline
 **Previous:** [Validation](/packages/form-intelligence/modules/validation) · **Next:** [State](/packages/form-intelligence/modules/state)
 
 ::: tip Playground
-[Submission explorer →](/playground/form-intelligence/submission) — flaky API, offline queue, double-submit guard, cancel.
+[Submission explorer →](/playground/form-intelligent/submission) — flaky API, offline queue, double-submit guard, cancel.
 :::
 
 ## Problem → solution

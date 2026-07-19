@@ -2,7 +2,7 @@
 
 React when the user switches tabs or minimizes the window.
 
-**Previous:** [Tutorial](/packages/browser-lifecycle/modules/getting-started) · **Next:** [Events](/packages/browser-lifecycle/modules/events)
+**Previous:** [Tutorial](/packages/browser-lifecycle/modules/getting-started) · **Next:** [Focus](/packages/browser-lifecycle/modules/focus)
 
 ::: tip Playground
 [Open Visibility playground →](/playground/browser-lifecycle/visibility) — switch tabs and watch `page:visible` / `page:hidden` events.
@@ -126,12 +126,13 @@ If the Page Visibility API is unavailable, the module disables itself without th
 
 ## Limitations
 
-Current scope is intentionally narrow:
+Scope remains intentionally narrow — this module only normalizes `visible` / `hidden` from the Page Visibility API. It does not itself track focus, page suspend/resume, or activity/idle — those are separate, independently-gated modules that compose on the same session:
 
-- only `visible` and `hidden` are normalized
-- no focus integration yet
-- no lifecycle suspend or resume integration yet
-- no activity or idle coordination yet
+- window focus/blur — [Focus](./focus.md)
+- browser-initiated suspend/resume/restore (`pagehide`/`pageshow`, freeze/resume) — [Page lifecycle](./lifecycle.md)
+- user activity / idle timeout — [Idle](./idle.md)
+
+Each module owns its own snapshot field and event set; combine them via `getSnapshot()` or the [Presence](./presence.md) facade rather than expecting Visibility to report on them.
 
 ## Browser Compatibility
 

@@ -31,4 +31,16 @@ resilience.dispose();
 
 Wraps catalog events only — no persistence engine, no extra browser APIs.
 
+## Error isolation
+
+Pass `onHandlerError` to observe (e.g. log) handler exceptions without letting them escape:
+
+```ts
+const resilience = createResilienceApi(lifecycle, {
+  onHandlerError: (error) => reportToSentry(error),
+});
+```
+
+When omitted, thrown errors from a resilience handler are swallowed silently — the session keeps running either way.
+
 [Framework adapters →](./adapters.md)

@@ -1,6 +1,6 @@
 ---
 title: Changelog
-description: "Release history for @jayoncode/form-intelligent."
+description: "Release history for @jayoncode/form-intelligence."
 ---
 
 # Changelog

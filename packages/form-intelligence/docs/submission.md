@@ -30,9 +30,10 @@ import { createForm } from "@jayoncode/form-intelligence";
 1. `submit()` checks **hard** `submissionGuard()` (may refuse before validation)
 2. Runs field validation
 3. Re-checks `ruleDisabled` after validate (rules may have changed)
-4. On success, invokes `onSubmit(values, meta)`
-5. `isSubmitting` is `true` for the handler duration
-6. Concurrent `submit()` calls are ignored while in flight (by default)
+4. Runs the **Security Stage** when registered (e.g. CAPTCHA via `/captcha`)
+5. On success, invokes `onSubmit(values, meta)` — token at `meta.security.captcha`
+6. `isSubmitting` is `true` for the handler duration
+7. Concurrent `submit()` calls are ignored while in flight (by default)
 
 ---
 
@@ -116,10 +117,11 @@ Submit pipeline (Phase 10):
 1. Hard `submissionGuard()` (`preventDoubleSubmit` / `ruleDisabled`)
 2. `submitPhase = "validating"` → validate
 3. Re-check `ruleDisabled`
-4. Onion `useMiddleware` (`beforeSubmit`) then plugin `beforeSubmit` hooks
-5. `submitPhase = "submitting"` → `onSubmit` (with retry / cancel)
-6. Plugin `afterSubmit` hooks then middleware `afterSubmit`
-7. Settle `submitPhase` to `success` / `error` / `idle` (cancel)
+4. **Security Stage** (when registered — e.g. CAPTCHA) — abort on failure; no `onSubmit`
+5. Onion `useMiddleware` (`beforeSubmit`) then plugin `beforeSubmit` hooks
+6. `submitPhase = "submitting"` → `onSubmit` (with retry / cancel; `meta.security` when stage succeeded)
+7. Plugin `afterSubmit` hooks then middleware `afterSubmit`
+8. Settle `submitPhase` to `success` / `error` / `idle` (cancel)
 
 ---
 
@@ -226,6 +228,9 @@ createForm({
       storageKey: "signup:offline",
       maxItems: 50,
       overflow: "drop-oldest", // or "drop-newest" | "reject"
+      onOverflow: (dropped, policy) => {
+        console.warn("dropped offline item", dropped.id, policy);
+      },
       idempotencyKey: (values) => values.email,
       onConflict: (local, error) => {
         // Flush failure: keep (default), drop, or retry
@@ -242,6 +247,16 @@ form.state.submissionQueue.flushing;
 
 await form.flushOfflineQueue();
 ```
+
+| Option           | Notes                                                                  |
+| ---------------- | ---------------------------------------------------------------------- |
+| `maxItems`       | Soft cap on queued items                                               |
+| `overflow`       | Default `"drop-oldest"`; also `"drop-newest"` \| `"reject"`            |
+| `onOverflow`     | `(dropped, policy) => void` — called when an item is dropped by policy |
+| `idempotencyKey` | Skip enqueue when a pending item shares the same key                   |
+| `onConflict`     | Flush failure policy: `"keep"` \| `"drop"` \| `"retry"`                |
+
+When `/captcha` is registered, enqueue requires a successful Security Stage, and flush re-runs it so `onSubmit` receives a fresh `meta.security.captcha` (see [CAPTCHA](/packages/form-intelligence/modules/captcha#offline-queue)).
 
 Overflow `reject` and storage quota throw `OfflineQueueError` (`code: "offline_error"`).
 

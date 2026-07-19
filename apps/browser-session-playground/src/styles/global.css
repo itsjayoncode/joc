@@ -8,6 +8,8 @@
 
 html {
   font-size: 16px;
+  height: 100%;
+  overflow: hidden;
   background:
     radial-gradient(ellipse 80% 50% at 0% -10%, rgba(37, 99, 235, 0.16), transparent 55%),
     radial-gradient(ellipse 60% 45% at 100% 0%, rgba(124, 58, 237, 0.12), transparent 50%),
@@ -27,7 +29,8 @@ html {
 body {
   margin: 0;
   min-width: 320px;
-  min-height: 100vh;
+  height: 100%;
+  overflow: hidden;
   font-family: var(--font-body);
   color: var(--text-primary);
   background: transparent;
@@ -49,7 +52,8 @@ body::before {
 }
 
 #root {
-  min-height: 100vh;
+  height: 100%;
+  overflow: hidden;
 }
 
 a {

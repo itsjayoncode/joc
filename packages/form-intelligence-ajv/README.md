@@ -14,14 +14,21 @@ Your contract is already JSON Schema (OpenAPI, shared `schemas/`, server-side AJ
 
 ## What you get
 
-| Capability              | Detail                                                                                        |
-| ----------------------- | --------------------------------------------------------------------------------------------- |
-| **Schema object**       | Pass a JSON Schema literal: `ajvAdapter({ type: "object", ... })`                             |
-| **Compiled validator**  | Pass `ValidateFunction` / async compile for reuse and `$async` keywords                       |
-| **Path mapping**        | `instancePath` + `required`/`additionalProperties` params → field paths; form-level → `_form` |
-| **allErrors-friendly**  | Works with AJV configured for multiple field errors                                           |
-| **Formats**             | Use `ajv-formats` on your Ajv instance for `email`, `uri`, etc.                               |
-| **With core workflows** | Combine with `when()` rules, autosave, wizard, plugins, `validateOn`                          |
+| Capability               | Detail                                                                                                                                                                                  |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Schema object**        | Pass a JSON Schema literal: `ajvAdapter({ type: "object", ... })`                                                                                                                       |
+| **Compiled validator**   | Pass `ValidateFunction` / async compile for reuse and `$async` keywords                                                                                                                 |
+| **Path mapping**         | `instancePath` + `required`/`additionalProperties` params → field paths; form-level → `_form`                                                                                           |
+| **allErrors-friendly**   | Works with AJV configured for multiple field errors                                                                                                                                     |
+| **Formats**              | Use `ajv-formats` on your Ajv instance for `email`, `uri`, etc.                                                                                                                         |
+| **With core workflows**  | Combine with `when()` rules, autosave, wizard, plugins, `validateOn`                                                                                                                    |
+| **`AjvAdapterOptions`**  | Optional `{ ajv? }` — reuse a configured `Ajv` instance (`allErrors`, custom formats/keywords) when compiling a schema literal; ignored when you pass a pre-compiled `ValidateFunction` |
+| **`formatAjvErrorPath`** | Exported helper mapping a single AJV `ErrorObject` to a Form Intelligence field path — reuse it if you post-process `validate.errors` yourself                                          |
+
+### Behavior notes
+
+- **First error per path wins.** When AJV reports multiple errors for the same field (e.g. with `allErrors: true`), only the first one encountered is kept.
+- **Validate-only.** `ajvAdapter()` returns a `SchemaAdapter` — it validates `values` and returns `{ path: message }`. It does not infer a TypeScript type for `createForm`'s values from your JSON Schema; type your `initialValues` (or the `TValues` generic) separately.
 
 ## Install
 
@@ -75,6 +82,37 @@ createForm({
   onSubmit,
 });
 ```
+
+### Reusing a configured `Ajv` instance — `AjvAdapterOptions`
+
+Pass `{ ajv }` when you want `ajvAdapter()` to compile the schema literal with an instance you already configured (e.g. with `ajv-formats`, custom keywords, or `allErrors`), instead of the adapter's internal default `new Ajv({ allErrors: true })`:
+
+```ts
+import Ajv from "ajv";
+import addFormats from "ajv-formats";
+import { ajvAdapter } from "@jayoncode/form-intelligence-ajv";
+
+const ajv = addFormats(new Ajv({ allErrors: true }));
+
+const form = createForm({
+  schema: ajvAdapter(checkoutSchema, { ajv }),
+  onSubmit,
+});
+```
+
+`options.ajv` only applies when `schemaOrValidate` is a schema literal — it is ignored when you pass an already-compiled `ValidateFunction`.
+
+### `formatAjvErrorPath`
+
+`formatAjvErrorPath(error: ErrorObject): string` is the same path-mapping logic `ajvAdapter()` uses internally, exported for reuse:
+
+```ts
+import { formatAjvErrorPath } from "@jayoncode/form-intelligence-ajv";
+
+const path = formatAjvErrorPath(validate.errors![0]);
+```
+
+It maps `instancePath` to a dot path (`/address/city` → `address.city`), and for `required` / `additionalProperties` errors appends the offending property name from `error.params` (since AJV reports those on the _parent_ path). Root-level or unmapped errors fall back to `"_form"`.
 
 ## Docs
 

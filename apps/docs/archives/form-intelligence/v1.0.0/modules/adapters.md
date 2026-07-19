@@ -1,6 +1,6 @@
 ---
 title: Adapters
-description: Form Intelligent documentation for Adapters.
+description: Form Intelligence documentation for Adapters.
 ---
 
 # Adapters
@@ -10,12 +10,12 @@ Use Form Intelligent with your existing UI stack — native HTML, React, or head
 **Previous:** [Integrations](/packages/form-intelligence/modules/integrations) · **Next:** [Plugins](/packages/form-intelligence/modules/plugins)
 
 ::: tip Playground
-[Adapters explorer →](/playground/form-intelligence/adapters) — current integrations and planned bridges.
+[Adapters explorer →](/playground/form-intelligent/adapters) — current integrations and planned bridges.
 :::
 
 ## Overview
 
-Adapters connect `createForm()` to framework-specific lifecycle and field bindings. The core package (`@jayoncode/form-intelligent`) remains framework-agnostic; each adapter ships as its own npm package.
+Adapters connect `createForm()` to framework-specific lifecycle and field bindings. The core package (`@jayoncode/form-intelligence`) remains framework-agnostic; each adapter ships as its own npm package.
 
 See [Ecosystem architecture](https://github.com/itsjayoncode/joc/blob/master/packages/form-intelligence/engineering/001-ecosystem-architecture.md) for the full package map.
 
@@ -45,14 +45,14 @@ createForm({
 
 ---
 
-## React — `@jayoncode/form-intelligence-react`
+## React — `@jayoncode/form-intelligent-react`
 
 ```bash
-npm install @jayoncode/form-intelligent @jayoncode/form-intelligence-react
+npm install @jayoncode/form-intelligence @jayoncode/form-intelligent-react
 ```
 
 ```tsx
-import { useForm } from "@jayoncode/form-intelligence-react";
+import { useForm } from "@jayoncode/form-intelligent-react";
 
 const form = useForm({
   schema: {
@@ -92,15 +92,15 @@ const binding = form.field("email").bind();
 
 ---
 
-## Zod — `@jayoncode/form-intelligence-zod`
+## Zod — `@jayoncode/form-intelligent-zod`
 
 ```bash
-npm install @jayoncode/form-intelligent @jayoncode/form-intelligence-zod zod
+npm install @jayoncode/form-intelligence @jayoncode/form-intelligent-zod zod
 ```
 
 ```ts
-import { createForm } from "@jayoncode/form-intelligent";
-import { zodAdapter } from "@jayoncode/form-intelligence-zod";
+import { createForm } from "@jayoncode/form-intelligence";
+import { zodAdapter } from "@jayoncode/form-intelligent-zod";
 import { z } from "zod";
 
 const signupSchema = z.object({
@@ -117,15 +117,15 @@ const form = createForm({
 
 ---
 
-## Yup — `@jayoncode/form-intelligence-yup`
+## Yup — `@jayoncode/form-intelligent-yup`
 
 ```bash
-npm install @jayoncode/form-intelligent @jayoncode/form-intelligence-yup yup
+npm install @jayoncode/form-intelligence @jayoncode/form-intelligent-yup yup
 ```
 
 ```ts
-import { createForm } from "@jayoncode/form-intelligent";
-import { yupAdapter } from "@jayoncode/form-intelligence-yup";
+import { createForm } from "@jayoncode/form-intelligence";
+import { yupAdapter } from "@jayoncode/form-intelligent-yup";
 import * as yup from "yup";
 
 const signupSchema = yup.object({
@@ -142,15 +142,15 @@ const form = createForm({
 
 ---
 
-## Valibot — `@jayoncode/form-intelligence-valibot`
+## Valibot — `@jayoncode/form-intelligent-valibot`
 
 ```bash
-npm install @jayoncode/form-intelligent @jayoncode/form-intelligence-valibot valibot
+npm install @jayoncode/form-intelligence @jayoncode/form-intelligent-valibot valibot
 ```
 
 ```ts
-import { createForm } from "@jayoncode/form-intelligent";
-import { valibotAdapter } from "@jayoncode/form-intelligence-valibot";
+import { createForm } from "@jayoncode/form-intelligence";
+import { valibotAdapter } from "@jayoncode/form-intelligent-valibot";
 import * as v from "valibot";
 
 const signupSchema = v.object({
@@ -167,15 +167,15 @@ const form = createForm({
 
 ---
 
-## AJV — `@jayoncode/form-intelligence-ajv`
+## AJV — `@jayoncode/form-intelligent-ajv`
 
 ```bash
-npm install @jayoncode/form-intelligent @jayoncode/form-intelligence-ajv ajv
+npm install @jayoncode/form-intelligence @jayoncode/form-intelligent-ajv ajv
 ```
 
 ```ts
-import { createForm } from "@jayoncode/form-intelligent";
-import { ajvAdapter } from "@jayoncode/form-intelligence-ajv";
+import { createForm } from "@jayoncode/form-intelligence";
+import { ajvAdapter } from "@jayoncode/form-intelligent-ajv";
 
 const signupSchema = {
   type: "object",
@@ -197,15 +197,15 @@ Pass a pre-compiled `ValidateFunction` when reusing a configured `Ajv` instance 
 
 ---
 
-## Vue — `@jayoncode/form-intelligence-vue`
+## Vue — `@jayoncode/form-intelligent-vue`
 
 ```bash
-npm install @jayoncode/form-intelligent @jayoncode/form-intelligence-vue vue
+npm install @jayoncode/form-intelligence @jayoncode/form-intelligent-vue vue
 ```
 
 ```vue
 <script setup lang="ts">
-import { useForm } from "@jayoncode/form-intelligence-vue";
+import { useForm } from "@jayoncode/form-intelligent-vue";
 
 const form = useForm({
   schema: { email: "email", password: "password" },
@@ -225,10 +225,10 @@ Use `provideForm()` in a parent and `useField('path')` in children for deep tree
 
 ---
 
-## Angular — `@jayoncode/form-intelligence-angular`
+## Angular — `@jayoncode/form-intelligent-angular`
 
 ```bash
-npm install @jayoncode/form-intelligent @jayoncode/form-intelligence-angular
+npm install @jayoncode/form-intelligence @jayoncode/form-intelligent-angular
 ```
 
 ```typescript
@@ -238,7 +238,7 @@ import {
   FormIntelligentFormDirective,
   injectForm,
   provideFormIntelligent,
-} from "@jayoncode/form-intelligence-angular";
+} from "@jayoncode/form-intelligent-angular";
 
 @Component({
   standalone: true,
@@ -276,7 +276,7 @@ export class LoginComponent {
 Bridge any validation library via `SchemaAdapter`:
 
 ```ts
-import type { SchemaAdapter } from "@jayoncode/form-intelligent/adapters";
+import type { SchemaAdapter } from "@jayoncode/form-intelligence/adapters";
 
 const adapter: SchemaAdapter = {
   name: "custom",
@@ -286,8 +286,8 @@ const adapter: SchemaAdapter = {
 };
 ```
 
-Core also exports `PersistenceAdapter`, `FrameworkAdapter`, and `SubmitTransportAdapter` — see `@jayoncode/form-intelligent/adapters`.
+Core also exports `PersistenceAdapter`, `FrameworkAdapter`, and `SubmitTransportAdapter` — see `@jayoncode/form-intelligence/adapters`.
 
 **Next:** [Plugins](/packages/form-intelligence/modules/plugins) — lifecycle hooks · [Patterns](/packages/form-intelligence/modules/patterns)
 
-**Done with the guides?** Browse the [API Reference](/packages/form-intelligence/api/) or explore [all playground routes](/playground/form-intelligence/).
+**Done with the guides?** Browse the [API Reference](/packages/form-intelligence/api/) or explore [all playground routes](/playground/form-intelligent/).

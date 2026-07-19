@@ -1,6 +1,6 @@
 ---
 title: Workflow
-description: Form Intelligent documentation for Workflow.
+description: Form Intelligence documentation for Workflow.
 ---
 
 # Workflow
@@ -10,7 +10,7 @@ Autosave, drafts, wizards, progress, and related workflow config.
 **Previous:** [State](/packages/form-intelligence/modules/state) · **Next:** [Rules](/packages/form-intelligence/modules/rules)
 
 ::: tip Playground
-[Workflow explorer →](/playground/form-intelligence/workflow) — autosave debounce, draft restore, wizard steps.
+[Workflow explorer →](/playground/form-intelligent/workflow) — autosave debounce, draft restore, wizard steps.
 :::
 
 ## Problem → solution
@@ -78,7 +78,7 @@ workflow: {
 Manual: `form.saveDraft()`.
 
 ::: info Try it
-Fill fields in the [Workflow playground](/playground/form-intelligence/workflow), reload — the draft comes back.
+Fill fields in the [Workflow playground](/playground/form-intelligent/workflow), reload — the draft comes back.
 :::
 
 ---

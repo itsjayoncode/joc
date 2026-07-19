@@ -25,6 +25,9 @@ Optional peer: `@jayoncode/browser-lifecycle`.
 ```ts
 import { createForm } from "@jayoncode/form-intelligence";
 import { createBrowserLifecyclePlugin } from "@jayoncode/form-intelligence/plugins";
+import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
+
+const shared = createBrowserLifecycle({ idleTimeout: 60_000 });
 
 const form = createForm({
   initialValues: { notes: "" },
@@ -33,13 +36,21 @@ const form = createForm({
   },
   plugins: [
     createBrowserLifecyclePlugin({
+      // Both default ON when omitted (`!== false`)
       saveDraftOnHidden: true,
       flushOfflineQueueOnOnline: true,
+      lifecycle: shared, // optional — inject a shared session (adapter does not dispose it)
     }),
   ],
 });
 // Or after create: form.use(createBrowserLifecyclePlugin({ ... }));
 ```
+
+| Option                      | Default | Effect                                                                                |
+| --------------------------- | ------- | ------------------------------------------------------------------------------------- |
+| `saveDraftOnHidden`         | **on**  | `page:hidden` → `form.saveDraft()`                                                    |
+| `flushOfflineQueueOnOnline` | **on**  | `connection:online` → `form.flushOfflineQueue()`                                      |
+| `lifecycle`                 | —       | Use an existing `BrowserLifecycle`; otherwise the plugin creates and disposes its own |
 
 When the tab is hidden, the plugin calls `form.saveDraft()`. When connectivity returns, it can flush `workflow.offlineQueue`.
 
@@ -93,6 +104,10 @@ createForm({
       enabled: true,
       excludePaths: ["ssn"], // path denylist
       // includePaths: ["email"], // deny-by-default allowlist
+      onSnapshot: (snapshot) => {
+        // Fired whenever getAnalytics() produces a snapshot
+        sendToYourPipeline(snapshot);
+      },
     },
   },
 });
@@ -104,6 +119,37 @@ const snap = form.getAnalytics();
 ```
 
 Use for drop-off diagnosis and field-level error heatmaps. Export to Segment/GA yourself if needed — scrub paths before network.
+
+---
+
+## Object diff plugin
+
+Optional peer `@jayoncode/object-diff`. Audits changes vs defaults on successful submit:
+
+```ts
+import { createObjectDiffPlugin } from "@jayoncode/form-intelligence/plugins";
+
+form.use(
+  createObjectDiffPlugin({
+    auditOnSubmit: true, // default true when onSubmitDiff is set
+    diffOptions: { maxDepth: 8, treatUndefinedAsMissing: true },
+    onSubmitDiff: async (diff, values) => {
+      await api.audit({
+        changeCount: diff.metadata.changeCount,
+        paths: diff.changes.map((c) => c.path),
+      });
+    },
+  }),
+);
+```
+
+| Option          | Notes                                                                                      |
+| --------------- | ------------------------------------------------------------------------------------------ |
+| `auditOnSubmit` | Default **on** when `onSubmitDiff` is provided (`!== false`)                               |
+| `onSubmitDiff`  | `(diff, values) => void \| Promise<void>` after successful submit                          |
+| `diffOptions`   | Pass-through `FormDiffOptions` (`maxDepth`, `includeUnchanged`, `treatUndefinedAsMissing`) |
+
+Instance helpers `form.diffFromDefaults()` / `form.diffFrom()` / `submit({ includeDiff: true })` remain available without the plugin — see [State](/packages/form-intelligence/modules/state#object-diffs).
 
 ---
 
@@ -142,10 +188,21 @@ Playground DevTools (`/playground/form-intelligence/devtools`) consumes this ins
 enableFormDevTools(form, {
   captureStateOnWorkflowEvents: true, // opt-in
   redactValues: true, // default
+  maxEvents: 200,
+  maxValidationEntries: 100,
+  maxWorkflowEntries: 100,
+  maxPerformanceMarks: 100,
 });
 
 const safe = redactFormStateSnapshot(form.getFormState());
 ```
+
+| Ring option            | Role                  |
+| ---------------------- | --------------------- |
+| `maxEvents`            | Cap general event log |
+| `maxValidationEntries` | Cap validation log    |
+| `maxWorkflowEntries`   | Cap workflow timeline |
+| `maxPerformanceMarks`  | Cap performance marks |
 
 A dedicated browser extension is planned (Phase 5.4.8).
 

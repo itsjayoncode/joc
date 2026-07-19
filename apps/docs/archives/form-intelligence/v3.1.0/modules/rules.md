@@ -1,6 +1,6 @@
 ---
 title: Rules
-description: Form Intelligent documentation for Rules.
+description: Form Intelligence documentation for Rules.
 ---
 
 # Rules
@@ -10,7 +10,7 @@ Declarative conditional logic — show, hide, require, enable, populate, and gat
 **Previous:** [Workflow](/packages/form-intelligence/modules/workflow) · **Next:** [Calculations](/packages/form-intelligence/modules/calculations)
 
 ::: tip Playground
-[Rules explorer →](/playground/form-intelligence/rules) · [Dependencies →](/playground/form-intelligence/dependencies)
+[Rules explorer →](/playground/form-intelligent/rules) · [Dependencies →](/playground/form-intelligent/dependencies)
 :::
 
 ## Problem → solution
@@ -23,10 +23,10 @@ Declarative conditional logic — show, hide, require, enable, populate, and gat
 
 ## Overview
 
-Import `when` from the core package (or `@jayoncode/form-intelligent/rules`):
+Import `when` from the core package (or `@jayoncode/form-intelligence/rules`):
 
 ```ts
-import { createForm, when } from "@jayoncode/form-intelligent";
+import { createForm, when } from "@jayoncode/form-intelligence";
 
 createForm({
   initialValues: {
@@ -44,10 +44,10 @@ Rules evaluate when watched values change. Results land in `form.state.fieldUi` 
 
 ## Which import should I use?
 
-| Import                                                           | When to use it                                                                                                                                                 |
-| ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `import { createForm, when } from "@jayoncode/form-intelligent"` | **Default.** Same module as your form; readable app code.                                                                                                      |
-| `import { when } from "@jayoncode/form-intelligent/rules"`       | Prefer when you want an **explicit rules dependency**, separate entry sizing, or to keep rule helpers next to other `/rules` APIs (`evaluateFormRules`, etc.). |
+| Import                                                            | When to use it                                                                                                                                                 |
+| ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `import { createForm, when } from "@jayoncode/form-intelligence"` | **Default.** Same module as your form; readable app code.                                                                                                      |
+| `import { when } from "@jayoncode/form-intelligence/rules"`       | Prefer when you want an **explicit rules dependency**, separate entry sizing, or to keep rule helpers next to other `/rules` APIs (`evaluateFormRules`, etc.). |
 
 Both export the same `when` builder. Modern bundlers tree-shake unused named exports from the core entry, so importing only `createForm` does not pull `when` into your app.
 
@@ -55,10 +55,10 @@ Both export the same `when` builder. Modern bundlers tree-shake unused named exp
 
 ```ts
 // Default — fine for almost every app
-import { createForm, when } from "@jayoncode/form-intelligent";
+import { createForm, when } from "@jayoncode/form-intelligence";
 
 // Explicit subpath — optional
-import { when } from "@jayoncode/form-intelligent/rules";
+import { when } from "@jayoncode/form-intelligence/rules";
 ```
 
 ---
@@ -192,7 +192,7 @@ createForm({
 
 When `country` changes, the loader runs and options appear on `form.state.fieldUi.province.options` / `form.state.fieldOptions.province`.
 
-[Dependencies playground →](/playground/form-intelligence/dependencies)
+[Dependencies playground →](/playground/form-intelligent/dependencies)
 
 ---
 
@@ -223,10 +223,10 @@ form
 
 ```ts
 // Prefer this in app code
-import { createForm, when } from "@jayoncode/form-intelligent";
+import { createForm, when } from "@jayoncode/form-intelligence";
 
 // Optional explicit subpath
-// import { when } from "@jayoncode/form-intelligent/rules";
+// import { when } from "@jayoncode/form-intelligence/rules";
 
 rules: [
   when("type").equals("B2B").show("vat").require("vat"),

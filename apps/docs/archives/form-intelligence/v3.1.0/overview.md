@@ -1,6 +1,6 @@
 ---
-title: Form Intelligent overview
-description: "Documentation overview for @jayoncode/form-intelligent."
+title: Form Intelligence overview
+description: "Documentation overview for @jayoncode/form-intelligence."
 ---
 
 # Package overview
@@ -10,21 +10,21 @@ Headless form workflow engine — validation, submission, state, and multi-step 
 ## Install
 
 ```bash
-npm install @jayoncode/form-intelligent
+npm install @jayoncode/form-intelligence
 ```
 
 ```bash
-pnpm add @jayoncode/form-intelligent
+pnpm add @jayoncode/form-intelligence
 ```
 
 ```bash
-yarn add @jayoncode/form-intelligent
+yarn add @jayoncode/form-intelligence
 ```
 
 React apps also need the adapter:
 
 ```bash
-npm install @jayoncode/form-intelligent @jayoncode/form-intelligence-react
+npm install @jayoncode/form-intelligence @jayoncode/form-intelligent-react
 ```
 
 ## Example: native HTML signup
@@ -32,7 +32,7 @@ npm install @jayoncode/form-intelligent @jayoncode/form-intelligence-react
 Enhance existing markup — no React, no manual `onChange`:
 
 ```ts
-import { createForm } from "@jayoncode/form-intelligent";
+import { createForm } from "@jayoncode/form-intelligence";
 
 createForm({
   target: "#signup",
@@ -57,14 +57,14 @@ createForm({
 </form>
 ```
 
-[Try in the playground →](/playground/form-intelligence/validation)
+[Try in the playground →](/playground/form-intelligent/validation)
 
 ## Example: headless signup with async submit
 
 Programmatic wiring when you own the input layer:
 
 ```ts
-import { createForm, email, required } from "@jayoncode/form-intelligent";
+import { createForm, email, required } from "@jayoncode/form-intelligence";
 
 const form = createForm({
   initialValues: { email: "", name: "" },
@@ -100,7 +100,7 @@ await form.submit();
 
 The instance owns values, per-field errors, touched/dirty flags, and submit lifecycle (`isSubmitting`, duplicate-submit guard). UI layers read state and call `bind()` handlers — the package does not render components.
 
-[Run this flow in the playground →](/playground/form-intelligence/validation)
+[Run this flow in the playground →](/playground/form-intelligent/validation)
 
 ## Problem → approach
 
@@ -132,43 +132,43 @@ Work through the journey groups below. Each guide links to a playground route.
 
 ### Getting Started
 
-| Guide                                                           | Topics                         | Playground                                  |
-| --------------------------------------------------------------- | ------------------------------ | ------------------------------------------- |
-| [Tutorial](/packages/form-intelligence/modules/getting-started) | `createForm`, `bind`, `submit` | [Dashboard](/playground/form-intelligence/) |
+| Guide                                                           | Topics                         | Playground                                 |
+| --------------------------------------------------------------- | ------------------------------ | ------------------------------------------ |
+| [Tutorial](/packages/form-intelligence/modules/getting-started) | `createForm`, `bind`, `submit` | [Dashboard](/playground/form-intelligent/) |
 
 ### Core Concepts
 
-| Guide                                                            | Topics                              | Playground                                   |
-| ---------------------------------------------------------------- | ----------------------------------- | -------------------------------------------- |
-| [Core concepts](/packages/form-intelligence/modules/concepts)    | Instance model, flags, architecture | [State](/playground/form-intelligence/state) |
-| [Capabilities](/packages/form-intelligence/modules/capabilities) | Form OS feature map and status      | [Dashboard](/playground/form-intelligence/)  |
+| Guide                                                            | Topics                              | Playground                                  |
+| ---------------------------------------------------------------- | ----------------------------------- | ------------------------------------------- |
+| [Core concepts](/packages/form-intelligence/modules/concepts)    | Instance model, flags, architecture | [State](/playground/form-intelligent/state) |
+| [Capabilities](/packages/form-intelligence/modules/capabilities) | Form OS feature map and status      | [Dashboard](/playground/form-intelligent/)  |
 
 ### Guides
 
-| Guide                                                            | Topics                            | Playground                                                 |
-| ---------------------------------------------------------------- | --------------------------------- | ---------------------------------------------------------- |
-| [Validation](/packages/form-intelligence/modules/validation)     | Built-in rules, schema, async     | [Validation](/playground/form-intelligence/validation)     |
-| [Submission](/packages/form-intelligence/modules/submission)     | Loading, cancel, retries, offline | [Submission](/playground/form-intelligence/submission)     |
-| [State](/packages/form-intelligence/modules/state)               | Snapshots, meta, undo/redo, diffs | [State](/playground/form-intelligence/state)               |
-| [Workflow](/packages/form-intelligence/modules/workflow)         | Autosave, drafts, wizard          | [Workflow](/playground/form-intelligence/workflow)         |
-| [Rules](/packages/form-intelligence/modules/rules)               | `when()` show/require/populate    | [Rules](/playground/form-intelligence/rules)               |
-| [Calculations](/packages/form-intelligence/modules/calculations) | Derived fields                    | [Calculations](/playground/form-intelligence/calculations) |
-| [Formatters](/packages/form-intelligence/modules/formatters)     | Parse/format pipelines            | [Formatters](/playground/form-intelligence/formatters)     |
+| Guide                                                            | Topics                            | Playground                                                |
+| ---------------------------------------------------------------- | --------------------------------- | --------------------------------------------------------- |
+| [Validation](/packages/form-intelligence/modules/validation)     | Built-in rules, schema, async     | [Validation](/playground/form-intelligent/validation)     |
+| [Submission](/packages/form-intelligence/modules/submission)     | Loading, cancel, retries, offline | [Submission](/playground/form-intelligent/submission)     |
+| [State](/packages/form-intelligence/modules/state)               | Snapshots, meta, undo/redo, diffs | [State](/playground/form-intelligent/state)               |
+| [Workflow](/packages/form-intelligence/modules/workflow)         | Autosave, drafts, wizard          | [Workflow](/playground/form-intelligent/workflow)         |
+| [Rules](/packages/form-intelligence/modules/rules)               | `when()` show/require/populate    | [Rules](/playground/form-intelligent/rules)               |
+| [Calculations](/packages/form-intelligence/modules/calculations) | Derived fields                    | [Calculations](/playground/form-intelligent/calculations) |
+| [Formatters](/packages/form-intelligence/modules/formatters)     | Parse/format pipelines            | [Formatters](/playground/form-intelligent/formatters)     |
 
 ### Integrations
 
-| Guide                                                            | Topics                       | Playground                                                 |
-| ---------------------------------------------------------------- | ---------------------------- | ---------------------------------------------------------- |
-| [Integrations](/packages/form-intelligence/modules/integrations) | Session, keyboard, analytics | [Integrations](/playground/form-intelligence/integrations) |
-| [Adapters](/packages/form-intelligence/modules/adapters)         | Framework + schema bridges   | [Adapters](/playground/form-intelligence/adapters)         |
+| Guide                                                            | Topics                       | Playground                                                |
+| ---------------------------------------------------------------- | ---------------------------- | --------------------------------------------------------- |
+| [Integrations](/packages/form-intelligence/modules/integrations) | Session, keyboard, analytics | [Integrations](/playground/form-intelligent/integrations) |
+| [Adapters](/packages/form-intelligence/modules/adapters)         | Framework + schema bridges   | [Adapters](/playground/form-intelligent/adapters)         |
 
 ### Advanced and Support
 
-| Guide                                                      | Topics                   | Playground                                         |
-| ---------------------------------------------------------- | ------------------------ | -------------------------------------------------- |
-| [Plugins](/packages/form-intelligence/modules/plugins)     | Lifecycle hooks          | [Plugins](/playground/form-intelligence/plugins)   |
-| [Patterns](/packages/form-intelligence/modules/patterns)   | Wizard, offline, recipes | [Dashboard](/playground/form-intelligence/)        |
-| [Migration](/packages/form-intelligence/modules/migration) | From DIY autosave        | [Workflow](/playground/form-intelligence/workflow) |
+| Guide                                                      | Topics                   | Playground                                        |
+| ---------------------------------------------------------- | ------------------------ | ------------------------------------------------- |
+| [Plugins](/packages/form-intelligence/modules/plugins)     | Lifecycle hooks          | [Plugins](/playground/form-intelligent/plugins)   |
+| [Patterns](/packages/form-intelligence/modules/patterns)   | Wizard, offline, recipes | [Dashboard](/playground/form-intelligent/)        |
+| [Migration](/packages/form-intelligence/modules/migration) | From DIY autosave        | [Workflow](/playground/form-intelligent/workflow) |
 
 ## Package fit
 
@@ -187,4 +187,4 @@ Work through the journey groups below. Each guide links to a playground route.
 
 - [API (TypeDoc)](/packages/form-intelligence/api/)
 - [Playground guide](/packages/form-intelligence/playground/playground)
-- [Examples](/playground/form-intelligence/examples)
+- [Examples](/playground/form-intelligent/examples)

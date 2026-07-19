@@ -1,11 +1,11 @@
 ---
 title: Capabilities
-description: Form Intelligent documentation for Capabilities.
+description: Form Intelligence documentation for Capabilities.
 ---
 
 # Form OS — Capabilities
 
-`@jayoncode/form-intelligent` is a **headless form workflow engine** — an operating system for forms. You pick the features you need; the engine centralizes validation, formatting, conditional logic, business rules, autosave, drafts, submission, and integrations while you keep full control of UI.
+`@jayoncode/form-intelligence` is a **headless form workflow engine** — an operating system for forms. You pick the features you need; the engine centralizes validation, formatting, conditional logic, business rules, autosave, drafts, submission, and integrations while you keep full control of UI.
 
 **Previous:** [Core concepts](/packages/form-intelligence/modules/concepts) · **Next:** [Validation](/packages/form-intelligence/modules/validation)
 
@@ -38,7 +38,7 @@ form.state.isSubmitting;
 form.state.isDirty;
 ```
 
-[State explorer →](/playground/form-intelligence/state)
+[State explorer →](/playground/form-intelligent/state)
 
 ### 2. Validation engine — **SHIPPED**
 
@@ -77,7 +77,7 @@ username: {
 }
 ```
 
-[Validation playground →](/playground/form-intelligence/validation)
+[Validation playground →](/playground/form-intelligent/validation)
 
 ---
 
@@ -98,7 +98,7 @@ Presets: `philippine-phone`, `credit-card`, plus custom `format` / `parse` hooks
 Show, hide, require, and enable fields based on other values — no scattered `useEffect`.
 
 ```ts
-import { createForm, when } from "@jayoncode/form-intelligent";
+import { createForm, when } from "@jayoncode/form-intelligence";
 
 createForm({
   initialValues: { customerType: "Personal", companyName: "" },
@@ -135,7 +135,7 @@ when("customerType").equals("Business").require("taxNumber");
 when("country").changes(loadProvinces).populate("province");
 ```
 
-[Dependencies playground →](/playground/form-intelligence/dependencies)
+[Dependencies playground →](/playground/form-intelligent/dependencies)
 
 ### 10. Calculations — **SHIPPED**
 
@@ -143,7 +143,7 @@ when("country").changes(loadProvinces).populate("province");
 form.calculate("total", ({ values }) => values.price * values.quantity);
 ```
 
-[Calculations guide →](/packages/form-intelligence/modules/calculations) · [Playground →](/playground/form-intelligence/calculations)
+[Calculations guide →](/packages/form-intelligence/modules/calculations) · [Playground →](/playground/form-intelligent/calculations)
 
 ### 25. Business rule engine — **SHIPPED**
 
@@ -158,7 +158,7 @@ form
   });
 ```
 
-[Rules playground →](/playground/form-intelligence/rules)
+[Rules playground →](/playground/form-intelligent/rules)
 
 ---
 
@@ -188,7 +188,7 @@ workflow: { autosave: { enabled: true, debounceMs: 5000, onSave } }
 
 `workflow.offlineQueue` — queue while offline, `form.flushOfflineQueue()` on reconnect.
 
-[Submission playground →](/playground/form-intelligence/submission)
+[Submission playground →](/playground/form-intelligent/submission)
 
 ---
 
@@ -226,7 +226,7 @@ Validate → loading → disable button → API → success/error → re-enable.
 
 `workflow.keyboard` or `createKeyboardPlugin()` — Ctrl+S save, Ctrl+Enter submit.
 
-[Integrations guide →](/packages/form-intelligence/modules/integrations) · [Playground →](/playground/form-intelligence/integrations)
+[Integrations guide →](/packages/form-intelligence/modules/integrations) · [Playground →](/playground/form-intelligent/integrations)
 
 ### 22. Analytics — **SHIPPED**
 
@@ -241,7 +241,7 @@ Validate → loading → disable button → API → success/error → re-enable.
 ### 24. React adapter — **SHIPPED**
 
 ```tsx
-import { useForm } from "@jayoncode/form-intelligence-react";
+import { useForm } from "@jayoncode/form-intelligent-react";
 
 const form = useForm({ schema: { email: "email" } });
 ```

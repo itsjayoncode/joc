@@ -1,6 +1,6 @@
 ---
 title: Formatters
-description: Form Intelligent documentation for Formatters.
+description: Form Intelligence documentation for Formatters.
 ---
 
 # Formatters
@@ -10,7 +10,7 @@ Clean up input as the user types — phone masks, currency decimals, URL slugs.
 **Previous:** [Calculations](/packages/form-intelligence/modules/calculations) · **Next:** [Integrations](/packages/form-intelligence/modules/integrations)
 
 ::: tip Playground
-[Formatters explorer →](/playground/form-intelligence/formatters) — compare display value vs stored value.
+[Formatters explorer →](/playground/form-intelligent/formatters) — compare display value vs stored value.
 :::
 
 ## Problem → solution
@@ -25,7 +25,7 @@ Clean up input as the user types — phone masks, currency decimals, URL slugs.
 Formatters run on `setValue` and normalize stored values. They are separate from validators (validity checks).
 
 ```ts
-import { phone, currency, slug } from "@jayoncode/form-intelligent";
+import { phone, currency, slug } from "@jayoncode/form-intelligence";
 
 form.field("phone", { format: phone }).setValue("5551234567");
 // stored: "(555) 123-4567"
@@ -50,7 +50,7 @@ import {
   slug,
   creditCard,
   creditCardParser,
-} from "@jayoncode/form-intelligent/format";
+} from "@jayoncode/form-intelligence/format";
 
 form.field("amount", { format: currency }).setValue(rawInput);
 form.field("handle", { format: slug }).setValue(title);
@@ -78,7 +78,7 @@ form.field("code", {
 Compose chains:
 
 ```ts
-import { composeFormatters, trim, uppercase } from "@jayoncode/form-intelligent/format";
+import { composeFormatters, trim, uppercase } from "@jayoncode/form-intelligence/format";
 
 form.field("code", { format: composeFormatters(trim, uppercase) });
 ```
@@ -88,7 +88,7 @@ form.field("code", { format: composeFormatters(trim, uppercase) });
 ## Custom formatter
 
 ```ts
-import { custom } from "@jayoncode/form-intelligent/format";
+import { custom } from "@jayoncode/form-intelligence/format";
 
 const definition = custom(
   (value) => String(value).toUpperCase(),

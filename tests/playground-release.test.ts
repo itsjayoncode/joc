@@ -32,12 +32,12 @@ describe("playground release validation", () => {
     }
   });
 
-  it("ships version 1.0.0", () => {
+  it("ships version 1.0.1", () => {
     const manifest = JSON.parse(readFileSync(path.join(playgroundDir, "package.json"), "utf8")) as {
       version: string;
     };
 
-    expect(manifest.version).toBe("1.0.0");
+    expect(manifest.version).toBe("1.0.1");
   });
 
   it("includes SPA fallback for static hosting", () => {

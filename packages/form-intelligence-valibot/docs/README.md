@@ -22,6 +22,11 @@ You chose Valibot for small, composable pipelines — but the form layer still w
 | **With core workflows** | Combine with `when()` rules, autosave, drafts, `validateOn`, plugins |
 | **Bundle-friendly**     | Use modular Valibot schemas without rewriting the form shell         |
 
+### Behavior notes
+
+- **First error per path wins.** `safeParseAsync` can report multiple issues for the same path; only the first one encountered is kept.
+- **Validate-only.** `valibotAdapter()` returns a `SchemaAdapter` — it validates `values` and returns `{ path: message }`. It does not make `createForm` infer `TValues` from your Valibot schema; keep inferring types in your own code with `v.InferOutput<typeof schema>` and pass them via `initialValues` / the `TValues` generic.
+
 ## Install
 
 ```bash

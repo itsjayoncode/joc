@@ -24,6 +24,11 @@ Your API already speaks Zod, but the form keeps a **second copy** of the rules (
 
 Does not replace Form Intelligence — it feeds the validation pipeline so you don’t re-encode constraints.
 
+### Behavior notes
+
+- **First error per path wins.** `safeParseAsync` can report multiple issues for the same path; only the first one encountered is kept.
+- **Validate-only.** `zodAdapter()` returns a `SchemaAdapter` — it validates `values` and returns `{ path: message }`. It does not make `createForm` infer `TValues` from your Zod schema; keep inferring types in your own code with `z.infer<typeof schema>` and pass them via `initialValues` / the `TValues` generic.
+
 ## Install
 
 ```bash

@@ -38,6 +38,8 @@ Root import of merge/query/stats/plugins is **not** supported — use the subpat
 | --------------------- | ---------------------------------------------------------- |
 | Merge                 | [Merge](/packages/object-diff/modules/merge)               |
 | Query                 | [Query](/packages/object-diff/modules/query)               |
+| Statistics            | [Statistics](/packages/object-diff/modules/stats)          |
+| Plugins               | [Plugins](/packages/object-diff/modules/plugins)           |
 | Fluent DX             | [DX](/packages/object-diff/modules/dx)                     |
 | Integrations          | [Integrations](/packages/object-diff/modules/integrations) |
 | Performance / budgets | [Performance](/packages/object-diff/modules/performance)   |
