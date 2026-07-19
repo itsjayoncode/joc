@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.0
+
+### Minor Changes
+
+- af981ea: Align Vue/Angular adapters with the shared adapter contract: `controller`, `fieldController`, `focusFirstInvalid`; Angular `fiField` syncs projection attrs; docs teach `ui()` + `showError`.
+
 ## 2.2.0
 
 ### Minor Changes
