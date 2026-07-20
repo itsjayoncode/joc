@@ -250,6 +250,24 @@ gtag('config', '${docsGaId}');`,
   },
   vite: {
     plugins: createDocsVitePlugins(),
+    // esbuild 0.28+ refuses to lower destructuring for safari14 (Safari 14.0 engine bug).
+    // Vite's default `modules` target includes safari14; bump to 14.1 so native destructuring is kept.
+    // See https://github.com/evanw/esbuild/issues/4436
+    build: {
+      target: ["es2020", "edge88", "firefox78", "chrome87", "safari14.1"],
+    },
+    esbuild: {
+      supported: {
+        destructuring: true,
+      },
+    },
+    optimizeDeps: {
+      esbuildOptions: {
+        supported: {
+          destructuring: true,
+        },
+      },
+    },
     server: {
       host: "127.0.0.1",
       port: 4175,
