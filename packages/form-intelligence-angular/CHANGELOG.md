@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.2
+
+### Patch Changes
+
+- f9fef7f: Surface `captchaLoading` while CAPTCHA prepare runs so `form.ui.canSubmit` stays false until the provider is ready; notify subscribers on Security Stage state transitions. Playground CAPTCHA lab: Loading → ready scenario + submit gated on `canSubmit`. `mockCaptcha` gains `loadDelayMs` / `failLoadWith`.
+
 ## 2.3.1
 
 ### Patch Changes

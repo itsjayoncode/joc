@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/form-intelligence",
-  "version": "3.8.1",
+  "version": "3.9.0",
   "private": false,
   "description": "Form Intelligence — Typed, framework-agnostic headless form engine for validation, submission, state, drafts, wizards, and plugins. Works with native HTML or any UI framework.",
   "license": "MIT",

@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/form-intelligence-vue",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "Vue adapter for @jayoncode/form-intelligence — useForm, provideForm, and useField composables.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
