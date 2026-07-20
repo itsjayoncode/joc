@@ -60,10 +60,10 @@ rules: [when("name").equals("blocked").disableSubmit().toRule()];
 
 ## Which import should I use?
 
-| Import                                                            | When to use it                                                                                                                                                 |
-| ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `import { createForm, when } from "@jayoncode/form-intelligence"` | **Default.** Same module as your form; readable app code.                                                                                                      |
-| `import { when } from "@jayoncode/form-intelligence/rules"`       | Prefer when you want an **explicit rules dependency**, separate entry sizing, or to keep rule helpers next to other `/rules` APIs (`evaluateFormRules`, etc.). |
+| Import                                                            | When to use it                                                                                                                                                         |
+| ----------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `import { createForm, when } from "@jayoncode/form-intelligence"` | **Default.** Same module as your form; readable app code.                                                                                                              |
+| `import { when } from "@jayoncode/form-intelligence/rules"`       | Prefer when you want an **explicit rules dependency**, separate entry sizing, or other `/rules` APIs such as [`evaluateFormRules`](#rules-helpers--evaluateformrules). |
 
 Both export the same `when` builder. Modern bundlers tree-shake unused named exports from the core entry, so importing only `createForm` does not pull `when` into your app.
 
@@ -244,6 +244,8 @@ createForm({
 
 Parent changes run the child’s **dependency actions**. Default for an explicit `dependencies` map: `["clear", "revalidate"]`. Cycles throw `ConfigurationError`.
 
+The underlying check is `detectDependencyCycles` from `@jayoncode/form-intelligence/dependency` — call it directly to inspect or unit-test a dependency map without constructing a form.
+
 `field(..., { dependsOn })` still works for **inferred** edges — those are **revalidate-only** (they do not clear), so SHIPPED clear behavior stays opt-in via the map.
 
 #### `dependencyActions`
@@ -290,14 +292,107 @@ form
 
 ---
 
+## Rules helpers — evaluateFormRules
+
+Most apps only need `createForm({ rules })` — the form evaluates rules for you. Import helpers from `@jayoncode/form-intelligence/rules` when you want to **run the same rule definitions outside a live form** (unit tests, preview UIs, or tooling).
+
+```ts
+import { when, evaluateFormRules } from "@jayoncode/form-intelligence/rules";
+
+const rules = [when("plan").equals("enterprise").show("seats").require("seats").toRule()];
+
+const { fieldUi, formUi } = evaluateFormRules({
+  rules,
+  values: { plan: "enterprise", seats: 1 },
+  fieldPaths: ["plan", "seats"],
+  setValue: () => undefined, // required — used if a rule calls ctx.setValue / .then()
+  // requiredBaseline: ["email"], // optional — seed schema/static required before rules (ADR-018)
+});
+
+fieldUi.seats?.visible; // true
+fieldUi.seats?.required; // true
+formUi.submitDisabled; // false unless a matching rule called disableSubmit
+```
+
+| Option             | Role                                                                    |
+| ------------------ | ----------------------------------------------------------------------- |
+| `rules`            | Plain `FormRuleDefinition[]` — use `.toRule()` / `.build()` on builders |
+| `values`           | Snapshot to evaluate against                                            |
+| `fieldPaths`       | Paths that get default UI entries before patches                        |
+| `setValue`         | Invoked if a rule’s `.then()` / context writes values                   |
+| `requiredBaseline` | Optional paths that start as `required: true` before rules run          |
+
+**Returns:** `{ fieldUi, formUi }` — same shape as `form.state.fieldUi` / `form.state.formUi` for the evaluated snapshot.
+
+**Order:** registration order; later rules overwrite earlier UI patches for the same key (`RULE_EVALUATION_ORDER`).
+
+**Errors:** throws from `.then()` are wrapped as `WorkflowError`.
+
+### Materializing `WhenRuleBuilder`
+
+`when(field)` returns a `WhenRuleBuilder`. `createForm({ rules: [when(...)] })` accepts builders directly — no `.toRule()` needed (see [Overview](#overview)). `.toRule()` and `.build()` are identical — both produce a plain `FormRuleDefinition`, useful for `evaluateFormRules` or your own storage.
+
+```ts
+const rule = when("plan").equals("enterprise").show("seats").toRule();
+// rule.build() returns the same FormRuleDefinition
+```
+
+Action methods (`.show()` / `.hide()` / `.require()` / …) auto-commit when chained from `form.when()` — a commit hook registers the rule on the form as soon as the first action is called, so `form.when("plan").equals("enterprise").show("seats")` is already live without an explicit commit step.
+
+### `runDependencyRules` (from `/rules`)
+
+Low-level pass behind `.changes().populate()` — run the same option-loading rules outside a live form (tests, preview tooling):
+
+```ts
+import { runDependencyRules } from "@jayoncode/form-intelligence/rules";
+
+await runDependencyRules({
+  rules: [...], // FormRuleDefinition with watch + changes + populate
+  changedPath: "country",
+  values,
+  // signal, // abort returns partial updates
+}); // → Promise<Partial<Record<FieldPath, readonly FieldOption[]>>>
+```
+
+Only rules where `rule.watch === changedPath`, and that have both `changes` and `populate` and match their predicate, run. Prefer form + `when().changes().populate()`. Throws `WorkflowError` on loader failure.
+
+### `runCalculations` (from `/rules`)
+
+Low-level calculation pass behind `form.calculate()`:
+
+```ts
+import { runCalculations } from "@jayoncode/form-intelligence/rules";
+
+runCalculations({
+  calculations, // CalculationDefinition[]: path, compute({ values, get }), deps?, markDirty?, lazy?, memoized?
+  values,
+  // changedPath, // if set, only calcs whose deps include it run
+  // memo: new Map(), // fingerprint cache when a calc is memoized
+  // initial: true, // skip lazy calcs
+}); // → Partial<Record<path, unknown>>
+```
+
+Prefer `form.calculate()` / `calculate()` from the main entry — see [Calculations](/packages/form-intelligence/modules/calculations).
+
+Also on `/rules` (advanced / engine-level — prefer form + config in apps):
+
+| Export                     | Use for                                  |
+| -------------------------- | ---------------------------------------- |
+| `when` / `WhenRuleBuilder` | Fluent rule builder (also on main)       |
+| `evaluateFormRules`        | Sync UI evaluation outside `createForm`  |
+| `runDependencyRules`       | Low-level dependency propagation (above) |
+| `runCalculations`          | Low-level calculation pass (above)       |
+
+---
+
 ## Cheat sheet
 
 ```ts
 // Prefer this in app code
 import { createForm, when } from "@jayoncode/form-intelligence";
 
-// Optional explicit subpath
-// import { when } from "@jayoncode/form-intelligence/rules";
+// Optional explicit subpath (+ evaluateFormRules, …)
+// import { when, evaluateFormRules } from "@jayoncode/form-intelligence/rules";
 
 rules: [
   when("type").equals("B2B").show("vat").require("vat"),

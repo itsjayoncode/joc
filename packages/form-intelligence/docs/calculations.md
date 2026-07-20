@@ -17,6 +17,8 @@ import { createForm, calculate } from "@jayoncode/form-intelligence";
 
 Main entry only for typical use. [Entrypoints](/packages/form-intelligence/modules/entrypoints).
 
+The headless engine pass (`runCalculations`) lives on `@jayoncode/form-intelligence/rules` for tests/tooling that need to run calculations without a live form — see [Rules → runCalculations](/packages/form-intelligence/modules/rules#runcalculations-from-rules). Prefer `form.calculate()` / `calculate()` shown below in app code.
+
 ## Problem → solution
 
 | Problem                               | Solution                            |

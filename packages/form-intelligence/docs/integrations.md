@@ -120,6 +120,30 @@ const snap = form.getAnalytics();
 
 Use for drop-off diagnosis and field-level error heatmaps. Export to Segment/GA yourself if needed — scrub paths before network.
 
+### Analytics module API
+
+`workflow.analytics` registers a `FormAnalyticsTracker` module for you and exposes it through `form.getAnalytics()`. `@jayoncode/form-intelligence/analytics` exports the underlying pieces for a standalone tracker (no `createForm` module) or a custom plugin:
+
+| Export                           | Role                                                                      |
+| -------------------------------- | ------------------------------------------------------------------------- |
+| `FormAnalyticsTracker`           | Stateful tracker — `recordFieldView`, `recordFieldError`, `getSnapshot()` |
+| `createAnalyticsPlugin(tracker)` | Wraps a tracker as a `FormPlugin` you can pass to `plugins: []`           |
+
+```ts
+import {
+  FormAnalyticsTracker,
+  createAnalyticsPlugin,
+} from "@jayoncode/form-intelligence/analytics";
+
+const tracker = new FormAnalyticsTracker();
+
+createForm({
+  plugins: [createAnalyticsPlugin(tracker)],
+});
+```
+
+Prefer `workflow.analytics` + `form.getAnalytics()` — reach for the tracker/plugin directly only when you need a tracker instance that outlives the form or want to compose analytics into your own module.
+
 ---
 
 ## Object diff plugin

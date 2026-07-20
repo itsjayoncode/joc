@@ -282,6 +282,14 @@ const unregister = registerSecurityStage(
 
 One stage registration per form (last writer wins). Prefer CAPTCHA factories for CAPTCHA. Use `registerSecurityStage` for other gates in the same slot (after validation, before `beforeSubmit` / `onSubmit`). Soft explain reasons you invent should also be understood by your UI — only `captcha*` reasons are built into `/ui` hard-block mapping today.
 
+| Export (from `/submission`)      | Role                                                             |
+| -------------------------------- | ---------------------------------------------------------------- |
+| `registerSecurityStage`          | Register one stage handler per form                              |
+| `runSecurityStage`               | Invoked internally by `submit()` — you rarely call this directly |
+| `getSecurityStageExplainReasons` | Soft reasons surfaced in `form.ui.explain("submit")`             |
+
+Full table with `evaluateSubmissionGuard` and low-level submit internals: [Submission → Security Stage API](/packages/form-intelligence/modules/submission#security-stage-api).
+
 ### Offline queue
 
 When `workflow.offlineQueue` is enabled and the device is offline:

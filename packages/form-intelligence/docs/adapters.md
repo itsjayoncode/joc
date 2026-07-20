@@ -137,13 +137,29 @@ if (!form.isValid()) {
 
 ## Accessibility (`field.aria`)
 
-Pure computation from error / required UI / registered ids (`computeFieldAria`, `/accessibility`):
+`field.aria` is a thin wrapper over `computeFieldAria` (also on `/accessibility`) — a pure function you can call directly for a custom binding layer or tests:
 
-| Flag              | Source                                                      |
-| ----------------- | ----------------------------------------------------------- |
-| `ariaInvalid`     | Non-empty field error                                       |
-| `ariaRequired`    | Presentation `required === true`                            |
-| `ariaDescribedBy` | `descriptionId` then `errorId` (error id only when invalid) |
+```ts
+import { computeFieldAria } from "@jayoncode/form-intelligence";
+
+computeFieldAria({
+  error: form.state.errors.email, // string | undefined
+  required: true,
+  ids: { descriptionId: "email-help", errorId: "email-error" },
+});
+// → {
+//   aria: { ariaInvalid, ariaRequired, ariaDescribedBy? },
+//   attributes: { "aria-invalid", "aria-required"?, "aria-describedby"? },
+// }
+```
+
+| Flag / attribute                       | Source                                                      |
+| -------------------------------------- | ----------------------------------------------------------- |
+| `ariaInvalid` / `aria-invalid`         | Non-empty field error                                       |
+| `ariaRequired` / `aria-required`       | Presentation `required === true`                            |
+| `ariaDescribedBy` / `aria-describedby` | `descriptionId` then `errorId` (error id only when invalid) |
+
+`attributes` is spread-ready (`"aria-required"` omitted when `false`); `aria` exposes the plain booleans. Prefer `field.aria` — call `computeFieldAria` directly only when building a custom controller.
 
 ---
 

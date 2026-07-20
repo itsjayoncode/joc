@@ -64,6 +64,15 @@ form.ui.explain("submit"); // { value, reasons, contributors }
 
 `submit()` evaluates the guard **before** starting and **re-checks `ruleDisabled` after** validate-on-submit.
 
+`form.submissionGuard()` is a thin wrapper over the standalone `evaluateSubmissionGuard` — call the pure function directly for tests/tooling that check eligibility without a live form:
+
+```ts
+import { evaluateSubmissionGuard } from "@jayoncode/form-intelligence/submission";
+
+evaluateSubmissionGuard({ alreadySubmitting, ruleSubmitDisabled });
+// → { allowed: boolean, reasons: ("alreadySubmitting" | "ruleDisabled")[] }
+```
+
 ### UX policy (`/ui` — button only)
 
 `disableSubmitWhen` tokens such as `validating` or opt-in `invalid` can disable the **button** via `form.ui.canSubmit` without changing whether `submit()` is allowed. Hard-guard reasons always force `canSubmit === false`.
@@ -263,6 +272,34 @@ Overflow `reject` and storage quota throw `OfflineQueueError` (`code: "offline_e
 Storage format remains a JSON array of `{ id, values, enqueuedAt, attempt?, idempotencyKey? }` — older payloads without the new fields still load.
 
 Pair with `createBrowserLifecyclePlugin({ flushOfflineQueueOnOnline: true })` — see [Integrations](/packages/form-intelligence/modules/integrations).
+
+---
+
+## Security Stage API
+
+The Security Stage runs between validation and `beforeSubmit` (see [Overview](#overview)). `captcha()` registers through it; you can also register your own stage for CSRF / OTP-style gates:
+
+| Export                           | Role                                                                |
+| -------------------------------- | ------------------------------------------------------------------- |
+| `registerSecurityStage`          | Register one stage handler per form (last registration wins)        |
+| `runSecurityStage`               | Invoked internally by `submit()` — run the registered stage handler |
+| `getSecurityStageExplainReasons` | Soft reasons surfaced in `form.ui.explain("submit")`                |
+
+See [CAPTCHA → Custom Security Stage](/packages/form-intelligence/modules/captcha#custom-security-stage) for a full example.
+
+## Low-level `/submission` exports (advanced)
+
+`@jayoncode/form-intelligence/submission` also exposes the orchestrator internals behind `form.submit()` / `workflow.offlineQueue`. Prefer the instance API — these are for building an alternate submit surface or unit-testing the pipeline in isolation.
+
+| Export                   | Role                                                             |
+| ------------------------ | ---------------------------------------------------------------- |
+| `executeSubmit`          | Runs one submit attempt (validation → security → `onSubmit`)     |
+| `SubmissionOrchestrator` | Stateful class behind `form.submit()` / `cancelSubmit()`         |
+| `SubmissionController`   | Cancel-token bookkeeping (`cancelSubmit()`)                      |
+| `OfflineSubmitQueue`     | Class behind `workflow.offlineQueue`                             |
+| `clearOfflineQueue`      | Reset persisted queue state for a storage key                    |
+| `normalizeRetryPolicy`   | Normalize the `retry` option (number or `RetryPolicy`) shorthand |
+| `DEFAULT_RETRY_POLICY`   | Default `{ maxAttempts, delayMs }` used when `retry` is omitted  |
 
 ---
 

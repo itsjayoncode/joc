@@ -62,6 +62,34 @@ Framework adapters subscribe for you — prefer `useForm()` / `useFormState()` i
 
 ---
 
+## Selectors (`/state`)
+
+`@jayoncode/form-intelligence/state` exports selector functions for use with `form.subscribe` or a custom store adapter — handy when you want to memoize a slice instead of reading all of `form.state`:
+
+| Export                   | Role                                                |
+| ------------------------ | --------------------------------------------------- |
+| `selectValues`           | `state.values`                                      |
+| `selectErrors`           | `state.errors`                                      |
+| `selectIsDirty`          | `state.isDirty`                                     |
+| `selectIsValid`          | `state.isValid`                                     |
+| `selectIsSubmitting`     | `state.isSubmitting`                                |
+| `selectFieldValue(path)` | Value at one path                                   |
+| `selectFieldError(path)` | Error at one path                                   |
+| `selectFieldState(path)` | `{ touched, dirty, visited, changed }` for one path |
+| `createSelector(fn)`     | Wrap a selector for use with your store             |
+
+```ts
+import { selectFieldValue } from "@jayoncode/form-intelligence/state";
+
+form.subscribe(() => {
+  const email = selectFieldValue("email")(form.state);
+});
+```
+
+Prefer `form.state` directly for simple reads — reach for selectors when composing with an external store or adapter.
+
+---
+
 ## Field flags
 
 | Map               | Meaning                              |
@@ -81,6 +109,23 @@ form.getFieldMeta("email");
 ```
 
 Typical UX: show errors only when `touched` or after submit.
+
+---
+
+## Array field helpers (`/fields`)
+
+Instance methods `form.pushField(path, item)` / `form.removeField(path, index)` / `form.insertField(path, index, item)` cover the common array cases. `@jayoncode/form-intelligence/fields` exposes the pure functions behind them for immutable array updates **outside** a form (reducers, tests, server-side prep):
+
+| Export                    | Role                                                           |
+| ------------------------- | -------------------------------------------------------------- |
+| `pushArrayItem`           | Append an item, returning a new array                          |
+| `removeArrayItem`         | Remove by index, returning a new array                         |
+| `insertArrayItem`         | Insert at an index, returning a new array                      |
+| `buildArrayItemPath`      | Join a base path + index (`"friends.0"`)                       |
+| `getArrayValue`           | Read an array value at a path, defaulting to `[]`              |
+| `remapIndexedFieldRecord` | Reindex per-item meta (errors, touched, …) after insert/remove |
+
+Prefer `form.pushField` / `form.removeField` / `form.insertField` in app code — they also reindex field meta for you.
 
 ---
 
