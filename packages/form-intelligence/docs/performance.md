@@ -58,7 +58,7 @@ Budgets catch **order-of-magnitude** regressions. Limits scale by **1.5× locall
 | Workload                         | Base   | Local (×1.5) | CI (×3) |
 | -------------------------------- | ------ | ------------ | ------- |
 | Validate 50 fields (warm median) | 150 ms | 225 ms       | 450 ms  |
-| setValue 50 × 100                | 300 ms | 450 ms       | 900 ms  |
+| setValue 50 × 100                | 350 ms | 525 ms       | 1050 ms |
 | Undo depth 50                    | 200 ms | 300 ms       | 600 ms  |
 
 ## Complexity (Big-O targets)

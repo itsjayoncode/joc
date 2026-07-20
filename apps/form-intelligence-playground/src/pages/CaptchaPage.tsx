@@ -13,12 +13,13 @@ import { toInputValue } from "../utils/field-value.js";
 
 import type { CaptchaBlockReason, SubmitSecurityCaptcha } from "../lib/form-intelligence.js";
 
-type ScenarioId = "success" | "fail" | "expired" | "unavailable" | "pending";
+type ScenarioId = "success" | "loading" | "fail" | "expired" | "unavailable" | "pending";
 
 type ProviderId = "mock" | "turnstile" | "recaptcha" | "hcaptcha";
 
 const SCENARIOS: readonly { id: ScenarioId; label: string }[] = [
   { id: "success", label: "Success" },
+  { id: "loading", label: "Loading → ready" },
   { id: "fail", label: "Failed" },
   { id: "expired", label: "Expired" },
   { id: "unavailable", label: "Unavailable" },
@@ -48,12 +49,14 @@ function failReason(scenario: ScenarioId): CaptchaBlockReason | undefined {
 function buildSetup(provider: ProviderId, scenario: ScenarioId) {
   const failWith = failReason(scenario);
   const delayMs = scenario === "pending" ? 700 : undefined;
+  const loadDelayMs = scenario === "loading" ? 1_200 : undefined;
 
   return mockCaptcha({
     provider,
     token: `${provider}-token`,
     ...(failWith ? { failWith } : {}),
     ...(delayMs ? { delayMs } : {}),
+    ...(loadDelayMs ? { loadDelayMs } : {}),
   });
 }
 
@@ -93,6 +96,10 @@ export function CaptchaPage() {
   }, [form]);
 
   const snapshot = useFormSnapshot(form);
+  const submitExplain = form.ui.explain("submit");
+  const canSubmit = form.ui.canSubmit;
+  const isCaptchaLoading = submitExplain.reasons.includes("captchaLoading");
+  const isCaptchaPending = submitExplain.reasons.includes("captchaPending");
 
   const runSubmit = async () => {
     push(`submit() — scenario=${scenario} provider=${provider}`);
@@ -105,10 +112,16 @@ export function CaptchaPage() {
     push("submit() resolved true");
   };
 
+  const submitLabel = isCaptchaLoading
+    ? "Loading security…"
+    : isCaptchaPending || snapshot.isSubmitting
+      ? "Submitting…"
+      : "Submit";
+
   return (
     <PageContainer
       compact
-      description="Security Stage before onSubmit — simulate success/failure, inspect explain reasons and meta.security.captcha."
+      description="Security Stage before onSubmit — simulate load/pending/failure, inspect explain reasons and meta.security.captcha."
       eyebrow="CAPTCHA"
       title="CAPTCHA Lab"
     >
@@ -117,6 +130,10 @@ export function CaptchaPage() {
           <li>
             Pipeline: guards → validation → <strong>Security Stage</strong> → beforeSubmit →
             onSubmit
+          </li>
+          <li>
+            <code>captchaLoading</code> (prepare) and <code>captchaPending</code> (execute)
+            hard-block <code>form.ui.canSubmit</code> — button uses that gate
           </li>
           <li>
             Failures abort with <code>captcha*</code> reasons on{" "}
@@ -154,6 +171,17 @@ export function CaptchaPage() {
                   </button>
                 ))}
               </div>
+              {scenario === "loading" ? (
+                <p className={styles.fieldHint}>
+                  Slows <code>load()</code> (~1.2s) so you can see <code>captchaLoading</code> and a
+                  disabled submit before the widget is ready.
+                </p>
+              ) : null}
+              {scenario === "pending" ? (
+                <p className={styles.fieldHint}>
+                  Slows <code>execute()</code> (~700ms) so submit shows <code>captchaPending</code>.
+                </p>
+              ) : null}
             </div>
 
             <div className={styles.preferenceField}>
@@ -200,13 +228,13 @@ export function CaptchaPage() {
             <div className={styles.inlineList}>
               <button
                 className={styles.primaryButton}
-                disabled={snapshot.isSubmitting}
+                disabled={!canSubmit}
                 onClick={() => {
                   void runSubmit();
                 }}
                 type="button"
               >
-                {snapshot.isSubmitting ? "Submitting…" : "Submit"}
+                {submitLabel}
               </button>
               <button
                 className={styles.secondaryButton}
@@ -224,7 +252,19 @@ export function CaptchaPage() {
 
             <p className={styles.fieldHint}>
               phase=<code>{snapshot.submitPhase}</code> · canSubmit=
-              <code>{String(form.ui.canSubmit)}</code>
+              <code>{String(canSubmit)}</code>
+              {isCaptchaLoading ? (
+                <>
+                  {" "}
+                  · <code>captchaLoading</code>
+                </>
+              ) : null}
+              {isCaptchaPending ? (
+                <>
+                  {" "}
+                  · <code>captchaPending</code>
+                </>
+              ) : null}
             </p>
           </Card>
 

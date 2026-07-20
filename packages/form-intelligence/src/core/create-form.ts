@@ -55,7 +55,7 @@ import { compileSchema } from "../schema/compiler.js";
 import { collectRequiredBaseline } from "../schema/required-baseline.js";
 import { FormStateStore } from "../state/store.js";
 import { evaluateSubmissionGuard } from "../submission/guard.js";
-import { runSecurityStage } from "../submission/security-stage.js";
+import { bindSecurityStageNotify, runSecurityStage } from "../submission/security-stage.js";
 import { SubmissionOrchestrator } from "../submission/submit.js";
 import { ASYNC_VALIDATOR_OPTION_DEFAULTS } from "../types/async-validation.js";
 import { explainDisabled } from "../ui/explain-disabled.js";
@@ -181,6 +181,7 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
   /** Static `required` validator paths seeded into Presentation (ADR-018). */
   private readonly requiredBaseline: Set<FieldPath>;
   private cachedSnapshot: FormState<TValues>;
+  private readonly unbindSecurityStageNotify: () => void;
 
   private get core(): FormCoreState<TValues> {
     return this.store.getSnapshot();
@@ -279,6 +280,13 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
       },
     );
     this.moduleHost.start();
+    // Before plugins so CAPTCHA prepare() can refresh form.ui.canSubmit.
+    this.unbindSecurityStageNotify = bindSecurityStageNotify(
+      this as FormInstance<Record<string, unknown>>,
+      () => {
+        this.notify();
+      },
+    );
     for (const plugin of config.plugins ?? []) {
       this.registerPlugin(plugin);
     }
@@ -1528,6 +1536,7 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     this.asyncValidation.destroy();
     this.transformEngine.destroy();
     this.moduleHost.destroy();
+    this.unbindSecurityStageNotify();
     this.events.clear();
     clearUiPolicies(this);
     this.store.destroy();

@@ -7,7 +7,12 @@ export interface MockCaptchaOptions {
   readonly token?: string;
   readonly kind?: CaptchaSetup["kind"];
   readonly failWith?: CaptchaBlockReason;
+  /** Artificial latency inside `execute()` (submit-time pending). */
   readonly delayMs?: number;
+  /** Artificial latency inside `load()` (prepare-time `captchaLoading`). */
+  readonly loadDelayMs?: number;
+  /** Fail during `load()` / prepare (e.g. `captchaUnavailable`). */
+  readonly failLoadWith?: CaptchaBlockReason;
   readonly expiresAt?: number;
   readonly execute?: () => Promise<CaptchaToken>;
 }
@@ -22,7 +27,14 @@ export function mockCaptcha(options: MockCaptchaOptions = {}): CaptchaSetup {
   return {
     name: provider,
     kind,
-    async load() {},
+    async load() {
+      if (options.loadDelayMs && options.loadDelayMs > 0) {
+        await new Promise((resolve) => setTimeout(resolve, options.loadDelayMs));
+      }
+      if (options.failLoadWith) {
+        throw new CaptchaError(`Mock CAPTCHA load: ${options.failLoadWith}`, options.failLoadWith);
+      }
+    },
     ...(kind === "invisible"
       ? {}
       : {

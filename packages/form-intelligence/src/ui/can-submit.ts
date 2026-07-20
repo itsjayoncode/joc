@@ -30,6 +30,7 @@ function tokensInclude(policies: ResolvedUiPolicies, token: UiDisableSubmitWhen)
 }
 
 const CAPTCHA_REASONS = new Set<string>([
+  "captchaLoading",
   "captchaPending",
   "captchaFailed",
   "captchaExpired",

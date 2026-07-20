@@ -79,12 +79,20 @@ export const APP_NAVIGATION_GROUPS: readonly NavigationGroup[] = [
       },
       {
         description:
-          "Security Stage CAPTCHA — mock outcomes, explain reasons, meta.security.captcha.",
+          "Security Stage CAPTCHA — loading/pending gates, explain reasons, meta.security.captcha.",
         groupId: "modules",
         icon: ToolsIcon,
         id: "captcha",
         intent: "current",
-        keywords: ["captcha", "turnstile", "recaptcha", "hcaptcha", "security"],
+        keywords: [
+          "captcha",
+          "turnstile",
+          "recaptcha",
+          "hcaptcha",
+          "security",
+          "captchaLoading",
+          "canSubmit",
+        ],
         label: "CAPTCHA",
         path: "/captcha",
       },

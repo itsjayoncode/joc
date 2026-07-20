@@ -11,8 +11,8 @@ const HEADROOM = CI ? 3 : 1.5;
 
 const BUDGET = {
   validate50WarmMs: 150 * HEADROOM,
-  /** Local baseline ~200–250ms; CI has seen ~540ms under load. */
-  setValue50x100Ms: 300 * HEADROOM,
+  /** Local baseline ~200–250ms; noise has spiked ~455ms; CI has seen ~540ms under load. */
+  setValue50x100Ms: 350 * HEADROOM,
   undo50Ms: 200 * HEADROOM,
 } as const;
 

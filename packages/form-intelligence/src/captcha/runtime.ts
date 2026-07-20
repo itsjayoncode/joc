@@ -1,9 +1,16 @@
 import { CaptchaError, captchaReasonFromUnknown, isCaptchaError } from "./errors.js";
 import { resolveMountHost } from "./mount.js";
+import { notifySecurityStageChange } from "../submission/security-stage.js";
 
 import type { CaptchaBlockReason, CaptchaSetup } from "./types.js";
 import type { SecurityStageResult } from "../submission/security-stage.js";
 import type { FormInstance, SubmitSecurityMeta } from "../types/index.js";
+
+/**
+ * Internal CAPTCHA lifecycle (not part of the public API).
+ * Providers stay dumb; the runtime derives state and explain reasons.
+ */
+type CaptchaLifecycleState = "idle" | "preparing" | "ready" | "executing" | "failed";
 
 function withTimeout<T>(promise: Promise<T>, timeoutMs: number | undefined): Promise<T> {
   if (timeoutMs === undefined || timeoutMs <= 0) {
@@ -35,7 +42,7 @@ export class CaptchaRuntime {
   private mounted = false;
   private autoHost: HTMLElement | undefined;
   private lastFailure: CaptchaBlockReason | undefined;
-  private pending = false;
+  private lifecycle: CaptchaLifecycleState = "idle";
 
   public constructor(
     private readonly form: FormInstance<Record<string, unknown>>,
@@ -43,7 +50,10 @@ export class CaptchaRuntime {
   ) {}
 
   public explainReasons(): readonly CaptchaBlockReason[] {
-    if (this.pending) {
+    if (this.lifecycle === "preparing") {
+      return ["captchaLoading"];
+    }
+    if (this.lifecycle === "executing") {
       return ["captchaPending"];
     }
     if (this.lastFailure) {
@@ -53,12 +63,20 @@ export class CaptchaRuntime {
   }
 
   public async prepare(): Promise<void> {
+    this.transition("preparing", { clearFailure: true });
     try {
       await this.setup.load();
       await this.ensureRendered();
-      this.lastFailure = undefined;
+      // Do not clobber Executing/Failed if submit started while prepare was in flight.
+      if (this.lifecycle === "preparing") {
+        this.transition("ready", { clearFailure: true });
+      }
     } catch (error) {
-      this.lastFailure = captchaReasonFromUnknown(error);
+      if (this.lifecycle === "preparing") {
+        this.transition("failed", {
+          failure: captchaReasonFromUnknown(error),
+        });
+      }
       throw error;
     }
   }
@@ -68,12 +86,12 @@ export class CaptchaRuntime {
       return { ok: false, reasons: ["captchaFailed"] };
     }
 
-    this.pending = true;
-    this.lastFailure = undefined;
+    this.transition("executing", { clearFailure: true });
 
     try {
       await this.setup.load();
       if (signal.aborted) {
+        this.transition("failed", { failure: "captchaFailed" });
         return { ok: false, reasons: ["captchaFailed"] };
       }
 
@@ -81,21 +99,21 @@ export class CaptchaRuntime {
 
       const token = await withTimeout(this.setup.execute(), this.setup.timeoutMs);
       if (signal.aborted) {
+        this.transition("failed", { failure: "captchaFailed" });
         return { ok: false, reasons: ["captchaFailed"] };
       }
 
       if (typeof token.token !== "string" || token.token.trim().length === 0) {
-        this.lastFailure = "captchaFailed";
+        this.transition("failed", { failure: "captchaFailed" });
         return { ok: false, reasons: ["captchaFailed"] };
       }
 
       if (token.expiresAt !== undefined && token.expiresAt <= Date.now()) {
-        this.lastFailure = "captchaExpired";
+        this.transition("failed", { failure: "captchaExpired" });
         return { ok: false, reasons: ["captchaExpired"] };
       }
 
-      this.pending = false;
-      this.lastFailure = undefined;
+      this.transition("ready", { clearFailure: true });
 
       const security: SubmitSecurityMeta = {
         captcha: {
@@ -108,11 +126,8 @@ export class CaptchaRuntime {
       return { ok: true, security };
     } catch (error) {
       const reason = isCaptchaError(error) ? error.reason : captchaReasonFromUnknown(error);
-      this.lastFailure = reason;
-      this.pending = false;
+      this.transition("failed", { failure: reason });
       return { ok: false, reasons: [reason] };
-    } finally {
-      this.pending = false;
     }
   }
 
@@ -127,6 +142,34 @@ export class CaptchaRuntime {
     }
     this.autoHost = undefined;
     this.mounted = false;
+    this.lifecycle = "idle";
+    this.lastFailure = undefined;
+  }
+
+  private transition(
+    next: CaptchaLifecycleState,
+    options: {
+      readonly clearFailure?: boolean;
+      readonly failure?: CaptchaBlockReason;
+    } = {},
+  ): void {
+    const previous = this.lifecycle;
+    const previousFailure = this.lastFailure;
+
+    if (options.clearFailure) {
+      this.lastFailure = undefined;
+    }
+    if (options.failure !== undefined) {
+      this.lastFailure = options.failure;
+    }
+
+    this.lifecycle = next;
+
+    const stateChanged = previous !== next;
+    const failureChanged = previousFailure !== this.lastFailure;
+    if (stateChanged || failureChanged) {
+      notifySecurityStageChange(this.form);
+    }
   }
 
   private async ensureRendered(): Promise<void> {

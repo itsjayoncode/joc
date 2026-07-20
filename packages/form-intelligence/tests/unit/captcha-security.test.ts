@@ -333,6 +333,111 @@ describe("captcha security & validation invariants", () => {
 
     form.destroy();
   });
+  it("surfaces captchaLoading until prepare finishes and notifies subscribers", async () => {
+    let releaseLoad!: () => void;
+    const loadGate = new Promise<void>((resolve) => {
+      releaseLoad = resolve;
+    });
+
+    const onSubmit = vi.fn();
+    const form = createForm({
+      initialValues: { email: "a@b.com" },
+      plugins: [
+        ui(),
+        captcha({
+          name: "slow-load",
+          kind: "invisible",
+          async load() {
+            await loadGate;
+          },
+          async execute() {
+            return { provider: "slow-load", token: "tok" };
+          },
+        }),
+      ],
+      onSubmit,
+    });
+
+    expect(form.ui.canSubmit).toBe(false);
+    expect(form.ui.explain("submit").reasons).toContain("captchaLoading");
+    expect(form.ui.explain("submit").contributors).toContain("security");
+
+    const listener = vi.fn();
+    form.subscribe(listener);
+
+    releaseLoad();
+    await vi.waitFor(() => {
+      expect(form.ui.explain("submit").reasons).not.toContain("captchaLoading");
+    });
+    expect(form.ui.canSubmit).toBe(true);
+    expect(listener).toHaveBeenCalled();
+
+    await expect(form.submit()).resolves.toBe(true);
+    expect(onSubmit).toHaveBeenCalledTimes(1);
+    form.destroy();
+  });
+
+  it("transitions prepare failure to captchaUnavailable (not stuck loading)", async () => {
+    const form = createForm({
+      initialValues: { email: "a@b.com" },
+      plugins: [
+        ui(),
+        captcha({
+          name: "broken-load",
+          kind: "invisible",
+          async load() {
+            throw new Error("sdk down");
+          },
+          async execute() {
+            return { provider: "broken-load", token: "tok" };
+          },
+        }),
+      ],
+      onSubmit: vi.fn(),
+    });
+
+    await vi.waitFor(() => {
+      expect(form.ui.explain("submit").reasons).toContain("captchaUnavailable");
+    });
+    expect(form.ui.explain("submit").reasons).not.toContain("captchaLoading");
+    expect(form.ui.canSubmit).toBe(false);
+    form.destroy();
+  });
+
+  it("surfaces captchaPending while execute is in flight", async () => {
+    let release!: (token: { provider: string; token: string }) => void;
+    const gate = new Promise<{ provider: string; token: string }>((resolve) => {
+      release = resolve;
+    });
+
+    const form = createForm({
+      initialValues: { email: "a@b.com" },
+      plugins: [
+        ui(),
+        captcha(
+          mockCaptcha({
+            execute: () => gate,
+          }),
+        ),
+      ],
+      onSubmit: vi.fn(),
+    });
+
+    await vi.waitFor(() => {
+      expect(form.ui.explain("submit").reasons).not.toContain("captchaLoading");
+    });
+
+    const pending = form.submit();
+    await vi.waitFor(() => {
+      expect(form.ui.explain("submit").reasons).toContain("captchaPending");
+    });
+    expect(form.ui.canSubmit).toBe(false);
+
+    release({ provider: "mock", token: "ok" });
+    await expect(pending).resolves.toBe(true);
+    expect(form.ui.explain("submit").reasons).not.toContain("captchaPending");
+    form.destroy();
+  });
 });
 
 describe("captcha performance", () => {
