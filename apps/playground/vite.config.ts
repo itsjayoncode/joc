@@ -15,6 +15,16 @@ export default defineConfig({
       { find: /^@jayoncode\/(.+)$/, replacement: path.join(repoRoot, "packages/$1/src/index.ts") },
     ],
   },
+  // esbuild 0.28+ errors on Vite's default modules target (safari14) for destructuring.
+  // Match other playgrounds — es2022 keeps native destructuring.
+  build: {
+    target: "es2022",
+  },
+  esbuild: {
+    supported: {
+      destructuring: true,
+    },
+  },
   server: {
     host: "127.0.0.1",
     port: 4173,
