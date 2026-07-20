@@ -44,7 +44,7 @@
     "@angular/core": "^18.2.13",
     "@angular/platform-browser": "^18.2.13",
     "@jayoncode/browser-lifecycle": "workspace:*",
-    "zone.js": "^0.14.10"
+    "zone.js": "^0.16.2"
   },
   "publishConfig": {
     "access": "public",
