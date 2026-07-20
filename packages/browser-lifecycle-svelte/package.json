@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/browser-lifecycle-svelte",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Svelte adapter for @jayoncode/browser-lifecycle — context helpers and reactive snapshots.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",

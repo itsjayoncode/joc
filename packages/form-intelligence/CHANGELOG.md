@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.8.1
+
+### Patch Changes
+
+- adb77b9: Add a Become a Sponsor badge linking to GitHub Sponsors.
+
 ## 3.8.0
 
 ### Minor Changes

@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/browser-lifecycle-vue",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Vue adapter for @jayoncode/browser-lifecycle — provide/inject composables and reactive snapshots.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
