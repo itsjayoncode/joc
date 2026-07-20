@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/browser-lifecycle-react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React adapter for @jayoncode/browser-lifecycle — Provider, hooks, and reactive snapshots.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",

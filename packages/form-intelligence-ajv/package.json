@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/form-intelligence-ajv",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "AJV JSON Schema adapter for @jayoncode/form-intelligence.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
