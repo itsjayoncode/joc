@@ -43,7 +43,7 @@
   "devDependencies": {
     "@jayoncode/browser-lifecycle": "workspace:*",
     "@vue/test-utils": "^2.4.6",
-    "vue": "^3.5.13"
+    "vue": "^3.5.40"
   },
   "publishConfig": {
     "access": "public",

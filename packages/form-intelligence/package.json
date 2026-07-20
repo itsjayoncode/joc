@@ -155,7 +155,7 @@
   "devDependencies": {
     "@jayoncode/browser-lifecycle": "workspace:*",
     "@jayoncode/object-diff": "workspace:*",
-    "esbuild": "^0.25.12",
+    "esbuild": "^0.28.1",
     "fake-indexeddb": "^6.0.0"
   },
   "publishConfig": {
