@@ -10,8 +10,8 @@ jobs:
   build-and-validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
         with:
           version: 10.13.1
       - uses: actions/setup-node@v7
@@ -23,7 +23,7 @@ jobs:
       - run: pnpm lint
       - run: pnpm test
       - run: pnpm browser-session-playground:build
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: browser-session-playground-dist
           path: apps/browser-session-playground/dist
