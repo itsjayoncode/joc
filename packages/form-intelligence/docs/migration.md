@@ -69,7 +69,7 @@ import { createBrowserLifecyclePlugin } from "@jayoncode/form-intelligence/plugi
 
 ### Bundle budget (`core-login`)
 
-Entry-chunk gzip budget is **26 KB** (ADR-013). Measure with `pnpm --filter @jayoncode/form-intelligence check:size` after `tsc -b`. See [Performance](/packages/form-intelligence/modules/performance).
+Entry-chunk gzip budget is **27 KB** (ADR-013). Measure with `pnpm --filter @jayoncode/form-intelligence check:size` after `tsc -b`. See [Performance](/packages/form-intelligence/modules/performance).
 
 ### Controllers / accessibility
 

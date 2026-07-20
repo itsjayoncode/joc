@@ -20,7 +20,10 @@ import {
 const MODULE_ROUTES = CURRENT_NAVIGATION_ITEMS.filter((item) => item.groupId === "modules");
 
 const FORM_OS_FEATURES = [
-  { label: "State & validation", paths: ["/validation", "/html-constraints", "/state", "/devtools"] },
+  {
+    label: "State & validation",
+    paths: ["/validation", "/html-constraints", "/state", "/devtools"],
+  },
   { label: "Rules & dependencies", paths: ["/rules", "/dependencies"] },
   { label: "Calculations & formatters", paths: ["/calculations", "/formatters"] },
   { label: "Workflow & submission", paths: ["/workflow", "/submission", "/captcha"] },

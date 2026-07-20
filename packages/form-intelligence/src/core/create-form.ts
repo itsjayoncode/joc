@@ -53,7 +53,6 @@ import { MiddlewarePipeline } from "../plugins/middleware.js";
 import { PluginRegistry } from "../plugins/registry.js";
 import { compileSchema } from "../schema/compiler.js";
 import { collectRequiredBaseline } from "../schema/required-baseline.js";
-import { mergeValidatorsByKind } from "../validation/merge-validators-by-kind.js";
 import { FormStateStore } from "../state/store.js";
 import { evaluateSubmissionGuard } from "../submission/guard.js";
 import { runSecurityStage } from "../submission/security-stage.js";
@@ -66,6 +65,7 @@ import { resolvePoliciesForForm, clearUiPolicies } from "../ui/store.js";
 import { cloneValue, createId, getIn, setIn } from "../utils/index.js";
 import { resolveAsyncDebounceMs } from "../validation/async/run-with-options.js";
 import { AsyncValidationManager } from "../validation/async-validator.js";
+import { mergeValidatorsByKind } from "../validation/merge-validators-by-kind.js";
 import {
   resolveFieldValidationMode,
   shouldValidateOnBlur,
@@ -136,9 +136,7 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
   private readonly events = new FormEventBus();
   private readonly fieldValidators = new Map<FieldPath, readonly Validator<TValues>[]>();
   /** Compiled field-schema validators (ADR-VAL-002 source). */
-  private readonly schemaValidators: Partial<
-    Record<FieldPath, readonly Validator<TValues>[]>
-  >;
+  private readonly schemaValidators: Partial<Record<FieldPath, readonly Validator<TValues>[]>>;
   /** `createForm({ validators })` only (ADR-VAL-002 Field source base). */
   private readonly fieldConfigValidators: FormConfig<TValues>["validators"];
   /** HTML constraints from last DOM attach (replaced on each attach). */
@@ -430,9 +428,7 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     this.recomputeEffectiveValidators();
   }
 
-  private buildFieldSourceValidators(): Partial<
-    Record<FieldPath, readonly Validator<TValues>[]>
-  > {
+  private buildFieldSourceValidators(): Partial<Record<FieldPath, readonly Validator<TValues>[]>> {
     const field: Partial<Record<FieldPath, Validator<TValues>[]>> = {};
 
     if (this.fieldConfigValidators) {

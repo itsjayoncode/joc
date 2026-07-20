@@ -51,14 +51,14 @@ Constraint attributes on those inputs are imported into Form Intelligence valida
 
 ### Phase 1 HTML → validators
 
-| HTML | Form Intelligence |
-| ---- | ----------------- |
-| `required` | `required` |
-| `minlength` | `minLength(n)` |
-| `maxlength` | `maxLength(n)` |
-| `pattern` | `regex(…)` (invalid patterns are skipped) |
-| `type="email"` | `email` |
-| `type="url"` | `url` |
+| HTML           | Form Intelligence                         |
+| -------------- | ----------------------------------------- |
+| `required`     | `required`                                |
+| `minlength`    | `minLength(n)`                            |
+| `maxlength`    | `maxLength(n)`                            |
+| `pattern`      | `regex(…)` (invalid patterns are skipped) |
+| `type="email"` | `email`                                   |
+| `type="url"`   | `url`                                     |
 
 Merge precedence for the same validator **kind**: **Field > Schema > HTML**. Custom validators are kept. HTML `required` also seeds Presentation required (same baseline as schema — see [Validation](/packages/form-intelligence/modules/validation#html-constraints-dom-backed)).
 

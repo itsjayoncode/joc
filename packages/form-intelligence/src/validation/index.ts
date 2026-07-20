@@ -58,11 +58,7 @@ export {
 } from "./errors.js";
 export type { NormalizedFieldError } from "./errors.js";
 export { mergeValidatorsByKind } from "./merge-validators-by-kind.js";
-export {
-  getValidatorKind,
-  tagValidator,
-  VALIDATOR_KIND_ORDER,
-} from "./validator-kind.js";
+export { getValidatorKind, tagValidator, VALIDATOR_KIND_ORDER } from "./validator-kind.js";
 export type { ValidatorKind } from "./validator-kind.js";
 export {
   resolveFieldValidationMode,

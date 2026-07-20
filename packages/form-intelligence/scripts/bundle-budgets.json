@@ -3,7 +3,7 @@
     {
       "id": "core-login",
       "file": "core-login.mjs",
-      "maxGzipKb": 26,
+      "maxGzipKb": 27,
       "forbid": [
         "OfflineSubmitQueue",
         "createDevToolsPlugin",

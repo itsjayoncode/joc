@@ -22,12 +22,12 @@ Prefer the main entry for everyday validators. Full map: [Entrypoints](/packages
 
 ## Problem → solution
 
-| Problem                                         | Solution                                               |
-| ----------------------------------------------- | ------------------------------------------------------ |
-| Ad-hoc `if` checks scattered in submit handlers | Declarative `validators` / `schema` on `createForm`    |
-| Errors appear too early or too late             | `validateOn` timing (`onBlur`, `onChange`, `onSubmit`) |
-| Need server uniqueness checks                   | Async validators that return a string error            |
-| Several server checks on one field              | Multiple `asyncValidator`s in one array (ordered)      |
+| Problem                                          | Solution                                               |
+| ------------------------------------------------ | ------------------------------------------------------ |
+| Ad-hoc `if` checks scattered in submit handlers  | Declarative `validators` / `schema` on `createForm`    |
+| Errors appear too early or too late              | `validateOn` timing (`onBlur`, `onChange`, `onSubmit`) |
+| Need server uniqueness checks                    | Async validators that return a string error            |
+| Several server checks on one field               | Multiple `asyncValidator`s in one array (ordered)      |
 | DOM inputs already have `required` / `minlength` | HTML constraints imported on attach (DOM-backed forms) |
 
 ## Overview
@@ -135,12 +135,12 @@ validators: {
 
 On `createForm({ target })` or `form.ref` / `form.form()`, Phase 1 constraint attributes on native inputs become FI validators **once at attach**. The browser does not validate (`novalidate`); attributes stay in the DOM for a11y / autofill.
 
-| HTML | Validator |
-| ---- | --------- |
-| `required` | `required` (also seeds Presentation required baseline) |
-| `minlength` / `maxlength` | `minLength` / `maxLength` |
-| `pattern` | `regex` (invalid patterns skipped; not MutationObserver-synced) |
-| `type="email"` / `type="url"` | `email` / `url` |
+| HTML                          | Validator                                                       |
+| ----------------------------- | --------------------------------------------------------------- |
+| `required`                    | `required` (also seeds Presentation required baseline)          |
+| `minlength` / `maxlength`     | `minLength` / `maxLength`                                       |
+| `pattern`                     | `regex` (invalid patterns skipped; not MutationObserver-synced) |
+| `type="email"` / `type="url"` | `email` / `url`                                                 |
 
 Same-kind conflicts resolve **Field > Schema > HTML**. Details and deferred attributes: [Adapters → Native HTML](/packages/form-intelligence/modules/adapters#native-html-built-in).
 

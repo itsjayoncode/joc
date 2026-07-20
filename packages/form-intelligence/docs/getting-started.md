@@ -22,11 +22,11 @@ Use the [Validation explorer](/playground/form-intelligence/validation) to mirro
 
 ## Choose your integration path
 
-| Path            | Best for                                              | Key API                                                        |
-| --------------- | ----------------------------------------------------- | -------------------------------------------------------------- |
+| Path            | Best for                                              | Key API                                                         |
+| --------------- | ----------------------------------------------------- | --------------------------------------------------------------- |
 | **Native HTML** | Existing forms, static pages, progressive enhancement | `createForm({ target })` — schema optional; HTML constraints OK |
-| **Headless**    | Custom UI, non-React frameworks                       | `createForm({ initialValues, validators })` + `field().bind()` |
-| **React**       | React apps                                            | `useForm()` from `@jayoncode/form-intelligence-react`          |
+| **Headless**    | Custom UI, non-React frameworks                       | `createForm({ initialValues, validators })` + `field().bind()`  |
+| **React**       | React apps                                            | `useForm()` from `@jayoncode/form-intelligence-react`           |
 
 The steps below follow the **headless** path, then show the matching **HTML / JSX structure** so you can see how elements map to the API. For more adapter variants, see [Adapters](/packages/form-intelligence/modules/adapters).
 
@@ -262,15 +262,15 @@ While `onSubmit` runs, `form.isSubmitting()` is `true`.
 
 ## Continue
 
-| Topic                          | Guide                                                            | Playground                                                 |
-| ------------------------------ | ---------------------------------------------------------------- | ---------------------------------------------------------- |
-| Terminology and architecture   | [Core concepts](/packages/form-intelligence/modules/concepts)    | [State](/playground/form-intelligence/state)               |
-| Validation timing, async rules | [Validation](/packages/form-intelligence/modules/validation)     | [Validation](/playground/form-intelligence/validation)     |
+| Topic                          | Guide                                                                                       | Playground                                                         |
+| ------------------------------ | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| Terminology and architecture   | [Core concepts](/packages/form-intelligence/modules/concepts)                               | [State](/playground/form-intelligence/state)                       |
+| Validation timing, async rules | [Validation](/packages/form-intelligence/modules/validation)                                | [Validation](/playground/form-intelligence/validation)             |
 | HTML attributes → validators   | [Adapters → Native HTML](/packages/form-intelligence/modules/adapters#native-html-built-in) | [HTML constraints](/playground/form-intelligence/html-constraints) |
-| Submit, cancel, offline queue  | [Submission](/packages/form-intelligence/modules/submission)     | [Submission](/playground/form-intelligence/submission)     |
-| Autosave, drafts, wizard       | [Workflow](/packages/form-intelligence/modules/workflow)         | [Workflow](/playground/form-intelligence/workflow)         |
-| Conditional `when()` rules     | [Rules](/packages/form-intelligence/modules/rules)               | [Rules](/playground/form-intelligence/rules)               |
-| Derived fields                 | [Calculations](/packages/form-intelligence/modules/calculations) | [Calculations](/playground/form-intelligence/calculations) |
-| Snapshots, undo/redo           | [State](/packages/form-intelligence/modules/state)               | [State](/playground/form-intelligence/state)               |
+| Submit, cancel, offline queue  | [Submission](/packages/form-intelligence/modules/submission)                                | [Submission](/playground/form-intelligence/submission)             |
+| Autosave, drafts, wizard       | [Workflow](/packages/form-intelligence/modules/workflow)                                    | [Workflow](/playground/form-intelligence/workflow)                 |
+| Conditional `when()` rules     | [Rules](/packages/form-intelligence/modules/rules)                                          | [Rules](/playground/form-intelligence/rules)                       |
+| Derived fields                 | [Calculations](/packages/form-intelligence/modules/calculations)                            | [Calculations](/playground/form-intelligence/calculations)         |
+| Snapshots, undo/redo           | [State](/packages/form-intelligence/modules/state)                                          | [State](/playground/form-intelligence/state)                       |
 
 Additional snippets: [Examples](/playground/form-intelligence/examples) · Integrations: [Integrations](/packages/form-intelligence/modules/integrations)

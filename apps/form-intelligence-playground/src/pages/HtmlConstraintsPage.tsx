@@ -71,7 +71,12 @@ export function HtmlConstraintsPage() {
     return instance;
   }, [mode, push]);
 
-  useEffect(() => () => form.destroy(), [form]);
+  useEffect(
+    () => () => {
+      form.destroy();
+    },
+    [form],
+  );
 
   const snapshot = useFormSnapshot(form);
   const presentation = {
@@ -102,15 +107,14 @@ export function HtmlConstraintsPage() {
             <code>maxlength</code>, <code>pattern</code>, <code>type=email|url</code>
           </li>
           <li>
-            Native validation UI is disabled; FI owns messages (try submit / blur with empty
-            fields)
+            Native validation UI is disabled; FI owns messages (try submit / blur with empty fields)
           </li>
           <li>
             HTML <code>required</code> seeds Presentation required (ARIA / inspector)
           </li>
           <li>
-            Toggle <strong>Field overrides HTML</strong> — <code>minLength(5)</code> wins over
-            HTML <code>minlength=&quot;3&quot;</code>
+            Toggle <strong>Field overrides HTML</strong> — <code>minLength(5)</code> wins over HTML{" "}
+            <code>minlength=&quot;3&quot;</code>
           </li>
         </ul>
       </ExplainPanel>
@@ -229,15 +233,10 @@ export function HtmlConstraintsPage() {
           </Card>
 
           <Card title="Values">
-            <pre className={styles.inspectorPre}>
-              {JSON.stringify(snapshot.values, null, 2)}
-            </pre>
+            <pre className={styles.inspectorPre}>{JSON.stringify(snapshot.values, null, 2)}</pre>
           </Card>
 
-          <Card
-            description="Blur or submit to validate."
-            title="Activity"
-          >
+          <Card description="Blur or submit to validate." title="Activity">
             <div className={styles.buttonRow}>
               <button
                 className={styles.secondaryButton}

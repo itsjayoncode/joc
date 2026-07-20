@@ -27,7 +27,10 @@ async function expectNoSeriousAxeViolations(container: HTMLElement): Promise<voi
   expect(
     blocking,
     blocking
-      .map((v) => `${v.id} (${v.impact}): ${v.help} — ${v.nodes.map((n) => n.target.join(" ")).join("; ")}`)
+      .map((v) => {
+        const impact = v.impact ?? "unknown";
+        return `${v.id} (${impact}): ${v.help} — ${v.nodes.map((n) => n.target.join(" ")).join("; ")}`;
+      })
       .join("\n"),
   ).toEqual([]);
 }

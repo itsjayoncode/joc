@@ -8,25 +8,25 @@ Interactive **developer sandbox** for `@jayoncode/form-intelligence` — configu
 
 Follow the [learning path](/packages/form-intelligence/) in docs, then try each topic live:
 
-| Docs guide                                                         | Playground route                                            | What to try                    |
-| ------------------------------------------------------------------ | ----------------------------------------------------------- | ------------------------------ |
-| [Tutorial](/packages/form-intelligence/modules/getting-started)    | [/](/playground/form-intelligence/)                         | Sandbox lab — full workspace   |
-| [Concepts](/packages/form-intelligence/modules/concepts)           | [/state](/playground/form-intelligence/state)               | Edit fields, watch JSON state  |
-| [Validation](/packages/form-intelligence/modules/validation)       | [/validation](/playground/form-intelligence/validation)     | Toggle timing, async username  |
+| Docs guide                                                         | Playground route                                                    | What to try                    |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------- | ------------------------------ |
+| [Tutorial](/packages/form-intelligence/modules/getting-started)    | [/](/playground/form-intelligence/)                                 | Sandbox lab — full workspace   |
+| [Concepts](/packages/form-intelligence/modules/concepts)           | [/state](/playground/form-intelligence/state)                       | Edit fields, watch JSON state  |
+| [Validation](/packages/form-intelligence/modules/validation)       | [/validation](/playground/form-intelligence/validation)             | Toggle timing, async username  |
 | HTML constraints (DOM-backed)                                      | [/html-constraints](/playground/form-intelligence/html-constraints) | `form.ref` + HTML attributes   |
-| [Submission](/packages/form-intelligence/modules/submission)       | [/submission](/playground/form-intelligence/submission)     | Guards + form.ui.canSubmit     |
-| [UI projection](/packages/form-intelligence/modules/ui-projection) | [/ui](/playground/form-intelligence/ui)                     | Policies + explain / status    |
-| [Workflow](/packages/form-intelligence/modules/workflow)           | [/workflow](/playground/form-intelligence/workflow)         | Reload page → draft restored   |
-| [Formatters](/packages/form-intelligence/modules/formatters)       | [/formatters](/playground/form-intelligence/formatters)     | Phone, currency, slug          |
-| [Plugins](/packages/form-intelligence/modules/plugins)             | [/plugins](/playground/form-intelligence/plugins)           | Event log                      |
-| [Rules](/packages/form-intelligence/modules/rules)                 | [/rules](/playground/form-intelligence/rules)               | when() show/require            |
-| [Calculations](/packages/form-intelligence/modules/calculations)   | [/calculations](/playground/form-intelligence/calculations) | Derived totals                 |
-| [State](/packages/form-intelligence/modules/state)                 | [/state](/playground/form-intelligence/state)               | Snapshots & diffs              |
-| [Integrations](/packages/form-intelligence/modules/integrations)   | [/integrations](/playground/form-intelligence/integrations) | Keyboard + draft on hide       |
-| DevTools                                                           | [/devtools](/playground/form-intelligence/devtools)         | Explain panels + export/import |
-| Performance benches                                                | [/performance](/playground/form-intelligence/performance)   | Validate / autosave / submit   |
-| [Adapters](/packages/form-intelligence/modules/adapters)           | [/adapters](/playground/form-intelligence/adapters)         | HTML + React integration map   |
-| Overview                                                           | [/dashboard](/playground/form-intelligence/dashboard)       | Versions & explorer map        |
+| [Submission](/packages/form-intelligence/modules/submission)       | [/submission](/playground/form-intelligence/submission)             | Guards + form.ui.canSubmit     |
+| [UI projection](/packages/form-intelligence/modules/ui-projection) | [/ui](/playground/form-intelligence/ui)                             | Policies + explain / status    |
+| [Workflow](/packages/form-intelligence/modules/workflow)           | [/workflow](/playground/form-intelligence/workflow)                 | Reload page → draft restored   |
+| [Formatters](/packages/form-intelligence/modules/formatters)       | [/formatters](/playground/form-intelligence/formatters)             | Phone, currency, slug          |
+| [Plugins](/packages/form-intelligence/modules/plugins)             | [/plugins](/playground/form-intelligence/plugins)                   | Event log                      |
+| [Rules](/packages/form-intelligence/modules/rules)                 | [/rules](/playground/form-intelligence/rules)                       | when() show/require            |
+| [Calculations](/packages/form-intelligence/modules/calculations)   | [/calculations](/playground/form-intelligence/calculations)         | Derived totals                 |
+| [State](/packages/form-intelligence/modules/state)                 | [/state](/playground/form-intelligence/state)                       | Snapshots & diffs              |
+| [Integrations](/packages/form-intelligence/modules/integrations)   | [/integrations](/playground/form-intelligence/integrations)         | Keyboard + draft on hide       |
+| DevTools                                                           | [/devtools](/playground/form-intelligence/devtools)                 | Explain panels + export/import |
+| Performance benches                                                | [/performance](/playground/form-intelligence/performance)           | Validate / autosave / submit   |
+| [Adapters](/packages/form-intelligence/modules/adapters)           | [/adapters](/playground/form-intelligence/adapters)                 | HTML + React integration map   |
+| Overview                                                           | [/dashboard](/playground/form-intelligence/dashboard)               | Versions & explorer map        |
 
 ## How the sandbox works
 
@@ -51,22 +51,22 @@ If the shell shows a blank page or version env vars are missing, stop any stale 
 
 ## All routes
 
-| Route          | Focus                                       |
-| -------------- | ------------------------------------------- |
-| `/`            | Interactive developer sandbox               |
-| `/dashboard`   | Overview & quick links                      |
-| `/validation`  | Validators & timing                         |
-| `/html-constraints` | DOM-backed HTML → validators (Phase 1) |
-| `/submission`  | Submit flow, hard guards, UI canSubmit      |
-| `/ui`          | UI policies, showError, status, explain     |
-| `/workflow`    | Autosave, drafts, wizard                    |
-| `/state`       | State explorer & diffs                      |
-| `/formatters`  | Input formatting                            |
-| `/plugins`     | Plugin hooks                                |
-| `/devtools`    | Explain panels, config JSON, export/import  |
-| `/performance` | Validation / submit / UI projection benches |
-| `/adapters`    | Framework integrations                      |
-| `/examples`    | Copy-paste snippets                         |
+| Route               | Focus                                       |
+| ------------------- | ------------------------------------------- |
+| `/`                 | Interactive developer sandbox               |
+| `/dashboard`        | Overview & quick links                      |
+| `/validation`       | Validators & timing                         |
+| `/html-constraints` | DOM-backed HTML → validators (Phase 1)      |
+| `/submission`       | Submit flow, hard guards, UI canSubmit      |
+| `/ui`               | UI policies, showError, status, explain     |
+| `/workflow`         | Autosave, drafts, wizard                    |
+| `/state`            | State explorer & diffs                      |
+| `/formatters`       | Input formatting                            |
+| `/plugins`          | Plugin hooks                                |
+| `/devtools`         | Explain panels, config JSON, export/import  |
+| `/performance`      | Validation / submit / UI projection benches |
+| `/adapters`         | Framework integrations                      |
+| `/examples`         | Copy-paste snippets                         |
 
 ## Foundation architecture
 

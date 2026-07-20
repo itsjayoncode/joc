@@ -1,13 +1,7 @@
 import type { Validator } from "../types/index.js";
 
 /** Phase 1 kind registry for HTML / schema / field merge (ADR-VAL-002). */
-export type ValidatorKind =
-  | "required"
-  | "email"
-  | "url"
-  | "minLength"
-  | "maxLength"
-  | "regex";
+export type ValidatorKind = "required" | "email" | "url" | "minLength" | "maxLength" | "regex";
 
 export const VALIDATOR_KIND_ORDER: readonly ValidatorKind[] = [
   "required",

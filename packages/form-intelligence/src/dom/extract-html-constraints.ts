@@ -1,5 +1,12 @@
 import { findFieldControls } from "./discover-fields.js";
-import { email, maxLength, minLength, regex, required, url } from "../validation/validators/index.js";
+import {
+  email,
+  maxLength,
+  minLength,
+  regex,
+  required,
+  url,
+} from "../validation/validators/index.js";
 
 import type { FieldPath, Validator } from "../types/index.js";
 

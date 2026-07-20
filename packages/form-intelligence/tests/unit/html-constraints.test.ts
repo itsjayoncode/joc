@@ -4,8 +4,8 @@ import { describe, expect, it } from "vitest";
 
 import { createForm } from "../../src/core/create-form.js";
 import { extractConstraintsFromControls } from "../../src/dom/extract-html-constraints.js";
-import { getValidatorKind } from "../../src/validation/validator-kind.js";
 import { mergeValidatorsByKind } from "../../src/validation/merge-validators-by-kind.js";
+import { getValidatorKind } from "../../src/validation/validator-kind.js";
 import {
   custom,
   email,

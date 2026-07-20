@@ -9,10 +9,14 @@ export type ValidatorSourceMap<TValues extends Record<string, unknown>> = Partia
 function toList<TValues extends Record<string, unknown>>(
   entry: Validator<TValues> | readonly Validator<TValues>[] | undefined,
 ): Validator<TValues>[] {
-  if (!entry) {
+  if (entry == null) {
     return [];
   }
-  return Array.isArray(entry) ? [...entry] : [entry];
+  // Validator is a function; Array.isArray does not narrow Function | T[].
+  if (typeof entry === "function") {
+    return [entry];
+  }
+  return [...entry];
 }
 
 /** Last occurrence of each kind within a source wins for that source's candidate. */
