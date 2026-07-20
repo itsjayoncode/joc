@@ -3,6 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/@jayoncode/form-intelligence.svg)](https://www.npmjs.com/package/@jayoncode/form-intelligence)
 [![license](https://img.shields.io/npm/l/@jayoncode/form-intelligence.svg)](https://github.com/itsjayoncode/joc/blob/master/packages/form-intelligence/package.json)
 [![docs](https://img.shields.io/badge/docs-jayoncode.github.io-2563eb)](https://itsjayoncode.github.io/joc/packages/form-intelligence/)
+[![Become a Sponsor](https://img.shields.io/badge/Become%20a%20Sponsor-%23ea4aaa?style=flat&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/jayoncoding)
 
 Published as [`@jayoncode/form-intelligence`](https://www.npmjs.com/package/@jayoncode/form-intelligence).
 

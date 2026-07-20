@@ -1,6 +1,7 @@
 # Form Intelligence — Angular
 
 [![npm version](https://img.shields.io/npm/v/@jayoncode/form-intelligence-angular.svg)](https://www.npmjs.com/package/@jayoncode/form-intelligence-angular)
+[![Become a Sponsor](https://img.shields.io/badge/Become%20a%20Sponsor-%23ea4aaa?style=flat&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/jayoncoding)
 
 Angular adapter for [`@jayoncode/form-intelligence`](https://www.npmjs.com/package/@jayoncode/form-intelligence).
 

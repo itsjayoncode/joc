@@ -1,5 +1,7 @@
 # Browser Lifecycle Angular
 
+[![Become a Sponsor](https://img.shields.io/badge/Become%20a%20Sponsor-%23ea4aaa?style=flat&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/jayoncoding)
+
 Angular adapter for [`@jayoncode/browser-lifecycle`](../browser-lifecycle/README.md).
 
 Thin wrappers only — no browser observation logic. Provide/inject + signal snapshot. Owned sessions dispose via `DestroyRef`; adopted sessions never do. Start is guarded with `typeof document !== "undefined"` (SSR-safe).

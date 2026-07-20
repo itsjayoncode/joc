@@ -1,6 +1,7 @@
 # Form Intelligence — Zod
 
 [![npm version](https://img.shields.io/npm/v/@jayoncode/form-intelligence-zod.svg)](https://www.npmjs.com/package/@jayoncode/form-intelligence-zod)
+[![Become a Sponsor](https://img.shields.io/badge/Become%20a%20Sponsor-%23ea4aaa?style=flat&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/jayoncoding)
 
 Bridge [Zod](https://zod.dev) schemas into [`@jayoncode/form-intelligence`](https://www.npmjs.com/package/@jayoncode/form-intelligence).
 

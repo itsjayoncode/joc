@@ -4,6 +4,7 @@
 [![docs](https://img.shields.io/badge/docs-itsjayoncode.github.io-2563eb)](https://itsjayoncode.github.io/joc/)
 [![CI](https://github.com/itsjayoncode/joc/actions/workflows/ci.yml/badge.svg)](https://github.com/itsjayoncode/joc/actions/workflows/ci.yml)
 [![license](https://img.shields.io/github/license/itsjayoncode/joc)](https://github.com/itsjayoncode/joc/blob/master/LICENSE)
+[![Become a Sponsor](https://img.shields.io/badge/Become%20a%20Sponsor-%23ea4aaa?style=flat&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/jayoncoding)
 
 **JOC** (JayOnCode) is an open source monorepo of focused, independently installable **TypeScript libraries**. Each `@jayoncode/*` package solves one problem well, ships on its own SemVer line, and documents under its own section on the [official docs site](https://itsjayoncode.github.io/joc/).
 
@@ -37,6 +38,7 @@ Additional libraries will be announced as they enter active development — see 
 | Form Intelligence | https://itsjayoncode.github.io/joc/packages/form-intelligence/ |
 | Object Diff       | https://itsjayoncode.github.io/joc/packages/object-diff/       |
 | npm scope         | https://www.npmjs.com/~jayoncode                               |
+| Become a Sponsor  | https://github.com/sponsors/jayoncoding                        |
 | Repository README | [../README.md](../README.md)                                   |
 | Contributing      | [../CONTRIBUTING.md](../CONTRIBUTING.md)                       |
 | Security          | [../SECURITY.md](../SECURITY.md)                               |

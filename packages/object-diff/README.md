@@ -3,6 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/@jayoncode/object-diff.svg)](https://www.npmjs.com/package/@jayoncode/object-diff)
 [![license](https://img.shields.io/npm/l/@jayoncode/object-diff.svg)](https://github.com/itsjayoncode/joc/blob/master/packages/object-diff/package.json)
 [![docs](https://img.shields.io/badge/docs-itsjayoncode.github.io-2563eb)](https://itsjayoncode.github.io/joc/packages/object-diff/)
+[![Become a Sponsor](https://img.shields.io/badge/Become%20a%20Sponsor-%23ea4aaa?style=flat&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/jayoncoding)
 
 Published as [`@jayoncode/object-diff`](https://www.npmjs.com/package/@jayoncode/object-diff) on npm.
 

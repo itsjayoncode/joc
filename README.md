@@ -4,6 +4,7 @@
 [![docs](https://img.shields.io/badge/docs-itsjayoncode.github.io-2563eb)](https://itsjayoncode.github.io/joc/)
 [![CI](https://github.com/itsjayoncode/joc/actions/workflows/ci.yml/badge.svg)](https://github.com/itsjayoncode/joc/actions/workflows/ci.yml)
 [![license](https://img.shields.io/github/license/itsjayoncode/joc)](https://github.com/itsjayoncode/joc/blob/master/LICENSE)
+[![Become a Sponsor](https://img.shields.io/badge/Become%20a%20Sponsor-%23ea4aaa?style=flat&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/jayoncoding)
 
 **JOC** (JayOnCode) is an open source monorepo of focused, independently installable **TypeScript libraries** for the browser and shared app infrastructure. Each `@jayoncode/*` package solves one problem well, ships on its own version line, and is documented under its own section on the [official docs site](https://itsjayoncode.github.io/joc/).
 
@@ -15,6 +16,7 @@ Install only what you need. Compose when you need more. Keep package boundaries 
 | Interactive playgrounds | https://itsjayoncode.github.io/joc/playground/ |
 | npm scope               | https://www.npmjs.com/~jayoncode               |
 | Repository              | https://github.com/itsjayoncode/joc            |
+| Become a Sponsor        | https://github.com/sponsors/jayoncoding        |
 | Contributing            | [CONTRIBUTING.md](./CONTRIBUTING.md)           |
 | Code of Conduct         | [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)     |
 | Security                | [SECURITY.md](./SECURITY.md)                   |

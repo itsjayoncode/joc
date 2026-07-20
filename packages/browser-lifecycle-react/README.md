@@ -1,5 +1,7 @@
 # Browser Lifecycle React
 
+[![Become a Sponsor](https://img.shields.io/badge/Become%20a%20Sponsor-%23ea4aaa?style=flat&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/jayoncoding)
+
 React adapter for [`@jayoncode/browser-lifecycle`](../browser-lifecycle/README.md).
 
 Thin wrappers only — no browser observation logic. One session per provider/scope; owned sessions dispose on unmount, adopted sessions never do. Client-only `start()` (SSR-safe).
