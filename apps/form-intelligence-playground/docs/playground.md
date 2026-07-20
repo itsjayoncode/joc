@@ -58,6 +58,7 @@ If the shell shows a blank page or version env vars are missing, stop any stale 
 | `/validation`       | Validators & timing                         |
 | `/html-constraints` | DOM-backed HTML → validators (Phase 1)      |
 | `/submission`       | Submit flow, hard guards, UI canSubmit      |
+| `/captcha`          | Security Stage CAPTCHA (loading / pending)  |
 | `/ui`               | UI policies, showError, status, explain     |
 | `/workflow`         | Autosave, drafts, wizard                    |
 | `/state`            | State explorer & diffs                      |

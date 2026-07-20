@@ -31,7 +31,12 @@ export interface CaptchaProvider {
 export type CaptchaContainer = string | HTMLElement | (() => HTMLElement | null | undefined);
 
 export type CaptchaBlockReason =
-  "captchaPending" | "captchaFailed" | "captchaExpired" | "captchaTimeout" | "captchaUnavailable";
+  | "captchaLoading"
+  | "captchaPending"
+  | "captchaFailed"
+  | "captchaExpired"
+  | "captchaTimeout"
+  | "captchaUnavailable";
 
 /**
  * Provider plus optional mount options (factories such as `turnstile()` return this).

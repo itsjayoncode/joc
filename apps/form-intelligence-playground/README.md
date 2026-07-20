@@ -18,6 +18,8 @@ It is the shared environment for:
 | `/validation`       | Validators, timing, async checks                          |
 | `/html-constraints` | DOM-backed HTML constraints (`form.ref`, Phase 1)         |
 | `/submission`       | Submit flow, loading state, guards                        |
+| `/captcha`          | Security Stage CAPTCHA (loading / pending / outcomes)     |
+| `/ui`               | UI policies, showError, status, canSubmit                 |
 | `/workflow`         | Autosave, drafts, wizard steps                            |
 | `/state`            | Values tree, field flags, diffs                           |
 | `/formatters`       | Phone, currency, slug formatters                          |

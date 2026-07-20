@@ -15,7 +15,7 @@ export type SecurityStageHandler = (input: {
 
 interface SecurityStageRegistration {
   readonly run: SecurityStageHandler;
-  /** Soft explain reasons (e.g. captchaPending) observed outside submit. */
+  /** Soft explain reasons (e.g. captchaLoading / captchaPending) observed outside submit. */
   explainReasons: () => readonly string[];
   lastBlockReasons: readonly string[];
 }
@@ -24,6 +24,30 @@ const registrations = new WeakMap<
   FormInstance<Record<string, unknown>>,
   SecurityStageRegistration
 >();
+
+/** Form → subscriber notify (bound by createForm so Security Stage can refresh UI). */
+const notifyHooks = new WeakMap<FormInstance<Record<string, unknown>>, () => void>();
+
+/**
+ * Wire form subscriber notify for Security Stage explain changes.
+ * Called by `createForm` before plugins so CAPTCHA prepare can refresh `canSubmit`.
+ */
+export function bindSecurityStageNotify(
+  form: FormInstance<Record<string, unknown>>,
+  notify: () => void,
+): () => void {
+  notifyHooks.set(form, notify);
+  return () => {
+    if (notifyHooks.get(form) === notify) {
+      notifyHooks.delete(form);
+    }
+  };
+}
+
+/** Notify form subscribers after a Security Stage explain-relevant state transition. */
+export function notifySecurityStageChange(form: FormInstance<Record<string, unknown>>): void {
+  notifyHooks.get(form)?.();
+}
 
 export function registerSecurityStage(
   form: FormInstance<Record<string, unknown>>,

@@ -170,11 +170,11 @@ form.submissionGuard(); // { allowed, reasons } — hard eligibility
 await form.submit(); // refuses when !submissionGuard().allowed
 ```
 
-| Concern                                                             | Owner                     | Effect                                                                                      |
-| ------------------------------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------- |
-| `alreadySubmitting`, `ruleDisabled`                                 | Submission guards         | Blocks `submit()` **and** forces `form.ui.canSubmit === false`                              |
-| `captchaPending` / `Failed` / `Expired` / `Timeout` / `Unavailable` | Security Stage            | Always hard-blocks `canSubmit` (contributor `security`) — **not** `disableSubmitWhen`-gated |
-| `validating`, optional `invalid`                                    | `/ui` `disableSubmitWhen` | Button UX only — does **not** change engine behavior                                        |
+| Concern                                                                         | Owner                     | Effect                                                                                      |
+| ------------------------------------------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------- |
+| `alreadySubmitting`, `ruleDisabled`                                             | Submission guards         | Blocks `submit()` **and** forces `form.ui.canSubmit === false`                              |
+| `captchaLoading` / `Pending` / `Failed` / `Expired` / `Timeout` / `Unavailable` | Security Stage            | Always hard-blocks `canSubmit` (contributor `security`) — **not** `disableSubmitWhen`-gated |
+| `validating`, optional `invalid`                                                | `/ui` `disableSubmitWhen` | Button UX only — does **not** change engine behavior                                        |
 
 Full walkthrough: [Submission — Hard guards vs button UX](/packages/form-intelligence/modules/submission#hard-guards-vs-button-ux).
 

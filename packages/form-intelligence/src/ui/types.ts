@@ -23,6 +23,7 @@ export type UiSubmitBlockReason =
   | "validating"
   | "invalid"
   | "ruleDisabled"
+  | "captchaLoading"
   | "captchaPending"
   | "captchaFailed"
   | "captchaExpired"

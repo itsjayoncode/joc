@@ -181,22 +181,25 @@ captcha(
     token: "test-token",
     kind: "invisible", // default — or "widget"
     failWith: "captchaFailed", // optional — throws CaptchaError
-    delayMs: 200, // optional
+    delayMs: 200, // optional — execute latency (captchaPending)
+    loadDelayMs: 500, // optional — load latency (captchaLoading)
     expiresAt: Date.now() + 60_000, // optional token expiry
     // execute: async () => ({ provider: "mock", token: "custom" }),
   }),
 );
 ```
 
-| Option      | Type                          | Notes                                    |
-| ----------- | ----------------------------- | ---------------------------------------- |
-| `provider`  | `string`                      | Default `"mock"`                         |
-| `token`     | `string`                      | Default `"mock-token"`                   |
-| `kind`      | `"invisible"` \| `"widget"`   | Default `"invisible"`                    |
-| `failWith`  | captcha reason                | Throws `CaptchaError` with that reason   |
-| `delayMs`   | `number`                      | Artificial latency before resolve/reject |
-| `expiresAt` | `number`                      | Copied onto the returned token           |
-| `execute`   | `() => Promise<CaptchaToken>` | Full override of execute behavior        |
+| Option         | Type                          | Notes                                            |
+| -------------- | ----------------------------- | ------------------------------------------------ |
+| `provider`     | `string`                      | Default `"mock"`                                 |
+| `token`        | `string`                      | Default `"mock-token"`                           |
+| `kind`         | `"invisible"` \| `"widget"`   | Default `"invisible"`                            |
+| `failWith`     | captcha reason                | Throws `CaptchaError` with that reason           |
+| `delayMs`      | `number`                      | Artificial latency before execute resolve/reject |
+| `loadDelayMs`  | `number`                      | Artificial latency during `load()` / prepare     |
+| `failLoadWith` | captcha reason                | Fail during `load()` (e.g. `captchaUnavailable`) |
+| `expiresAt`    | `number`                      | Copied onto the returned token                   |
+| `execute`      | `() => Promise<CaptchaToken>` | Full override of execute behavior                |
 
 ### Custom providers
 
@@ -214,11 +217,14 @@ On failure the stage **aborts** (no `onSubmit`). Reasons appear in `form.ui.expl
 
 | Reason               | Meaning                                      |
 | -------------------- | -------------------------------------------- |
-| `captchaPending`     | Challenge not completed yet                  |
+| `captchaLoading`     | SDK / widget still initializing (`prepare`)  |
+| `captchaPending`     | Challenge in flight during submit            |
 | `captchaFailed`      | User challenge failed / dismissed            |
 | `captchaExpired`     | Token expired                                |
 | `captchaTimeout`     | Challenge timed out                          |
 | `captchaUnavailable` | SDK / network / provider infrastructure fail |
+
+`captchaLoading` is set while the Security Stage eagerly loads and mounts the provider. Prefer `disabled={!form.ui.canSubmit}` (or adapter submit helpers) so the button stays locked until the widget is ready — no DOM observers required.
 
 These `captcha*` reasons always hard-block `form.ui.canSubmit` (contributor `security`) — they are **not** gated by `disableSubmitWhen`. See [UI projection](/packages/form-intelligence/modules/ui-projection#hard-guards-vs-ux-policy).
 
