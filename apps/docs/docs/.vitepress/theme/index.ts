@@ -8,12 +8,14 @@ import HomeFx from "./components/HomeFx.vue";
 import HomePackageCatalog from "./components/HomePackageCatalog.vue";
 import PackageLanding from "./components/PackageLanding.vue";
 import PlaygroundCatalog from "./components/PlaygroundCatalog.vue";
+import SponsorCta from "./components/SponsorCta.vue";
 import Layout from "./Layout.vue";
 import { installPlaygroundNewTabLinks } from "./playground-new-tab.js";
 
 import type { Theme } from "vitepress";
 import "./brand.css";
 import "./custom.css";
+import "./sponsor.css";
 
 const theme: Theme = {
   extends: DefaultTheme,
@@ -27,6 +29,7 @@ const theme: Theme = {
     app.component("HomePackageCatalog", HomePackageCatalog);
     app.component("PackageLanding", PackageLanding);
     app.component("PlaygroundCatalog", PlaygroundCatalog);
+    app.component("SponsorCta", SponsorCta);
 
     if (typeof window !== "undefined") {
       installPlaygroundNewTabLinks();

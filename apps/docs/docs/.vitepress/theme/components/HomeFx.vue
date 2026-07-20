@@ -32,7 +32,7 @@ function updateCursorState(target: Element | null): void {
 
   hovering.value = Boolean(
     target.closest(
-      "a, button, .VPFeature .box, .joc-scenario-card, .joc-package-card, .joc-cta-primary, .joc-cta-secondary, .VPButton",
+      "a, button, .VPFeature .box, .joc-scenario-card, .joc-package-card, .joc-cta-primary, .joc-cta-secondary, .VPButton, .sponsor-group",
     ),
   );
 

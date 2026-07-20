@@ -126,6 +126,7 @@ gtag('config', '${docsGaId}');`,
       provider: "local",
     },
     nav: [
+      { component: "SponsorCta", props: { placement: "nav" } },
       { text: "Getting Started", link: "/getting-started/introduction" },
       {
         text: "Packages",

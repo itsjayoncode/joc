@@ -1,0 +1,480 @@
+/* GitHub Sponsors CTA — moved into .VPHomeHero .actions beside Get Started */
+
+.VPHomeHero .joc-sponsor-slot:empty {
+  display: none;
+}
+
+.VPHomeHero .actions,
+.VPHomeHero.has-image .actions {
+  align-items: center;
+}
+
+.VPHomeHero .joc-sponsor-action {
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+/* Match Get Started / Browse Packages hero CTA size */
+.VPHomeHero .sponsor-group {
+  align-items: center;
+  padding-left: 2.15rem;
+}
+
+.VPHomeHero .sponsor-plush {
+  width: 3.05rem;
+  height: 3.4rem;
+  bottom: 0;
+}
+
+.VPHomeHero .sponsor-pill {
+  min-height: 3.15rem;
+  padding: 0.9rem 1.85rem 0.9rem 1.55rem;
+}
+
+.VPHomeHero .sponsor-label {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.VPHomeHero .sponsor-sub {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+}
+
+.VPHomeHero .sponsor-copy {
+  gap: 0.28rem;
+}
+
+/* Compact variant for top nav (desktop + mobile screen menu) */
+.VPNavBarMenu .sponsor-group--nav,
+.VPNavScreenMenu .sponsor-group--nav {
+  align-self: center;
+  margin-inline: 0.15rem 0.45rem;
+  transform: scale(0.86);
+  transform-origin: center left;
+}
+
+.VPNavScreenMenu .sponsor-group--nav {
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0.85rem 0 0.5rem;
+  transform: none;
+}
+
+.VPNavScreenMenu .sponsor-group--nav .sponsor-pill {
+  min-height: 2.85rem;
+  padding: 0.55rem 1.5rem 0.55rem 1.25rem;
+}
+
+/* Tablet + mobile: Support stays in the top bar; hide menu duplicate. */
+.joc-sponsor-topbar {
+  display: none;
+  align-items: center;
+  flex-shrink: 0;
+  margin-inline-end: 0.35rem;
+  max-width: min(42vw, 11rem);
+}
+
+.joc-sponsor-topbar .sponsor-group--nav {
+  max-width: 100%;
+}
+
+@media (max-width: 1023px) {
+  .joc-sponsor-topbar {
+    display: inline-flex;
+  }
+
+  .joc-sponsor-topbar .sponsor-group--nav {
+    transform: scale(0.78);
+    transform-origin: center center;
+    margin-inline: 0;
+  }
+
+  .joc-sponsor-topbar .sponsor-pill {
+    min-height: 2.4rem;
+    padding: 0.4rem 1.2rem 0.4rem 1rem;
+  }
+
+  .VPNavBarMenu .sponsor-group--nav {
+    display: none !important;
+  }
+
+  .VPNavBar .content-body {
+    overflow: visible;
+  }
+}
+
+@media (max-width: 479px) {
+  .joc-sponsor-topbar {
+    max-width: 110px;
+  }
+
+  .joc-sponsor-topbar .sponsor-group--nav {
+    transform: scale(0.7);
+  }
+
+  .joc-sponsor-topbar .sponsor-sub {
+    display: none;
+  }
+
+  .joc-sponsor-topbar .sponsor-pill {
+    min-height: 2.25rem;
+    padding: 0.35rem 1rem 0.35rem 0.85rem;
+  }
+
+  .joc-sponsor-topbar .sponsor-copy {
+    gap: 0;
+  }
+}
+
+.sponsor-group--nav .sponsor-pill {
+  min-height: 2.7rem;
+  padding: 0.55rem 1.75rem 0.55rem 1.5rem;
+}
+
+.sponsor-group--nav .sponsor-label {
+  font-size: 1.05rem;
+}
+
+.sponsor-group--nav .sponsor-sub {
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+}
+
+.sponsor-group {
+  --sweet: #ff4d6d;
+  --sweet-soft: #ff8fa3;
+  --surface: #ffffff;
+  --text: #121218;
+  --border: rgba(18, 18, 24, 0.12);
+  position: relative;
+  display: inline-flex;
+  align-items: flex-end;
+  padding-left: 1.85rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+html.dark .sponsor-group {
+  --surface: #141418;
+  --text: #e8e8ec;
+  --border: rgba(255, 255, 255, 0.12);
+}
+
+.sponsor-plush {
+  position: absolute;
+  left: 0;
+  bottom: -0.15rem;
+  z-index: 3;
+  width: 2.65rem;
+  height: 3rem;
+  filter: drop-shadow(0 4px 8px rgba(255, 77, 109, 0.28));
+  animation: sponsorPlushBob 2.8s ease-in-out infinite;
+}
+
+.sponsor-plush-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+.sponsor-plush-arm {
+  transform-origin: 14px 40px;
+  animation: sponsorPlushWave 2.2s ease-in-out infinite;
+}
+
+.sponsor-plush-eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: sponsorPlushBlink 4.8s ease-in-out infinite;
+}
+
+.sponsor-plush-shadow {
+  transform-origin: 32px 66px;
+  animation: sponsorPlushShadow 2.8s ease-in-out infinite;
+}
+
+.sponsor-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 3.15rem;
+  padding: 0.55rem 1.35rem 0.55rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--sweet) 28%, var(--border));
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--sweet) 22%, var(--surface)),
+    color-mix(in srgb, #2da8ff 16%, var(--surface)) 48%,
+    color-mix(in srgb, #7c5cff 14%, var(--surface))
+  );
+  color: var(--text);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 14%, transparent),
+    0 10px 24px -16px color-mix(in srgb, var(--sweet) 55%, transparent);
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.sponsor-group:hover .sponsor-pill {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--sweet) 48%, var(--border));
+}
+
+.sponsor-chrome {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.sponsor-sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 18%,
+    color-mix(in srgb, #fff 14%, transparent) 48%,
+    transparent 74%
+  );
+  animation: sponsorSheen 5.4s ease-in-out infinite;
+}
+
+.sponsor-pulse {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at 22% 50%,
+    color-mix(in srgb, var(--sweet) 36%, transparent),
+    transparent 58%
+  );
+  animation: sponsorHeartGlow 1.6s ease-in-out infinite;
+}
+
+.sponsor-copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+  line-height: 1.05;
+}
+
+.sponsor-label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.sponsor-sub {
+  font-size: 0.64rem;
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--sweet-soft) 45%, var(--text));
+}
+
+.sponsor-floaters {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.sponsor-floater {
+  position: absolute;
+  left: 18%;
+  bottom: 35%;
+  width: 0.55rem;
+  height: 0.55rem;
+  color: var(--sweet-soft);
+  opacity: 0;
+  animation: sponsorHeartFloat 3.6s ease-in infinite;
+}
+
+.sponsor-floater svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.sponsor-floater.f1 {
+  left: 14%;
+}
+
+.sponsor-floater.f2 {
+  left: 40%;
+  width: 0.42rem;
+  height: 0.42rem;
+  animation-delay: 0.7s;
+}
+
+.sponsor-floater.f3 {
+  left: 68%;
+  width: 0.48rem;
+  height: 0.48rem;
+  animation-delay: 1.4s;
+}
+
+.sponsor-spark {
+  position: absolute;
+  width: 0.22rem;
+  height: 0.22rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, #fff 70%, var(--sweet-soft));
+  box-shadow: 0 0 8px color-mix(in srgb, var(--sweet) 65%, transparent);
+  opacity: 0;
+  animation: sponsorSparkle 2.8s ease-in-out infinite;
+}
+
+.sponsor-spark.s1 {
+  top: 18%;
+  right: 18%;
+}
+
+.sponsor-spark.s2 {
+  top: 58%;
+  right: 10%;
+  width: 0.16rem;
+  height: 0.16rem;
+  animation-delay: 1.1s;
+}
+
+.sponsor-spark.s3 {
+  top: 28%;
+  left: 8%;
+  width: 0.14rem;
+  height: 0.14rem;
+  animation-delay: 1.9s;
+}
+
+@keyframes sponsorSheen {
+  0%,
+  58% {
+    transform: translateX(-130%);
+  }
+  78%,
+  100% {
+    transform: translateX(130%);
+  }
+}
+
+@keyframes sponsorHeartGlow {
+  0%,
+  100% {
+    opacity: 0.18;
+    transform: scale(1);
+  }
+  14% {
+    opacity: 0.58;
+    transform: scale(1.03);
+  }
+  28% {
+    opacity: 0.22;
+  }
+  42% {
+    opacity: 0.5;
+    transform: scale(1.02);
+  }
+  70% {
+    opacity: 0.18;
+  }
+}
+
+@keyframes sponsorHeartFloat {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0.35rem, 0) scale(0.55);
+  }
+  18% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0.35rem, -2.4rem, 0) scale(1.05);
+  }
+}
+
+@keyframes sponsorSparkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  40% {
+    opacity: 0.95;
+    transform: scale(1.15);
+  }
+  70% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes sponsorPlushBob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-0.28rem) rotate(2deg);
+  }
+}
+
+@keyframes sponsorPlushWave {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  40% {
+    transform: rotate(-28deg);
+  }
+  65% {
+    transform: rotate(-8deg);
+  }
+}
+
+@keyframes sponsorPlushBlink {
+  0%,
+  42%,
+  46%,
+  100% {
+    transform: scaleY(1);
+  }
+  44% {
+    transform: scaleY(0.12);
+  }
+}
+
+@keyframes sponsorPlushShadow {
+  0%,
+  100% {
+    transform: scaleX(1);
+    opacity: 0.18;
+  }
+  50% {
+    transform: scaleX(0.82);
+    opacity: 0.12;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sponsor-plush,
+  .sponsor-plush-arm,
+  .sponsor-plush-eye,
+  .sponsor-plush-shadow,
+  .sponsor-sheen,
+  .sponsor-pulse,
+  .sponsor-floater,
+  .sponsor-spark {
+    animation: none;
+  }
+}
