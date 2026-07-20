@@ -16,6 +16,7 @@
 | 6   | **Plugin author guide**                                                                 | Platform conventions once ownership is documented               | Done (`docs/plugins` + `019-plugin-author-conventions`) |
 | 7   | **Yup / Valibot / AJV depth**                                                           | Zod is reference; others thinner                                | Done (`020-schema-adapter-parity`)                      |
 | 8   | **On demand only** — rich errors, more hard guards, projection memoization              | Wait for real consumers / measured hotspots                     | Deferred                                                |
+| 9   | **HTML constraints Phase 1** — DOM attach → validators (ADR-VAL-002)                    | Semantic HTML as validation source for DOM-backed forms         | Done (Phase 1; min/max/step deferred)                   |
 
 ## Explicitly out of scope (for now)
 

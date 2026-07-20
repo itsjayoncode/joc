@@ -16,6 +16,7 @@ It is the shared environment for:
 | `/`            | Interactive developer sandbox                             |
 | `/dashboard`   | Overview, package versions, explorer map                  |
 | `/validation`  | Validators, timing, async checks                          |
+| `/html-constraints` | DOM-backed HTML constraints (`form.ref`, Phase 1)    |
 | `/submission`  | Submit flow, loading state, guards                        |
 | `/workflow`    | Autosave, drafts, wizard steps                            |
 | `/state`       | Values tree, field flags, diffs                           |

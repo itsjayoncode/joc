@@ -26,7 +26,7 @@ That boilerplate repeats per screen. Subscriptions are easy to forget.
 
 `useForm` owns the React subscription (`useSyncExternalStore`) and the instance lifecycle (StrictMode-safe: the instance is destroyed and recreated across the dev double-mount). The headless engine still owns validation, rules, drafts, and submit.
 
-`form.field(path)` does **not** spread controlled `value` / `onChange`. It spreads `name` + `aria-*` + `data-fi-status`, matching the Vue and Angular adapters — the DOM enhancer (`form.ref` / `<form {...form.form()}>`) owns values and change events for native inputs. For headless / design-system inputs, use `form.fieldController(path).bind()` instead, which returns `{ name, value, onChange, onBlur, onFocus }`.
+`form.field(path)` does **not** spread controlled `value` / `onChange`. It spreads `name` + `aria-*` + `data-fi-status`, matching the Vue and Angular adapters — the DOM enhancer (`form.ref` / `<form {...form.form()}>`) owns values and change events for native inputs. Put Phase 1 HTML constraints on those inputs (`required`, `minLength`, `type="email"`, …) — they become FI validators on attach (same as core `target` / `form.ref`). For headless / design-system inputs, use `form.fieldController(path).bind()` instead, which returns `{ name, value, onChange, onBlur, onFocus }` (no HTML-constraint import unless a real input is also bound).
 
 ## What you get
 

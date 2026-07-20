@@ -86,12 +86,13 @@ Framework adapters (React, Vue, Angular) call `subscribe()` internally — appli
 
 ## DOM enhancement
 
-When `target` or `form` is provided, the engine:
+When `target` or `form` is provided (or you attach later with `form.ref` / `form.form()`), the engine:
 
 - discovers fields by `name`
 - wires `input` / `change` / `blur` without manual handlers
+- imports Phase 1 **HTML constraint attributes** into validators once on attach (see [Validation → HTML constraints](/packages/form-intelligence/modules/validation#html-constraints-dom-backed))
 - surfaces validation errors with `aria-invalid` and live regions
-- disables submit buttons while `isSubmitting` (`aria-busy`)
+- sets `novalidate` and disables submit buttons while `isSubmitting` (`aria-busy`)
 
 This is the same philosophy as Browser Lifecycle: **enhance what you already have** instead of replacing your markup.
 

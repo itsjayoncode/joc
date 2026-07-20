@@ -64,7 +64,7 @@ On push to `master` or `main`, expect **two** workflow runs: **CI** and **CodeQL
 
 When CI runs on `main` or `master`, jobs execute in this order:
 
-1. **Quality** — workspace health, `docs:prepare`, typecheck, lint, format, tests, build, integrity checks
+1. **Quality** — `pnpm audit --prod`, workspace health, `docs:prepare`, typecheck, lint, format, tests, build, integrity checks
 2. **Deploy docs** — production VitePress build with `VITE_DOCS_BASE=/joc/`, bundles playgrounds, and stages documentation archives:
    - `/joc/playground/browser-lifecycle/`
    - `/joc/playground/form-intelligence/`

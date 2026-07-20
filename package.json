@@ -21,7 +21,9 @@
   },
   "pnpm": {
     "overrides": {
-      "human-id": "3.0.1"
+      "human-id": "3.0.1",
+      "esbuild": ">=0.25.0",
+      "vite": "6.4.3"
     }
   },
   "scripts": {
@@ -72,7 +74,8 @@
     "package:integrity": "node ./scripts/check-package-integrity.mjs",
     "package:blueprint": "node ./scripts/check-package-blueprint.mjs",
     "object-diff:bundle": "node ./scripts/check-object-diff-bundle.mjs",
-    "ci:quality": "pnpm workspace:health && pnpm docs:prepare && pnpm typecheck && pnpm lint && pnpm format:check && pnpm test:coverage && pnpm --filter @jayoncode/form-intelligence check:size && pnpm object-diff:bundle && pnpm build && pnpm package:integrity && pnpm release:readiness && pnpm package:blueprint",
+    "ci:quality": "pnpm audit --prod && pnpm workspace:health && pnpm docs:prepare && pnpm typecheck && pnpm lint && pnpm format:check && pnpm test:coverage && pnpm --filter @jayoncode/form-intelligence check:size && pnpm object-diff:bundle && pnpm build && pnpm package:integrity && pnpm release:readiness && pnpm package:blueprint",
+    "audit:prod": "pnpm audit --prod",
     "validate": "pnpm ci:quality",
     "workspaces:list": "pnpm list -r --depth -1",
     "clean": "node -e \"const fs=require('fs'); const path=require('path'); const root=process.cwd(); const removeNames=new Set(['dist','build','lib','coverage','.turbo']); const walk=(dir)=>{ for (const entry of fs.readdirSync(dir,{withFileTypes:true})) { const full=path.join(dir,entry.name); if (entry.isDirectory()) { if (entry.name === 'node_modules' || entry.name === '.git') continue; if (removeNames.has(entry.name)) { fs.rmSync(full,{recursive:true,force:true}); continue; } walk(full); continue; } if (entry.name.endsWith('.tsbuildinfo')) fs.rmSync(full,{force:true}); } }; walk(root);\""

@@ -16,6 +16,7 @@ import {
 import { isSchemaAdapter } from "../adapters/is-schema-adapter.js";
 import { discoverFieldNames } from "../dom/discover-fields.js";
 import { attachDomEnhancer } from "../dom/enhance-form.js";
+import { extractHtmlConstraints } from "../dom/extract-html-constraints.js";
 import { readNamedFieldValue } from "../dom/field-value.js";
 import {
   CalculationBuilderImpl,
@@ -51,7 +52,8 @@ import { resolveHookResult } from "../plugins/hooks.js";
 import { MiddlewarePipeline } from "../plugins/middleware.js";
 import { PluginRegistry } from "../plugins/registry.js";
 import { compileSchema } from "../schema/compiler.js";
-import { validatorsIncludeRequired } from "../schema/required-baseline.js";
+import { collectRequiredBaseline } from "../schema/required-baseline.js";
+import { mergeValidatorsByKind } from "../validation/merge-validators-by-kind.js";
 import { FormStateStore } from "../state/store.js";
 import { evaluateSubmissionGuard } from "../submission/guard.js";
 import { runSecurityStage } from "../submission/security-stage.js";
@@ -133,6 +135,16 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
   private readonly config: ResolvedFormConfig<TValues>;
   private readonly events = new FormEventBus();
   private readonly fieldValidators = new Map<FieldPath, readonly Validator<TValues>[]>();
+  /** Compiled field-schema validators (ADR-VAL-002 source). */
+  private readonly schemaValidators: Partial<
+    Record<FieldPath, readonly Validator<TValues>[]>
+  >;
+  /** `createForm({ validators })` only (ADR-VAL-002 Field source base). */
+  private readonly fieldConfigValidators: FormConfig<TValues>["validators"];
+  /** HTML constraints from last DOM attach (replaced on each attach). */
+  private htmlValidators: Partial<Record<FieldPath, readonly Validator<TValues>[]>> = {};
+  /** Kind-merged Schema + Field + HTML used by the validation pipeline. */
+  private effectiveValidators: FormConfig<TValues>["validators"];
   private readonly fieldOptions = new Map<FieldPath, FieldOptions<TValues>>();
   private readonly store: FormStateStore<TValues>;
   private readonly moduleHost: FormModuleHost<TValues>;
@@ -183,6 +195,7 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     }
 
     this.detachElement();
+    this.clearHtmlConstraints();
   };
 
   public constructor(
@@ -191,6 +204,8 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
       domTarget: HTMLFormElement | null;
       fieldPaths: readonly FieldPath[];
       requiredBaseline?: readonly FieldPath[];
+      schemaValidators?: Partial<Record<FieldPath, readonly Validator<TValues>[]>>;
+      fieldConfigValidators?: FormConfig<TValues>["validators"];
     } = {
       domTarget: null,
       fieldPaths: [],
@@ -198,6 +213,9 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
   ) {
     this.id = createId("form");
     this.config = normalizeFormConfig(config);
+    this.schemaValidators = options.schemaValidators ?? {};
+    this.fieldConfigValidators = options.fieldConfigValidators;
+    this.effectiveValidators = this.config.validators;
     this.pluginRegistry = new PluginRegistry<TValues>(
       this.config.onPluginError ? { onPluginError: this.config.onPluginError } : {},
     );
@@ -311,11 +329,13 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
   private syncAsyncValidatorPathPolicies(): void {
     const paths = new Set<FieldPath>([
       ...this.fieldValidators.keys(),
-      ...Object.keys(this.config.validators ?? {}),
+      ...Object.keys(this.effectiveValidators ?? {}),
+      ...Object.keys(this.schemaValidators),
+      ...Object.keys(this.htmlValidators),
     ]);
 
     for (const path of paths) {
-      const configValidator = this.config.validators?.[path];
+      const configValidator = this.effectiveValidators?.[path];
       const fromConfig = configValidator
         ? Array.isArray(configValidator)
           ? [...configValidator]
@@ -382,6 +402,7 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
 
     this.syncValuesFromDom(formElement, fieldPaths);
     this.detachElement();
+    this.applyHtmlConstraintsFromDom(formElement, fieldPaths);
     this.domDetach = attachDomEnhancer(this, formElement, fieldPaths, {
       validateOn: this.config.validateOn,
     });
@@ -392,20 +413,71 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     this.domDetach = undefined;
   }
 
+  /** Replace HTML-derived validators from the bound form (ADR-VAL-002 / MVP-VAL-002). */
+  private applyHtmlConstraintsFromDom(
+    formElement: HTMLFormElement,
+    fieldPaths: readonly FieldPath[],
+  ): void {
+    this.htmlValidators = extractHtmlConstraints<TValues>(formElement, fieldPaths);
+    this.recomputeEffectiveValidators();
+  }
+
+  private clearHtmlConstraints(): void {
+    if (Object.keys(this.htmlValidators).length === 0) {
+      return;
+    }
+    this.htmlValidators = {};
+    this.recomputeEffectiveValidators();
+  }
+
+  private buildFieldSourceValidators(): Partial<
+    Record<FieldPath, readonly Validator<TValues>[]>
+  > {
+    const field: Partial<Record<FieldPath, Validator<TValues>[]>> = {};
+
+    if (this.fieldConfigValidators) {
+      for (const [path, entry] of Object.entries(this.fieldConfigValidators)) {
+        field[path] = Array.isArray(entry) ? [...entry] : [entry as Validator<TValues>];
+      }
+    }
+
+    for (const [path, validators] of this.fieldValidators) {
+      const existing = field[path] ?? [];
+      field[path] = [...existing, ...validators];
+    }
+
+    return field;
+  }
+
+  private recomputeEffectiveValidators(): void {
+    const merged = mergeValidatorsByKind<TValues>({
+      html: this.htmlValidators,
+      schema: this.schemaValidators,
+      field: this.buildFieldSourceValidators(),
+    });
+    this.effectiveValidators = Object.keys(merged).length > 0 ? merged : undefined;
+
+    const nextBaseline = collectRequiredBaseline(this.effectiveValidators);
+    this.requiredBaseline.clear();
+    for (const path of nextBaseline) {
+      this.requiredBaseline.add(path);
+    }
+
+    this.syncAsyncValidatorPathPolicies();
+
+    if (this.hasWorkflowRules()) {
+      this.recomputeFieldUi();
+    } else {
+      this.seedRequiredBaselineUi();
+      this.notify();
+    }
+  }
+
   public field(path: FieldPath, options: FieldOptions<TValues> = {}): FieldHandle<TValues> {
     this.fieldOptions.set(path, options);
     if (options.validators) {
       this.fieldValidators.set(path, options.validators);
-      this.syncAsyncValidatorPathPolicies();
-      if (validatorsIncludeRequired(options.validators)) {
-        this.requiredBaseline.add(path);
-        if (this.hasWorkflowRules()) {
-          this.recomputeFieldUi();
-        } else {
-          this.seedRequiredBaselineUi();
-          this.notify();
-        }
-      }
+      this.recomputeEffectiveValidators();
     }
     this.dependencyEngine.syncInferredFromFields(this.fieldOptions);
 
@@ -896,8 +968,8 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
       const fieldErrors = await runValidationPipeline({
         values: this.core.values,
         paths: validatePathsInput,
-        fieldValidators: this.fieldValidators,
-        configValidators: this.config.validators ?? {},
+        fieldValidators: new Map(),
+        configValidators: this.effectiveValidators ?? {},
         ...(this.config.crossFieldValidators
           ? { crossFieldRules: this.config.crossFieldValidators }
           : {}),
@@ -1592,11 +1664,18 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
 
   /** Seed Presentation `required` from schema/static validators when no rules run. */
   private seedRequiredBaselineUi(): void {
-    if (this.hasWorkflowRules() || this.requiredBaseline.size === 0) {
+    if (this.hasWorkflowRules()) {
       return;
     }
 
     const next: Record<string, FieldUiState> = { ...this.fieldUi };
+
+    for (const [path, state] of Object.entries(next)) {
+      if (state.required === true && !this.requiredBaseline.has(path)) {
+        next[path] = { ...state, required: undefined };
+      }
+    }
+
     for (const path of this.requiredBaseline) {
       next[path] = {
         visible: true,
@@ -2013,8 +2092,8 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
 }
 
 /**
- * Create a form workflow instance. Pass `target` + `schema` to enhance native HTML,
- * or `initialValues` for headless usage.
+ * Create a form workflow instance. Pass `target` / `form.ref` for DOM-backed forms
+ * (HTML constraints imported on attach), or `initialValues` for headless usage.
  */
 export function createForm<TValues extends Record<string, unknown>>(
   config: FormConfig<TValues>,
@@ -2025,5 +2104,7 @@ export function createForm<TValues extends Record<string, unknown>>(
     domTarget: resolved.domTarget,
     fieldPaths: resolved.fieldPaths,
     requiredBaseline: resolved.requiredBaseline,
+    schemaValidators: resolved.schemaValidators,
+    fieldConfigValidators: resolved.fieldConfigValidators,
   });
 }

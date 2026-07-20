@@ -13,6 +13,7 @@ Follow the [learning path](/packages/form-intelligence/) in docs, then try each 
 | [Tutorial](/packages/form-intelligence/modules/getting-started)    | [/](/playground/form-intelligence/)                         | Sandbox lab — full workspace   |
 | [Concepts](/packages/form-intelligence/modules/concepts)           | [/state](/playground/form-intelligence/state)               | Edit fields, watch JSON state  |
 | [Validation](/packages/form-intelligence/modules/validation)       | [/validation](/playground/form-intelligence/validation)     | Toggle timing, async username  |
+| HTML constraints (DOM-backed)                                      | [/html-constraints](/playground/form-intelligence/html-constraints) | `form.ref` + HTML attributes   |
 | [Submission](/packages/form-intelligence/modules/submission)       | [/submission](/playground/form-intelligence/submission)     | Guards + form.ui.canSubmit     |
 | [UI projection](/packages/form-intelligence/modules/ui-projection) | [/ui](/playground/form-intelligence/ui)                     | Policies + explain / status    |
 | [Workflow](/packages/form-intelligence/modules/workflow)           | [/workflow](/playground/form-intelligence/workflow)         | Reload page → draft restored   |
@@ -55,6 +56,7 @@ If the shell shows a blank page or version env vars are missing, stop any stale 
 | `/`            | Interactive developer sandbox               |
 | `/dashboard`   | Overview & quick links                      |
 | `/validation`  | Validators & timing                         |
+| `/html-constraints` | DOM-backed HTML → validators (Phase 1) |
 | `/submission`  | Submit flow, hard guards, UI canSubmit      |
 | `/ui`          | UI policies, showError, status, explain     |
 | `/workflow`    | Autosave, drafts, wizard                    |

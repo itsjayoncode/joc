@@ -8,6 +8,7 @@ describe("playground navigation", () => {
       "/",
       "/dashboard",
       "/validation",
+      "/html-constraints",
       "/submission",
       "/captcha",
       "/ui",

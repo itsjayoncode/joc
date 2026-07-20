@@ -1,8 +1,9 @@
+import { tagValidator } from "../validator-kind.js";
+
 import type { Validator } from "../../types/index.js";
 
-export const minLength =
-  (min: number): Validator =>
-  (value) => {
+export const minLength = (min: number): Validator =>
+  tagValidator((value) => {
     if (value === null || value === undefined || value === "") {
       return true;
     }
@@ -16,4 +17,4 @@ export const minLength =
     }
 
     return true;
-  };
+  }, "minLength");

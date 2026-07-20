@@ -5,6 +5,12 @@ description: "Release history for @jayoncode/form-intelligence."
 
 # Changelog
 
+## 3.7.0
+
+### Minor Changes
+
+- 6134105: Add `@jayoncode/form-intelligence/captcha` Security Stage with Turnstile, reCAPTCHA, hCaptcha, and `mockCaptcha`; token at `meta.security.captcha`.
+
 ## 3.6.0
 
 ### Minor Changes
@@ -189,4 +195,3 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Examples: `vanilla-html`, `basic-validation`, `wizard-workflow` (+ framework stubs)
 
 ## 0.1.1
-

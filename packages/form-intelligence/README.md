@@ -87,7 +87,7 @@ One place for the business rules. No copy-pasted effects for show/require/autosa
 | Area             | What you can do                                                                                                                          |
 | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | **State**        | Single `form.state` for values, errors, dirty/touched, submitting; `subscribe` / config `subscribe`                                      |
-| **Validation**   | Schema shortcuts (`email`, `required`, …), custom + **async** validators, modes `onChange` / `onBlur` / `onSubmit` / `onTouched` / `all` |
+| **Validation**   | Schema shortcuts (`email`, `required`, …), custom + **async** validators, modes `onChange` / `onBlur` / `onSubmit` / `onTouched` / `all`; **HTML constraints** on DOM-backed forms (`required`, `minlength`, …) |
 | **Rules**        | `when().equals().show().require().populate()` — conditional UI and requirements without effects                                          |
 | **Calculations** | Derived fields from other values                                                                                                         |
 | **Formatters**   | Display vs stored value (`phone`, `currency`, `slug`, custom pipelines via `/format`)                                                    |
@@ -134,11 +134,14 @@ pnpm add @jayoncode/form-intelligence
 
 ### Enhance existing markup
 
+Constraint attributes on the DOM become validators on attach (schema optional):
+
 ```ts
 import { createForm } from "@jayoncode/form-intelligence";
 
 createForm({
   target: "#signup",
+  // schema / validators optional — HTML required / type="email" / minlength also work
   schema: { email: "email", name: { required: true, minLength: 2 } },
   validateOn: "onBlur",
   async onSubmit(values) {
@@ -146,6 +149,8 @@ createForm({
   },
 });
 ```
+
+Docs: [Adapters → Native HTML](https://itsjayoncode.github.io/joc/packages/form-intelligence/modules/adapters) · Playground: [HTML constraints](https://itsjayoncode.github.io/joc/playground/form-intelligence/html-constraints)
 
 ### Headless bind (any UI)
 

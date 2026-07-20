@@ -22,7 +22,7 @@
   "devDependencies": {
     "typedoc": "0.28.7",
     "typedoc-plugin-markdown": "4.7.0",
-    "vite": "^5.4.11",
+    "vite": "6.4.3",
     "vitepress": "^1.6.4",
     "vue": "^3.5.13"
   }

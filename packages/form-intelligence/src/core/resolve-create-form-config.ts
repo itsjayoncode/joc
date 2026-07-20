@@ -5,6 +5,7 @@ import { resolveFormElement } from "../dom/resolve-form.js";
 import { ConfigurationError } from "../errors/index.js";
 import { compileSchema } from "../schema/compiler.js";
 import { collectRequiredBaseline } from "../schema/required-baseline.js";
+import { mergeValidatorsByKind } from "../validation/merge-validators-by-kind.js";
 
 import type { FieldPath, FieldSchemaDefinition, FormConfig, Validator } from "../types/index.js";
 
@@ -14,6 +15,10 @@ export interface ResolvedCreateFormConfig<TValues extends Record<string, unknown
   readonly fieldPaths: readonly FieldPath[];
   /** Static schema/validator `required` paths seeded into Presentation (ADR-018). */
   readonly requiredBaseline: readonly FieldPath[];
+  /** Compiled field-schema validators (separate from config for kind merge). */
+  readonly schemaValidators: Partial<Record<FieldPath, readonly Validator<TValues>[]>>;
+  /** `createForm({ validators })` only — excludes schema and HTML. */
+  readonly fieldConfigValidators: FormConfig<TValues>["validators"];
 }
 
 function buildEmptyInitialValues(paths: readonly FieldPath[]): Record<string, unknown> {
@@ -33,33 +38,6 @@ function readDomValues(
     values[path] = readNamedFieldValue(form, path);
   }
   return values;
-}
-
-function mergeValidators<TValues extends Record<string, unknown>>(
-  schemaValidators: Partial<Record<FieldPath, readonly Validator<TValues>[]>>,
-  configValidators: FormConfig<TValues>["validators"],
-): FormConfig<TValues>["validators"] {
-  const merged: Partial<Record<FieldPath, Validator<TValues> | readonly Validator<TValues>[]>> = {
-    ...schemaValidators,
-  };
-
-  if (!configValidators) {
-    return merged;
-  }
-
-  for (const [path, validators] of Object.entries(configValidators)) {
-    const existing = merged[path];
-    if (!existing) {
-      merged[path] = validators;
-      continue;
-    }
-
-    const next = Array.isArray(validators) ? [...validators] : [validators];
-    const previous = Array.isArray(existing) ? [...existing] : [existing];
-    merged[path] = [...previous, ...next];
-  }
-
-  return merged;
 }
 
 export function resolveCreateFormConfig<TValues extends Record<string, unknown>>(
@@ -97,6 +75,11 @@ export function resolveCreateFormConfig<TValues extends Record<string, unknown>>
     ? compileSchema(fieldSchema ?? {})
     : { initialValues: {}, validators: {} };
 
+  const schemaValidators = compiled.validators as Partial<
+    Record<FieldPath, readonly Validator<TValues>[]>
+  >;
+  const fieldConfigValidators = config.validators;
+
   const initialValues = {
     ...buildEmptyInitialValues(fieldPaths),
     ...compiled.initialValues,
@@ -104,20 +87,25 @@ export function resolveCreateFormConfig<TValues extends Record<string, unknown>>
     ...(domTarget ? readDomValues(domTarget, fieldPaths) : {}),
   } as TValues;
 
-  const validators = hasFieldSchema
-    ? mergeValidators(compiled.validators, config.validators)
-    : config.validators;
+  const validators = mergeValidatorsByKind<TValues>({
+    schema: schemaValidators,
+    ...(fieldConfigValidators ? { field: fieldConfigValidators } : {}),
+  });
+
+  const hasMergedValidators = Object.keys(validators).length > 0;
 
   const formConfig: ResolvedCreateFormConfig<TValues>["formConfig"] = {
     ...config,
     initialValues,
-    ...(validators === undefined ? {} : { validators }),
+    ...(hasMergedValidators ? { validators } : {}),
   };
 
   return {
     formConfig,
     domTarget,
     fieldPaths,
-    requiredBaseline: collectRequiredBaseline(validators),
+    requiredBaseline: collectRequiredBaseline(hasMergedValidators ? validators : undefined),
+    schemaValidators,
+    fieldConfigValidators,
   };
 }

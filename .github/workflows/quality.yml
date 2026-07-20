@@ -35,6 +35,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Audit production dependencies
+        run: pnpm audit --prod
+
       - name: Check workspace health
         run: pnpm workspace:health
 
@@ -87,6 +90,7 @@ jobs:
           {
             echo "## Quality Gates"
             echo ""
+            echo "- Production dependency audit (\`pnpm audit --prod\`)"
             echo "- Workspace health"
             echo "- Documentation prepare (API + sync)"
             echo "- TypeScript build validation"

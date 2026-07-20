@@ -1,6 +1,8 @@
+import { tagValidator } from "../validator-kind.js";
+
 import type { Validator } from "../../types/index.js";
 
-export const url: Validator = (value) => {
+export const url: Validator = tagValidator((value) => {
   if (value === null || value === undefined || value === "") {
     return true;
   }
@@ -15,4 +17,4 @@ export const url: Validator = (value) => {
   } catch {
     return "Enter a valid URL.";
   }
-};
+}, "url");

@@ -41,10 +41,12 @@
     "@jayoncode/browser-lifecycle": "^0.3.0"
   },
   "devDependencies": {
-    "@angular/core": "^18.2.13",
-    "@angular/platform-browser": "^18.2.13",
+    "@angular/common": "^20.3.26",
+    "@angular/compiler": "^20.3.26",
+    "@angular/core": "^20.3.26",
+    "@angular/platform-browser": "^20.3.26",
     "@jayoncode/browser-lifecycle": "workspace:*",
-    "zone.js": "^0.14.10"
+    "zone.js": "~0.15.0"
   },
   "publishConfig": {
     "access": "public",

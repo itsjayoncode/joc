@@ -6,6 +6,8 @@ Check user input before submit — with built-in rules, custom logic, or async A
 
 ::: tip Playground
 [Validation explorer →](/playground/form-intelligence/validation) — timing modes, async validators, field inspector.
+
+[HTML constraints →](/playground/form-intelligence/html-constraints) — `form.ref` + attribute → validator lab (Field override toggle).
 :::
 
 ## Import path
@@ -26,6 +28,7 @@ Prefer the main entry for everyday validators. Full map: [Entrypoints](/packages
 | Errors appear too early or too late             | `validateOn` timing (`onBlur`, `onChange`, `onSubmit`) |
 | Need server uniqueness checks                   | Async validators that return a string error            |
 | Several server checks on one field              | Multiple `asyncValidator`s in one array (ordered)      |
+| DOM inputs already have `required` / `minlength` | HTML constraints imported on attach (DOM-backed forms) |
 
 ## Overview
 
@@ -127,6 +130,21 @@ validators: {
 ```
 
 `requiredWhen` is **validation only** — it does not set Presentation `required` (no `aria-required` / DOM `required`). Use `when(sourcePath).equals(...).require(path)` from [Rules](/packages/form-intelligence/modules/rules) when the UI also needs to reflect the requirement.
+
+### HTML constraints (DOM-backed)
+
+On `createForm({ target })` or `form.ref` / `form.form()`, Phase 1 constraint attributes on native inputs become FI validators **once at attach**. The browser does not validate (`novalidate`); attributes stay in the DOM for a11y / autofill.
+
+| HTML | Validator |
+| ---- | --------- |
+| `required` | `required` (also seeds Presentation required baseline) |
+| `minlength` / `maxlength` | `minLength` / `maxLength` |
+| `pattern` | `regex` (invalid patterns skipped; not MutationObserver-synced) |
+| `type="email"` / `type="url"` | `email` / `url` |
+
+Same-kind conflicts resolve **Field > Schema > HTML**. Details and deferred attributes: [Adapters → Native HTML](/packages/form-intelligence/modules/adapters#native-html-built-in).
+
+[Try it in the playground →](/playground/form-intelligence/html-constraints)
 
 ::: warning `phone` / `currency` — validator vs formatter
 On the **main** package, `phone` and `currency` are **validators** (factories). They answer: “is this value valid?”

@@ -5,7 +5,7 @@ Common Form Intelligence recipes — wizard, autosave, offline submit, plugins.
 **Previous:** [Plugins](/packages/form-intelligence/modules/plugins) · **Next:** [Migration](/packages/form-intelligence/modules/migration)
 
 ::: tip Playground
-Try [Workflow](/playground/form-intelligence/workflow), [Submission](/playground/form-intelligence/submission), and [Plugins](/playground/form-intelligence/plugins).
+Try [Workflow](/playground/form-intelligence/workflow), [Submission](/playground/form-intelligence/submission), [HTML constraints](/playground/form-intelligence/html-constraints), and [Plugins](/playground/form-intelligence/plugins).
 :::
 
 ## Import path
@@ -147,11 +147,20 @@ Core stays free of Zod — adapters implement `SchemaAdapter`.
 ```ts
 createForm({
   target: "#register",
+  // schema optional — HTML required / type="email" / minlength also import as validators
   schema: { email: "email", password: "password" },
   onSubmit: async (values) => api.register(values),
 });
 ```
 
-Errors announce with `role="alert"` and `aria-invalid` automatically.
+```html
+<form id="register">
+  <input name="email" required type="email" />
+  <input name="password" required minlength="8" type="password" />
+  <button type="submit">Register</button>
+</form>
+```
+
+Phase 1 attributes become FI validators on attach (Field > Schema > HTML). Errors announce with `role="alert"` and `aria-invalid` automatically (`novalidate`). Lab: [HTML constraints](/playground/form-intelligence/html-constraints).
 
 **Done?** Browse the [API Reference](/packages/form-intelligence/api/) or [open the playground](/playground/form-intelligence/).
