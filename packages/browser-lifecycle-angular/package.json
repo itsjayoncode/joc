@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/browser-lifecycle-angular",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Angular adapter for @jayoncode/browser-lifecycle — provide/inject and signal snapshots.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
