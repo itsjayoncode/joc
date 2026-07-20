@@ -43,7 +43,7 @@ form.state.isDirty;
 
 ### 2. Validation engine — **SHIPPED**
 
-Declarative schema — no manual `if (!email.includes("@"))`.
+Declarative schema — no manual `if (!email.includes("@"))`. On **DOM-backed** forms, Phase 1 HTML attributes (`required`, `minlength`, `pattern`, `type="email"|"url"`, …) are imported into the same engine on attach (Field > Schema > HTML).
 
 ```ts
 createForm({
@@ -51,7 +51,12 @@ createForm({
 });
 ```
 
-[Validation guide →](/packages/form-intelligence/modules/validation)
+```html
+<!-- Or zero JS validators — attributes alone: -->
+<input name="email" required type="email" />
+```
+
+[Validation guide →](/packages/form-intelligence/modules/validation) · [HTML constraints playground →](/playground/form-intelligence/html-constraints)
 
 ### 3. Custom validation — **SHIPPED**
 

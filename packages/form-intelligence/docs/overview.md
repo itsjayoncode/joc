@@ -30,6 +30,7 @@ Form Intelligence makes those workflows **declarative** on one `createForm()` in
 ## Features
 
 - Sync + async validation (including multiple async checks per field)
+- **HTML constraints** on DOM-backed forms (`required`, `minlength`, `type="email"`, … → validators on attach)
 - Declarative `when()` rules (show / require / populate / gate submit)
 - Autosave, draft restore, wizard steps, offline submit queue
 - Headless `bind()` + optional framework/schema adapters
@@ -296,22 +297,22 @@ Work through the journey groups below. Each guide links to a playground route.
 
 ### Guides
 
-| Guide                                                            | Topics                            | Playground                                                 |
-| ---------------------------------------------------------------- | --------------------------------- | ---------------------------------------------------------- |
-| [Validation](/packages/form-intelligence/modules/validation)     | Built-in rules, schema, async     | [Validation](/playground/form-intelligence/validation)     |
-| [Submission](/packages/form-intelligence/modules/submission)     | Loading, cancel, retries, offline | [Submission](/playground/form-intelligence/submission)     |
-| [State](/packages/form-intelligence/modules/state)               | Snapshots, meta, undo/redo, diffs | [State](/playground/form-intelligence/state)               |
-| [Workflow](/packages/form-intelligence/modules/workflow)         | Autosave, drafts, wizard          | [Workflow](/playground/form-intelligence/workflow)         |
-| [Rules](/packages/form-intelligence/modules/rules)               | `when()` show/require/populate    | [Rules](/playground/form-intelligence/rules)               |
-| [Calculations](/packages/form-intelligence/modules/calculations) | Derived fields                    | [Calculations](/playground/form-intelligence/calculations) |
-| [Formatters](/packages/form-intelligence/modules/formatters)     | Parse/format pipelines            | [Formatters](/playground/form-intelligence/formatters)     |
+| Guide                                                            | Topics                                              | Playground                                                                                                      |
+| ---------------------------------------------------------------- | --------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| [Validation](/packages/form-intelligence/modules/validation)     | Built-in rules, schema, async, **HTML constraints** | [Validation](/playground/form-intelligence/validation) · [HTML](/playground/form-intelligence/html-constraints) |
+| [Submission](/packages/form-intelligence/modules/submission)     | Loading, cancel, retries, offline                   | [Submission](/playground/form-intelligence/submission)                                                          |
+| [State](/packages/form-intelligence/modules/state)               | Snapshots, meta, undo/redo, diffs                   | [State](/playground/form-intelligence/state)                                                                    |
+| [Workflow](/packages/form-intelligence/modules/workflow)         | Autosave, drafts, wizard                            | [Workflow](/playground/form-intelligence/workflow)                                                              |
+| [Rules](/packages/form-intelligence/modules/rules)               | `when()` show/require/populate                      | [Rules](/playground/form-intelligence/rules)                                                                    |
+| [Calculations](/packages/form-intelligence/modules/calculations) | Derived fields                                      | [Calculations](/playground/form-intelligence/calculations)                                                      |
+| [Formatters](/packages/form-intelligence/modules/formatters)     | Parse/format pipelines                              | [Formatters](/playground/form-intelligence/formatters)                                                          |
 
 ### Integrations
 
-| Guide                                                            | Topics                       | Playground                                                 |
-| ---------------------------------------------------------------- | ---------------------------- | ---------------------------------------------------------- |
-| [Integrations](/packages/form-intelligence/modules/integrations) | Session, keyboard, analytics | [Integrations](/playground/form-intelligence/integrations) |
-| [Adapters](/packages/form-intelligence/modules/adapters)         | Framework + schema bridges   | [Adapters](/playground/form-intelligence/adapters)         |
+| Guide                                                            | Topics                                      | Playground                                                                                                  |
+| ---------------------------------------------------------------- | ------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| [Integrations](/packages/form-intelligence/modules/integrations) | Session, keyboard, analytics                | [Integrations](/playground/form-intelligence/integrations)                                                  |
+| [Adapters](/packages/form-intelligence/modules/adapters)         | Framework + schema bridges, DOM-backed HTML | [Adapters](/playground/form-intelligence/adapters) · [HTML](/playground/form-intelligence/html-constraints) |
 
 ### Advanced and Support
 

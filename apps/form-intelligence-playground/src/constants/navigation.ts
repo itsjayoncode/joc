@@ -57,6 +57,17 @@ export const APP_NAVIGATION_GROUPS: readonly NavigationGroup[] = [
       },
       {
         description:
+          "DOM-backed HTML constraints — required, minlength, pattern, type=email|url on form.ref.",
+        groupId: "modules",
+        icon: CompassIcon,
+        id: "html-constraints",
+        intent: "current",
+        keywords: ["html", "constraints", "required", "minlength", "pattern", "novalidate"],
+        label: "HTML Constraints",
+        path: "/html-constraints",
+      },
+      {
+        description:
           "Hard submissionGuard(), form.ui.canSubmit, flaky API, offline queue, double-submit.",
         groupId: "modules",
         icon: ToolsIcon,

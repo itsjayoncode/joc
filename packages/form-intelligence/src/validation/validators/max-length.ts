@@ -1,8 +1,9 @@
+import { tagValidator } from "../validator-kind.js";
+
 import type { Validator } from "../../types/index.js";
 
-export const maxLength =
-  (max: number): Validator =>
-  (value) => {
+export const maxLength = (max: number): Validator =>
+  tagValidator((value) => {
     if (value === null || value === undefined || value === "") {
       return true;
     }
@@ -16,4 +17,4 @@ export const maxLength =
     }
 
     return true;
-  };
+  }, "maxLength");

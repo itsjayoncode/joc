@@ -20,7 +20,7 @@ Measured as **entry chunk** gzip (esbuild minify + `splitting: true`) so dynamic
 
 | Fixture          | maxGzipKb | Notes                                                                               |
 | ---------------- | --------- | ----------------------------------------------------------------------------------- |
-| `core-login`     | 26        | `createForm` login graph; forbids DevTools / offline queue class / analytics module |
+| `core-login`     | 27        | `createForm` login graph; forbids DevTools / offline queue class / analytics module |
 | `workflow-rules` | 3         | Rules-only subpath                                                                  |
 | `format-only`    | 2         | Format subpath                                                                      |
 
@@ -42,6 +42,12 @@ Measured as **entry chunk** gzip (esbuild minify + `splitting: true`) so dynamic
 - `form.ui` / `submissionGuard()` live on the main instance (not lazy) so adapters share one projection
 - core-login entry ≈ **24.7 KB** gzip after derived `/ui` projection + hard submit guards
 - Raised budget **24 → 26**; DevTools / offline queue forbid list unchanged
+
+### HTML constraints Phase 1 (2026-07)
+
+- Kind merge (`mergeValidatorsByKind`) runs on `createForm`; HTML extract stays sync on DOM attach (lazy `import()` would race `target` / `form.ref` attach)
+- core-login entry ≈ **26.1 KB** gzip with merge + extract on the always-on graph
+- Raised budget **26 → 27**; DevTools / offline / captcha forbid list unchanged
 
 ## Timing budgets (Vitest)
 

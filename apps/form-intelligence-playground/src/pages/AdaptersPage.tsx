@@ -13,8 +13,9 @@ const ADAPTERS = [
   {
     name: "Headless HTML",
     status: "Available now",
-    description: "Use createForm with target + schema, or field().setValue() in headless mode.",
-    code: `createForm({\n  target: "#register",\n  schema: { email: "email", password: "password" },\n  onSubmit,\n});`,
+    description:
+      "Use createForm with target / form.ref — HTML constraints import on attach; schema optional.",
+    code: `createForm({\n  target: "#register",\n  // optional schema — or rely on required / type="email" / minlength\n  onSubmit,\n});`,
   },
   {
     name: "Zod adapter",

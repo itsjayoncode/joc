@@ -1,3 +1,5 @@
+import { tagValidator } from "../validator-kind.js";
+
 import type { Validator } from "../../types/index.js";
 
 function isDisallowedEmailChar(char: string): boolean {
@@ -33,7 +35,7 @@ function isSimpleEmailShape(value: string): boolean {
   return dot > 0 && dot < domain.length - 1;
 }
 
-export const email: Validator = (value) => {
+export const email: Validator = tagValidator((value) => {
   if (value === null || value === undefined || value === "") {
     return true;
   }
@@ -43,4 +45,4 @@ export const email: Validator = (value) => {
   }
 
   return isSimpleEmailShape(value) ? true : "Enter a valid email address.";
-};
+}, "email");

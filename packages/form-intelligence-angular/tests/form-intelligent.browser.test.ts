@@ -5,10 +5,7 @@ import "zone.js";
 import { Component } from "@angular/core";
 import { getTestBed } from "@angular/core/testing";
 import { TestBed } from "@angular/core/testing";
-import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting,
-} from "@angular/platform-browser-dynamic/testing";
+import { BrowserTestingModule, platformBrowserTesting } from "@angular/platform-browser/testing";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 
 import { when } from "@jayoncode/form-intelligence/rules";
@@ -49,7 +46,7 @@ function createRegisterHost(onSubmit: (values: { email: string; password: string
 
 describe("Angular adapter", () => {
   beforeAll(() => {
-    getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
+    getTestBed().initTestEnvironment(BrowserTestingModule, platformBrowserTesting());
   });
 
   afterEach(() => {

@@ -84,19 +84,19 @@ One place for the business rules. No copy-pasted effects for show/require/autosa
 
 ## What you get (capabilities)
 
-| Area             | What you can do                                                                                                                          |
-| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| **State**        | Single `form.state` for values, errors, dirty/touched, submitting; `subscribe` / config `subscribe`                                      |
-| **Validation**   | Schema shortcuts (`email`, `required`, …), custom + **async** validators, modes `onChange` / `onBlur` / `onSubmit` / `onTouched` / `all` |
-| **Rules**        | `when().equals().show().require().populate()` — conditional UI and requirements without effects                                          |
-| **Calculations** | Derived fields from other values                                                                                                         |
-| **Formatters**   | Display vs stored value (`phone`, `currency`, `slug`, custom pipelines via `/format`)                                                    |
-| **Workflow**     | Autosave, drafts (local/custom storage), multi-step **wizard**                                                                           |
-| **Submission**   | Loading phases, cancel, retries, offline queue hooks                                                                                     |
-| **Plugins**      | Lifecycle hooks + browser lifecycle / keyboard integrations                                                                              |
-| **DevTools**     | Inspector, event log, export/import state (`/devtools`)                                                                                  |
-| **A11y**         | Field `aria` helpers and error wiring (`/accessibility`)                                                                                 |
-| **Adapters**     | Optional React / Vue / Angular + Zod / Yup / Valibot / AJV packages                                                                      |
+| Area             | What you can do                                                                                                                                                                                                 |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **State**        | Single `form.state` for values, errors, dirty/touched, submitting; `subscribe` / config `subscribe`                                                                                                             |
+| **Validation**   | Schema shortcuts (`email`, `required`, …), custom + **async** validators, modes `onChange` / `onBlur` / `onSubmit` / `onTouched` / `all`; **HTML constraints** on DOM-backed forms (`required`, `minlength`, …) |
+| **Rules**        | `when().equals().show().require().populate()` — conditional UI and requirements without effects                                                                                                                 |
+| **Calculations** | Derived fields from other values                                                                                                                                                                                |
+| **Formatters**   | Display vs stored value (`phone`, `currency`, `slug`, custom pipelines via `/format`)                                                                                                                           |
+| **Workflow**     | Autosave, drafts (local/custom storage), multi-step **wizard**                                                                                                                                                  |
+| **Submission**   | Loading phases, cancel, retries, offline queue hooks                                                                                                                                                            |
+| **Plugins**      | Lifecycle hooks + browser lifecycle / keyboard integrations                                                                                                                                                     |
+| **DevTools**     | Inspector, event log, export/import state (`/devtools`)                                                                                                                                                         |
+| **A11y**         | Field `aria` helpers and error wiring (`/accessibility`)                                                                                                                                                        |
+| **Adapters**     | Optional React / Vue / Angular + Zod / Yup / Valibot / AJV packages                                                                                                                                             |
 
 ### Options you’ll use often
 
@@ -134,11 +134,14 @@ pnpm add @jayoncode/form-intelligence
 
 ### Enhance existing markup
 
+Constraint attributes on the DOM become validators on attach (schema optional):
+
 ```ts
 import { createForm } from "@jayoncode/form-intelligence";
 
 createForm({
   target: "#signup",
+  // schema / validators optional — HTML required / type="email" / minlength also work
   schema: { email: "email", name: { required: true, minLength: 2 } },
   validateOn: "onBlur",
   async onSubmit(values) {
@@ -146,6 +149,8 @@ createForm({
   },
 });
 ```
+
+Docs: [Adapters → Native HTML](https://itsjayoncode.github.io/joc/packages/form-intelligence/modules/adapters) · Playground: [HTML constraints](https://itsjayoncode.github.io/joc/playground/form-intelligence/html-constraints)
 
 ### Headless bind (any UI)
 

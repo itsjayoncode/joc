@@ -20,11 +20,14 @@ import {
 const MODULE_ROUTES = CURRENT_NAVIGATION_ITEMS.filter((item) => item.groupId === "modules");
 
 const FORM_OS_FEATURES = [
-  { label: "State & validation", paths: ["/validation", "/state", "/devtools"] },
+  {
+    label: "State & validation",
+    paths: ["/validation", "/html-constraints", "/state", "/devtools"],
+  },
   { label: "Rules & dependencies", paths: ["/rules", "/dependencies"] },
   { label: "Calculations & formatters", paths: ["/calculations", "/formatters"] },
   { label: "Workflow & submission", paths: ["/workflow", "/submission", "/captcha"] },
-  { label: "Integrations", paths: ["/integrations", "/plugins"] },
+  { label: "Integrations", paths: ["/integrations", "/plugins", "/adapters"] },
   { label: "Performance", paths: ["/performance"] },
 ] as const;
 

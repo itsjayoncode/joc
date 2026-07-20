@@ -25,6 +25,7 @@ Paths whose merged validator list includes the built-in **`required` identity**:
 - Schema `{ required: true }` / `validate.required`
 - String shortcuts `"email"` | `"password"` | `"url"` (compiler injects `required`)
 - `validators: { path: [required, …] }` and `field(path, { validators: [required] })`
+- **HTML `required`** on DOM-backed controls (extracted once on attach — ADR-VAL-002)
 
 **Not** baseline: `requiredWhen(...)` (conditional validation ≠ static UI intent).
 

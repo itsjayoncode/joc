@@ -1,6 +1,8 @@
+import { tagValidator } from "../validator-kind.js";
+
 import type { Validator } from "../../types/index.js";
 
-export const required: Validator = (value) => {
+export const required: Validator = tagValidator((value) => {
   if (value === null || value === undefined || value === "") {
     return "This field is required.";
   }
@@ -10,4 +12,4 @@ export const required: Validator = (value) => {
   }
 
   return true;
-};
+}, "required");

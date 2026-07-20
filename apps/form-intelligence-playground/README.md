@@ -11,22 +11,23 @@ It is the shared environment for:
 
 ## Explorers
 
-| Route          | Focus                                                     |
-| -------------- | --------------------------------------------------------- |
-| `/`            | Interactive developer sandbox                             |
-| `/dashboard`   | Overview, package versions, explorer map                  |
-| `/validation`  | Validators, timing, async checks                          |
-| `/submission`  | Submit flow, loading state, guards                        |
-| `/workflow`    | Autosave, drafts, wizard steps                            |
-| `/state`       | Values tree, field flags, diffs                           |
-| `/formatters`  | Phone, currency, slug formatters                          |
-| `/plugins`     | Plugin hooks and event log                                |
-| `/devtools`    | Inspector, config JSON, export/import, verbose validation |
-| `/performance` | Validation, autosave, submit microbenchmarks              |
-| `/adapters`    | HTML, React, and planned bridges                          |
-| `/examples`    | Copy-paste snippets                                       |
-| `/settings`    | Theme and layout preferences                              |
-| `/about`       | Product positioning                                       |
+| Route               | Focus                                                     |
+| ------------------- | --------------------------------------------------------- |
+| `/`                 | Interactive developer sandbox                             |
+| `/dashboard`        | Overview, package versions, explorer map                  |
+| `/validation`       | Validators, timing, async checks                          |
+| `/html-constraints` | DOM-backed HTML constraints (`form.ref`, Phase 1)         |
+| `/submission`       | Submit flow, loading state, guards                        |
+| `/workflow`         | Autosave, drafts, wizard steps                            |
+| `/state`            | Values tree, field flags, diffs                           |
+| `/formatters`       | Phone, currency, slug formatters                          |
+| `/plugins`          | Plugin hooks and event log                                |
+| `/devtools`         | Inspector, config JSON, export/import, verbose validation |
+| `/performance`      | Validation, autosave, submit microbenchmarks              |
+| `/adapters`         | HTML, React, and planned bridges                          |
+| `/examples`         | Copy-paste snippets                                       |
+| `/settings`         | Theme and layout preferences                              |
+| `/about`            | Product positioning                                       |
 
 ## Commands
 

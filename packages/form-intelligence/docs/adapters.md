@@ -6,6 +6,8 @@ Use Form Intelligence with your existing UI stack — native HTML, React, or hea
 
 ::: tip Playground
 [Adapters explorer →](/playground/form-intelligence/adapters) — current integrations and planned bridges.
+
+[HTML constraints →](/playground/form-intelligence/html-constraints) — native attributes → FI validators on attach.
 :::
 
 ## Import path
@@ -43,7 +45,44 @@ Framework adapters share one product contract (lifecycle, field projection attrs
 
 ## Native HTML (built-in)
 
-No extra package. Use `target` / `form.ref` + `schema`:
+No extra package. Use `target` / `form.ref` for **DOM-backed forms** (plain HTML or framework bindings that render real inputs under a bound `<form>`).
+
+Constraint attributes on those inputs are imported into Form Intelligence validators **once on DOM attach** (not via the browser’s `checkValidity`). Native validation UI is disabled (`novalidate`).
+
+### Phase 1 HTML → validators
+
+| HTML           | Form Intelligence                         |
+| -------------- | ----------------------------------------- |
+| `required`     | `required`                                |
+| `minlength`    | `minLength(n)`                            |
+| `maxlength`    | `maxLength(n)`                            |
+| `pattern`      | `regex(…)` (invalid patterns are skipped) |
+| `type="email"` | `email`                                   |
+| `type="url"`   | `url`                                     |
+
+Merge precedence for the same validator **kind**: **Field > Schema > HTML**. Custom validators are kept. HTML `required` also seeds Presentation required (same baseline as schema — see [Validation](/packages/form-intelligence/modules/validation#html-constraints-dom-backed)).
+
+Deferred: `min` / `max` / `step` / `multiple` / date-time constraints, MutationObserver re-extraction.
+
+```ts
+createForm({
+  target: "#register",
+  // optional — Field/Schema override HTML when kinds collide
+  async onSubmit(values) {
+    await api.register(values);
+  },
+});
+```
+
+```html
+<form id="register">
+  <input name="email" required type="email" />
+  <input name="password" type="password" required minlength="8" />
+  <button type="submit">Register</button>
+</form>
+```
+
+You can still pass `schema` / `validators` — they merge with HTML as above:
 
 ```ts
 createForm({
@@ -53,14 +92,6 @@ createForm({
     await api.register(values);
   },
 });
-```
-
-```html
-<form id="register">
-  <input name="email" />
-  <input name="password" type="password" />
-  <button type="submit">Register</button>
-</form>
 ```
 
 ---

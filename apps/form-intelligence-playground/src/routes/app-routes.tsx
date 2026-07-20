@@ -10,6 +10,7 @@ import { DependenciesPage } from "../pages/DependenciesPage.js";
 import { DevToolsPage } from "../pages/DevToolsPage.js";
 import { ExamplesPage } from "../pages/ExamplesPage.js";
 import { FormatterPage } from "../pages/FormatterPage.js";
+import { HtmlConstraintsPage } from "../pages/HtmlConstraintsPage.js";
 import { IntegrationsPage } from "../pages/IntegrationsPage.js";
 import { NotFoundPage } from "../pages/NotFoundPage.js";
 import { PerformancePage } from "../pages/PerformancePage.js";
@@ -29,6 +30,7 @@ export const APP_ROUTE_PATHS = [
   "/",
   "/dashboard",
   "/validation",
+  "/html-constraints",
   "/submission",
   "/captcha",
   "/ui",
@@ -57,6 +59,7 @@ const routeObjects: RouteObject[] = [
       { element: <SandboxPage />, index: true },
       { element: <DashboardPage />, path: "dashboard" },
       { element: <ValidationPage />, path: "validation" },
+      { element: <HtmlConstraintsPage />, path: "html-constraints" },
       { element: <SubmissionPage />, path: "submission" },
       { element: <CaptchaPage />, path: "captcha" },
       { element: <UiProjectionPage />, path: "ui" },
