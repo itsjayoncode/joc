@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@angular/core": "^18.2.13",
-    "@angular/platform-browser": "^18.2.13",
+    "@angular/platform-browser": "^22.0.7",
     "@jayoncode/browser-lifecycle": "workspace:*",
     "zone.js": "^0.16.2"
   },

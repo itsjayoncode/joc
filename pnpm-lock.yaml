@@ -225,8 +225,8 @@ importers:
         specifier: ^18.2.13
         version: 18.2.14(rxjs@7.8.2)(zone.js@0.16.2)
       '@angular/platform-browser':
-        specifier: ^18.2.13
-        version: 18.2.14(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))
+        specifier: ^22.0.7
+        version: 22.0.7(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))
       '@jayoncode/browser-lifecycle':
         specifier: workspace:*
         version: link:../browser-lifecycle
@@ -312,11 +312,11 @@ importers:
         specifier: ^18.2.13
         version: 18.2.14(rxjs@7.8.2)(zone.js@0.16.2)
       '@angular/platform-browser':
-        specifier: ^18.2.13
-        version: 18.2.14(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))
+        specifier: ^22.0.7
+        version: 22.0.7(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))
       '@angular/platform-browser-dynamic':
         specifier: ^18.2.13
-        version: 18.2.14(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/compiler@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2)))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))(@angular/platform-browser@18.2.14(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2)))
+        version: 18.2.14(@angular/compiler@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2)))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))(@angular/platform-browser@22.0.7(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2)))
       '@jayoncode/form-intelligence':
         specifier: workspace:*
         version: link:../form-intelligence
@@ -497,13 +497,13 @@ packages:
       '@angular/core': 18.2.14
       '@angular/platform-browser': 18.2.14
 
-  '@angular/platform-browser@18.2.14':
-    resolution: {integrity: sha512-W+JTxI25su3RiZVZT3Yrw6KNUCmOIy7OZIZ+612skPgYK2f2qil7VclnW1oCwG896h50cMJU/lnAfxZxefQgyQ==}
-    engines: {node: ^18.19.1 || ^20.11.1 || >=22.0.0}
+  '@angular/platform-browser@22.0.7':
+    resolution: {integrity: sha512-iCuREIWRnDCsd7mI5vn5ovXjcSwseWR4qfd+zo6QUrY2O9zkUNV79YuCqVjSzvWyvU2rtR5iRBvpB5JQgBELeg==}
+    engines: {node: ^22.22.3 || ^24.15.0 || >=26.0.0}
     peerDependencies:
-      '@angular/animations': 18.2.14
-      '@angular/common': 18.2.14
-      '@angular/core': 18.2.14
+      '@angular/animations': 22.0.7
+      '@angular/common': 22.0.7
+      '@angular/core': 22.0.7
     peerDependenciesMeta:
       '@angular/animations':
         optional: true
@@ -3749,15 +3749,14 @@ snapshots:
       tslib: 2.8.1
       zone.js: 0.16.2
 
-  '@angular/platform-browser-dynamic@18.2.14(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/compiler@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2)))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))(@angular/platform-browser@18.2.14(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2)))':
+  '@angular/platform-browser-dynamic@18.2.14(@angular/compiler@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2)))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))(@angular/platform-browser@22.0.7(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2)))':
     dependencies:
-      '@angular/common': 18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2)
       '@angular/compiler': 18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))
       '@angular/core': 18.2.14(rxjs@7.8.2)(zone.js@0.16.2)
-      '@angular/platform-browser': 18.2.14(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))
+      '@angular/platform-browser': 22.0.7(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))
       tslib: 2.8.1
 
-  '@angular/platform-browser@18.2.14(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))':
+  '@angular/platform-browser@22.0.7(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))':
     dependencies:
       '@angular/common': 18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2)
       '@angular/core': 18.2.14(rxjs@7.8.2)(zone.js@0.16.2)
