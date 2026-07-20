@@ -1,6 +1,7 @@
 # Form Intelligence — Vue
 
 [![npm version](https://img.shields.io/npm/v/@jayoncode/form-intelligence-vue.svg)](https://www.npmjs.com/package/@jayoncode/form-intelligence-vue)
+[![Become a Sponsor](https://img.shields.io/badge/Become%20a%20Sponsor-%23ea4aaa?style=flat&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/jayoncoding)
 
 Vue adapter for [`@jayoncode/form-intelligence`](https://www.npmjs.com/package/@jayoncode/form-intelligence).
 

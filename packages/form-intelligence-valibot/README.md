@@ -1,6 +1,7 @@
 # Form Intelligence — Valibot
 
 [![npm version](https://img.shields.io/npm/v/@jayoncode/form-intelligence-valibot.svg)](https://www.npmjs.com/package/@jayoncode/form-intelligence-valibot)
+[![Become a Sponsor](https://img.shields.io/badge/Become%20a%20Sponsor-%23ea4aaa?style=flat&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/jayoncoding)
 
 Bridge [Valibot](https://valibot.dev) schemas into [`@jayoncode/form-intelligence`](https://www.npmjs.com/package/@jayoncode/form-intelligence).
 

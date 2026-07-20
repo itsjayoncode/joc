@@ -1,5 +1,7 @@
 # Browser Lifecycle Vue
 
+[![Become a Sponsor](https://img.shields.io/badge/Become%20a%20Sponsor-%23ea4aaa?style=flat&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/jayoncoding)
+
 Vue adapter for [`@jayoncode/browser-lifecycle`](../browser-lifecycle/README.md).
 
 Thin wrappers only — no browser observation logic. One session per provide scope; owned sessions dispose on scope teardown, adopted sessions never do. Client-only `start()` (SSR-safe).

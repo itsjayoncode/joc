@@ -1,5 +1,7 @@
 # Browser Lifecycle Svelte
 
+[![Become a Sponsor](https://img.shields.io/badge/Become%20a%20Sponsor-%23ea4aaa?style=flat&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/jayoncoding)
+
 Svelte adapter for [`@jayoncode/browser-lifecycle`](../browser-lifecycle/README.md).
 
 Thin wrappers only — no browser observation logic. Context helpers + readable snapshot store. Owned sessions dispose automatically via `createBrowserLifecycleContext()`'s `onDestroy()`; `createOwnedBrowserLifecycle()` requires calling `.destroy()` yourself; adopted sessions are never disposed. Start is guarded with `typeof document !== "undefined"` (SSR-safe).

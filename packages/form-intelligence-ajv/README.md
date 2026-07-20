@@ -1,6 +1,7 @@
 # Form Intelligence — AJV
 
 [![npm version](https://img.shields.io/npm/v/@jayoncode/form-intelligence-ajv.svg)](https://www.npmjs.com/package/@jayoncode/form-intelligence-ajv)
+[![Become a Sponsor](https://img.shields.io/badge/Become%20a%20Sponsor-%23ea4aaa?style=flat&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/jayoncoding)
 
 Bridge [AJV](https://ajv.js.org/) JSON Schema validation into [`@jayoncode/form-intelligence`](https://www.npmjs.com/package/@jayoncode/form-intelligence).
 
