@@ -115,6 +115,19 @@ validators: {
 }
 ```
 
+### `matchesField` / `requiredWhen`
+
+```ts
+import { matchesField, requiredWhen } from "@jayoncode/form-intelligence";
+
+validators: {
+  confirmPassword: [matchesField("password", "Passwords must match")],
+  companyName: [requiredWhen("type", (v) => v === "business", "Company required")],
+}
+```
+
+`requiredWhen` is **validation only** — it does not set Presentation `required` (no `aria-required` / DOM `required`). Use `when(sourcePath).equals(...).require(path)` from [Rules](/packages/form-intelligence/modules/rules) when the UI also needs to reflect the requirement.
+
 ::: warning `phone` / `currency` — validator vs formatter
 On the **main** package, `phone` and `currency` are **validators** (factories). They answer: “is this value valid?”
 
@@ -163,6 +176,35 @@ mergeValidationErrors(current, incoming, validatedPaths?)
 `ValidatorResult` is `true | false | string | undefined`. Throwing validators are caught and converted to a string message (do not rely on throws for control flow).
 
 Structured `{ code, severity }` errors remain **Open** (D-ENTERPRISE-ERR) — string messages are the SHIPPED contract.
+
+### Pipeline helpers (`/validation`)
+
+The engine behind `form.validate()` is also available headless — for unit tests or tooling that validates a values object without a live form:
+
+```ts
+import { runValidationPipeline } from "@jayoncode/form-intelligence/validation";
+
+await runValidationPipeline({
+  values,
+  paths, // FieldPath[] to validate
+  fieldValidators, // Map<FieldPath, Validator[]> registered via form.field()
+  configValidators, // validators from createForm({ validators })
+  crossFieldRules, // optional CrossFieldRule[]
+  formValidators, // optional CrossFieldValidator[] (form-level, path "_form")
+  signal, // optional AbortSignal
+}); // → Record<FieldPath, string>
+```
+
+| Export                  | Role                                                                         |
+| ----------------------- | ---------------------------------------------------------------------------- |
+| `runValidationPipeline` | Full pipeline: field validators + cross-field + form validators              |
+| `validatePaths`         | Same pipeline, field-level only (no `crossFieldRules` / `formValidators`)    |
+| `toNormalizedErrors`    | `Record<path, string>` → `{ path, message, code? }[]`                        |
+| `fromNormalizedErrors`  | Reverse of the above                                                         |
+| `mergeValidationErrors` | Merge current + incoming errors, clearing stale entries for validated paths  |
+| `listAllPaths`          | Recursively list every field path (including array items) in a values object |
+
+Prefer `form.validate()` in app code — these helpers exist for tests/tooling that need the same logic without a form instance.
 
 ---
 

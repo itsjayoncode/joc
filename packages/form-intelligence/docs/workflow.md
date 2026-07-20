@@ -132,6 +132,36 @@ const memory: DraftStorageAdapter = {
 };
 ```
 
+### IndexedDB drafts
+
+For larger drafts (attachments, big nested forms), pass an async adapter instead of `storage`:
+
+```ts
+import { createIndexedDbDraftStorage } from "@jayoncode/form-intelligence/draft";
+
+workflow: {
+  draft: {
+    enabled: true,
+    storageKey: "signup-draft-v1",
+    adapter: createIndexedDbDraftStorage({
+      dbName: "my-app-drafts", // optional
+      storeName: "drafts", // optional
+    }),
+  },
+},
+```
+
+The adapter is `async` (`get`/`set`/`remove` return promises) — `saveDraft()` / `restoreDraft()` already await it. IndexedDB is unavailable during SSR; the adapter throws in that environment, so guard `enabled` (or the whole `draft` block) behind a client-only check.
+
+`/draft` also exports lower-level building blocks used by the sync and async storage adapters — advanced, prefer `workflow.draft` config:
+
+| Export               | Role                                                                      |
+| -------------------- | ------------------------------------------------------------------------- |
+| `createDraftStorage` | Build a sync `DraftStorageAdapter` over `localStorage` / `sessionStorage` |
+| `wrapDraftEnvelope`  | Wrap raw values in the versioned `DraftEnvelopeV1` shape                  |
+| `mergeDraftValues`   | Merge restored draft values into current values (`replace` / merge)       |
+| `applyDraftRestore`  | Apply a parsed draft payload to a form-like target                        |
+
 Manual:
 
 ```ts
@@ -231,6 +261,27 @@ form.workflow.getStepGraph();
 ```
 
 Progress (`state.workflow.progress` / `totalSteps` / `canGoNext`) counts **visible** steps only.
+
+### Wizard graph helpers (`/wizard`)
+
+`form.workflow.*` wraps a small set of pure graph helpers over your `steps` config. Prefer the instance methods above; the standalone functions are for tests/tooling that need the graph without a live form:
+
+| Export                   | Role                                              |
+| ------------------------ | ------------------------------------------------- |
+| `listVisibleStepIds`     | Step ids after filtering out `when: false` steps  |
+| `listVisibleStepIndexes` | Same, as indexes into `steps`                     |
+| `resolveNextStepIndex`   | Next visible index (honors per-step `next`)       |
+| `resolvePrevStepIndex`   | Previous visible index                            |
+| `getStepGraph`           | Full `WizardStepGraph` (nodes, edges, visibility) |
+| `getStepFields`          | Fields declared for a step id/index               |
+| `wizardStepId`           | Resolve a step's stable id from its config/index  |
+
+```ts
+import { getStepGraph } from "@jayoncode/form-intelligence/wizard";
+
+const graph = getStepGraph(wizardConfig); // same config passed to workflow.wizard
+graph.nodes; // WizardStepGraphNode[] — { id, index, nextIds }
+```
 
 Progress UI:
 

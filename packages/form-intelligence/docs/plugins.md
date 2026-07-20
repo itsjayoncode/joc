@@ -178,6 +178,16 @@ form.useMiddleware({
 });
 ```
 
+`form.useMiddleware` builds and runs the onion chain for you via `composeMiddleware` / `runMiddlewareChain`, exported from `/middleware` (also re-exported on `/plugins`):
+
+| Export               | Role                                                                                |
+| -------------------- | ----------------------------------------------------------------------------------- |
+| `composeMiddleware`  | Compose registered middleware into one onion-ordered runner                         |
+| `runMiddlewareChain` | Run the composed chain for one phase against a context                              |
+| `MiddlewarePipeline` | Class that owns registration + per-phase composition (used by `form.useMiddleware`) |
+
+Prefer `form.useMiddleware(...)` — reach for these directly only when building a custom middleware host (e.g. testing a middleware in isolation without a form).
+
 ### Error isolation
 
 Plugin and middleware failures are isolated so one bad extension cannot brick the form:
@@ -207,6 +217,18 @@ const form = createForm({
 | `createBrowserLifecyclePlugin` / `createKeyboardPlugin` | `/plugins`  | Thin adapters over sibling JOC packages.                                 |
 
 Study these before inventing new “platform” plugins.
+
+### Modules vs plugins
+
+Internally, `createForm` runs one ordered pipeline of `FormModule`s (draft restore, workflow, analytics, …). `pluginAsModule(plugin)` wraps a `FormPlugin` so it can run in that same pipeline — this is how `plugins: []` / `form.use()` are implemented, not a separate extension point you need to reach for.
+
+```ts
+import { pluginAsModule } from "@jayoncode/form-intelligence/plugins";
+
+const module = pluginAsModule(myPlugin); // FormModule — same shape as built-in modules
+```
+
+`FormModuleHost` is the internal host `createForm` uses to start/stop modules in order. Plugin authors should use `form.use(plugin)` / `createForm({ plugins })` — reach for `pluginAsModule` / `FormModuleHost` only if you are building an alternate module pipeline (e.g. a test harness) that needs the exact internal contract.
 
 ### Testing
 

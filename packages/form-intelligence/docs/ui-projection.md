@@ -128,6 +128,35 @@ return (
 
 Prefer `form.fieldController("email").ui` / `form.instance.ui` for explain and collections.
 
+## Standalone `createUiProjection`
+
+`form.ui` is a `createUiProjection(form)` instance created for you when you register the `ui()` plugin. Call it yourself for tooling or a custom wrapper:
+
+```ts
+import { createForm } from "@jayoncode/form-intelligence";
+import { createUiProjection, ui, setUiPolicies } from "@jayoncode/form-intelligence/ui";
+
+const form = createForm({ plugins: [ui({ errorDisplay: "touched" })] });
+
+const projection = createUiProjection(form); // same shape as form.ui
+projection.canSubmit;
+projection.explain("submit");
+```
+
+## Free helpers / policy store (advanced)
+
+`/ui` also exports the standalone functions and the policy registry that back `form.ui` / `field.ui`. Prefer the instance API (`form.ui`, `field.ui`, the `ui()` plugin) in app code — these are for headless composition or testing the projection logic in isolation.
+
+| Export                                                                            | Role                                                                |
+| --------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| `shouldShowError`                                                                 | Pure `errorDisplay` policy → boolean, given error/touched/submitted |
+| `canSubmit`                                                                       | Pure submit-gate composition (hard guard + UX policy)               |
+| `explainSubmit`                                                                   | `{ value, reasons, contributors }` for the submit gate              |
+| `projectFieldUi`                                                                  | Build one field's derived UI (`showError`, `status`, …)             |
+| `snapshotUiProjection`                                                            | Serializable snapshot of the whole projection (used by DevTools)    |
+| `setUiPolicies` / `getUiPolicies` / `hasUiPoliciesRegistered` / `clearUiPolicies` | Per-form policy registry backing the `ui()` plugin                  |
+| `resolvePoliciesForForm`                                                          | Resolve the effective policies for a given form id                  |
+
 ## Ownership
 
 `/ui` only **projects**, **composes**, or **explains** existing engine state. It does not own validation, presentation intents, or submission.

@@ -116,7 +116,23 @@ form.field("bio", {
 });
 ```
 
-Low-level helpers (`createTransformPipeline`, `TRANSFORM_INBOUND_ORDER`) live on `@jayoncode/form-intelligence/transform`.
+Low-level helpers live on `@jayoncode/form-intelligence/transform` — `field({ transform })` already builds and runs the pipeline for you; reach for these when testing transform behavior without a form:
+
+```ts
+import {
+  createTransformPipeline,
+  runTransformInbound,
+  TRANSFORM_INBOUND_ORDER,
+} from "@jayoncode/form-intelligence/transform";
+
+const pipeline = createTransformPipeline({ trim: true, sanitize: true });
+pipeline.inbound(rawValue, { path: "bio", values }); // same stages field({ transform }) runs
+
+// Or run the stages directly against a `transform` option object / custom stage array:
+runTransformInbound(rawValue, { trim: true, normalize: "nfc" }, { path: "bio", values });
+
+TRANSFORM_INBOUND_ORDER; // ["trim", "normalize", "sanitize", "custom", "parse"]
+```
 
 Outbound **format** is separate and is not part of `TRANSFORM_INBOUND_ORDER`.
 
@@ -170,6 +186,25 @@ Compose:
 import { composeFormatters, trim, formatUppercase } from "@jayoncode/form-intelligence/format";
 
 form.field("code", { format: composeFormatters(trim, formatUppercase) });
+```
+
+### Advanced format helpers
+
+`field()` already wires `parse` / `format` for you via `formatFieldValue`. These lower-level pieces are exported on `/format` for building your own field-binding layer or testing a formatter in isolation:
+
+| Export              | Role                                                             |
+| ------------------- | ---------------------------------------------------------------- |
+| `formatForDisplay`  | Apply `format` only, honoring `formatOnDisplay: false`           |
+| `parseFromInput`    | Apply `parse` only, honoring `parseOnInput: false`               |
+| `roundTripFormat`   | `{ parsed, formatted }` — run both in one call, useful for tests |
+| `composeParsers`    | Compose parsers right-to-left (mirrors `composeFormatters`)      |
+| `FormatterRegistry` | Class behind `schema: { format: "phone" }` preset resolution     |
+
+```ts
+import { roundTripFormat, formatPhone, phoneParser } from "@jayoncode/form-intelligence/format";
+
+roundTripFormat("(555) 123-4567", { format: formatPhone, parse: phoneParser });
+// { parsed: "5551234567", formatted: "(555) 123-4567" }
 ```
 
 ---
