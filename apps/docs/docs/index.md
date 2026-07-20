@@ -6,7 +6,7 @@ hero:
   text: Headless TypeScript libraries for real frontend infrastructure.
   tagline: JOC (JayOnCode) ships focused @jayoncode/* packages — forms, browser session lifecycle, object diffing, and more — so you stop rewriting the same orchestration in every app.
   image:
-    src: /jayoncode-logo-official.png
+    src: /jayoncode-profile-logo-opt.png
     alt: JOC by JayOnCode logo
   actions:
     - theme: brand
