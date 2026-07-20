@@ -25,6 +25,14 @@ export default defineConfig({
       destructuring: true,
     },
   },
+  optimizeDeps: {
+    esbuildOptions: {
+      target: "es2022",
+      supported: {
+        destructuring: true,
+      },
+    },
+  },
   server: {
     host: "127.0.0.1",
     port: 4173,

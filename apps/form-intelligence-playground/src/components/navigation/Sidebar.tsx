@@ -54,7 +54,7 @@ export function Sidebar({ classNames: classes }: SidebarProps) {
             <img
               alt="JayOnCode"
               className={classes.brandMark}
-              src={playgroundAssetUrl("jayoncode-logo-official.png")}
+              src={playgroundAssetUrl("jayoncode-profile-logo-opt.png")}
             />
             <div className={classes.brandLabel}>
               <p className={classes.brandTitle}>JayOnCode</p>

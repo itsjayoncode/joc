@@ -24,9 +24,23 @@ const formIntelligentReactVersion = readPackageVersion("packages/form-intelligen
 export default defineConfig({
   base: process.env.VITE_PLAYGROUND_BASE ?? "/",
   plugins: [react(), tsconfigPaths({ root: repoRoot })],
+  // esbuild 0.28+ errors on Vite's default modules target (safari14) for destructuring.
   build: {
     sourcemap: false,
     target: "es2022",
+  },
+  esbuild: {
+    supported: {
+      destructuring: true,
+    },
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      target: "es2022",
+      supported: {
+        destructuring: true,
+      },
+    },
   },
   define: {
     "import.meta.env.VITE_FORM_INTELLIGENT_VERSION": JSON.stringify(formIntelligentVersion),

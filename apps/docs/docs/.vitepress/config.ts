@@ -25,7 +25,7 @@ import {
 import { createDocsVitePlugins, docsPublicAssetsDir } from "./vite-dev-fix.js";
 
 const docsBase = process.env.VITE_DOCS_BASE ?? "/";
-const ogImageUrl = resolvePublicAssetUrl("jayoncode-logo-512.png");
+const ogImageUrl = resolvePublicAssetUrl("jayoncode-profile-logo-opt.png");
 const sitemapHostname = docsSiteUrl.endsWith("/") ? docsSiteUrl : `${docsSiteUrl}/`;
 const _canonicalPlaygroundUrl = docsPlaygroundUrl;
 const docsGaId = process.env.VITE_DOCS_GA_ID ?? "G-7EG7FB1SL4";
@@ -84,8 +84,18 @@ export default defineConfig({
     hostname: sitemapHostname,
   },
   head: [
-    ["link", { rel: "icon", href: resolveDocsBasePath("favicon.png"), type: "image/png" }],
-    ["link", { rel: "apple-touch-icon", href: resolveDocsBasePath("apple-touch-icon.png") }],
+    [
+      "link",
+      {
+        rel: "icon",
+        href: resolveDocsBasePath("jayoncode-profile-logo-opt.png"),
+        type: "image/png",
+      },
+    ],
+    [
+      "link",
+      { rel: "apple-touch-icon", href: resolveDocsBasePath("jayoncode-profile-logo-opt.png") },
+    ],
     ["link", { rel: "canonical", href: docsSiteUrl }],
     ["meta", { name: "theme-color", content: "#111827" }],
     ["meta", { name: "author", content: "JayOnCode" }],
@@ -118,8 +128,8 @@ gtag('config', '${docsGaId}');`,
   themeConfig: {
     logo: {
       alt: "JOC",
-      light: "/jayoncode-logo-official.png",
-      dark: "/jayoncode-logo-official.png",
+      light: "/jayoncode-profile-logo-opt.png",
+      dark: "/jayoncode-profile-logo-opt.png",
     },
     siteTitle: false,
     search: {
