@@ -1,12 +1,18 @@
 version: 2
 
+# Noise control: majors are manual; npm is monthly; low PR cap; heavy grouping.
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
       day: "monday"
       time: "05:00"
+    open-pull-requests-limit: 3
+    groups:
+      github-actions:
+        patterns:
+          - "*"
     labels:
       - "dependencies"
       - "github-actions"
@@ -14,10 +20,15 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
       day: "monday"
       time: "05:30"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 5
+    # Majors = planned upgrades, not weekly spam
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
     groups:
       linting:
         patterns:
@@ -38,6 +49,20 @@ updates:
           - "typescript"
           - "turbo"
           - "vite-tsconfig-paths"
+          - "esbuild"
+      vite:
+        patterns:
+          - "vite"
+          - "@vitejs/*"
+      angular:
+        patterns:
+          - "@angular/*"
+          - "zone.js"
+      docs:
+        patterns:
+          - "typedoc"
+          - "typedoc-*"
+          - "vitepress"
     labels:
       - "dependencies"
       - "npm"
