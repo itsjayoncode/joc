@@ -10,18 +10,18 @@ For the product-facing summary on the docs site, see [Roadmap](https://itsjayonc
 
 ## Phase model
 
-| # | Phase | Status | Focus |
-| - | ----- | ------ | ----- |
-| 1 | Ecosystem Foundation | ✅ Complete | Vision, architecture, standards, governance |
-| 2 | Repository Platform | ✅ Complete | Monorepo, CI, Changesets, docs site, templates |
-| 3 | Product Foundation | ✅ Complete | Browser Lifecycle, Form Intelligence, Object Diff |
-| 4 | Product Maturation | 🟡 **Current** | APIs, tests, playgrounds, docs, budgets, light recipes |
-| 5 | Architecture Convergence | 🔜 Next | Boundaries, terminology, shared-candidate matrix |
-| 6 | Selective Shared Infrastructure | Future | Extract only Phase 5–proven internals → `packages/shared` |
-| 7 | Developer Tooling | Future | Package/playground generators (can parallelize with 5) |
-| 8 | Ecosystem Expansion | Future | One new package at a time (admission checklist required) |
-| 9 | Integration & Adoption | Future | Composition guides, website, examples, community |
-| 10 | Platform Evolution | Optional | Shared runtime only if real pain demands it |
+| #   | Phase                           | Status         | Focus                                                     |
+| --- | ------------------------------- | -------------- | --------------------------------------------------------- |
+| 1   | Ecosystem Foundation            | ✅ Complete    | Vision, architecture, standards, governance               |
+| 2   | Repository Platform             | ✅ Complete    | Monorepo, CI, Changesets, docs site, templates            |
+| 3   | Product Foundation              | ✅ Complete    | Browser Lifecycle, Form Intelligence, Object Diff         |
+| 4   | Product Maturation              | 🟡 **Current** | APIs, tests, playgrounds, docs, budgets, light recipes    |
+| 5   | Architecture Convergence        | 🔜 Next        | Boundaries, terminology, shared-candidate matrix          |
+| 6   | Selective Shared Infrastructure | Future         | Extract only Phase 5–proven internals → `packages/shared` |
+| 7   | Developer Tooling               | Future         | Package/playground generators (can parallelize with 5)    |
+| 8   | Ecosystem Expansion             | Future         | One new package at a time (admission checklist required)  |
+| 9   | Integration & Adoption          | Future         | Composition guides, website, examples, community          |
+| 10  | Platform Evolution              | Optional       | Shared runtime only if real pain demands it               |
 
 Full exit criteria, principles, and ADRs: [`_construction/ecosystem-update/`](_construction/ecosystem-update/).
 
@@ -29,11 +29,11 @@ Full exit criteria, principles, and ADRs: [`_construction/ecosystem-update/`](_c
 
 ## Current era — Product Maturation (Phase 4)
 
-| Package | Role | Notes |
-| ------- | ---- | ----- |
-| `@jayoncode/browser-lifecycle` | Visibility, focus, idle, connectivity, cross-tab | Harden + adapters |
-| `@jayoncode/form-intelligence` | Headless forms (validation, rules, drafts, wizards, captcha, UI) | Recipes + adapter polish |
-| `@jayoncode/object-diff` | Deep diff, change records, JSON Patch | Composition docs with forms/state |
+| Package                        | Role                                                             | Notes                             |
+| ------------------------------ | ---------------------------------------------------------------- | --------------------------------- |
+| `@jayoncode/browser-lifecycle` | Visibility, focus, idle, connectivity, cross-tab                 | Harden + adapters                 |
+| `@jayoncode/form-intelligence` | Headless forms (validation, rules, drafts, wizards, captcha, UI) | Recipes + adapter polish          |
+| `@jayoncode/object-diff`       | Deep diff, change records, JSON Patch                            | Composition docs with forms/state |
 
 **Active priorities**
 

@@ -114,12 +114,12 @@ Root import of merge/query/stats/plugins/view is **not** supported — use the s
 
 ## Mental model (compare → changes → patch)
 
-| Need | Prefer |
-| ---- | ------ |
-| Boolean dirty check | `hasChanges(a, b)` |
-| Structured change list | `diff(a, b)` → `.changes` |
-| Equality of two values | `compare(a, b)` |
-| RFC 6902 operations | `patch(diffResult)` then `applyPatch(target, ops)` |
+| Need                   | Prefer                                             |
+| ---------------------- | -------------------------------------------------- |
+| Boolean dirty check    | `hasChanges(a, b)`                                 |
+| Structured change list | `diff(a, b)` → `.changes`                          |
+| Equality of two values | `compare(a, b)`                                    |
+| RFC 6902 operations    | `patch(diffResult)` then `applyPatch(target, ops)` |
 
 Form Intelligence can call these via plugins / `form.diffFrom*` without coupling cores — [FI composition recipe](/packages/form-intelligence/modules/patterns#composition-dirty-audit--patch-object-diff).
 

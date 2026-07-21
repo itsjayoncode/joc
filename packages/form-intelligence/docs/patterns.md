@@ -105,10 +105,10 @@ lifecycle.dispose();
 form.destroy();
 ```
 
-| Signal | Effect |
-| ------ | ------ |
-| `page:hidden` | Persist draft so a refresh / resume does not lose work |
-| `connection:online` | Flush offline submit queue when configured |
+| Signal              | Effect                                                 |
+| ------------------- | ------------------------------------------------------ |
+| `page:hidden`       | Persist draft so a refresh / resume does not lose work |
+| `connection:online` | Flush offline submit queue when configured             |
 
 Manual alternative (no plugin): `lifecycle.on("page:hidden", () => form.saveDraft())`.
 
@@ -153,11 +153,11 @@ if (hasChanges(saved, draft)) {
 }
 ```
 
-| Goal | Prefer |
-| ---- | ------ |
-| Audit on successful submit | `createObjectDiffPlugin` |
-| Compare live values to defaults / snapshot | `form.diffFromDefaults()` / `form.diffFrom()` |
-| Generate / apply JSON Patch outside forms | `diff` / `patch` / `applyPatch` from `@jayoncode/object-diff` |
+| Goal                                       | Prefer                                                        |
+| ------------------------------------------ | ------------------------------------------------------------- |
+| Audit on successful submit                 | `createObjectDiffPlugin`                                      |
+| Compare live values to defaults / snapshot | `form.diffFromDefaults()` / `form.diffFrom()`                 |
+| Generate / apply JSON Patch outside forms  | `diff` / `patch` / `applyPatch` from `@jayoncode/object-diff` |
 
 Details: [Integrations → Object Diff](/packages/form-intelligence/modules/integrations#object-diff-plugin) · [State → Object diffs](/packages/form-intelligence/modules/state#object-diffs) · [Object Diff integrations](/packages/object-diff/modules/integrations).
 

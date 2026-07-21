@@ -23,12 +23,12 @@ Each ships with docs, SemVer/Changesets, and an interactive [playground](/playgr
 
 ### Phase snapshot
 
-| Phase | Status |
-| ----- | ------ |
-| 1–3 Foundation / platform / first products | Complete |
-| **4 Product Maturation** | **Current** |
-| 5 Architecture Convergence | Next (shared-candidate audit — not a shared runtime) |
-| 6–10 Selective shared → tooling → expansion → adoption → optional platform | Future |
+| Phase                                                                      | Status                                               |
+| -------------------------------------------------------------------------- | ---------------------------------------------------- |
+| 1–3 Foundation / platform / first products                                 | Complete                                             |
+| **4 Product Maturation**                                                   | **Current**                                          |
+| 5 Architecture Convergence                                                 | Next (shared-candidate audit — not a shared runtime) |
+| 6–10 Selective shared → tooling → expansion → adoption → optional platform | Future                                               |
 
 ## Near term
 
