@@ -5,6 +5,12 @@ description: "Release history for @jayoncode/form-intelligence."
 
 # Changelog
 
+## 3.9.0
+
+### Minor Changes
+
+- f9fef7f: Surface `captchaLoading` while CAPTCHA prepare runs so `form.ui.canSubmit` stays false until the provider is ready; notify subscribers on Security Stage state transitions. Playground CAPTCHA lab: Loading → ready scenario + submit gated on `canSubmit`. `mockCaptcha` gains `loadDelayMs` / `failLoadWith`.
+
 ## 3.8.1
 
 ### Patch Changes
@@ -207,3 +213,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Examples: `vanilla-html`, `basic-validation`, `wizard-workflow` (+ framework stubs)
 
 ## 0.1.1
+
