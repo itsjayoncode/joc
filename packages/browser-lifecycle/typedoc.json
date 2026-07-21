@@ -9,6 +9,7 @@
   "excludePrivate": true,
   "excludeInternal": true,
   "excludeExternals": true,
+  "disableSources": true,
   "hideGenerator": true,
   "sort": ["source-order"],
   "categorizeByGroup": true,

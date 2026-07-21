@@ -3,6 +3,7 @@
   "extends": "./tsconfig.base.json",
   "files": [],
   "references": [
+    { "path": "./packages/storage" },
     { "path": "./packages/browser-lifecycle" },
     { "path": "./packages/browser-lifecycle-react" },
     { "path": "./packages/browser-lifecycle-vue" },

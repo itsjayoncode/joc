@@ -16,6 +16,7 @@ coverage/*
 !coverage/README.md
 *.tsbuildinfo
 .DS_Store
+__MACOSX/
 
 # VitePress generated output
 **/.vitepress/cache/
@@ -30,11 +31,13 @@ apps/docs/docs/packages/browser-lifecycle/api/
 apps/docs/docs/packages/browser-lifecycle/v*/
 apps/docs/docs/packages/object-diff/v*/
 apps/docs/docs/packages/form-intelligence/v*/
+apps/docs/docs/packages/storage/v*/
 apps/docs/docs/.vitepress/browser-lifecycle-meta.ts
 apps/docs/docs/.vitepress/docs-meta.ts
 apps/docs/docs/.vitepress/browser-lifecycle-versions.ts
 apps/docs/docs/.vitepress/object-diff-versions.ts
 apps/docs/docs/.vitepress/form-intelligence-versions.ts
+apps/docs/docs/.vitepress/storage-versions.ts
 apps/docs/docs/packages/object-diff/modules/
 apps/docs/docs/packages/object-diff/playground/
 apps/docs/docs/packages/object-diff/api/
@@ -45,6 +48,11 @@ apps/docs/docs/packages/form-intelligence/playground/
 apps/docs/docs/packages/form-intelligence/api/
 apps/docs/docs/packages/form-intelligence/index.md
 apps/docs/docs/.vitepress/form-intelligence-meta.ts
+apps/docs/docs/packages/storage/modules/
+apps/docs/docs/packages/storage/playground/
+apps/docs/docs/packages/storage/api/
+apps/docs/docs/packages/storage/index.md
+apps/docs/docs/.vitepress/storage-meta.ts
 apps/docs/docs/examples/index.md
 _construction
 _construction/**

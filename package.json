@@ -32,11 +32,11 @@
     "website:preview": "pnpm --filter @jayoncode/website preview",
     "status": "node -e \"console.log('JOC: Storage brief Accepted — next: pnpm joc new package storage (no packages/shared). Phase 10 Closed.')\"",
     "joc": "node ./scripts/joc-cli.mjs",
-    "build": "pnpm build:packages && pnpm docs:build && pnpm playground:build && pnpm browser-session-playground:build && pnpm object-diff-playground:build && pnpm form-intelligence-playground:build",
+    "build": "pnpm build:packages && pnpm docs:build && pnpm playground:build && pnpm browser-session-playground:build && pnpm object-diff-playground:build && pnpm form-intelligence-playground:build && pnpm storage-playground:build",
     "build:packages": "tsc -b",
     "typecheck": "pnpm typecheck:packages && pnpm typecheck:apps",
     "typecheck:packages": "tsc -b",
-    "typecheck:apps": "tsc -p apps/docs/tsconfig.json --noEmit && tsc -p apps/playground/tsconfig.json --noEmit && tsc -p apps/browser-session-playground/tsconfig.json --noEmit && tsc -p apps/object-diff-playground/tsconfig.json --noEmit && tsc -p apps/form-intelligence-playground/tsconfig.json --noEmit",
+    "typecheck:apps": "tsc -p apps/docs/tsconfig.json --noEmit && tsc -p apps/playground/tsconfig.json --noEmit && tsc -p apps/browser-session-playground/tsconfig.json --noEmit && tsc -p apps/object-diff-playground/tsconfig.json --noEmit && tsc -p apps/form-intelligence-playground/tsconfig.json --noEmit && tsc -p apps/storage-playground/tsconfig.json --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
@@ -82,7 +82,11 @@
     "audit:prod": "pnpm audit --prod",
     "validate": "pnpm ci:quality",
     "workspaces:list": "pnpm list -r --depth -1",
-    "clean": "node -e \"const fs=require('fs'); const path=require('path'); const root=process.cwd(); const removeNames=new Set(['dist','build','lib','coverage','.turbo']); const walk=(dir)=>{ for (const entry of fs.readdirSync(dir,{withFileTypes:true})) { const full=path.join(dir,entry.name); if (entry.isDirectory()) { if (entry.name === 'node_modules' || entry.name === '.git') continue; if (removeNames.has(entry.name)) { fs.rmSync(full,{recursive:true,force:true}); continue; } walk(full); continue; } if (entry.name.endsWith('.tsbuildinfo')) fs.rmSync(full,{force:true}); } }; walk(root);\""
+    "clean": "node -e \"const fs=require('fs'); const path=require('path'); const root=process.cwd(); const removeNames=new Set(['dist','build','lib','coverage','.turbo']); const walk=(dir)=>{ for (const entry of fs.readdirSync(dir,{withFileTypes:true})) { const full=path.join(dir,entry.name); if (entry.isDirectory()) { if (entry.name === 'node_modules' || entry.name === '.git') continue; if (removeNames.has(entry.name)) { fs.rmSync(full,{recursive:true,force:true}); continue; } walk(full); continue; } if (entry.name.endsWith('.tsbuildinfo')) fs.rmSync(full,{force:true}); } }; walk(root);\"",
+    "storage-playground:dev": "pnpm --filter @jayoncode/storage-playground dev",
+    "storage-playground:build": "pnpm --filter @jayoncode/storage-playground build",
+    "storage-playground:preview": "pnpm --filter @jayoncode/storage-playground preview",
+    "storage-playground:test": "pnpm --filter @jayoncode/storage-playground test"
   },
   "devDependencies": {
     "@changesets/changelog-git": "0.2.1",

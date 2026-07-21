@@ -26,6 +26,11 @@ const packages = [
     typedocConfig: path.join(rootDir, "packages/form-intelligence/typedoc.json"),
     apiDir: path.join(rootDir, "apps/docs/docs/packages/form-intelligence/api"),
   },
+  {
+    name: "storage",
+    typedocConfig: path.join(rootDir, "packages/storage/typedoc.json"),
+    apiDir: path.join(rootDir, "apps/docs/docs/packages/storage/api"),
+  },
 ];
 
 function formatGeneratedApiDocs(apiDir) {

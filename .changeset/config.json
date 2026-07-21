@@ -18,7 +18,8 @@
     "@jayoncode/website",
     "@jayoncode/browser-session-playground",
     "@jayoncode/object-diff-playground",
-    "@jayoncode/form-intelligence-playground"
+    "@jayoncode/form-intelligence-playground",
+    "@jayoncode/storage-playground"
   ],
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true

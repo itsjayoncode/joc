@@ -5,6 +5,7 @@ import { useRoute, withBase } from "vitepress";
 import { browserLifecycleDocVersions } from "../../browser-lifecycle-versions.js";
 import { formIntelligenceDocVersions } from "../../form-intelligence-versions.js";
 import { objectDiffDocVersions } from "../../object-diff-versions.js";
+import { storageDocVersions } from "../../storage-versions.js";
 import { useDocsPath } from "../normalize-docs-path.js";
 
 const route = useRoute();
@@ -14,6 +15,7 @@ const DOC_VERSION_PACKAGES = [
   browserLifecycleDocVersions,
   formIntelligenceDocVersions,
   objectDiffDocVersions,
+  storageDocVersions,
 ] as const;
 
 const docsPath = computed(() => normalizeDocsPath(route.path));

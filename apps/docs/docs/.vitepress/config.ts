@@ -22,6 +22,9 @@ import {
   siteName,
   siteTagline,
 } from "./seo.js";
+import { storageMeta } from "./storage-meta.js";
+import { createStorageSidebarMap } from "./storage-sidebar.js";
+import { storageDocVersions } from "./storage-versions.js";
 import { createDocsVitePlugins, docsPublicAssetsDir } from "./vite-dev-fix.js";
 
 const docsBase = process.env.VITE_DOCS_BASE ?? "/";
@@ -34,6 +37,7 @@ const PKG = browserLifecycleDocVersions.basePath;
 const browserLifecycleVersionLabel = browserLifecycleMeta.versionLabel;
 const objectDiffVersionLabel = objectDiffMeta.versionLabel;
 const formIntelligenceVersionLabel = formIntelligenceMeta.versionLabel;
+const storageVersionLabel = storageMeta.versionLabel;
 
 const packageItems = [
   { text: "All Packages", link: "/packages/" },
@@ -43,6 +47,7 @@ const packageItems = [
     text: navPackageLabel("Form Intelligence", formIntelligenceVersionLabel),
     link: "/packages/form-intelligence/",
   },
+  { text: navPackageLabel("Storage", storageVersionLabel), link: "/packages/storage/" },
 ];
 
 const browserLifecycleSidebar = createBrowserLifecycleSidebarMap(
@@ -63,6 +68,13 @@ const formIntelligenceSidebar = createFormIntelligenceSidebarMap(
   FORM_INTELLIGENCE_PKG,
   formIntelligenceVersionLabel,
   formIntelligenceDocVersions.archives,
+);
+
+const STORAGE_PKG = "/packages/storage";
+const storageSidebar = createStorageSidebarMap(
+  STORAGE_PKG,
+  storageVersionLabel,
+  storageDocVersions.archives,
 );
 
 export default defineConfig({
@@ -182,6 +194,7 @@ gtag('config', '${docsGaId}');`,
       ...browserLifecycleSidebar,
       ...objectDiffSidebar,
       ...formIntelligenceSidebar,
+      ...storageSidebar,
       "/guides/": [
         {
           text: "Contributor Guides",
@@ -223,6 +236,12 @@ gtag('config', '${docsGaId}');`,
             {
               text: "Form Intelligence ↗",
               link: "/playground/form-intelligence/",
+              target: "_blank",
+              rel: "noreferrer",
+            },
+            {
+              text: "Storage ↗",
+              link: "/playground/storage/",
               target: "_blank",
               rel: "noreferrer",
             },

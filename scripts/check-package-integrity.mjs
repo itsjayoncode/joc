@@ -21,6 +21,7 @@ const PUBLISHABLE_PACKAGES = new Set([
   "form-intelligence-vue",
   "form-intelligence-yup",
   "form-intelligence-zod",
+  "storage",
 ]);
 
 const failures = [];

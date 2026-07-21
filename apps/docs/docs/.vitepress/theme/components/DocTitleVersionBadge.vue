@@ -5,12 +5,14 @@ import { onContentUpdated, useRoute } from "vitepress";
 import { browserLifecycleMeta } from "../../browser-lifecycle-meta.js";
 import { formIntelligenceMeta } from "../../form-intelligence-meta.js";
 import { objectDiffMeta } from "../../object-diff-meta.js";
+import { storageMeta } from "../../storage-meta.js";
 import { useDocsPath } from "../normalize-docs-path.js";
 
 const PACKAGE_OVERVIEW_META = {
   "browser-lifecycle": browserLifecycleMeta,
   "form-intelligence": formIntelligenceMeta,
   "object-diff": objectDiffMeta,
+  storage: storageMeta,
 } as const;
 
 const route = useRoute();

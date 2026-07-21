@@ -51,6 +51,10 @@ export default defineConfig({
         replacement: path.join(rootDir, "packages/form-intelligence/src/index.ts"),
       },
       {
+        find: /^@jayoncode\/storage\/(.+)$/,
+        replacement: path.join(rootDir, "packages/storage/src/$1/index.ts"),
+      },
+      {
         find: /^@jayoncode\/(.+)$/,
         replacement: path.join(rootDir, "packages/$1/src/index.ts"),
       },

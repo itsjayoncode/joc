@@ -1,0 +1,10 @@
+.stack {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.caption {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.6;
+}

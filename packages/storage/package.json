@@ -1,0 +1,68 @@
+{
+  "name": "@jayoncode/storage",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Policy-driven client persistence — typed envelopes, TTL, migrations, and explicit adapters.",
+  "license": "MIT",
+  "author": "JayOnCode",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/itsjayoncode/joc.git",
+    "directory": "packages/storage"
+  },
+  "homepage": "https://itsjayoncode.github.io/joc/packages/storage/",
+  "bugs": {
+    "url": "https://github.com/itsjayoncode/joc/issues"
+  },
+  "keywords": [
+    "joc",
+    "storage",
+    "jayoncode",
+    "localStorage",
+    "sessionStorage",
+    "ttl",
+    "persistence"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./maintenance": {
+      "types": "./dist/maintenance/index.d.ts",
+      "import": "./dist/maintenance/index.js"
+    },
+    "./snapshots": {
+      "types": "./dist/snapshots/index.d.ts",
+      "import": "./dist/snapshots/index.js"
+    },
+    "./observable": {
+      "types": "./dist/observable/index.d.ts",
+      "import": "./dist/observable/index.js"
+    },
+    "./diagnostics": {
+      "types": "./dist/diagnostics/index.d.ts",
+      "import": "./dist/diagnostics/index.js"
+    },
+    "./transactions": {
+      "types": "./dist/transactions/index.d.ts",
+      "import": "./dist/transactions/index.js"
+    }
+  },
+  "scripts": {
+    "test": "vitest run tests",
+    "bench": "vitest bench --config ../../vitest.config.ts benchmarks/microbench.bench.ts"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
