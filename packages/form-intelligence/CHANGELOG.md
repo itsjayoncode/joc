@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.9.1
+
+### Patch Changes
+
+- 571e9ac: Turnstile: keep `captchaLoading` until the challenge iframe (or response field) is mounted in the container, so `form.ui.canSubmit` stays false for the visible widget load—not only the script/`render()` call.
+
 ## 3.9.0
 
 ### Minor Changes
