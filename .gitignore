@@ -12,6 +12,8 @@ lib
 !apps/object-diff-playground/src/lib/**
 !apps/form-intelligence-playground/src/lib/
 !apps/form-intelligence-playground/src/lib/**
+!apps/storage-playground/src/lib/
+!apps/storage-playground/src/lib/**
 coverage/*
 !coverage/README.md
 *.tsbuildinfo
