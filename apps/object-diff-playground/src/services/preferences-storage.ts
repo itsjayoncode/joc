@@ -1,46 +1,108 @@
-const STORAGE_KEY_PREFIX = "joc.object-diff-playground";
+import {
+  createLocalStorageAdapter,
+  createStorage,
+  type JayOnCodeStorage,
+} from "@jayoncode/storage";
 
-function getStorage(): Storage | undefined {
+const LEGACY_PREFIX = "joc.object-diff-playground.";
+
+/**
+ * Second dogfood site: Object Diff playground shell prefs via `@jayoncode/storage`.
+ * Namespace is distinct from the Storage playground (`playground-prefs`).
+ */
+const playgroundPrefs: JayOnCodeStorage<string | boolean> = createStorage({
+  namespace: "object-diff-playground-prefs",
+  adapter: createLocalStorageAdapter(),
+  schemaVersion: "1",
+  policies: {
+    preferences: { ttl: { days: 365 } },
+  },
+});
+
+function readLegacyRaw(key: string): string | null {
   if (typeof globalThis.localStorage === "undefined") {
-    return undefined;
+    return null;
   }
-
-  return globalThis.localStorage;
+  try {
+    return globalThis.localStorage.getItem(`${LEGACY_PREFIX}${key}`);
+  } catch {
+    return null;
+  }
 }
 
-function buildStorageKey(key: string): string {
-  return `${STORAGE_KEY_PREFIX}.${key}`;
+function removeLegacyRaw(key: string): void {
+  if (typeof globalThis.localStorage === "undefined") {
+    return;
+  }
+  try {
+    globalThis.localStorage.removeItem(`${LEGACY_PREFIX}${key}`);
+  } catch {
+    // ignore
+  }
+}
+
+function coercePreference<TValue extends string | boolean>(
+  value: string | boolean,
+  fallback: TValue,
+): TValue | null {
+  if (typeof fallback === "boolean") {
+    if (typeof value === "boolean") {
+      return value as TValue;
+    }
+    if (value === "true" || value === "false") {
+      return (value === "true") as TValue;
+    }
+    return null;
+  }
+
+  if (typeof value === "string") {
+    return value as TValue;
+  }
+
+  return null;
 }
 
 export function readStoredPreference<TValue extends string | boolean>(
   key: string,
   fallback: TValue,
 ): TValue {
-  const storage = getStorage();
+  try {
+    const stored = playgroundPrefs.get(key);
+    if (stored !== null) {
+      const coerced = coercePreference(stored, fallback);
+      if (coerced !== null) {
+        return coerced;
+      }
+    }
+  } catch {
+    // fall through to legacy / fallback
+  }
 
-  if (!storage) {
+  const legacy = readLegacyRaw(key);
+  if (legacy === null) {
     return fallback;
   }
 
-  const value = storage.getItem(buildStorageKey(key));
-
-  if (value === null) {
+  const coerced = coercePreference(legacy, fallback);
+  if (coerced === null) {
     return fallback;
   }
 
-  if (typeof fallback === "boolean") {
-    return (value === "true") as TValue;
+  try {
+    playgroundPrefs.set(key, coerced, { policy: "preferences" });
+    removeLegacyRaw(key);
+  } catch {
+    // keep returning coerced even if migrate write fails
   }
 
-  return value as TValue;
+  return coerced;
 }
 
 export function writeStoredPreference(key: string, value: string | boolean): void {
-  const storage = getStorage();
-
-  if (!storage) {
-    return;
+  try {
+    playgroundPrefs.set(key, value, { policy: "preferences" });
+    removeLegacyRaw(key);
+  } catch {
+    // SSR / blocked storage — ignore like the previous raw helper
   }
-
-  storage.setItem(buildStorageKey(key), String(value));
 }

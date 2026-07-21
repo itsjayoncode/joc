@@ -1,0 +1,27 @@
+# Changelog
+
+All notable changes to `@jayoncode/storage` will be documented in this file.
+
+## 0.1.0
+
+### Added
+
+- First public release (`private: false`)
+- Core `createStorage` API: envelopes, TTL, migrate, peek/has/clear, explicit adapters
+- Policies (ttl-only): `policies`, `definePolicy`, `set(..., { policy })`
+- Typed errors + `isQuotaExceededError`
+- Stable subpaths:
+  - `@jayoncode/storage/maintenance` (`cleanup`)
+  - `@jayoncode/storage/snapshots` (`snapshot` / `restore`)
+  - `@jayoncode/storage/observable` (`observe` / `watch` / `on`)
+  - `@jayoncode/storage/diagnostics` (`createDiagnostics`)
+  - `@jayoncode/storage/transactions` (`transaction`)
+- Docs site package section + Storage playground Lab
+
+### Fixed
+
+- P0: `has` uses peek (no migrate); `clear` requires `keys`; finite `expiresAt` validation
+
+## 0.0.0
+
+- Private incubation (pre-release).

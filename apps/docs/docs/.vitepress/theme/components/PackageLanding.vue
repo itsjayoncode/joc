@@ -26,8 +26,8 @@ const highlightedSample = computed(() => {
         <div class="joc-pkg-landing__icon" aria-hidden="true">
           <PackageIcon :package-id="landing.id" size="lg" />
         </div>
-        <p class="joc-pkg-landing__npm">{{ landing.npmName }}</p>
         <h1 id="joc-pkg-landing-title" class="joc-pkg-landing__title">{{ landing.name }}</h1>
+        <p class="joc-pkg-landing__npm">{{ landing.npmName }}</p>
         <p class="joc-pkg-landing__headline">{{ landing.headline }}</p>
         <p class="joc-pkg-landing__description">{{ landing.description }}</p>
         <div class="joc-pkg-landing__actions">

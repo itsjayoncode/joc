@@ -8,6 +8,12 @@
     "moduleDetection": "force",
     "baseUrl": ".",
     "paths": {
+      "@jayoncode/storage/maintenance": ["packages/storage/src/maintenance/index.ts"],
+      "@jayoncode/storage/snapshots": ["packages/storage/src/snapshots/index.ts"],
+      "@jayoncode/storage/observable": ["packages/storage/src/observable/index.ts"],
+      "@jayoncode/storage/diagnostics": ["packages/storage/src/diagnostics/index.ts"],
+      "@jayoncode/storage/transactions": ["packages/storage/src/transactions/index.ts"],
+      "@jayoncode/storage/*": ["packages/storage/src/*/index.ts"],
       "@jayoncode/*": ["packages/*/src/index.ts"]
     },
     "strict": true,

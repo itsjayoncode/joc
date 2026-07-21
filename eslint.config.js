@@ -29,6 +29,7 @@ export default tseslint.config(
       "eslint.config.js",
       "prettier.config.js",
       "vitest.config.ts",
+      "**/*.bench.ts",
     ],
   },
   {
@@ -208,6 +209,8 @@ export default tseslint.config(
       "apps/form-intelligence-playground/vite.config.ts",
       "apps/form-intelligence-playground/vitest.config.ts",
       "apps/website/vite.config.ts",
+      "apps/storage-playground/vite.config.ts",
+      "apps/storage-playground/vitest.config.ts",
     ],
     rules: {
       "import/no-default-export": "off",

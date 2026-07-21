@@ -8,21 +8,27 @@ import PackageIcon from "./PackageIcon.vue";
 const problems = [
   {
     id: "browser",
-    label: "Browser events & session",
-    intent: "Detect when a tab becomes hidden, idle, offline, or resumes",
+    label: "Tab hidden / idle / offline",
+    intent: "Pause work when the tab is hidden, idle, or the network drops",
     packageId: "browser-lifecycle",
   },
   {
     id: "forms",
-    label: "Complex forms",
-    intent: "Validation, conditional fields, drafts, wizards, and submit flows",
+    label: "Forms that get complex",
+    intent: "Validate, show/hide fields, keep drafts, and submit without races",
     packageId: "form-intelligence",
   },
   {
     id: "diff",
-    label: "Object comparison",
-    intent: "Compare two objects and generate patches or merge drafts",
+    label: "What changed in an object?",
+    intent: "Compare two values, list changes, and build a patch",
     packageId: "object-diff",
+  },
+  {
+    id: "storage",
+    label: "Save data in the browser",
+    intent: "Prefs and cache with clear names, expiry, and a backend you choose",
+    packageId: "storage",
   },
 ] as const;
 

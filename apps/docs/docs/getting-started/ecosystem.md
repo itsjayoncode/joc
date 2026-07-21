@@ -35,6 +35,7 @@ Your app (React / Vue / Angular / Svelte / vanilla)
 | Browser Lifecycle | [`/packages/browser-lifecycle/`](/packages/browser-lifecycle/) | [Open](/playground/browser-lifecycle/) |
 | Form Intelligence | [`/packages/form-intelligence/`](/packages/form-intelligence/) | [Open](/playground/form-intelligence/) |
 | Object Diff       | [`/packages/object-diff/`](/packages/object-diff/)             | [Open](/playground/object-diff/)       |
+| Storage           | [`/packages/storage/`](/packages/storage/)                     | [Open](/playground/storage/)           |
 
 Upcoming libraries will be **announced** as they enter development — see the [roadmap](/roadmap/). They appear under [Packages](/packages/) when they ship.
 

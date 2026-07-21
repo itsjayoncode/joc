@@ -1,0 +1,6 @@
+{
+  "package": "@jayoncode/storage",
+  "basePath": "/packages/storage",
+  "archive": { "major": true, "minor": true, "patch": false },
+  "archives": []
+}

@@ -7,7 +7,7 @@ description: Browse the JayOnCode (JOC) monorepo package catalog — independent
 
 JayOnCode (**JOC**) is a monorepo of focused TypeScript packages. Each `@jayoncode/*` library solves one developer problem well, ships on its own version line, and documents under its own section on this site.
 
-**Today:** three live packages with docs and playgrounds. **Next:** additional libraries — [to be announced](/roadmap/).
+**Today:** four packages with docs and playgrounds. **Next:** additional libraries — [to be announced](/roadmap/).
 
 ## How the docs are organized
 
@@ -23,7 +23,7 @@ Start with a live package below. New libraries will appear here when they ship.
 
 ### [Browser Lifecycle](/packages/browser-lifecycle/)
 
-`@jayoncode/browser-lifecycle` — typed browser session lifecycle for page visibility, window focus, connectivity, idle detection, cross-tab sync, plugins, and diagnostics.
+`@jayoncode/browser-lifecycle` — know when the tab is hidden, idle, offline, or back online, without scattering listeners across the app.
 
 **Start here (in order):**
 
@@ -34,7 +34,7 @@ Start with a live package below. New libraries will appear here when they ship.
 
 ### [Object Diff](/packages/object-diff/)
 
-`@jayoncode/object-diff` — deep object comparison, structured change reporting, and JSON Patch generation for state snapshots and change tracking.
+`@jayoncode/object-diff` — compare two objects, see what changed (with paths), and build patches you can apply or log.
 
 **Start here (in order):**
 
@@ -45,7 +45,7 @@ Start with a live package below. New libraries will appear here when they ship.
 
 ### [Form Intelligence](/packages/form-intelligence/)
 
-`@jayoncode/form-intelligence` — a headless form workflow engine for validation, submission, autosave, drafts, and multi-step wizards.
+`@jayoncode/form-intelligence` — validation, show/hide rules, drafts, and safe submit in one form engine — keep your own markup.
 
 **Start here (in order):**
 
@@ -55,6 +55,18 @@ Start with a live package below. New libraries will appear here when they ship.
 4. [Rules](/packages/form-intelligence/modules/rules) · [Calculations](/packages/form-intelligence/modules/calculations) · [State](/packages/form-intelligence/modules/state)
 5. [Migration](/packages/form-intelligence/modules/migration) · [Patterns](/packages/form-intelligence/modules/patterns)
 6. [Interactive playground](/playground/form-intelligence/)
+
+### [Storage](/packages/storage/)
+
+`@jayoncode/storage` — save prefs and cache in the browser with clear names, expiry, and a backend you choose (memory / localStorage / sessionStorage).
+
+**Start here (in order):**
+
+1. [Overview & learning path](/packages/storage/)
+2. [Tutorial](/packages/storage/modules/getting-started) → [Concepts](/packages/storage/modules/concepts) → [Recipes](/packages/storage/modules/recipes)
+3. [Core](/packages/storage/modules/core) · [Errors](/packages/storage/modules/errors) · [Best practices](/packages/storage/modules/best-practices)
+4. Advanced: [Maintenance](/packages/storage/modules/maintenance) → [Transactions](/packages/storage/modules/transactions)
+5. [Interactive playground](/playground/storage/)
 
 ## What’s next
 

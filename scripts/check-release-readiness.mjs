@@ -20,6 +20,7 @@ const PUBLISHABLE_PACKAGES = new Set([
   "@jayoncode/form-intelligence-vue",
   "@jayoncode/form-intelligence-yup",
   "@jayoncode/form-intelligence-zod",
+  "@jayoncode/storage",
 ]);
 
 const requiredFiles = [

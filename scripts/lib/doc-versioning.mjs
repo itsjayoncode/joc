@@ -58,6 +58,17 @@ export const DOC_VERSIONED_PACKAGES = [
     exportName: "formIntelligenceDocVersions",
     typeName: "FormIntelligenceDocArchive",
   },
+  {
+    id: "storage",
+    npmName: "@jayoncode/storage",
+    packageJson: path.join(rootDir, "packages/storage/package.json"),
+    docsRoot: path.join(rootDir, "apps/docs/docs/packages/storage"),
+    archivesRoot: path.join(rootDir, "apps/docs/archives/storage"),
+    manifestPath: path.join(rootDir, "apps/docs/doc-versions/storage.json"),
+    versionsMetaPath: path.join(rootDir, "apps/docs/docs/.vitepress/storage-versions.ts"),
+    exportName: "storageDocVersions",
+    typeName: "StorageDocArchive",
+  },
 ];
 
 /** @deprecated Prefer DOC_VERSIONED_PACKAGES / getDocPackage — kept for older imports. */

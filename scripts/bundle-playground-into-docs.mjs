@@ -28,6 +28,12 @@ const PLAYGROUNDS = [
     base:
       process.env.VITE_FORM_INTELLIGENCE_PLAYGROUND_BASE ?? "/joc/playground/form-intelligence/",
   },
+  {
+    name: "storage",
+    appDir: "apps/storage-playground",
+    buildScript: "storage-playground:build",
+    base: process.env.VITE_STORAGE_PLAYGROUND_BASE ?? "/joc/playground/storage/",
+  },
 ];
 
 function normalizeBase(base) {

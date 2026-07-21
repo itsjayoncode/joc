@@ -23,36 +23,36 @@ export interface PackageLandingContent {
 export const packageLandings: Record<string, PackageLandingContent> = {
   "browser-lifecycle": {
     id: "browser-lifecycle",
-    name: "Browser Lifecycle",
+    name: "Browser Lifecycle Manager",
     npmName: "@jayoncode/browser-lifecycle",
     accent: "cyan",
-    headline: "One typed API for the browser session",
+    headline: "Know when the tab is hidden, idle, or back online",
     description:
-      "Visibility, focus, connectivity, idle, cross-tab, and session intelligence — without scattering document and window listeners across your app.",
+      "One small API for visibility, focus, network, idle, and multi-tab signals — so you don’t wire document and window listeners all over the app.",
     getStartedLink: "/packages/browser-lifecycle/overview",
     playgroundLink: "/playground/browser-lifecycle/",
     overviewLink: "/packages/browser-lifecycle/overview",
     highlights: [
       {
-        title: "Unified session",
+        title: "One session object",
         detail:
-          "One createBrowserLifecycle() replaces ad-hoc visibility, focus, and online handlers.",
+          "createBrowserLifecycle() replaces scattered visibility, focus, and online handlers.",
       },
       {
-        title: "Opt-in intelligence",
+        title: "Extra insights when you want them",
         detail:
-          "Timeline, metrics, attention score, and reports — zero cost until you call a factory.",
+          "Timeline, metrics, and reports stay off until you opt in — free if you never call them.",
       },
       {
-        title: "Framework adapters",
-        detail: "React, Vue, Svelte, Solid, and Angular packages wrap the same headless core.",
+        title: "Works with your UI library",
+        detail: "React, Vue, Svelte, Solid, and Angular wrappers around the same core.",
       },
       {
-        title: "SSR-safe",
-        detail: "Capability detection and client-only start keep Node and SSR environments calm.",
+        title: "Safe on the server",
+        detail: "Detects what’s available and only starts in the browser — calm under SSR.",
       },
     ],
-    sampleTitle: "Stop wasting work when the tab is hidden",
+    sampleTitle: "Pause work when the user looks away",
     sampleCode: `import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
 
 const lifecycle = createBrowserLifecycle({
@@ -82,35 +82,33 @@ lifecycle.on("connection:reconnect", () => {
     name: "Form Intelligence",
     npmName: "@jayoncode/form-intelligence",
     accent: "amber",
-    headline: "Stop rebuilding form workflows in every app",
+    headline: "Forms that show, save, and submit — without effect spaghetti",
     description:
-      "Conditional fields, draft recovery, and submit races usually mean effects and flags everywhere. One headless createForm() owns validation, when() rules, autosave, and submit — your UI just binds.",
+      "Validation, show/hide rules, draft restore, and safe submit in one createForm(). Your UI binds to state; the library owns the workflow.",
     getStartedLink: "/packages/form-intelligence/overview",
     playgroundLink: "/playground/form-intelligence/",
     overviewLink: "/packages/form-intelligence/overview",
     highlights: [
       {
         title: "when() instead of useEffect",
-        detail:
-          "Plan === enterprise? Show seats, require company, gate submit — declarative chains, not effect soup.",
+        detail: "Plan is enterprise? Show seats, require company, gate submit — declare it once.",
       },
       {
         title: "Drafts that survive refresh",
-        detail:
-          "Debounced autosave and local draft restore so long checkouts and applications do not evaporate.",
+        detail: "Autosave and restore so long checkouts don’t disappear when the tab reloads.",
       },
       {
-        title: "Submit without race bugs",
+        title: "Submit without double-clicks",
         detail:
-          "Async onSubmit with isSubmitting, duplicate-submit guard, cancel, and optional offline queue.",
+          "Built-in submitting state, duplicate-submit guard, cancel, and optional offline queue.",
       },
       {
         title: "Keep your markup",
         detail:
-          "Progressive enhance a native <form>, or bind() into React / Vue / your own inputs — same engine.",
+          "Enhance a normal <form>, or bind() into React / Vue / your own inputs — same engine.",
       },
     ],
-    sampleTitle: "SaaS checkout: conditional fields + draft autosave",
+    sampleTitle: "Checkout: show fields when needed + keep a draft",
     sampleCode: `import { createForm, when } from "@jayoncode/form-intelligence";
 
 // Pain: enterprise fields, autosave, and submit guards
@@ -155,31 +153,31 @@ createForm({
     name: "Object Diff",
     npmName: "@jayoncode/object-diff",
     accent: "blue",
-    headline: "Structured diffs and patches you can trust",
+    headline: "See what changed in an object — then sync it",
     description:
-      "Deep comparison with typed change records, dirty checks, and RFC 6902-style patches — built for audit trails and optimistic UI.",
+      "Compare two values, get a clear list of changes (with paths), check “anything dirty?”, and build patches you can apply or log.",
     getStartedLink: "/packages/object-diff/overview",
     playgroundLink: "/playground/object-diff/",
     overviewLink: "/packages/object-diff/overview",
     highlights: [
       {
-        title: "Path-aware changes",
-        detail: "Every change includes a clear path — user.name, items[2], and nested objects.",
+        title: "Changes with paths",
+        detail: "Every change points to where it happened — user.name, items[2], nested objects.",
       },
       {
         title: "hasChanges()",
-        detail: "Fast dirty checks without paying for a full diff when you only need a boolean.",
+        detail: "Quick yes/no dirty check when you don’t need the full diff yet.",
       },
       {
         title: "Patch + apply",
-        detail: "Generate and apply patch operations to sync clients and stores.",
+        detail: "Turn changes into patch ops and apply them to keep clients or stores in sync.",
       },
       {
-        title: "Serialize",
-        detail: "Export JSON, Markdown, or tables from the same diff for logs and reviews.",
+        title: "Export for humans",
+        detail: "Same diff → JSON, Markdown, or tables for logs and reviews.",
       },
     ],
-    sampleTitle: "Know exactly what changed — then patch it",
+    sampleTitle: "Spot the edit — log it — apply the patch",
     sampleCode: `import {
   diff,
   hasChanges,
@@ -202,6 +200,53 @@ if (hasChanges(saved, draft)) {
   await audit.log(serialize(changes, "markdown"));
   const synced = applyPatch(saved, patch(changes));
 }`,
+  },
+  storage: {
+    id: "storage",
+    name: "Storage",
+    npmName: "@jayoncode/storage",
+    accent: "emerald",
+    headline: "Save app data in the browser — without the usual glue",
+    description:
+      "Pick where values live (memory, localStorage, or sessionStorage), keep keys under a clear name, and optionally add expiry or upgrades when your data shape changes.",
+    getStartedLink: "/packages/storage/overview",
+    playgroundLink: "/playground/storage/",
+    overviewLink: "/packages/storage/overview",
+    highlights: [
+      {
+        title: "createStorage()",
+        detail: "One place to set a namespace, choose a backend, and save or load values.",
+      },
+      {
+        title: "You choose the backend",
+        detail:
+          "Memory for tests, localStorage to survive reload, sessionStorage for the tab — no surprise picks.",
+      },
+      {
+        title: "See what’s stored",
+        detail: "peek() shows when something was saved, when it expires, and which version it is.",
+      },
+      {
+        title: "Extra tools when you need them",
+        detail:
+          "Cleanup, backup, watchers, diagnostics, and transactions live on separate imports.",
+      },
+    ],
+    sampleTitle: "Theme prefs that last — cache that doesn’t",
+    sampleCode: `import { createStorage, createLocalStorageAdapter } from "@jayoncode/storage";
+
+const storage = createStorage({
+  namespace: "app",
+  adapter: createLocalStorageAdapter(),
+  policies: {
+    preferences: { ttl: { days: 365 } },
+    cache: { ttl: { minutes: 15 } },
+  },
+});
+
+storage.set("theme", "dark", { policy: "preferences" });
+storage.get("theme"); // "dark" | null
+storage.peek("theme"); // envelope with expiresAt`,
   },
 };
 

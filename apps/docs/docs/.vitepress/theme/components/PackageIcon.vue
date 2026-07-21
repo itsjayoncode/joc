@@ -165,6 +165,64 @@ withDefaults(
       />
     </svg>
 
+    <!-- Storage: cylinder / disk with activity pulse -->
+    <svg
+      v-else-if="packageId === 'storage'"
+      class="joc-pkg-icon__svg"
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <ellipse
+        class="joc-pkg-icon__disk-top"
+        cx="24"
+        cy="14"
+        rx="14"
+        ry="5"
+        stroke="currentColor"
+        stroke-width="2"
+      />
+      <ellipse
+        class="joc-pkg-icon__disk-lid"
+        cx="24"
+        cy="14"
+        rx="14"
+        ry="5"
+        fill="currentColor"
+        opacity="0.12"
+      />
+      <path
+        class="joc-pkg-icon__disk-body"
+        d="M10 14v20c0 2.8 6.3 5 14 5s14-2.2 14-5V14"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linejoin="round"
+      />
+      <path
+        class="joc-pkg-icon__disk-ring joc-pkg-icon__disk-ring--1"
+        d="M10 24c0 2.8 6.3 5 14 5s14-2.2 14-5"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      />
+      <path
+        class="joc-pkg-icon__disk-ring joc-pkg-icon__disk-ring--2"
+        d="M10 32c0 2.8 6.3 5 14 5s14-2.2 14-5"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      />
+      <circle class="joc-pkg-icon__disk-pulse" cx="24" cy="14" r="2.2" fill="currentColor" />
+      <circle
+        class="joc-pkg-icon__disk-pulse-ring"
+        cx="24"
+        cy="14"
+        r="5"
+        stroke="currentColor"
+        stroke-width="1.4"
+      />
+    </svg>
+
     <!-- Keyboard -->
     <svg
       v-else-if="packageId === 'keyboard'"
