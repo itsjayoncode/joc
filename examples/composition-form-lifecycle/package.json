@@ -1,0 +1,14 @@
+{
+  "name": "@jayoncode/example-composition-form-lifecycle",
+  "private": true,
+  "type": "module",
+  "description": "Composition without coupling — Form Intelligence + Browser Lifecycle (+ Object Diff dirty check).",
+  "scripts": {
+    "start": "node src/main.mjs"
+  },
+  "dependencies": {
+    "@jayoncode/browser-lifecycle": "workspace:*",
+    "@jayoncode/form-intelligence": "workspace:*",
+    "@jayoncode/object-diff": "workspace:*"
+  }
+}

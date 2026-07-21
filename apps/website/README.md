@@ -1,5 +1,24 @@
-# Website App
+# JayOnCode website
 
-This application will eventually host the public JOC website, project overview, package catalog, and ecosystem communication.
+Public landing for **JOC** — routes people to docs, playgrounds, and packages. Not a framework shell.
 
-It remains intentionally unconfigured during Phase 1.1.
+## Local
+
+```bash
+pnpm --filter @jayoncode/website dev
+pnpm --filter @jayoncode/website build
+```
+
+- Dev: http://127.0.0.1:4180
+- Preview: http://127.0.0.1:4181
+
+## Links
+
+| Surface     | URL                                                   |
+| ----------- | ----------------------------------------------------- |
+| Docs        | https://itsjayoncode.github.io/joc/                   |
+| Playgrounds | https://itsjayoncode.github.io/joc/playground/        |
+| Composition | https://itsjayoncode.github.io/joc/guides/composition |
+| GitHub      | https://github.com/itsjayoncode/joc                   |
+
+Production host for `jayoncode.com` can point at this app’s build output when DNS/hosting is ready. Until then, the VitePress docs home remains an equivalent landing.

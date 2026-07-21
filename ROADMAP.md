@@ -1,6 +1,6 @@
 # JOC Roadmap
 
-How the JOC ecosystem grows. Detailed planning lives under [`_construction/ecosystem-update/`](_construction/ecosystem-update/); this file is the contributor-facing summary.
+How the JOC ecosystem grows. **Accepted governance** lives under [`engineering/ecosystem/`](engineering/ecosystem/). This file is the contributor-facing phase summary.
 
 **Composition without coupling.** Independent packages first; shared infrastructure only when experience proves it.
 
@@ -10,62 +10,64 @@ For the product-facing summary on the docs site, see [Roadmap](https://itsjayonc
 
 ## Phase model
 
-| #   | Phase                           | Status         | Focus                                                     |
-| --- | ------------------------------- | -------------- | --------------------------------------------------------- |
-| 1   | Ecosystem Foundation            | ✅ Complete    | Vision, architecture, standards, governance               |
-| 2   | Repository Platform             | ✅ Complete    | Monorepo, CI, Changesets, docs site, templates            |
-| 3   | Product Foundation              | ✅ Complete    | Browser Lifecycle, Form Intelligence, Object Diff         |
-| 4   | Product Maturation              | 🟡 **Current** | APIs, tests, playgrounds, docs, budgets, light recipes    |
-| 5   | Architecture Convergence        | 🔜 Next        | Boundaries, terminology, shared-candidate matrix          |
-| 6   | Selective Shared Infrastructure | Future         | Extract only Phase 5–proven internals → `packages/shared` |
-| 7   | Developer Tooling               | Future         | Package/playground generators (can parallelize with 5)    |
-| 8   | Ecosystem Expansion             | Future         | One new package at a time (admission checklist required)  |
-| 9   | Integration & Adoption          | Future         | Composition guides, website, examples, community          |
-| 10  | Platform Evolution              | Optional       | Shared runtime only if real pain demands it               |
+| #   | Phase                           | Status                           | Focus                                                  |
+| --- | ------------------------------- | -------------------------------- | ------------------------------------------------------ |
+| 1   | Ecosystem Foundation            | ✅ Complete                      | Vision, architecture, standards, governance            |
+| 2   | Repository Platform             | ✅ Complete                      | Monorepo, CI, Changesets, docs site, templates         |
+| 3   | Product Foundation              | ✅ Complete                      | Browser Lifecycle, Form Intelligence, Object Diff      |
+| 4   | Product Maturation              | 🟢 Sufficiently mature (ongoing) | APIs, tests, playgrounds, docs, budgets, light recipes |
+| 5   | Architecture Convergence        | 🟢 Complete (ADRs Accepted)      | Boundaries, terminology, shared-candidate matrix       |
+| 6   | Selective Shared Infrastructure | ⏸ Blocked (no Extract)           | Extract only proven internals → `packages/shared`      |
+| 7   | Developer Tooling               | 🟢 Usable (`pnpm joc`)           | Package + playground generators                        |
+| 8   | Ecosystem Expansion             | 🟢 Storage brief Accepted        | Incubate `@jayoncode/storage` (one at a time)          |
+| 9   | Integration & Adoption          | 🟢 Kickoff bar met               | Composition + website landing + examples               |
+| 10  | Platform Evolution              | ❌ Closed                        | No platform pain demonstrated                          |
 
-Full exit criteria, principles, and ADRs: [`_construction/ecosystem-update/`](_construction/ecosystem-update/).
+Governance, ADRs, matrix, and package briefs: [`engineering/ecosystem/`](engineering/ecosystem/).
 
 ---
 
-## Current era — Product Maturation (Phase 4)
+## Current era — incubate Storage
 
-| Package                        | Role                                                             | Notes                             |
-| ------------------------------ | ---------------------------------------------------------------- | --------------------------------- |
-| `@jayoncode/browser-lifecycle` | Visibility, focus, idle, connectivity, cross-tab                 | Harden + adapters                 |
-| `@jayoncode/form-intelligence` | Headless forms (validation, rules, drafts, wizards, captcha, UI) | Recipes + adapter polish          |
-| `@jayoncode/object-diff`       | Deep diff, change records, JSON Patch                            | Composition docs with forms/state |
+| Item                      | Status                                                                                                                      |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Phase 6 `packages/shared` | Blocked — [ADRs 0004–0007](engineering/ecosystem/adr/) Accepted, [zero Extract](engineering/ecosystem/shared-candidates.md) |
+| Phase 8 Storage           | Brief **Accepted** — [briefs/storage.md](engineering/ecosystem/briefs/storage.md)                                           |
+| Phase 10 platform         | **Closed** — [governance.md](engineering/ecosystem/governance.md)                                                           |
+| Incubation rule           | One flagship at a time until Product Maturation                                                                             |
 
-**Active priorities**
+**Surfaces**
 
-1. API polish, tests, and performance budgets on live packages
-2. Docs / playground fidelity with every release
-3. Honest SemVer + Changesets; versioned doc archives
-4. Light composition recipes (Browser ↔ Form, Diff ↔ Form) **without** coupling packages
-5. Treat Phase 4 as **sufficiently mature** before starting Architecture Convergence — docs/playground polish may continue forever in parallel
+- Brief: [engineering/ecosystem/briefs/storage.md](engineering/ecosystem/briefs/storage.md)
+- Docs: https://itsjayoncode.github.io/joc/
+- Website app: `pnpm website:dev`
+- CLI: `pnpm joc help`
 
 ---
 
 ## Next milestones
 
-1. **Architecture Convergence (Phase 5)** — Shared Candidates Matrix (`Extract` / `Defer` / `Keep Local` / `Reject`) + ADRs; no shared code by default
-2. **Selective Shared Infrastructure (Phase 6)** — only evidence-validated internals; publishing shared modules is not the default
-3. **Developer Tooling (Phase 7)** — scaffold from `templates/package-template/`
-4. **Expansion (Phase 8)** — announce packages only when problem + audience + playground plan exist
+1. Scaffold `@jayoncode/storage` + playground (`pnpm joc`)
+2. Implement v1 per brief (explicit `createStorage` config; no shared runtime)
+3. Keep live packages trustworthy (SemVer, docs, playgrounds)
+4. Do **not** invent `packages/shared` unless Extract evidence appears
 
-Additional `@jayoncode/*` packages are **to be announced**. Package boundaries and independence remain non-negotiable ([ADR-0001](_construction/ecosystem-update/adr/0001-package-independence.md)).
+Additional `@jayoncode/*` packages are **to be announced**. Package boundaries and independence remain non-negotiable ([ADR-0001](engineering/ecosystem/adr/0001-package-independence.md)).
 
 ---
 
 ## Principles (short)
 
 - Product depth over ecosystem breadth
-- Patterns over forced API uniformity
+- Patterns over forced API uniformity ([terminology](engineering/ecosystem/terminology-teardown.md))
 - Documentation and playgrounds are part of the product
-- No framework by accident ([ADR-0003](_construction/ecosystem-update/adr/0003-no-framework-by-default.md))
-- Shared infrastructure is earned ([ADR-0002](_construction/ecosystem-update/adr/0002-shared-infrastructure-policy.md))
+- No framework by accident ([ADR-0003](engineering/ecosystem/adr/0003-no-framework-by-default.md))
+- Shared infrastructure is earned ([ADR-0002](engineering/ecosystem/adr/0002-shared-infrastructure-policy.md))
+
+Full list: [governance.md](engineering/ecosystem/governance.md).
 
 ---
 
 ## Naming note
 
-Older construction docs may say “Browser Session” or `@jayoncode/browser-session`. The canonical package is `@jayoncode/browser-lifecycle` in `packages/browser-lifecycle`.
+Older docs may say “Browser Session” or `@jayoncode/browser-session`. The canonical package is `@jayoncode/browser-lifecycle` in `packages/browser-lifecycle`.

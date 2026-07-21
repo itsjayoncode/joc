@@ -51,6 +51,8 @@ const learningPath = [
 const docLinks = [
   { label: "Getting Started", href: "/getting-started/introduction" },
   { label: "Ecosystem", href: "/getting-started/ecosystem" },
+  { label: "Composition", href: "/guides/composition" },
+  { label: "Ecosystem governance", href: "/guides/ecosystem-governance" },
   { label: "Packages", href: "/packages/" },
   { label: "Playground", href: "/playground/" },
   { label: "Roadmap", href: "/roadmap/" },

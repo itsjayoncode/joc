@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JayOnCode — JOC</title>
+    <meta
+      name="description"
+      content="JOC is an ecosystem of headless TypeScript libraries. Install one package. Compose when you need more."
+    />
+    <meta name="theme-color" content="#0b1c1a" />
+    <link rel="icon" type="image/png" href="/jayoncode-profile-logo-opt.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <div class="atmosphere" aria-hidden="true"></div>
+
+    <header class="top">
+      <a class="brand-mark" href="#top" aria-label="JayOnCode home">
+        <img src="/jayoncode-profile-logo-opt.png" width="36" height="36" alt="" />
+        <span>JayOnCode</span>
+      </a>
+      <nav class="top-nav" aria-label="Primary">
+        <a href="https://itsjayoncode.github.io/joc/packages/">Docs</a>
+        <a href="https://itsjayoncode.github.io/joc/playground/">Playgrounds</a>
+        <a href="https://github.com/itsjayoncode/joc">GitHub</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="brand-hero">
+        <p class="eyebrow">JOC · open source TypeScript</p>
+        <h1 id="brand-hero">JayOnCode</h1>
+        <p class="lede">
+          Headless libraries you install one at a time — forms, browser session signals, object
+          diffs — then compose in your app when you need more.
+        </p>
+        <div class="cta-row">
+          <a class="cta cta-primary" href="https://itsjayoncode.github.io/joc/">Open docs</a>
+          <a class="cta cta-secondary" href="https://itsjayoncode.github.io/joc/playground/"
+            >Try playgrounds</a
+          >
+        </div>
+      </section>
+
+      <section class="choose" aria-labelledby="start-one">
+        <h2 id="start-one">Start with one package</h2>
+        <p class="section-lede">Pick a problem. Skip the rest until you need it.</p>
+        <ul class="package-list">
+          <li>
+            <a href="https://itsjayoncode.github.io/joc/packages/browser-lifecycle/">
+              <span class="pkg-name">Browser Lifecycle</span>
+              <span class="pkg-npm">@jayoncode/browser-lifecycle</span>
+              <span class="pkg-intent">Visibility, idle, connectivity, cross-tab</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://itsjayoncode.github.io/joc/packages/form-intelligence/">
+              <span class="pkg-name">Form Intelligence</span>
+              <span class="pkg-npm">@jayoncode/form-intelligence</span>
+              <span class="pkg-intent">Validation, drafts, wizards, submit gates</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://itsjayoncode.github.io/joc/packages/object-diff/">
+              <span class="pkg-name">Object Diff</span>
+              <span class="pkg-npm">@jayoncode/object-diff</span>
+              <span class="pkg-intent">Deep compare, change records, JSON Patch</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section class="compose" aria-labelledby="compose-title">
+        <h2 id="compose-title">Composition without coupling</h2>
+        <p class="section-lede">Wire packages in application code. No shared runtime required.</p>
+        <p class="compose-links">
+          <a href="https://itsjayoncode.github.io/joc/guides/composition">Composition guide</a>
+          <a href="https://itsjayoncode.github.io/joc/roadmap/">Roadmap</a>
+          <a href="https://github.com/itsjayoncode/joc">Monorepo</a>
+        </p>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <p>MIT · JayOnCode · Independent packages first.</p>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

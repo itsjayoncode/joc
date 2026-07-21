@@ -27,7 +27,11 @@
     }
   },
   "scripts": {
-    "status": "node -e \"console.log('JOC Phase 4 — Product Maturation (live ecosystem). See ROADMAP.md and _construction/ecosystem-update/.')\"",
+    "website:dev": "pnpm --filter @jayoncode/website dev",
+    "website:build": "pnpm --filter @jayoncode/website build",
+    "website:preview": "pnpm --filter @jayoncode/website preview",
+    "status": "node -e \"console.log('JOC: Storage brief Accepted — next: pnpm joc new package storage (no packages/shared). Phase 10 Closed.')\"",
+    "joc": "node ./scripts/joc-cli.mjs",
     "build": "pnpm build:packages && pnpm docs:build && pnpm playground:build && pnpm browser-session-playground:build && pnpm object-diff-playground:build && pnpm form-intelligence-playground:build",
     "build:packages": "tsc -b",
     "typecheck": "pnpm typecheck:packages && pnpm typecheck:apps",

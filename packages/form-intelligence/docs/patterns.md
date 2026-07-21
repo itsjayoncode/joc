@@ -163,6 +163,89 @@ Details: [Integrations → Object Diff](/packages/form-intelligence/modules/inte
 
 ---
 
+## Composition: idle soft-save (Browser Lifecycle)
+
+**Composition without coupling** — app code owns the wire; no shared runtime.
+
+When the session goes idle, persist a draft so a laptop lid-close / long pause does not lose work. Pair with autosave for while-active editing.
+
+```ts
+import { createForm } from "@jayoncode/form-intelligence";
+import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
+
+const lifecycle = createBrowserLifecycle({ autoStart: true, idleTimeout: 90_000 });
+
+const form = createForm({
+  initialValues: { body: "" },
+  workflow: {
+    autosave: {
+      enabled: true,
+      debounceMs: 400,
+      onSave: (values) => api.patchDraft(values),
+    },
+    draft: { enabled: true, storageKey: "editor:draft" },
+  },
+  onSubmit: async (values) => api.publish(values),
+});
+
+const stopIdle = lifecycle.on("session:idle", () => {
+  form.saveDraft();
+  // Optional UX: show “Away — draft saved” from snapshot.activity
+});
+
+const stopActive = lifecycle.on("activity:detected", () => {
+  // Optional UX: clear the away banner
+});
+
+lifecycle.dispose();
+stopIdle();
+stopActive();
+form.destroy();
+```
+
+| Signal              | Typical app reaction        |
+| ------------------- | --------------------------- |
+| `session:idle`      | `form.saveDraft()` + banner |
+| `activity:detected` | Resume editing UX           |
+
+Idle concepts: [Browser Lifecycle → Idle](/packages/browser-lifecycle/modules/idle). Draft API: [Patterns → Autosave](/packages/form-intelligence/modules/patterns#autosave--draft-restore).
+
+---
+
+## Composition: hide + dirty check (Browser Lifecycle + Object Diff)
+
+**Three packages, still no coupling** — install what you need; wire in app code (or use the FI plugins for hide/diff separately).
+
+```ts
+import { createForm } from "@jayoncode/form-intelligence";
+import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
+import { hasChanges } from "@jayoncode/object-diff";
+
+const lifecycle = createBrowserLifecycle({ autoStart: true });
+const defaults = { title: "", body: "" };
+const form = createForm({
+  initialValues: defaults,
+  workflow: { draft: { enabled: true, storageKey: "article:draft" } },
+});
+
+const stop = lifecycle.on("page:hidden", async () => {
+  const live = form.getValues();
+  if (!hasChanges(defaults, live)) {
+    return; // nothing to persist
+  }
+  form.saveDraft();
+  // Optional: await form.diffFromDefaults() for an audit payload
+});
+
+lifecycle.dispose();
+stop();
+form.destroy();
+```
+
+Prefer the FI plugins when you want the same behavior with less glue (`createBrowserLifecyclePlugin` + `createObjectDiffPlugin`). Prefer this manual pattern when you need a custom dirty predicate.
+
+---
+
 ## Offline submit queue
 
 ```ts

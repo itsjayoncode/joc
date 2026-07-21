@@ -5,13 +5,13 @@ description: Where JayOnCode is today, what ships next across @jayoncode/* packa
 
 # Roadmap
 
-This page is the **product-facing** view of where JOC is and where it’s going. Engineering phase detail lives in the repository [ROADMAP.md](https://github.com/itsjayoncode/joc/blob/master/ROADMAP.md) and [`_construction/ecosystem-update/`](https://github.com/itsjayoncode/joc/tree/master/_construction/ecosystem-update).
+This page is the **product-facing** view of where JOC is and where it’s going. Engineering detail: repository [ROADMAP.md](https://github.com/itsjayoncode/joc/blob/master/ROADMAP.md) and [ecosystem governance](https://github.com/itsjayoncode/joc/tree/master/engineering/ecosystem).
 
 **Composition without coupling.** Independent packages first; shared infrastructure only when experience proves it.
 
 ## Where we are
 
-JOC is in **Product Maturation** (Phase 4): foundation and three live packages are shipped; the focus is trust — polish, docs, playgrounds, and light composition recipes.
+JOC has a signed governance model: three live packages, no premature shared core, one flagship package at a time, and platform work closed until real pain appears. The next flagship is **`@jayoncode/storage`** (brief accepted).
 
 | Package                                                        | Focus                                                        | Status      |
 | -------------------------------------------------------------- | ------------------------------------------------------------ | ----------- |
@@ -23,23 +23,25 @@ Each ships with docs, SemVer/Changesets, and an interactive [playground](/playgr
 
 ### Phase snapshot
 
-| Phase                                                                      | Status                                               |
-| -------------------------------------------------------------------------- | ---------------------------------------------------- |
-| 1–3 Foundation / platform / first products                                 | Complete                                             |
-| **4 Product Maturation**                                                   | **Current**                                          |
-| 5 Architecture Convergence                                                 | Next (shared-candidate audit — not a shared runtime) |
-| 6–10 Selective shared → tooling → expansion → adoption → optional platform | Future                                               |
+| Phase                                     | Status                                                                                                                               |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| 1–5 Foundation → Architecture Convergence | Complete (ADRs Accepted; [zero Extract](https://github.com/itsjayoncode/joc/blob/master/engineering/ecosystem/shared-candidates.md)) |
+| 6 Selective Shared Infrastructure         | Blocked                                                                                                                              |
+| 7 Developer Tooling                       | Usable (`pnpm joc`)                                                                                                                  |
+| 8 Ecosystem Expansion                     | Storage brief Accepted — incubate                                                                                                    |
+| 9 Integration & Adoption                  | Kickoff bar met                                                                                                                      |
+| 10 Platform Evolution                     | Closed                                                                                                                               |
 
 ## Near term
 
-1. **Harden live packages** — API polish, performance budgets, adapter coverage, migration notes.
-2. **Docs & DX** — learning paths, versioned archives, and playgrounds aligned with every release.
-3. **Release hygiene** — Changesets, CI gates, publish confidence.
-4. **Cross-package composition** — documented recipes (e.g. [draft on tab hide](/packages/form-intelligence/modules/patterns#composition-draft-on-tab-hide-browser-lifecycle), [dirty audit / patch](/packages/form-intelligence/modules/patterns#composition-dirty-audit--patch-object-diff)) **without** coupling cores.
+1. **Incubate Storage** — `pnpm joc new package storage`, implement v1 per the [accepted brief](https://github.com/itsjayoncode/joc/blob/master/engineering/ecosystem/briefs/storage.md).
+2. **Polish live packages** — APIs, budgets, adapters, playground fidelity.
+3. **Composition DX** — [composition guide](/guides/composition), recipes, examples.
+4. **Landing** — docs home + `apps/website` route to docs/playgrounds.
 
 ## Next packages (ecosystem expansion)
 
-New `@jayoncode/*` libraries are **to be announced**. Each must answer why it deserves to exist (problem, audience, alternatives, playground plan) before scaffolding.
+New `@jayoncode/*` libraries are **to be announced**. Each must answer why it deserves to exist (problem, audience, alternatives, playground plan, non-goals) before scaffolding — and only one flagship incubates at a time. See [ecosystem governance](/guides/ecosystem-governance).
 
 ## Longer-term vision
 
@@ -65,4 +67,4 @@ We are **not** building a single mega-framework or UI kit. A shared platform app
 - Read [Contributing](/guides/contribution) before large PRs
 - Track package-level plans in each package’s docs and changelog
 
-**Bottom line:** Foundation shipped, three libraries live, Product Maturation in progress — more focused tools ahead, announced as they enter development.
+**Bottom line:** Governance is public under `engineering/ecosystem/` — next meaningful progress is building Storage.
