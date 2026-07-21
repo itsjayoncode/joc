@@ -31,6 +31,8 @@ lifecycle.on("connection:reconnect", (event) => {
 });
 ```
 
+Form Intelligence offline queues can flush via `createBrowserLifecyclePlugin({ flushOfflineQueueOnOnline: true })` — [FI Patterns → Draft on tab hide](/packages/form-intelligence/modules/patterns#composition-draft-on-tab-hide-browser-lifecycle) (same plugin).
+
 ::: warning Advisory only
 `navigator.onLine` reflects network-adapter connectivity, not internet reachability. A device can report `online` while a captive portal, VPN, or upstream outage blocks real traffic. Every connectivity event's metadata carries `advisory: true` as a reminder — pair this with your own reachability probe for anything critical.
 :::

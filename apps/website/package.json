@@ -1,0 +1,21 @@
+{
+  "name": "@jayoncode/website",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Public JayOnCode / JOC landing — routes to docs, playgrounds, and packages.",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 4180",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4181"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/itsjayoncode/joc.git",
+    "directory": "apps/website"
+  },
+  "devDependencies": {
+    "vite": "6.4.3"
+  }
+}

@@ -1,6 +1,7 @@
 {
   "name": "@jayoncode/package-name",
   "version": "0.0.0",
+  "private": true,
   "description": "Describe the package responsibility clearly and narrowly.",
   "license": "MIT",
   "author": "JayOnCode",

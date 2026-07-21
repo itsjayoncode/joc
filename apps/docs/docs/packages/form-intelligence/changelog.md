@@ -5,6 +5,12 @@ description: "Release history for @jayoncode/form-intelligence."
 
 # Changelog
 
+## 3.9.1
+
+### Patch Changes
+
+- 571e9ac: Turnstile: keep `captchaLoading` until the challenge iframe (or response field) is mounted in the container, so `form.ui.canSubmit` stays false for the visible widget load—not only the script/`render()` call.
+
 ## 3.9.0
 
 ### Minor Changes
@@ -213,4 +219,3 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Examples: `vanilla-html`, `basic-validation`, `wizard-workflow` (+ framework stubs)
 
 ## 0.1.1
-

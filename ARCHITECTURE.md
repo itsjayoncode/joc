@@ -18,11 +18,13 @@ JOC is designed as a monorepo that can support many independently installable pa
 
 ## Package Independence
 
-Public JOC packages are expected to remain independently installable. Shared code that would otherwise create package-to-package dependency chains belongs in `packages/shared`, which is internal only.
+Public JOC packages are expected to remain independently installable. Cross-package use is **composition in the app** (or optional peers), not a required monorepo runtime. See [ecosystem ADR-0001](engineering/ecosystem/adr/0001-package-independence.md).
 
 ## Internal Shared Package
 
-`packages/shared` exists to hold non-public building blocks such as shared types, errors, internal utilities, constants, and low-level primitives needed across multiple packages in the future.
+`packages/shared` is the **intended home** for non-public building blocks (types, errors, utils) **only after** an Architecture Convergence **Extract** decision. It is **not** created by default. See [ADR-0002](engineering/ecosystem/adr/0002-shared-infrastructure-policy.md) and the [shared candidates matrix](engineering/ecosystem/shared-candidates.md) (currently zero Extract).
+
+Ecosystem governance: [`engineering/ecosystem/`](engineering/ecosystem/).
 
 ## Tooling Strategy
 
@@ -44,10 +46,8 @@ This keeps the monorepo lightweight while still giving contributors clear, autom
 The repository includes three first-party applications that support ecosystem understanding without introducing package feature logic into apps:
 
 - `apps/docs` for documentation, navigation, package templates, and contributor orientation
-- `apps/playground` for quick local workspace package exploration and bootstrap validation
-- `apps/browser-session-playground` for long-lived Browser Lifecycle manual QA, module integration, and future interactive documentation
-
-`apps/website` remains reserved for the future public project presence.
+- `apps/playground` and dedicated package playgrounds for interactive QA and docs embedding
+- `apps/website` for the public JayOnCode / JOC landing (routes to docs and playgrounds)
 
 This layer is intentionally lightweight. It adds documentation and experimentation surfaces without changing the package boundaries established earlier.
 
@@ -59,7 +59,7 @@ JOC uses a single npm scope for all workspace packages and applications:
 
 Private workspace members remain marked `"private": true` in `package.json` even when they use the `@jayoncode` scope.
 
-Construction documents under `_constuction/` may still refer to "Browser Session" as the product label from early Phase 2 planning. That label maps to the `browser-lifecycle` package unless an explicit rename is approved later.
+Construction documents under `_construction/` (gitignored) may still use early labels. Accepted decisions are mirrored under [`engineering/ecosystem/`](engineering/ecosystem/). "Browser Session" maps to `@jayoncode/browser-lifecycle` unless an explicit rename is approved.
 
 ## Turborepo
 

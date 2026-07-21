@@ -12,7 +12,7 @@ Public packages should remain decoupled wherever possible. Internal convenience 
 
 ### 2. Internal Reuse Has a Home
 
-When shared code becomes necessary, it should be placed in `packages/shared` instead of being copied into many packages or exposed as an accidental public API.
+When shared code becomes necessary **and** Architecture Convergence marks **Extract**, place it in `packages/shared` instead of copying it across packages or exposing an accidental public API. Until then, intentional duplication (Keep Local / Defer) is allowed. See [`engineering/ecosystem/`](./ecosystem/).
 
 ### 3. Structure Communicates Intent
 

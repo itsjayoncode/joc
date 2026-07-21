@@ -13,6 +13,12 @@ const requiredPaths = [
   "templates/package-template/tests/README.md",
   "templates/package-template/docs/README.md",
   "templates/package-template/examples/README.md",
+  "templates/package-template/engineering/008-folder-architecture.md",
+  "templates/package-template/tests/unit/package-name.test.ts",
+  "templates/playground-template/README.md",
+  "templates/playground-template/package.json",
+  "templates/playground-template/src/App.tsx",
+  "scripts/joc-cli.mjs",
   "engineering/008-package-architecture.md",
   "engineering/009-api-design-guidelines.md",
   "engineering/010-browser-support-policy.md",
@@ -22,6 +28,10 @@ const requiredPaths = [
   "engineering/014-versioning-policy.md",
   "engineering/015-public-api-policy.md",
   "engineering/016-package-checklist.md",
+  "engineering/ecosystem/governance.md",
+  "engineering/ecosystem/briefs/storage.md",
+  "engineering/ecosystem/shared-candidates.md",
+  "engineering/ecosystem/adr/0001-package-independence.md",
 ];
 
 const productionPackageRequirements = [

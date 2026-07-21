@@ -321,12 +321,12 @@ Work through the journey groups below. Each guide links to a playground route.
 
 ### Advanced and Support
 
-| Guide                                                          | Topics                              | Playground                                               |
-| -------------------------------------------------------------- | ----------------------------------- | -------------------------------------------------------- |
-| [Plugins](/packages/form-intelligence/modules/plugins)         | Hooks, middleware, **author guide** | [Plugins](/playground/form-intelligence/plugins)         |
-| [Performance](/packages/form-intelligence/modules/performance) | Bundle + timing budgets             | [Performance](/playground/form-intelligence/performance) |
-| [Patterns](/packages/form-intelligence/modules/patterns)       | Wizard, offline, recipes            | [Sandbox](/playground/form-intelligence/)                |
-| [Migration](/packages/form-intelligence/modules/migration)     | DIY autosave + breaking notes       | [Workflow](/playground/form-intelligence/workflow)       |
+| Guide                                                          | Topics                                   | Playground                                               |
+| -------------------------------------------------------------- | ---------------------------------------- | -------------------------------------------------------- |
+| [Plugins](/packages/form-intelligence/modules/plugins)         | Hooks, middleware, **author guide**      | [Plugins](/playground/form-intelligence/plugins)         |
+| [Performance](/packages/form-intelligence/modules/performance) | Bundle + timing budgets                  | [Performance](/playground/form-intelligence/performance) |
+| [Patterns](/packages/form-intelligence/modules/patterns)       | Wizard, offline, **composition recipes** | [Sandbox](/playground/form-intelligence/)                |
+| [Migration](/packages/form-intelligence/modules/migration)     | DIY autosave + breaking notes            | [Workflow](/playground/form-intelligence/workflow)       |
 
 ## Package fit
 
@@ -346,4 +346,3 @@ Work through the journey groups below. Each guide links to a playground route.
 - [API (TypeDoc)](/packages/form-intelligence/api/)
 - [Playground guide](/packages/form-intelligence/playground/playground)
 - [Examples](/playground/form-intelligence/examples)
-

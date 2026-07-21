@@ -15,6 +15,7 @@
   "ignore": [
     "@jayoncode/docs",
     "@jayoncode/playground",
+    "@jayoncode/website",
     "@jayoncode/browser-session-playground",
     "@jayoncode/object-diff-playground",
     "@jayoncode/form-intelligence-playground"

@@ -1,1 +1,1 @@
-export { packageName } from "./package-name.js";
+export { packageId } from "./package-name.js";

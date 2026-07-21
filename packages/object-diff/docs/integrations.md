@@ -38,6 +38,8 @@ async function auditForm(saved: unknown, draft: unknown, log: (msg: string) => P
 
 Runnable sketch: `packages/object-diff/examples/form-dirty-audit.ts`.
 
+**Form Intelligence end-to-end recipe** (plugin + `form.diffFrom*`): [FI Patterns → Dirty audit / patch](/packages/form-intelligence/modules/patterns#composition-dirty-audit--patch-object-diff).
+
 ## Session snapshot diffs
 
 Compare last persisted session state to the current snapshot (e.g. after a tab focus or idle restore):

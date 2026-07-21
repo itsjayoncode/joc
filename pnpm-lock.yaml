@@ -225,6 +225,24 @@ importers:
         specifier: ^5.1.4
         version: 5.1.4(typescript@5.9.3)(vite@6.4.3(@types/node@22.20.1)(yaml@2.9.0))
 
+  apps/website:
+    devDependencies:
+      vite:
+        specifier: 6.4.3
+        version: 6.4.3(@types/node@22.20.1)(yaml@2.9.0)
+
+  examples/composition-form-lifecycle:
+    dependencies:
+      '@jayoncode/browser-lifecycle':
+        specifier: workspace:*
+        version: link:../../packages/browser-lifecycle
+      '@jayoncode/form-intelligence':
+        specifier: workspace:*
+        version: link:../../packages/form-intelligence
+      '@jayoncode/object-diff':
+        specifier: workspace:*
+        version: link:../../packages/object-diff
+
   examples/vanilla:
     dependencies:
       '@jayoncode/browser-lifecycle':

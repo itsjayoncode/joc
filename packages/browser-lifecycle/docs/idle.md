@@ -29,6 +29,8 @@ lifecycle.on("session:idle", () => pauseAutosave());
 lifecycle.on("session:active", () => resumeAutosave());
 ```
 
+With Form Intelligence drafts, prefer [draft on tab hide](/packages/form-intelligence/modules/patterns#composition-draft-on-tab-hide-browser-lifecycle) for `page:hidden`; use idle events for longer inactivity UX (lock screen, pause remote sync).
+
 ::: warning Off by default
 `idleTimeout` defaults to `false` — the Idle module is disabled until you set an explicit millisecond timeout.
 :::

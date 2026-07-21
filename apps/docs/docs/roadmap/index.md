@@ -5,11 +5,13 @@ description: Where JayOnCode is today, what ships next across @jayoncode/* packa
 
 # Roadmap
 
-This page is the **product-facing** view of where JOC is and where it’s going. For phase-by-phase engineering history, see the repository [ROADMAP.md](https://github.com/itsjayoncode/joc/blob/master/ROADMAP.md).
+This page is the **product-facing** view of where JOC is and where it’s going. Engineering detail: repository [ROADMAP.md](https://github.com/itsjayoncode/joc/blob/master/ROADMAP.md) and [ecosystem governance](https://github.com/itsjayoncode/joc/tree/master/engineering/ecosystem).
+
+**Composition without coupling.** Independent packages first; shared infrastructure only when experience proves it.
 
 ## Where we are
 
-JOC has moved past “foundation only.” The monorepo standards, docs platform, CI/release pipeline, and playgrounds are in place — and **three live packages** are available for real apps:
+JOC has a signed governance model: three live packages, no premature shared core, one flagship package at a time, and platform work closed until real pain appears. The next flagship is **`@jayoncode/storage`** (brief accepted).
 
 | Package                                                        | Focus                                                        | Status      |
 | -------------------------------------------------------------- | ------------------------------------------------------------ | ----------- |
@@ -17,20 +19,29 @@ JOC has moved past “foundation only.” The monorepo standards, docs platform,
 | [`@jayoncode/form-intelligence`](/packages/form-intelligence/) | Headless form workflows — validation, rules, drafts, wizards | Live on npm |
 | [`@jayoncode/object-diff`](/packages/object-diff/)             | Deep diff, change records, JSON Patch                        | Live on npm |
 
-Each ships with docs, SemVer/changesets, and an interactive [playground](/playground/).
+Each ships with docs, SemVer/Changesets, and an interactive [playground](/playground/).
+
+### Phase snapshot
+
+| Phase                                     | Status                                                                                                                               |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| 1–5 Foundation → Architecture Convergence | Complete (ADRs Accepted; [zero Extract](https://github.com/itsjayoncode/joc/blob/master/engineering/ecosystem/shared-candidates.md)) |
+| 6 Selective Shared Infrastructure         | Blocked                                                                                                                              |
+| 7 Developer Tooling                       | Usable (`pnpm joc`)                                                                                                                  |
+| 8 Ecosystem Expansion                     | Storage brief Accepted — incubate                                                                                                    |
+| 9 Integration & Adoption                  | Kickoff bar met                                                                                                                      |
+| 10 Platform Evolution                     | Closed                                                                                                                               |
 
 ## Near term
 
-Priorities that improve the packages you can already install:
-
-1. **Harden live packages** — API polish, performance budgets, adapter coverage, and clearer migration notes.
-2. **Docs & DX** — keep learning paths, versioned archives, and playgrounds aligned with every release.
-3. **Release hygiene** — predictable Changesets, CI gates, and publish confidence for `@jayoncode/*`.
-4. **Cross-package composition** — documented recipes (e.g. form dirty state via object-diff, lifecycle-aware autosave) without coupling cores.
+1. **Incubate Storage** — `pnpm joc new package storage`, implement v1 per the [accepted brief](https://github.com/itsjayoncode/joc/blob/master/engineering/ecosystem/briefs/storage.md).
+2. **Polish live packages** — APIs, budgets, adapters, playground fidelity.
+3. **Composition DX** — [composition guide](/guides/composition), recipes, examples.
+4. **Landing** — docs home + `apps/website` route to docs/playgrounds.
 
 ## Next packages (ecosystem expansion)
 
-New `@jayoncode/*` libraries are **to be announced**. We’ll share what we’re building next as packages move onto the active development track — watch this page, [GitHub Discussions](https://github.com/itsjayoncode/joc/discussions), and package changelogs for updates.
+New `@jayoncode/*` libraries are **to be announced**. Each must answer why it deserves to exist (problem, audience, alternatives, playground plan, non-goals) before scaffolding — and only one flagship incubates at a time. See [ecosystem governance](/guides/ecosystem-governance).
 
 ## Longer-term vision
 
@@ -41,7 +52,7 @@ JOC should feel like a **cohesive toolkit of independent libraries**:
 - Docs and playgrounds that make adoption boringly predictable
 - Room to grow new problem spaces without breaking package boundaries
 
-We are **not** building a single mega-framework or UI kit. We are building the missing infrastructure layers apps keep rewriting.
+We are **not** building a single mega-framework or UI kit. A shared platform appears only if real multi-package pain demands it.
 
 ## How priorities are chosen
 
@@ -56,4 +67,4 @@ We are **not** building a single mega-framework or UI kit. We are building the m
 - Read [Contributing](/guides/contribution) before large PRs
 - Track package-level plans in each package’s docs and changelog
 
-**Bottom line:** JOC is a living ecosystem — foundation shipped, three libraries live, and more focused tools ahead (announced as they enter development).
+**Bottom line:** Governance is public under `engineering/ecosystem/` — next meaningful progress is building Storage.

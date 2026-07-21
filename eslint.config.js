@@ -25,6 +25,7 @@ export default tseslint.config(
       ".turbo/**",
       "examples/**",
       "packages/*/examples/**",
+      "templates/**",
       "eslint.config.js",
       "prettier.config.js",
       "vitest.config.ts",
@@ -206,6 +207,7 @@ export default tseslint.config(
       "apps/object-diff-playground/vitest.config.ts",
       "apps/form-intelligence-playground/vite.config.ts",
       "apps/form-intelligence-playground/vitest.config.ts",
+      "apps/website/vite.config.ts",
     ],
     rules: {
       "import/no-default-export": "off",

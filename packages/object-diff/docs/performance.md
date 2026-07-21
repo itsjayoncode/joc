@@ -38,6 +38,8 @@ Vitest budgets live in `tests/performance/performance-budget.test.ts`.
 
 Bundle gates: `node scripts/check-object-diff-bundle.mjs` (locked in `engineering/bundle-budget.json` when `--write`).
 
+When auditing forms, prefer `hasChanges` / plugin submit audits over full `diff` on every keystroke — see [FI composition recipe](/packages/form-intelligence/modules/patterns#composition-dirty-audit--patch-object-diff).
+
 ## Bundle policy
 
 Root keeps patch + serialize for compatibility. Prefer `/core` when you only need compare/diff. Optional engines (`/merge`, `/query`, `/stats`, `/plugins`, `/view`) must not be pulled by a root-only import. Bundle gate: `pnpm object-diff:bundle`.
