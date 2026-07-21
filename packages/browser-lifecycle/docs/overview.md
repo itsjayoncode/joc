@@ -55,10 +55,13 @@ lifecycle.on("page:visible", () => {
   resumeMedia();
 });
 
+// Form Intelligence composition (optional peer): save drafts when the tab hides —
+// see [FI Patterns → Draft on tab hide](/packages/form-intelligence/modules/patterns#composition-draft-on-tab-hide-browser-lifecycle).
+
 // Read consolidated state at any time
 const { visibility, attention, connectivity } = lifecycle.getSnapshot();
 
-// Teardown on route unmount or app shutdown
+// Teardown on route unmount or app shutdown (`dispose` — see ecosystem terminology note)
 await lifecycle.dispose();
 ```
 

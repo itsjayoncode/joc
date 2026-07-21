@@ -5,11 +5,13 @@ description: Where JayOnCode is today, what ships next across @jayoncode/* packa
 
 # Roadmap
 
-This page is the **product-facing** view of where JOC is and where it’s going. For phase-by-phase engineering history, see the repository [ROADMAP.md](https://github.com/itsjayoncode/joc/blob/master/ROADMAP.md).
+This page is the **product-facing** view of where JOC is and where it’s going. Engineering phase detail lives in the repository [ROADMAP.md](https://github.com/itsjayoncode/joc/blob/master/ROADMAP.md) and [`_construction/ecosystem-update/`](https://github.com/itsjayoncode/joc/tree/master/_construction/ecosystem-update).
+
+**Composition without coupling.** Independent packages first; shared infrastructure only when experience proves it.
 
 ## Where we are
 
-JOC has moved past “foundation only.” The monorepo standards, docs platform, CI/release pipeline, and playgrounds are in place — and **three live packages** are available for real apps:
+JOC is in **Product Maturation** (Phase 4): foundation and three live packages are shipped; the focus is trust — polish, docs, playgrounds, and light composition recipes.
 
 | Package                                                        | Focus                                                        | Status      |
 | -------------------------------------------------------------- | ------------------------------------------------------------ | ----------- |
@@ -17,20 +19,27 @@ JOC has moved past “foundation only.” The monorepo standards, docs platform,
 | [`@jayoncode/form-intelligence`](/packages/form-intelligence/) | Headless form workflows — validation, rules, drafts, wizards | Live on npm |
 | [`@jayoncode/object-diff`](/packages/object-diff/)             | Deep diff, change records, JSON Patch                        | Live on npm |
 
-Each ships with docs, SemVer/changesets, and an interactive [playground](/playground/).
+Each ships with docs, SemVer/Changesets, and an interactive [playground](/playground/).
+
+### Phase snapshot
+
+| Phase | Status |
+| ----- | ------ |
+| 1–3 Foundation / platform / first products | Complete |
+| **4 Product Maturation** | **Current** |
+| 5 Architecture Convergence | Next (shared-candidate audit — not a shared runtime) |
+| 6–10 Selective shared → tooling → expansion → adoption → optional platform | Future |
 
 ## Near term
 
-Priorities that improve the packages you can already install:
-
-1. **Harden live packages** — API polish, performance budgets, adapter coverage, and clearer migration notes.
-2. **Docs & DX** — keep learning paths, versioned archives, and playgrounds aligned with every release.
-3. **Release hygiene** — predictable Changesets, CI gates, and publish confidence for `@jayoncode/*`.
-4. **Cross-package composition** — documented recipes (e.g. form dirty state via object-diff, lifecycle-aware autosave) without coupling cores.
+1. **Harden live packages** — API polish, performance budgets, adapter coverage, migration notes.
+2. **Docs & DX** — learning paths, versioned archives, and playgrounds aligned with every release.
+3. **Release hygiene** — Changesets, CI gates, publish confidence.
+4. **Cross-package composition** — documented recipes (e.g. [draft on tab hide](/packages/form-intelligence/modules/patterns#composition-draft-on-tab-hide-browser-lifecycle), [dirty audit / patch](/packages/form-intelligence/modules/patterns#composition-dirty-audit--patch-object-diff)) **without** coupling cores.
 
 ## Next packages (ecosystem expansion)
 
-New `@jayoncode/*` libraries are **to be announced**. We’ll share what we’re building next as packages move onto the active development track — watch this page, [GitHub Discussions](https://github.com/itsjayoncode/joc/discussions), and package changelogs for updates.
+New `@jayoncode/*` libraries are **to be announced**. Each must answer why it deserves to exist (problem, audience, alternatives, playground plan) before scaffolding.
 
 ## Longer-term vision
 
@@ -41,7 +50,7 @@ JOC should feel like a **cohesive toolkit of independent libraries**:
 - Docs and playgrounds that make adoption boringly predictable
 - Room to grow new problem spaces without breaking package boundaries
 
-We are **not** building a single mega-framework or UI kit. We are building the missing infrastructure layers apps keep rewriting.
+We are **not** building a single mega-framework or UI kit. A shared platform appears only if real multi-package pain demands it.
 
 ## How priorities are chosen
 
@@ -56,4 +65,4 @@ We are **not** building a single mega-framework or UI kit. We are building the m
 - Read [Contributing](/guides/contribution) before large PRs
 - Track package-level plans in each package’s docs and changelog
 
-**Bottom line:** JOC is a living ecosystem — foundation shipped, three libraries live, and more focused tools ahead (announced as they enter development).
+**Bottom line:** Foundation shipped, three libraries live, Product Maturation in progress — more focused tools ahead, announced as they enter development.

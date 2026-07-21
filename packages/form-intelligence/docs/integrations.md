@@ -54,6 +54,8 @@ const form = createForm({
 
 When the tab is hidden, the plugin calls `form.saveDraft()`. When connectivity returns, it can flush `workflow.offlineQueue`.
 
+**Full recipe:** [Patterns → Draft on tab hide](/packages/form-intelligence/modules/patterns#composition-draft-on-tab-hide-browser-lifecycle).
+
 ---
 
 ## Keyboard shortcuts
@@ -174,6 +176,8 @@ form.use(
 | `diffOptions`   | Pass-through `FormDiffOptions` (`maxDepth`, `includeUnchanged`, `treatUndefinedAsMissing`) |
 
 Instance helpers `form.diffFromDefaults()` / `form.diffFrom()` / `submit({ includeDiff: true })` remain available without the plugin — see [State](/packages/form-intelligence/modules/state#object-diffs).
+
+**Full recipe:** [Patterns → Dirty audit / patch](/packages/form-intelligence/modules/patterns#composition-dirty-audit--patch-object-diff).
 
 ---
 

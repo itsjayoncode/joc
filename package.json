@@ -27,7 +27,7 @@
     }
   },
   "scripts": {
-    "status": "node -e \"console.log('JOC is currently in Package Engineering Standards mode. See templates/package-template and engineering/008-package-architecture.md through engineering/016-package-checklist.md.')\"",
+    "status": "node -e \"console.log('JOC Phase 4 — Product Maturation (live ecosystem). See ROADMAP.md and _construction/ecosystem-update/.')\"",
     "build": "pnpm build:packages && pnpm docs:build && pnpm playground:build && pnpm browser-session-playground:build && pnpm object-diff-playground:build && pnpm form-intelligence-playground:build",
     "build:packages": "tsc -b",
     "typecheck": "pnpm typecheck:packages && pnpm typecheck:apps",

@@ -112,6 +112,17 @@ Root import of merge/query/stats/plugins/view is **not** supported — use the s
 | 12  | [Performance](/packages/object-diff/modules/performance)   | Complexity, budgets         | [Benchmarks](/playground/object-diff/performance) |
 | 13  | [DX](/packages/object-diff/modules/dx)                     | Fluent `createDiffView`     | [Examples](/playground/object-diff/examples)      |
 
+## Mental model (compare → changes → patch)
+
+| Need | Prefer |
+| ---- | ------ |
+| Boolean dirty check | `hasChanges(a, b)` |
+| Structured change list | `diff(a, b)` → `.changes` |
+| Equality of two values | `compare(a, b)` |
+| RFC 6902 operations | `patch(diffResult)` then `applyPatch(target, ops)` |
+
+Form Intelligence can call these via plugins / `form.diffFrom*` without coupling cores — [FI composition recipe](/packages/form-intelligence/modules/patterns#composition-dirty-audit--patch-object-diff).
+
 ## Package fit
 
 | Requirement                  | API                           |
