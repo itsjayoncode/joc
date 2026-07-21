@@ -226,6 +226,8 @@ On failure the stage **aborts** (no `onSubmit`). Reasons appear in `form.ui.expl
 
 `captchaLoading` is set while the Security Stage eagerly loads and mounts the provider. Prefer `disabled={!form.ui.canSubmit}` (or adapter submit helpers) so the button stays locked until the widget is ready — no DOM observers required.
 
+For Turnstile, `render()` does not resolve until the challenge iframe (or response field) is present in the container, so `captchaLoading` covers the visible widget mount — not only the script download.
+
 These `captcha*` reasons always hard-block `form.ui.canSubmit` (contributor `security`) — they are **not** gated by `disableSubmitWhen`. See [UI projection](/packages/form-intelligence/modules/ui-projection#hard-guards-vs-ux-policy).
 
 Server verification stays **out of this package** — only the browser token is acquired.

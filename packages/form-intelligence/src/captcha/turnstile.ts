@@ -4,6 +4,34 @@ import { loadCaptchaScript } from "./load-script.js";
 import type { CaptchaContainer, CaptchaSetup, CaptchaToken } from "./types.js";
 
 const DEFAULT_SCRIPT_URL = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+const DEFAULT_MOUNT_TIMEOUT_MS = 12_000;
+
+/** Wait until Turnstile has injected an iframe / response field into the host. */
+function waitForWidgetMount(host: HTMLElement, timeoutMs: number): Promise<void> {
+  const isMounted = () =>
+    Boolean(host.querySelector('iframe, textarea[name="cf-turnstile-response"]'));
+
+  if (isMounted()) {
+    return Promise.resolve();
+  }
+
+  return new Promise((resolve) => {
+    const finish = () => {
+      window.clearTimeout(timer);
+      observer.disconnect();
+      resolve();
+    };
+
+    const observer = new MutationObserver(() => {
+      if (isMounted()) {
+        finish();
+      }
+    });
+    observer.observe(host, { childList: true, subtree: true });
+
+    const timer = window.setTimeout(finish, timeoutMs);
+  });
+}
 
 /** Minimal Turnstile SDK surface used by this provider (injectable for tests). */
 export interface TurnstileSdk {
@@ -124,6 +152,12 @@ export function turnstile(options: TurnstileOptions): CaptchaSetup {
           settle(new CaptchaError("Turnstile challenge timed out.", "captchaTimeout"));
         },
       });
+
+      // Keep CaptchaRuntime in `preparing` / captchaLoading until the iframe exists.
+      // Injected `sdk` (tests) skips the wait — mocks do not mount a real widget.
+      if (!options.sdk) {
+        await waitForWidgetMount(host, DEFAULT_MOUNT_TIMEOUT_MS);
+      }
     },
 
     execute() {

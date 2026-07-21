@@ -133,4 +133,3 @@ Root import of merge/query/stats/plugins/view is **not** supported — use the s
 - [API (TypeDoc)](/packages/object-diff/api/)
 - [Playground guide](/packages/object-diff/playground/playground)
 - [Examples](/playground/object-diff/examples)
-
