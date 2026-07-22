@@ -1,6 +1,6 @@
 ---
 title: Contributing to JOC
-description: How to contribute to the JayOnCode JOC Ecosystem — setup, good first contributions, PR expectations, and Changesets.
+description: How to contribute to the JayOnCode™ JOC Ecosystem — setup, good first contributions, PR expectations, and Changesets.
 ---
 
 # Contributing

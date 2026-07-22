@@ -1,6 +1,6 @@
 ---
 title: JOC Philosophy
-description: Design principles behind the JayOnCode JOC Ecosystem — independent packages, headless cores, docs, and playgrounds.
+description: Design principles behind the JayOnCode™ JOC Ecosystem — independent packages, headless cores, docs, and playgrounds.
 ---
 
 # Philosophy

@@ -1,6 +1,6 @@
 ---
 title: JOC Roadmap
-description: Where the JayOnCode JOC Ecosystem is today, what ships next across @jayoncode/* packages, and the long-term vision.
+description: Where the JayOnCode™ JOC Ecosystem is today, what ships next across @jayoncode/* packages, and the long-term vision.
 ---
 
 # Roadmap
@@ -11,7 +11,7 @@ This page is the **product-facing** view of where the **JOC Ecosystem** is and w
 
 ## Where we are
 
-[JayOnCode](https://www.jayoncode.com/) has a signed governance model: **four packages live on npm**, no premature shared core, one new flagship at a time, and platform work closed until real pain appears.
+[JayOnCode™](https://www.jayoncode.com/) has a signed governance model: **four packages live on npm**, no premature shared core, one new flagship at a time, and platform work closed until real pain appears.
 
 | Package                                                        | Focus                                                        | Status      |
 | -------------------------------------------------------------- | ------------------------------------------------------------ | ----------- |
