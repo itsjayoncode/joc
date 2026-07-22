@@ -1,10 +1,9 @@
+---
+title: Changelog
+description: "Release history for @jayoncode/storage."
+---
+
 # Changelog
-
-## 0.4.0
-
-### Minor Changes
-
-- d4fee84: Add soft quota guards (`/quota`) and package-local payload transforms (`/transforms`) for sync storage.
 
 ## 0.3.0
 
