@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/object-diff",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "private": false,
   "description": "Object Diff — Stop guessing what changed. Get paths, patches, and review-ready output. Typed deep comparison, DiffView, RFC 6902 patches, and optional merge.",
   "license": "MIT",

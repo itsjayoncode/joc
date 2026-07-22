@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/storage",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "private": false,
   "description": "Storage — Namespace it. Expire it. Upgrade it — without localStorage glue. Explicit adapters (memory / localStorage / sessionStorage / IndexedDB), TTL, migrations.",
   "license": "MIT",
