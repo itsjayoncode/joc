@@ -66,4 +66,4 @@ https://itsjayoncode.github.io/joc/packages/form-intelligence/modules/adapters
 
 ## License
 
-MIT © [JayOnCode](https://github.com/itsjayoncode)
+MIT © [JayOnCode™](https://github.com/itsjayoncode)

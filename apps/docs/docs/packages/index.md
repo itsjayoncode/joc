@@ -1,11 +1,11 @@
 ---
-title: JOC Packages | JayOnCode Catalog
+title: JOC Packages | JayOnCode™ Catalog
 description: Browse the JOC Ecosystem package catalog — independently installable @jayoncode/* TypeScript libraries for browser lifecycle, forms, object diffing, storage, and more.
 ---
 
 # Packages
 
-**[JayOnCode](https://www.jayoncode.com/)**’s **JOC Ecosystem** is a monorepo of focused TypeScript packages. Each `@jayoncode/*` library solves one developer problem well, ships on its own version line, and documents under its own section on this site — framework-agnostic, thoroughly documented, and backed by interactive playgrounds.
+**[JayOnCode™](https://www.jayoncode.com/)**’s **JOC Ecosystem** is a monorepo of focused TypeScript packages. Each `@jayoncode/*` library solves one developer problem well, ships on its own version line, and documents under its own section on this site — framework-agnostic, thoroughly documented, and backed by interactive playgrounds.
 
 **Today:** four packages with docs and playgrounds. **Next:** additional libraries — [to be announced](/roadmap/).
 
@@ -74,7 +74,7 @@ Additional `@jayoncode/*` packages will be **announced** as they enter active de
 
 ## New to the JOC Ecosystem?
 
-1. Read [Introduction](/getting-started/introduction) — what [JayOnCode](https://www.jayoncode.com/) and the JOC Ecosystem are.
+1. Read [Introduction](/getting-started/introduction) — what [JayOnCode™](https://www.jayoncode.com/) and the JOC Ecosystem are.
 2. Skim [Philosophy](/getting-started/philosophy) — why packages stay independent.
 3. Pick a library from this catalog (or try the [playground](/playground/)).
 4. Follow the [roadmap](/roadmap/) for what’s next — and [contribute](/guides/contribution) if you want to help.

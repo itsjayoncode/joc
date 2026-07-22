@@ -127,4 +127,4 @@ const emailError = useFormState(form.instance, (s) => s.errors.email);
 
 ## License
 
-MIT © [JayOnCode](https://github.com/itsjayoncode)
+MIT © [JayOnCode™](https://github.com/itsjayoncode)

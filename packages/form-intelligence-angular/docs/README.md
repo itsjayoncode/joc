@@ -125,4 +125,4 @@ readonly form = inject(FORM_INTELLIGENT_FORM, { optional: true });
 
 ## License
 
-MIT © [JayOnCode](https://github.com/itsjayoncode)
+MIT © [JayOnCode™](https://github.com/itsjayoncode)

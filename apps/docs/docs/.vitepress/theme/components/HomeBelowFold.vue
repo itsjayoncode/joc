@@ -403,7 +403,9 @@ const communityLinks = [
     <section class="joc-home-section joc-home-footer-band" aria-label="License and attribution">
       <p class="joc-muted">
         MIT Licensed · Built by
-        <a href="https://www.jayoncode.com/" target="_blank" rel="noopener noreferrer">JayOnCode</a>
+        <a href="https://www.jayoncode.com/" target="_blank" rel="noopener noreferrer"
+          >JayOnCode™</a
+        >
       </p>
     </section>
   </div>

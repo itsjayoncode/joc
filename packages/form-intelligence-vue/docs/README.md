@@ -140,4 +140,4 @@ In `<script>`, use `form.state.value` when you need the unwrapped snapshot.
 
 ## License
 
-MIT © [JayOnCode](https://github.com/itsjayoncode)
+MIT © [JayOnCode™](https://github.com/itsjayoncode)

@@ -1,6 +1,6 @@
 ---
 layout: home
-title: JayOnCode | JOC Ecosystem
+title: JayOnCode™ | JOC Ecosystem
 description: An ecosystem of independent, headless TypeScript libraries designed to solve real frontend engineering problems. Every package is framework-agnostic, independently installable, and supported by interactive playgrounds, comprehensive documentation, and long-term engineering standards.
 hero:
   name: JAYONCODE
@@ -8,7 +8,7 @@ hero:
   tagline: An ecosystem of independent, headless TypeScript libraries designed to solve real frontend engineering problems. Every package is framework-agnostic, independently installable, and supported by interactive playgrounds, comprehensive documentation, and long-term engineering standards.
   image:
     src: /jayoncode-profile-logo-opt.png
-    alt: JayOnCode — JOC Ecosystem logo
+    alt: JayOnCode™ — JOC Ecosystem logo
   actions:
     - theme: brand
       text: Get Started
