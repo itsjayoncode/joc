@@ -8,6 +8,11 @@
   },
   "archives": [
     {
+      "version": "0.3.0",
+      "label": "v0.3.0",
+      "archivedAt": "2026-07-22"
+    },
+    {
       "version": "0.2.0",
       "label": "v0.2.0",
       "archivedAt": "2026-07-22"
