@@ -14,6 +14,14 @@ Canonical paths live in [overview.md](./overview.md) (**Pick your path** + Docum
 4. **Advanced:** [Maintenance](./maintenance.md) → … → [Async](./async.md) · [Cross-tab](./cross-tab.md) · [Quota](./quota.md) · [Transforms](./transforms.md)
 5. Support: [FAQ](./faq.md) · [Browser support](./browser-support.md) · [Security](./security.md)
 
+## Non-goals (short)
+
+- Not Form Intelligence drafts (separate IndexedDB)
+- No auto-selected backends
+- Cross-tab notify only (no auto-merge)
+- Soft quota = approx bytes (not browser remaining)
+- No silent crypto — opt-in `/transforms` hooks; algorithms stay app-owned
+
 ## Playground
 
 ```bash

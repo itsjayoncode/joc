@@ -5,7 +5,7 @@ description: What JayOnCode and the JOC Ecosystem are — independent, headless 
 
 # Introduction
 
-**JayOnCode** builds the **JOC Ecosystem**: an ecosystem of independent, headless TypeScript libraries engineered for modern web applications. Every package is framework-agnostic, thoroughly documented, and backed by interactive playgrounds for a consistent developer experience.
+**[JayOnCode](https://www.jayoncode.com/)** builds the **JOC Ecosystem**: an ecosystem of independent, headless TypeScript libraries engineered for modern web applications. Every package is framework-agnostic, thoroughly documented, and backed by interactive playgrounds for a consistent developer experience.
 
 Each `@jayoncode/*` package solves one hard frontend problem well — forms, browser session lifecycle, object diffing, client storage, and more — then gets out of your way. You pick what you need; you never adopt a monolith.
 

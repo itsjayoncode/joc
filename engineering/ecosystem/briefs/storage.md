@@ -80,7 +80,7 @@ Storage depends on **none** of the public JOC packages. Ideal composition shape.
 - Does **not** automatically choose storage backends.
 - Does **not** introduce a shared runtime / plugin host / store.
 - Does **not** depend on Browser Lifecycle (or any other `@jayoncode/*` core).
-- Does **not** ship silent encryption/compression defaults (opt-in `/transforms` in **0.3**). Cross-tab notify shipped in **0.2**. Soft quota guards shipped in **0.3**.
+- Does **not** ship silent encryption/compression or crypto algorithms — opt-in `/transforms` hooks only (**0.3+**). Cross-tab notify (**0.2+**) does not auto-merge. Soft quota (**0.3+**) is approx bytes, not browser remaining space.
 - Does **not** invent `packages/shared` (Phase 6 stays blocked unless new Extract evidence appears).
 
 ## v1 scope

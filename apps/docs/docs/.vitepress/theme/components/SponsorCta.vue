@@ -38,9 +38,11 @@ onMounted(() => {
   wrap = document.createElement("div");
   wrap.className = "action joc-sponsor-action";
 
-  const getStarted = actions.querySelector(".action");
-  if (getStarted) {
-    actions.insertBefore(wrap, getStarted);
+  // After Get Started + Explore Packages so support stays tertiary
+  const actionButtons = actions.querySelectorAll(".action:not(.joc-sponsor-action)");
+  const lastAction = actionButtons[actionButtons.length - 1];
+  if (lastAction) {
+    lastAction.after(wrap);
   } else {
     actions.appendChild(wrap);
   }
@@ -72,7 +74,7 @@ onBeforeUnmount(() => {
     href="https://github.com/sponsors/jayoncoding"
     target="_blank"
     rel="noopener noreferrer"
-    aria-label="Support with love on GitHub Sponsors"
+    aria-label="Support the Project on GitHub Sponsors"
   >
     <span class="sponsor-plush" aria-hidden="true">
       <svg class="sponsor-plush-svg" viewBox="0 0 64 72" fill="none">
@@ -166,8 +168,8 @@ onBeforeUnmount(() => {
       </span>
 
       <span class="sponsor-copy">
-        <span class="sponsor-label">Support</span>
-        <span class="sponsor-sub">with love</span>
+        <span class="sponsor-label">❤️ Support</span>
+        <span class="sponsor-sub">the Project</span>
       </span>
     </span>
   </a>

@@ -2,6 +2,8 @@
 import { computed, ref } from "vue";
 import { docsHref } from "../docs-href.js";
 import { featuredPackages, livePackages, jocPackages } from "../data/joc-packages";
+import { packageLandings } from "../data/package-landings";
+import { highlightTypeScript } from "../highlight-typescript.js";
 import HomePackageCatalog from "./HomePackageCatalog.vue";
 import PackageIcon from "./PackageIcon.vue";
 
@@ -41,6 +43,42 @@ const selectedProblem = computed(
 const selectedPackage = computed(
   () => jocPackages.find((pkg) => pkg.id === selectedProblem.value.packageId) ?? livePackages[0],
 );
+
+const codeSamples = featuredPackages.map((pkg) => {
+  const landing = packageLandings[pkg.id];
+  return {
+    id: pkg.id,
+    name: pkg.name,
+    npmName: pkg.npmName,
+    accent: pkg.accent,
+    docsLink: pkg.docsLink,
+    playgroundLink: `/playground/${pkg.id}/`,
+    lead: landing?.sampleTitle ?? pkg.tagline,
+    code: landing?.sampleCode ?? `// See ${pkg.npmName} docs`,
+  };
+});
+
+const selectedCodeId = ref(codeSamples[0]?.id ?? "browser-lifecycle");
+
+const selectedCodeSample = computed(
+  () => codeSamples.find((sample) => sample.id === selectedCodeId.value) ?? codeSamples[0],
+);
+
+const highlightedCodeSample = computed(() => {
+  const code = selectedCodeSample.value?.code;
+  return code ? highlightTypeScript(code) : "";
+});
+
+const flagshipBlurbs: Record<string, string> = {
+  "browser-lifecycle":
+    "Understand browser sessions, visibility, lifecycle events, and navigation with a unified API.",
+  "form-intelligence":
+    "Build intelligent forms with validation, submission orchestration, UI state projection, and developer-friendly workflows.",
+  "object-diff":
+    "Detect, analyze, and explain object changes through powerful comparison utilities and structured diff results.",
+  storage:
+    "Persist prefs and cache with namespaced envelopes, TTL, migrations, and adapters you choose—including IndexedDB.",
+};
 
 const learningPath = [
   { step: "1", title: "What the JOC Ecosystem is", href: "/getting-started/introduction" },
@@ -88,8 +126,49 @@ const communityLinks = [
 
 <template>
   <div class="joc-home-custom">
+    <!-- Flagship libraries — immediately after value cards -->
+    <section
+      id="ecosystem"
+      class="joc-home-section joc-surface-band"
+      aria-labelledby="featured-title"
+    >
+      <span class="joc-kicker">Flagship libraries</span>
+      <h2 id="featured-title" class="joc-section-title">Four packages. One engineering bar.</h2>
+      <p class="joc-muted joc-section-lead">
+        Independent <code>@jayoncode/*</code> libraries — same docs, playgrounds, and SemVer
+        discipline across the ecosystem.
+      </p>
+
+      <div class="joc-feature-pkgs">
+        <article
+          v-for="pkg in featuredPackages"
+          :key="pkg.id"
+          class="joc-feature-pkg"
+          :class="`joc-feature-pkg--${pkg.accent}`"
+        >
+          <div class="joc-feature-pkg__head">
+            <span class="joc-feature-pkg__icon" aria-hidden="true">
+              <PackageIcon :package-id="pkg.id" size="sm" />
+            </span>
+            <span class="joc-feature-pkg__status">Live</span>
+          </div>
+          <h3 class="joc-feature-pkg__name">
+            <a :href="docsHref(pkg.docsLink)">{{ pkg.name }}</a>
+          </h3>
+          <p class="joc-feature-pkg__npm">{{ pkg.npmName }}</p>
+          <p class="joc-muted joc-feature-pkg__tagline">
+            {{ flagshipBlurbs[pkg.id] ?? pkg.tagline }}
+          </p>
+          <ul class="joc-feature-pkg__caps">
+            <li v-for="cap in pkg.capabilities" :key="cap">{{ cap }}</li>
+          </ul>
+          <a class="joc-feature-pkg__cta" :href="docsHref(pkg.docsLink)">View docs →</a>
+        </article>
+      </div>
+    </section>
+
     <!-- Choose by problem -->
-    <section class="joc-home-section joc-surface-band" aria-labelledby="choose-problem">
+    <section class="joc-home-section" aria-labelledby="choose-problem">
       <span class="joc-kicker">Choose by problem</span>
       <h2 id="choose-problem" class="joc-section-title">What are you trying to build?</h2>
       <p class="joc-muted joc-section-lead">
@@ -137,82 +216,56 @@ const communityLinks = [
       </div>
     </section>
 
-    <!-- Featured packages -->
-    <section id="ecosystem" class="joc-home-section" aria-labelledby="featured-title">
-      <span class="joc-kicker">JOC Ecosystem</span>
-      <h2 id="featured-title" class="joc-section-title">Focused tools. One ecosystem.</h2>
-      <p class="joc-muted joc-section-lead">
-        Independent, headless <code>@jayoncode/*</code> libraries — framework-agnostic, thoroughly
-        documented, and backed by interactive playgrounds.
-      </p>
-
-      <div class="joc-feature-pkgs">
-        <article
-          v-for="pkg in featuredPackages"
-          :key="pkg.id"
-          class="joc-feature-pkg"
-          :class="`joc-feature-pkg--${pkg.accent}`"
-        >
-          <div class="joc-feature-pkg__head">
-            <span class="joc-feature-pkg__icon" aria-hidden="true">
-              <PackageIcon :package-id="pkg.id" size="sm" />
-            </span>
-            <span class="joc-feature-pkg__status">Live</span>
-          </div>
-          <h3 class="joc-feature-pkg__name">
-            <a :href="docsHref(pkg.docsLink)">{{ pkg.name }}</a>
-          </h3>
-          <p class="joc-feature-pkg__npm">{{ pkg.npmName }}</p>
-          <p class="joc-muted joc-feature-pkg__tagline">{{ pkg.tagline }}</p>
-          <ul class="joc-feature-pkg__caps">
-            <li v-for="cap in pkg.capabilities" :key="cap">{{ cap }}</li>
-          </ul>
-          <a class="joc-feature-pkg__cta" :href="docsHref(pkg.docsLink)">View docs →</a>
-        </article>
-      </div>
-    </section>
-
     <!-- Real code -->
     <section class="joc-home-section joc-surface-band" aria-labelledby="code-example">
       <span class="joc-kicker">Quick start</span>
       <h2 id="code-example" class="joc-section-title">Real code. One screen.</h2>
       <p class="joc-muted joc-section-lead">
-        Pause work when the tab hides, queue when offline, sync when the session resumes.
+        {{ selectedCodeSample?.lead ?? "Pick a package and skim a real API surface." }}
       </p>
 
-      <div class="joc-code-panel joc-code-panel--wide" aria-label="Browser Lifecycle example">
+      <div class="joc-code-tabs" role="tablist" aria-label="Package sample code">
+        <button
+          v-for="sample in codeSamples"
+          :key="sample.id"
+          type="button"
+          class="joc-code-tabs__tab"
+          :class="{
+            'joc-code-tabs__tab--active': selectedCodeId === sample.id,
+            [`joc-code-tabs__tab--${sample.accent}`]: true,
+          }"
+          role="tab"
+          :aria-selected="selectedCodeId === sample.id"
+          :id="`code-tab-${sample.id}`"
+          :aria-controls="`code-panel-${sample.id}`"
+          @click="selectedCodeId = sample.id"
+        >
+          {{ sample.name }}
+        </button>
+      </div>
+
+      <div
+        v-if="selectedCodeSample"
+        class="joc-code-panel joc-code-panel--wide"
+        role="tabpanel"
+        :id="`code-panel-${selectedCodeSample.id}`"
+        :aria-labelledby="`code-tab-${selectedCodeSample.id}`"
+        :aria-label="`${selectedCodeSample.name} example`"
+      >
         <div class="joc-code-header">
-          <span>@jayoncode/browser-lifecycle</span>
+          <span>{{ selectedCodeSample.npmName }}</span>
           <span class="joc-code-badge">Live</span>
         </div>
-        <pre v-pre><code>import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
-
-const lifecycle = createBrowserLifecycle({ autoStart: true });
-
-lifecycle.on("page:hidden", () => {
-  analytics.pause();
-});
-
-lifecycle.on("connection:offline", () => {
-  queue.enableOfflineMode();
-});
-
-lifecycle.on("page:visible", () => {
-  syncPendingChanges();
-});
-
-// Teardown on unmount
-await lifecycle.dispose();</code></pre>
+        <pre><code class="language-ts" v-html="highlightedCodeSample" /></pre>
         <p class="joc-home-links">
-          <a :href="docsHref('/packages/browser-lifecycle/')">Package docs</a>
+          <a :href="docsHref(selectedCodeSample.docsLink)">Package docs</a>
           <a
-            :href="docsHref('/playground/browser-lifecycle/')"
+            :href="docsHref(selectedCodeSample.playgroundLink)"
             target="_blank"
             rel="noreferrer noopener"
           >
-            Open sandbox
+            Open playground
           </a>
-          <a :href="docsHref('/packages/form-intelligence/')">Form Intelligence example</a>
         </p>
       </div>
     </section>
@@ -251,7 +304,7 @@ await lifecycle.dispose();</code></pre>
         <div class="joc-arch__arrow" aria-hidden="true" />
         <div class="joc-arch__layer joc-arch__layer--core">
           <span class="joc-arch__label">Headless TypeScript cores</span>
-          <p class="joc-muted joc-arch__note">Typed · tree-shakeable · SSR-aware</p>
+          <p class="joc-muted joc-arch__note">Typed · modular · SSR-aware</p>
         </div>
       </div>
     </section>
@@ -261,9 +314,9 @@ await lifecycle.dispose();</code></pre>
       <span class="joc-kicker">Vision</span>
       <h2 id="vision-title" class="joc-section-title">What the JOC Ecosystem is becoming</h2>
       <p class="joc-muted joc-section-lead">
-        An ecosystem of independent, headless TypeScript libraries — framework-agnostic, thoroughly
-        documented, and backed by interactive playgrounds. Install only what you need. Compose when
-        you need more.
+        An ecosystem of independent, headless TypeScript libraries — framework-agnostic cores,
+        documentation as a product, and interactive playgrounds. Install only what you need. Compose
+        when you need more.
       </p>
       <div class="joc-choose-result__actions">
         <a class="joc-cta-primary" :href="docsHref('/getting-started/introduction')"
@@ -292,8 +345,8 @@ await lifecycle.dispose();</code></pre>
           <span class="joc-kicker">Interactive playground</span>
           <h2 class="joc-section-title">Try packages before you install</h2>
           <p class="joc-muted">
-            Explore Browser Lifecycle, Form Intelligence, and Object Diff live — hide the tab, edit
-            a form, or diff two objects in the browser.
+            Explore Browser Lifecycle, Form Intelligence, Object Diff, and Storage live — hide the
+            tab, edit a form, diff two objects, or exercise persistence in the browser.
           </p>
         </div>
         <div class="joc-cta-actions">
@@ -349,18 +402,8 @@ await lifecycle.dispose();</code></pre>
 
     <section class="joc-home-section joc-home-footer-band" aria-label="License and attribution">
       <p class="joc-muted">
-        MIT License · Built by
-        <a href="https://github.com/itsjayoncode" target="_blank" rel="noopener noreferrer"
-          >JayOnCode</a
-        >
-        ·
-        <a href="https://github.com/itsjayoncode/joc" target="_blank" rel="noopener noreferrer"
-          >GitHub</a
-        >
-        ·
-        <a href="https://www.npmjs.com/org/jayoncode" target="_blank" rel="noopener noreferrer"
-          >npm</a
-        >
+        MIT Licensed · Built by
+        <a href="https://www.jayoncode.com/" target="_blank" rel="noopener noreferrer">JayOnCode</a>
       </p>
     </section>
   </div>
