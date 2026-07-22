@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The Focus Playground demonstrates the Browser Lifecycle Focus module inside the Browser Session Playground.
+The Focus Playground demonstrates the Browser Lifecycle Focus module inside the Browser Lifecycle Playground.
 
 It teaches developers:
 

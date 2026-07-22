@@ -1,4 +1,4 @@
-# QA Checklist — Browser Session Playground v1.0.0
+# QA Checklist — Browser Lifecycle Playground v1.0.0
 
 ## Build and tooling
 

@@ -1,8 +1,13 @@
-# Browser Session Playground
+# Browser Lifecycle Playground
 
-Official engineering shell for `@jayoncode/browser-lifecycle`.
+Interactive playground for [`@jayoncode/browser-lifecycle`](https://www.npmjs.com/package/@jayoncode/browser-lifecycle).
 
-The home route (`/`) is the **Interactive Browser Lifecycle Developer Sandbox** — a multi-panel laboratory for configuring the runtime, observing live browser state, simulating transitions, inspecting events/capabilities, and copying generated API code.
+**Observe browser state. Derive session intelligence. React with confidence.**
+
+The home route (`/`) is the **Lifecycle Sandbox** — configure the runtime, observe live browser state, simulate transitions, inspect events/capabilities, and copy generated API code.
+
+> One session. One snapshot. One event stream.  
+> Session intelligence and DX factories are opt-in — this playground focuses on the core Observe layer; package factories (`createTimelineApi`, etc.) are available in the library even when not wired into every sandbox panel.
 
 Focused explorers remain available for deep-dives (Visibility, Focus, Connectivity, Idle, Lifecycle, Cross Tab, Plugins, Events, State, Configuration, Performance, Developer Tools).
 
@@ -28,10 +33,5 @@ Dev server: [http://127.0.0.1:4273](http://127.0.0.1:4273)
 ## Architecture
 
 - `src/lib/` — package integration boundary
-- `src/sandbox/` — Lab shell (toolbar, config, canvas, inspector, console)
-- Future modules register via `src/sandbox/capabilities.ts`
-
-## Documentation
-
-- [docs/playground.md](./docs/playground.md)
-- Package overview: `/packages/browser-lifecycle/` in the docs site
+- `src/sandbox/` — sandbox UI and capability registry
+- Docs deep-link: `/playground/browser-lifecycle/`

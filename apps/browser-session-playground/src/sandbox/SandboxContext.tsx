@@ -10,9 +10,26 @@ import {
 } from "react";
 
 import type {
+  ActivityApi,
+  ActivityView,
   BrowserLifecycle,
   BrowserLifecycleRuntimeDiagnostics,
   BrowserLifecycleSnapshot,
+  MetricsApi,
+  MetricsSnapshot,
+  PresenceApi,
+  PresenceLabel,
+  PresenceView,
+  ReportsApi,
+  SessionSummaryReport,
+  TimelineApi,
+} from "@jayoncode/browser-lifecycle";
+import {
+  createActivityApi,
+  createMetricsApi,
+  createPresenceApi,
+  createReportsApi,
+  createTimelineApi,
 } from "@jayoncode/browser-lifecycle";
 
 import { createSandboxSession } from "./build-session.js";
@@ -42,6 +59,16 @@ interface SandboxContextValue {
   readonly events: readonly SandboxEventEntry[];
   readonly consoleEntries: readonly SandboxConsoleEntry[];
   readonly timeline: readonly TimelineEntry[];
+  readonly metricsSnapshot: MetricsSnapshot | null;
+  readonly activityView: ActivityView | null;
+  readonly presenceView: PresenceView | null;
+  readonly presenceLabel: PresenceLabel | null;
+  readonly sessionReport: SessionSummaryReport | null;
+  readonly timelineApiEnabled: boolean;
+  readonly metricsApiEnabled: boolean;
+  readonly activityApiEnabled: boolean;
+  readonly presenceApiEnabled: boolean;
+  readonly reportsApiEnabled: boolean;
   readonly simulated: SimulatedBrowserState;
   readonly workspaceTab: WorkspaceTab;
   readonly inspectorTab: InspectorTab;
@@ -125,6 +152,11 @@ export function SandboxProvider({ children }: { readonly children: ReactNode }) 
   const [events, setEvents] = useState<readonly SandboxEventEntry[]>([]);
   const [consoleEntries, setConsoleEntries] = useState<readonly SandboxConsoleEntry[]>([]);
   const [timeline, setTimeline] = useState<readonly TimelineEntry[]>([]);
+  const [metricsSnapshot, setMetricsSnapshot] = useState<MetricsSnapshot | null>(null);
+  const [activityView, setActivityView] = useState<ActivityView | null>(null);
+  const [presenceView, setPresenceView] = useState<PresenceView | null>(null);
+  const [presenceLabel, setPresenceLabel] = useState<PresenceLabel | null>(null);
+  const [sessionReport, setSessionReport] = useState<SessionSummaryReport | null>(null);
   const [simulated, setSimulated] = useState<SimulatedBrowserState>(EMPTY_SIMULATED);
   const [workspaceTab, setWorkspaceTab] = useState<WorkspaceTab>("dashboard");
   const [inspectorTab, setInspectorTab] = useState<InspectorTab>("runtime");
@@ -133,6 +165,11 @@ export function SandboxProvider({ children }: { readonly children: ReactNode }) 
   const [eventFilter, setEventFilter] = useState("");
   const [recreateNonce, setRecreateNonce] = useState(0);
   const sessionRef = useRef<BrowserLifecycle | null>(null);
+  const timelineApiRef = useRef<TimelineApi | null>(null);
+  const metricsApiRef = useRef<MetricsApi | null>(null);
+  const activityApiRef = useRef<ActivityApi | null>(null);
+  const presenceApiRef = useRef<PresenceApi | null>(null);
+  const reportsApiRef = useRef<ReportsApi | null>(null);
   const consolePausedRef = useRef(false);
   const configRef = useRef(config);
 
@@ -209,17 +246,42 @@ export function SandboxProvider({ children }: { readonly children: ReactNode }) 
         };
         setEvents((current) => [entry, ...current].slice(0, 250));
 
-        setTimeline((current) =>
-          [
-            {
-              id: `t-${String(++timelineCounter)}`,
-              at: entry.at,
-              label: event.type,
-              type: event.type,
-            },
-            ...current,
-          ].slice(0, 80),
-        );
+        const packageTimeline = timelineApiRef.current;
+        if (configRef.current.modules.timeline && packageTimeline) {
+          const mapped = [...packageTimeline.events()].reverse().map((item) => ({
+            id: item.id,
+            at: new Date(item.timestamp).toLocaleTimeString(),
+            label: item.type,
+            type: item.type,
+          }));
+          setTimeline(mapped);
+        } else {
+          setTimeline((current) =>
+            [
+              {
+                id: `t-${String(++timelineCounter)}`,
+                at: entry.at,
+                label: event.type,
+                type: event.type,
+              },
+              ...current,
+            ].slice(0, 80),
+          );
+        }
+
+        if (metricsApiRef.current) {
+          setMetricsSnapshot(metricsApiRef.current.snapshot());
+        }
+        if (activityApiRef.current) {
+          setActivityView(activityApiRef.current.state());
+        }
+        if (presenceApiRef.current) {
+          setPresenceView(presenceApiRef.current.state());
+          setPresenceLabel(presenceApiRef.current.label());
+        }
+        if (reportsApiRef.current) {
+          setSessionReport(reportsApiRef.current.sessionSummary());
+        }
 
         if (cfg.diagnostics.eventLogging) {
           pushConsole(event.type, "info", event.source, entry.summary);
@@ -233,6 +295,22 @@ export function SandboxProvider({ children }: { readonly children: ReactNode }) 
   );
 
   const disposeCurrent = useCallback(() => {
+    timelineApiRef.current?.dispose();
+    metricsApiRef.current?.dispose();
+    activityApiRef.current?.dispose();
+    presenceApiRef.current?.dispose();
+    reportsApiRef.current?.dispose();
+    timelineApiRef.current = null;
+    metricsApiRef.current = null;
+    activityApiRef.current = null;
+    presenceApiRef.current = null;
+    reportsApiRef.current = null;
+    setMetricsSnapshot(null);
+    setActivityView(null);
+    setPresenceView(null);
+    setPresenceLabel(null);
+    setSessionReport(null);
+
     const current = sessionRef.current;
     if (!current) {
       return;
@@ -249,6 +327,100 @@ export function SandboxProvider({ children }: { readonly children: ReactNode }) 
     setSession(null);
     setRunning(false);
   }, []);
+
+  // Opt-in Session Intelligence / Insights factories — zero cost until toggled
+  useEffect(() => {
+    const current = sessionRef.current;
+    timelineApiRef.current?.dispose();
+    metricsApiRef.current?.dispose();
+    activityApiRef.current?.dispose();
+    presenceApiRef.current?.dispose();
+    reportsApiRef.current?.dispose();
+    timelineApiRef.current = null;
+    metricsApiRef.current = null;
+    activityApiRef.current = null;
+    presenceApiRef.current = null;
+    reportsApiRef.current = null;
+
+    if (!current) {
+      setMetricsSnapshot(null);
+      setActivityView(null);
+      setPresenceView(null);
+      setPresenceLabel(null);
+      setSessionReport(null);
+      return;
+    }
+
+    if (config.modules.timeline) {
+      timelineApiRef.current = createTimelineApi(current, { maxEvents: 80 });
+      pushConsole("createTimelineApi attached", "success", "insights");
+    }
+
+    const needMetrics = config.modules.metrics || config.modules.reports;
+    if (needMetrics) {
+      const metrics = createMetricsApi(current);
+      metricsApiRef.current = metrics;
+      setMetricsSnapshot(metrics.snapshot());
+      if (config.modules.metrics) {
+        pushConsole("createMetricsApi attached", "success", "insights");
+      }
+    } else {
+      setMetricsSnapshot(null);
+    }
+
+    if (config.modules.activity) {
+      const activity = createActivityApi(current);
+      activityApiRef.current = activity;
+      setActivityView(activity.state());
+      pushConsole("createActivityApi attached", "success", "insights");
+    } else {
+      setActivityView(null);
+    }
+
+    if (config.modules.presence) {
+      const presence = createPresenceApi(current);
+      presenceApiRef.current = presence;
+      setPresenceView(presence.state());
+      setPresenceLabel(presence.label());
+      pushConsole("createPresenceApi attached", "success", "insights");
+    } else {
+      setPresenceView(null);
+      setPresenceLabel(null);
+    }
+
+    if (config.modules.reports && metricsApiRef.current) {
+      const reports = createReportsApi({
+        metrics: metricsApiRef.current,
+        ...(timelineApiRef.current ? { timeline: timelineApiRef.current } : {}),
+      });
+      reportsApiRef.current = reports;
+      setSessionReport(reports.sessionSummary());
+      pushConsole("createReportsApi attached", "success", "insights");
+    } else {
+      setSessionReport(null);
+    }
+
+    return () => {
+      timelineApiRef.current?.dispose();
+      metricsApiRef.current?.dispose();
+      activityApiRef.current?.dispose();
+      presenceApiRef.current?.dispose();
+      reportsApiRef.current?.dispose();
+      timelineApiRef.current = null;
+      metricsApiRef.current = null;
+      activityApiRef.current = null;
+      presenceApiRef.current = null;
+      reportsApiRef.current = null;
+    };
+  }, [
+    session,
+    config.modules.timeline,
+    config.modules.metrics,
+    config.modules.activity,
+    config.modules.presence,
+    config.modules.reports,
+    pushConsole,
+  ]);
 
   // Recreate when structural config changes
   useEffect(() => {
@@ -389,6 +561,7 @@ export function SandboxProvider({ children }: { readonly children: ReactNode }) 
   }, []);
 
   const clearTimeline = useCallback(() => {
+    timelineApiRef.current?.clear();
     setTimeline([]);
   }, []);
 
@@ -438,6 +611,16 @@ export function SandboxProvider({ children }: { readonly children: ReactNode }) 
     events,
     consoleEntries,
     timeline,
+    metricsSnapshot,
+    activityView,
+    presenceView,
+    presenceLabel,
+    sessionReport,
+    timelineApiEnabled: config.modules.timeline,
+    metricsApiEnabled: config.modules.metrics,
+    activityApiEnabled: config.modules.activity,
+    presenceApiEnabled: config.modules.presence,
+    reportsApiEnabled: config.modules.reports,
     simulated,
     workspaceTab,
     inspectorTab,

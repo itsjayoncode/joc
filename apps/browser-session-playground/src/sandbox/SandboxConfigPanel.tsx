@@ -186,43 +186,38 @@ export function SandboxConfigPanel({ resizeHandle }: { readonly resizeHandle?: R
             patchModules({ crossTab });
           }}
         />
-        <p className={styles.hint}>Future (UI preview)</p>
+        <p className={styles.hint}>Session Intelligence & Insights (opt-in factories)</p>
         <Toggle
           checked={config.modules.activity}
-          disabled
-          label="Activity"
+          label="Activity (createActivityApi)"
           onChange={(activity) => {
             patchModules({ activity });
           }}
         />
         <Toggle
           checked={config.modules.presence}
-          disabled
-          label="Presence"
+          label="Presence (createPresenceApi)"
           onChange={(presence) => {
             patchModules({ presence });
           }}
         />
         <Toggle
           checked={config.modules.timeline}
-          disabled
-          label="Timeline"
+          label="Timeline (createTimelineApi)"
           onChange={(timeline) => {
             patchModules({ timeline });
           }}
         />
         <Toggle
           checked={config.modules.metrics}
-          disabled
-          label="Metrics"
+          label="Metrics (createMetricsApi)"
           onChange={(metrics) => {
             patchModules({ metrics });
           }}
         />
         <Toggle
           checked={config.modules.reports}
-          disabled
-          label="Reports"
+          label="Reports (createReportsApi)"
           onChange={(reports) => {
             patchModules({ reports });
           }}

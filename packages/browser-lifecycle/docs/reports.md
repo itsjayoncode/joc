@@ -1,6 +1,6 @@
 # Reports
 
-Turn Metrics (and optional Timeline evidence) into an on-demand session summary.
+Part of **Session Insights** — turn Metrics (and optional Timeline evidence) into an on-demand session summary. Not telemetry ingestion or an analytics product.
 
 **Previous:** [Metrics](./metrics.md) · **Next:** [Wait helpers](./wait.md)
 

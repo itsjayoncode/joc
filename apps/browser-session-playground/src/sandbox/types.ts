@@ -12,7 +12,7 @@ export interface SandboxModules {
   readonly idle: boolean;
   readonly lifecycle: boolean;
   readonly crossTab: boolean;
-  /** Future — UI only until package wiring exists. */
+  /** Opt-in Session Intelligence / Insights factories (sandbox wiring). */
   readonly activity: boolean;
   readonly presence: boolean;
   readonly timeline: boolean;

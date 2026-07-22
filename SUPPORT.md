@@ -1,8 +1,8 @@
 # Support
 
-## Browser Session Playground
+## Browser Lifecycle Playground
 
-The Browser Session Playground is the interactive engineering console for `@jayoncode/browser-lifecycle`.
+The Browser Lifecycle Playground is the interactive engineering console for `@jayoncode/browser-lifecycle`.
 
 - **Documentation:** http://127.0.0.1:4175 (local VitePress) or the deployed docs site
 - **Playground:** http://127.0.0.1:4273 (local dev)

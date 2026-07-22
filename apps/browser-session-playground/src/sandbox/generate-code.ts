@@ -44,31 +44,70 @@ export function generateSandboxCode(config: SandboxConfig): string {
     config.modules.lifecycle ? "lifecycle" : null,
   ].filter(Boolean);
 
-  const future = [
-    config.modules.activity ? "activity" : null,
-    config.modules.presence ? "presence" : null,
-    config.modules.timeline ? "timeline" : null,
-    config.modules.metrics ? "metrics" : null,
-    config.modules.reports ? "reports" : null,
-  ].filter(Boolean);
+  const imports = ["createBrowserLifecycle"];
+  const factoryLines: string[] = [];
+
+  if (config.modules.activity) {
+    imports.push("createActivityApi");
+    factoryLines.push("const activity = createActivityApi(lifecycle);");
+    factoryLines.push("// activity.state() / activity.isIdle()");
+  }
+  if (config.modules.presence) {
+    imports.push("createPresenceApi");
+    factoryLines.push("const presence = createPresenceApi(lifecycle);");
+    factoryLines.push("// presence.label() → ACTIVE | AWAY | UNKNOWN (page-local)");
+  }
+  if (config.modules.timeline) {
+    imports.push("createTimelineApi");
+    factoryLines.push("const timeline = createTimelineApi(lifecycle, { maxEvents: 80 });");
+    factoryLines.push("// timeline.events() / timeline.format()");
+  }
+  if (config.modules.metrics || config.modules.reports) {
+    imports.push("createMetricsApi");
+    factoryLines.push("const metrics = createMetricsApi(lifecycle);");
+    factoryLines.push("// metrics.attention().score / metrics.snapshot()");
+  }
+  if (config.modules.reports) {
+    imports.push("createReportsApi");
+    factoryLines.push(
+      config.modules.timeline
+        ? "const reports = createReportsApi({ metrics, timeline });"
+        : "const reports = createReportsApi({ metrics });",
+    );
+    factoryLines.push("// reports.sessionSummary()");
+  }
+
+  const understands =
+    config.modules.activity ||
+    config.modules.presence ||
+    config.modules.timeline ||
+    config.modules.metrics ||
+    config.modules.reports;
 
   const comments = [
-    "// Visibility / Focus / Connectivity / Lifecycle observers run with the session.",
-    alwaysOn.length > 0 ? `// Observed modules (always-on): ${alwaysOn.join(", ")}` : null,
-    future.length > 0 ? `// Future modules (UI preview): ${future.join(", ")}` : null,
+    "// Observe: Visibility / Focus / Connectivity / Lifecycle run with the session.",
+    alwaysOn.length > 0 ? `// Observed modules: ${alwaysOn.join(", ")}` : null,
+    understands
+      ? "// Understand: factories below allocate only when created (zero-cost until you ask)."
+      : null,
   ].filter(Boolean);
 
-  return `import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
+  const importLine =
+    imports.length === 1
+      ? `import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";`
+      : `import {\n  ${imports.join(",\n  ")},\n} from "@jayoncode/browser-lifecycle";`;
+
+  return `${importLine}
 
 ${comments.join("\n")}
-const browser = createBrowserLifecycle({
+const lifecycle = createBrowserLifecycle({
 ${indent(optionLines)}
 });
 
-browser.start();
-
-const snapshot = browser.getSnapshot();
-browser.subscribe((event, next) => {
+lifecycle.start();
+${factoryLines.length > 0 ? `\n${factoryLines.join("\n")}\n` : ""}
+const snapshot = lifecycle.getSnapshot();
+lifecycle.subscribe((event, next) => {
   console.log(event.type, next);
 });
 `;

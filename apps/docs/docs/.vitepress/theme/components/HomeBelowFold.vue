@@ -70,8 +70,7 @@ const highlightedCodeSample = computed(() => {
 });
 
 const flagshipBlurbs: Record<string, string> = {
-  "browser-lifecycle":
-    "Understand browser sessions, visibility, lifecycle events, and navigation with a unified API.",
+  "browser-lifecycle": "Observe browser state. Derive session intelligence. React with confidence.",
   "form-intelligence":
     "Build intelligent forms with validation, submission orchestration, UI state projection, and developer-friendly workflows.",
   "object-diff":

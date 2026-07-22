@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the Browser Session Playground are documented in this file.
+All notable changes to the Browser Lifecycle Playground are documented in this file.
 
 ## 1.0.0 — 2026-07-15
 

@@ -1,8 +1,20 @@
 # Intelligence & DX
 
-Optional facades built on top of the core session. They **derive** from `getSnapshot()` and public events — they do not attach extra browser observers.
+Optional facades on top of the core session — the **Understand** and **React** layers of Browser Lifecycle.
+
+They **derive** from `getSnapshot()` and public events. They do **not** attach extra browser observers.
 
 **Previous:** [Core infrastructure](./core-infrastructure.md) · **Next:** [Activity](./activity.md)
+
+## Observe → Understand → React
+
+| Pillar         | In this package                                  |
+| -------------- | ------------------------------------------------ |
+| **Observe**    | Core session + modules (always the foundation)   |
+| **Understand** | Session Intelligence, Timeline, Session Insights |
+| **React**      | Wait, Conditions, Resilience                     |
+
+Core observation stays lightweight. Session intelligence and developer experience are completely opt-in — you only pay for what you use.
 
 ## Why opt-in factories?
 
@@ -10,37 +22,49 @@ Optional facades built on top of the core session. They **derive** from `getSnap
 createActivityApi(lifecycle); // cost starts here
 ```
 
-Nothing allocates on `createBrowserLifecycle()` until you call a factory. That keeps the default session lean (ADR: zero cost when disabled).
+Nothing allocates on `createBrowserLifecycle()` until you call a factory (ADR: zero cost when disabled).
 
 ## Import path
 
-All intelligence factories export from `@jayoncode/browser-lifecycle` (single entry). Always `dispose()` the core session; factories do not replace teardown.
+All factories export from `@jayoncode/browser-lifecycle` (single entry). Always `dispose()` the core session; factories do not replace teardown.
+
+Use the **shipped** factory APIs — there is no `lifecycle.timeline()` or `lifecycle.report()` facade.
 
 ## Map
 
-| Layer        | Factory                   | Purpose                           |
-| ------------ | ------------------------- | --------------------------------- |
-| Intelligence | `createActivityApi`       | Active / idle view                |
-| Intelligence | `createPresenceApi`       | Page-local present / away         |
-| Intelligence | `createTimelineApi`       | Bounded event history             |
-| Intelligence | `createMetricsApi`        | Durations, counts, attention      |
-| Intelligence | `createReportsApi`        | On-demand session summary         |
-| Intelligence | `createSessionHealthApi`  | Single health snapshot            |
-| Intelligence | `createSessionPredictApi` | Lightweight engagement heuristics |
-| DX           | `createWaitApi`           | `await untilVisible()` etc.       |
-| DX           | `createConditionsApi`     | `when.visible(() => …)`           |
-| DX           | `createResilienceApi`     | Reconnect / wake / restore        |
+| Layer                    | Factory                   | Purpose                               |
+| ------------------------ | ------------------------- | ------------------------------------- |
+| **Session Intelligence** | `createActivityApi`       | Active / idle view (current state)    |
+| **Session Intelligence** | `createPresenceApi`       | Page-local available / away / unknown |
+| **Timeline**             | `createTimelineApi`       | Bounded chronological event history   |
+| **Session Insights**     | `createMetricsApi`        | Durations, counts, attention          |
+| **Session Insights**     | `createReportsApi`        | On-demand session summary             |
+| **Developer Experience** | `createWaitApi`           | `await untilVisible()` etc.           |
+| **Developer Experience** | `createConditionsApi`     | `when.visible(() => …)`               |
+| **Developer Experience** | `createResilienceApi`     | Reconnect / wake / restore            |
+| Experimental             | `createSessionHealthApi`  | Single health snapshot                |
+| Experimental             | `createSessionPredictApi` | Lightweight engagement heuristics     |
+
+**Session Insights** means in-process metrics and reports for understanding **this** browser session — not a product analytics or telemetry SDK.
+
+**Presence** means whether **this browser session** is available, away, or unknown — not multi-user / Slack-like presence.
 
 ## Rule
 
 Core **observes** browser APIs. Intelligence and DX **interpret** only.
 
-## Health & Predict
+## Health & Predict (experimental)
 
-Two smaller facades round out the Map above — both are pure snapshot reads with no subscriptions of their own:
+These helpers are shipped and documented, but they are **not** homepage flagships. Treat them as experimental until real-world usage proves them.
+
+Both are pure snapshot reads with no subscriptions of their own:
 
 ```ts
-import { createSessionHealthApi, createSessionPredictApi } from "@jayoncode/browser-lifecycle";
+import {
+  createMetricsApi,
+  createSessionHealthApi,
+  createSessionPredictApi,
+} from "@jayoncode/browser-lifecycle";
 
 const health = createSessionHealthApi(lifecycle);
 health.health();
@@ -52,6 +76,6 @@ predict.predict();
 // { likelyIdle, likelySleep, attentionScore, engagement: "low" | "medium" | "high" }
 ```
 
-`createSessionHealthApi` derives a single boolean-heavy view straight from `getSnapshot()`. `createSessionPredictApi` layers a lightweight heuristic (not ML) on top of [Metrics](./metrics.md) — it requires a `metrics` instance, so create that first.
+`createSessionHealthApi` derives a boolean-heavy view from `getSnapshot()`. `createSessionPredictApi` layers a lightweight heuristic (not ML) on [Metrics](./metrics.md) — create `metrics` first.
 
 Continue with [Activity →](./activity.md)

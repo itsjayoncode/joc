@@ -76,7 +76,7 @@ const bestPracticeItems = (pkgBase: string) => [
 const patternItems = (pkgBase: string) => [
   { text: "Overview", link: `${pkgBase}/patterns/` },
   { text: "Auto Save", link: `${pkgBase}/patterns/auto-save` },
-  { text: "Analytics", link: `${pkgBase}/patterns/analytics` },
+  { text: "Gate Analytics", link: `${pkgBase}/patterns/analytics` },
   { text: "Presence Detection", link: `${pkgBase}/patterns/presence-detection` },
   { text: "Session Timeout", link: `${pkgBase}/patterns/session-timeout` },
   { text: "Background Sync", link: `${pkgBase}/patterns/background-sync` },
@@ -103,7 +103,7 @@ const faqItems = (pkgBase: string) => [
   { text: "Lifecycle", link: `${pkgBase}/faq/lifecycle` },
   { text: "Cross Tab", link: `${pkgBase}/faq/cross-tab` },
   { text: "Plugins", link: `${pkgBase}/faq/plugins` },
-  { text: "Intelligence & DX", link: `${pkgBase}/modules/intelligence` },
+  { text: "Understand & React", link: `${pkgBase}/modules/intelligence` },
   { text: "Events", link: `${pkgBase}/faq/events` },
   { text: "Performance", link: `${pkgBase}/faq/performance` },
   { text: "Debugging", link: `${pkgBase}/faq/debugging` },
@@ -143,7 +143,7 @@ export function createBrowserLifecycleSidebar(
       ],
     },
     {
-      text: "Intelligence & DX",
+      text: "Understand & React",
       items: [
         { text: "Overview", link: `${pkgBase}/modules/intelligence` },
         { text: "Activity", link: `${pkgBase}/modules/activity` },

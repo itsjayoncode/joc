@@ -27,8 +27,7 @@ export const jocPackages: JocPackage[] = [
     id: "browser-lifecycle",
     name: "Browser Lifecycle",
     npmName: "@jayoncode/browser-lifecycle",
-    tagline:
-      "Know when the tab is hidden, idle, offline, or back — one API, not scattered listeners.",
+    tagline: "Observe browser state. Derive session intelligence. React with confidence.",
     purpose: "Tab & session signals",
     problem: "Visibility, idle, and online checks end up as one-off listeners in every app",
     status: "live",
@@ -36,7 +35,7 @@ export const jocPackages: JocPackage[] = [
     docsLink: "/packages/browser-lifecycle/",
     accent: "cyan",
     icon: "◎",
-    capabilities: ["Visibility", "Focus", "Idle", "Cross-tab", "Lifecycle"],
+    capabilities: ["Observe", "Understand", "React", "Timeline", "Insights"],
     featured: true,
     versionLabel: "v0.3.2",
   },

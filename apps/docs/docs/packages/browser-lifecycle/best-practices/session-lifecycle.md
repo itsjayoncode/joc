@@ -6,10 +6,10 @@ Create one `createBrowserLifecycle()` instance per browser tab and drive it thro
 
 ```ts
 const lifecycle = createBrowserLifecycle({ autoStart: false });
-await lifecycle.start();
+lifecycle.start();
 // ...
-await lifecycle.stop();
-await lifecycle.dispose();
+lifecycle.stop();
+lifecycle.dispose();
 ```
 
 ## Not recommended

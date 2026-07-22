@@ -1,4 +1,4 @@
-# Regression Report — Browser Session Playground v1.0.0
+# Regression Report — Browser Lifecycle Playground v1.0.0
 
 **Date:** 2026-07-15  
 **Scope:** Full playground release validation (Phase 3.18)
