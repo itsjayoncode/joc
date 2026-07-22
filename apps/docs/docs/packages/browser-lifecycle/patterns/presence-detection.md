@@ -4,13 +4,13 @@ Understand whether **this browser session** is currently available, away, idle, 
 
 ## Signals
 
-| Signal  | Event / snapshot                    |
-| ------- | ----------------------------------- |
+| Signal  | Event / snapshot                      |
+| ------- | ------------------------------------- |
 | Visible | `page:visible`, `snapshot.visibility` |
-| Hidden  | `page:hidden`                       |
-| Active  | `session:active`                    |
-| Idle    | `session:idle`                      |
-| Offline | `connection:offline` (advisory)     |
+| Hidden  | `page:hidden`                         |
+| Active  | `session:active`                      |
+| Idle    | `session:idle`                        |
+| Offline | `connection:offline` (advisory)       |
 
 For the higher-level page-local facade, see [`createPresenceApi`](/packages/browser-lifecycle/modules/presence).
 

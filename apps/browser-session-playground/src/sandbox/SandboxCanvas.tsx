@@ -153,10 +153,7 @@ export function SandboxCanvas() {
                   label="Hidden"
                   value={`${(metricsSnapshot.hiddenMs / 1000).toFixed(1)}s`}
                 />
-                <StateCard
-                  label="Idle"
-                  value={`${(metricsSnapshot.idleMs / 1000).toFixed(1)}s`}
-                />
+                <StateCard label="Idle" value={`${(metricsSnapshot.idleMs / 1000).toFixed(1)}s`} />
                 <StateCard
                   label="Offline"
                   value={`${(metricsSnapshot.offlineMs / 1000).toFixed(1)}s`}

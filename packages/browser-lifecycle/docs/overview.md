@@ -19,25 +19,25 @@ Session Intelligence (opt-in)
 Developer APIs (opt-in)
 ```
 
-| Most libraries | Browser Lifecycle |
-| --- | --- |
+| Most libraries        | Browser Lifecycle                                                         |
+| --------------------- | ------------------------------------------------------------------------- |
 | Browser APIs → Events | Browser APIs → Normalized Session → Session Intelligence → Developer APIs |
 
-| Pillar | Meaning |
-| --- | --- |
-| **Observe** | Normalize browser lifecycle into one consistent API |
-| **Understand** | Transform signals into meaningful session insights |
-| **React** | Build resilient apps with Wait, Conditions, Resilience, plugins |
+| Pillar         | Meaning                                                         |
+| -------------- | --------------------------------------------------------------- |
+| **Observe**    | Normalize browser lifecycle into one consistent API             |
+| **Understand** | Transform signals into meaningful session insights              |
+| **React**      | Build resilient apps with Wait, Conditions, Resilience, plugins |
 
 ### Five capabilities
 
-| Card | Distinction |
-| --- | --- |
+| Card                          | Distinction                                                                   |
+| ----------------------------- | ----------------------------------------------------------------------------- |
 | **Unified Browser Lifecycle** | Foundation — visibility, focus, connectivity, idle, page lifecycle, cross-tab |
-| **Session Intelligence** | **Current** derived state — activity + page-local presence |
-| **Timeline** | **Chronological** session event history |
-| **Session Insights** | **Aggregates** — metrics + reports (not an analytics SDK) |
-| **Developer Experience** | **How** you react — Wait, Conditions, Resilience, plugins, playground |
+| **Session Intelligence**      | **Current** derived state — activity + page-local presence                    |
+| **Timeline**                  | **Chronological** session event history                                       |
+| **Session Insights**          | **Aggregates** — metrics + reports (not an analytics SDK)                     |
+| **Developer Experience**      | **How** you react — Wait, Conditions, Resilience, plugins, playground         |
 
 ## When to use
 
@@ -65,10 +65,7 @@ Developer APIs (opt-in)
 Core observation stays lightweight. Session intelligence and developer experience allocate only after you call their factories.
 
 ```ts
-import {
-  createBrowserLifecycle,
-  createTimelineApi,
-} from "@jayoncode/browser-lifecycle";
+import { createBrowserLifecycle, createTimelineApi } from "@jayoncode/browser-lifecycle";
 
 const lifecycle = createBrowserLifecycle({ autoStart: true });
 // lean core only
@@ -126,23 +123,23 @@ One instance per tab replaces scattered `document` / `window` listeners with typ
 
 ## Problem → approach
 
-| Typical pain | Browser Lifecycle |
-| --- | --- |
-| `document`, `window`, and `navigator` listeners scattered across features | One `createBrowserLifecycle()` session with typed `on()` handlers |
-| Tab visibility, focus, and connectivity each wired differently | Modules normalize signals; `getSnapshot()` exposes consolidated state |
-| SSR crashes or silent no-ops when APIs are missing | Capability detection and SSR-safe defaults before modules attach |
+| Typical pain                                                              | Browser Lifecycle                                                     |
+| ------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| `document`, `window`, and `navigator` listeners scattered across features | One `createBrowserLifecycle()` session with typed `on()` handlers     |
+| Tab visibility, focus, and connectivity each wired differently            | Modules normalize signals; `getSnapshot()` exposes consolidated state |
+| SSR crashes or silent no-ops when APIs are missing                        | Capability detection and SSR-safe defaults before modules attach      |
 
 ## Overview
 
 `createBrowserLifecycle()` orchestrates browser signals through a module pipeline. Consumers subscribe to events or poll `getSnapshot()`; modules compose behind a single session boundary.
 
-| Concern | API surface |
-| --- | --- |
-| Lifecycle | `start()`, `stop()`, `dispose()`, phase events |
-| Signals | `on(event, handler)`, `once()`, `subscribe()` for the full feed |
-| State | `getSnapshot()` — readonly session state |
-| Extension | Plugin hooks (`onEvent` on plugins), module configuration |
-| Diagnostics | `getRuntimeDiagnostics()` for development |
+| Concern     | API surface                                                     |
+| ----------- | --------------------------------------------------------------- |
+| Lifecycle   | `start()`, `stop()`, `dispose()`, phase events                  |
+| Signals     | `on(event, handler)`, `once()`, `subscribe()` for the full feed |
+| State       | `getSnapshot()` — readonly session state                        |
+| Extension   | Plugin hooks (`onEvent` on plugins), module configuration       |
+| Diagnostics | `getRuntimeDiagnostics()` for development                       |
 
 Designed for SSR-safe capability detection and framework-agnostic integration (React, Vue, vanilla, etc.).
 
@@ -186,30 +183,30 @@ Construct and `start()` only in the browser (or after hydration). Capability det
 
 ### Understand & React (opt-in)
 
-| #   | Guide                                                                             | Topics                                              |
-| --- | --------------------------------------------------------------------------------- | --------------------------------------------------- |
-| 14  | [Intelligence overview](./intelligence.md)                                        | Observe → Understand → React; factories             |
-| 15  | [Activity](./activity.md) / [Presence](./presence.md)                             | Session Intelligence (current derived state)        |
-| 16  | [Timeline](./timeline.md)                                                         | Chronological history                               |
-| 17  | [Metrics](./metrics.md) / [Reports](./reports.md)                                 | Session Insights (aggregates)                       |
-| 18  | [Wait](./wait.md) / [Conditions](./conditions.md) / [Resilience](./resilience.md) | Developer Experience                                |
-| 19  | [Framework adapters](./adapters.md)                                               | React, Vue, Svelte, Solid, Angular                  |
+| #   | Guide                                                                             | Topics                                       |
+| --- | --------------------------------------------------------------------------------- | -------------------------------------------- |
+| 14  | [Intelligence overview](./intelligence.md)                                        | Observe → Understand → React; factories      |
+| 15  | [Activity](./activity.md) / [Presence](./presence.md)                             | Session Intelligence (current derived state) |
+| 16  | [Timeline](./timeline.md)                                                         | Chronological history                        |
+| 17  | [Metrics](./metrics.md) / [Reports](./reports.md)                                 | Session Insights (aggregates)                |
+| 18  | [Wait](./wait.md) / [Conditions](./conditions.md) / [Resilience](./resilience.md) | Developer Experience                         |
+| 19  | [Framework adapters](./adapters.md)                                               | React, Vue, Svelte, Solid, Angular           |
 
 ## Package fit
 
-| Requirement | Module / event |
-| --- | --- |
-| Pause background work on tab hide | `page:hidden` / `page:visible` |
-| React to window focus | `window:focus` / `window:blur` |
-| Offline-aware UI | `connection:*` (advisory) |
-| Idle timeout / autosave triggers | Idle module |
-| Session duration / attention | [Metrics](./metrics.md) (Session Insights) |
-| Event audit log | [Timeline](./timeline.md) |
-| Reconnect / wake / restore | [Resilience](./resilience.md) |
-| React / Vue / etc. bindings | [Adapters](./adapters.md) |
-| Cross-tab coordination | [Cross-tab](/packages/browser-lifecycle/modules/cross-tab) |
-| Cross-cutting observation | [Plugins](/packages/browser-lifecycle/modules/plugins) |
-| SSR / capability guards | [Core infrastructure](/packages/browser-lifecycle/modules/core-infrastructure) |
+| Requirement                       | Module / event                                                                 |
+| --------------------------------- | ------------------------------------------------------------------------------ |
+| Pause background work on tab hide | `page:hidden` / `page:visible`                                                 |
+| React to window focus             | `window:focus` / `window:blur`                                                 |
+| Offline-aware UI                  | `connection:*` (advisory)                                                      |
+| Idle timeout / autosave triggers  | Idle module                                                                    |
+| Session duration / attention      | [Metrics](./metrics.md) (Session Insights)                                     |
+| Event audit log                   | [Timeline](./timeline.md)                                                      |
+| Reconnect / wake / restore        | [Resilience](./resilience.md)                                                  |
+| React / Vue / etc. bindings       | [Adapters](./adapters.md)                                                      |
+| Cross-tab coordination            | [Cross-tab](/packages/browser-lifecycle/modules/cross-tab)                     |
+| Cross-cutting observation         | [Plugins](/packages/browser-lifecycle/modules/plugins)                         |
+| SSR / capability guards           | [Core infrastructure](/packages/browser-lifecycle/modules/core-infrastructure) |
 
 ## Reference
 

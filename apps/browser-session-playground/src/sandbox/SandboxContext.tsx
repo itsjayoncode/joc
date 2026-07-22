@@ -221,14 +221,12 @@ export function SandboxProvider({ children }: { readonly children: ReactNode }) 
 
         const packageTimeline = timelineApiRef.current;
         if (configRef.current.modules.timeline && packageTimeline) {
-          const mapped = [...packageTimeline.events()]
-            .reverse()
-            .map((item) => ({
-              id: item.id,
-              at: new Date(item.timestamp).toLocaleTimeString(),
-              label: item.type,
-              type: item.type,
-            }));
+          const mapped = [...packageTimeline.events()].reverse().map((item) => ({
+            id: item.id,
+            at: new Date(item.timestamp).toLocaleTimeString(),
+            label: item.type,
+            type: item.type,
+          }));
           setTimeline(mapped);
         } else {
           setTimeline((current) =>

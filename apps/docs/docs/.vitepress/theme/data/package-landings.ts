@@ -50,8 +50,7 @@ export const packageLandings: Record<string, PackageLandingContent> = {
       },
       {
         title: "Developer Experience",
-        detail:
-          "Wait, Conditions, Resilience, plugins, and a playground — react with confidence.",
+        detail: "Wait, Conditions, Resilience, plugins, and a playground — react with confidence.",
       },
     ],
     sampleTitle: "Pause work when the tab is hidden",

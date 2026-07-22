@@ -8,11 +8,11 @@ They **derive** from `getSnapshot()` and public events. They do **not** attach e
 
 ## Observe → Understand → React
 
-| Pillar | In this package |
-| --- | --- |
-| **Observe** | Core session + modules (always the foundation) |
+| Pillar         | In this package                                  |
+| -------------- | ------------------------------------------------ |
+| **Observe**    | Core session + modules (always the foundation)   |
 | **Understand** | Session Intelligence, Timeline, Session Insights |
-| **React** | Wait, Conditions, Resilience |
+| **React**      | Wait, Conditions, Resilience                     |
 
 Core observation stays lightweight. Session intelligence and developer experience are completely opt-in — you only pay for what you use.
 
@@ -32,18 +32,18 @@ Use the **shipped** factory APIs — there is no `lifecycle.timeline()` or `life
 
 ## Map
 
-| Layer | Factory | Purpose |
-| --- | --- | --- |
-| **Session Intelligence** | `createActivityApi` | Active / idle view (current state) |
-| **Session Intelligence** | `createPresenceApi` | Page-local available / away / unknown |
-| **Timeline** | `createTimelineApi` | Bounded chronological event history |
-| **Session Insights** | `createMetricsApi` | Durations, counts, attention |
-| **Session Insights** | `createReportsApi` | On-demand session summary |
-| **Developer Experience** | `createWaitApi` | `await untilVisible()` etc. |
-| **Developer Experience** | `createConditionsApi` | `when.visible(() => …)` |
-| **Developer Experience** | `createResilienceApi` | Reconnect / wake / restore |
-| Experimental | `createSessionHealthApi` | Single health snapshot |
-| Experimental | `createSessionPredictApi` | Lightweight engagement heuristics |
+| Layer                    | Factory                   | Purpose                               |
+| ------------------------ | ------------------------- | ------------------------------------- |
+| **Session Intelligence** | `createActivityApi`       | Active / idle view (current state)    |
+| **Session Intelligence** | `createPresenceApi`       | Page-local available / away / unknown |
+| **Timeline**             | `createTimelineApi`       | Bounded chronological event history   |
+| **Session Insights**     | `createMetricsApi`        | Durations, counts, attention          |
+| **Session Insights**     | `createReportsApi`        | On-demand session summary             |
+| **Developer Experience** | `createWaitApi`           | `await untilVisible()` etc.           |
+| **Developer Experience** | `createConditionsApi`     | `when.visible(() => …)`               |
+| **Developer Experience** | `createResilienceApi`     | Reconnect / wake / restore            |
+| Experimental             | `createSessionHealthApi`  | Single health snapshot                |
+| Experimental             | `createSessionPredictApi` | Lightweight engagement heuristics     |
 
 **Session Insights** means in-process metrics and reports for understanding **this** browser session — not a product analytics or telemetry SDK.
 

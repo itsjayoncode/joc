@@ -28,21 +28,21 @@ Session Intelligence (opt-in)
 Developer APIs (opt-in)
 ```
 
-| Pillar | What you get |
-| --- | --- |
-| **Observe** | Normalize browser lifecycle into one consistent API |
-| **Understand** | Transform signals into meaningful session insights |
-| **React** | Wait, conditions, resilience, plugins, playground |
+| Pillar         | What you get                                        |
+| -------------- | --------------------------------------------------- |
+| **Observe**    | Normalize browser lifecycle into one consistent API |
+| **Understand** | Transform signals into meaningful session insights  |
+| **React**      | Wait, conditions, resilience, plugins, playground   |
 
 ### Five capabilities
 
-| Card | What it is |
-| --- | --- |
+| Card                          | What it is                                                                                                                  |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
 | **Unified Browser Lifecycle** | One typed session for visibility, focus, connectivity, idle, page lifecycle, and cross-tab — instead of scattered listeners |
-| **Session Intelligence** | Opt-in activity (active / idle) and **page-local** presence (available / away / unknown) |
-| **Timeline** | Bounded chronological history of session events |
-| **Session Insights** | Opt-in metrics and on-demand reports — not an analytics SDK |
-| **Developer Experience** | Wait, conditions, resilience, plugins, and an interactive playground |
+| **Session Intelligence**      | Opt-in activity (active / idle) and **page-local** presence (available / away / unknown)                                    |
+| **Timeline**                  | Bounded chronological history of session events                                                                             |
+| **Session Insights**          | Opt-in metrics and on-demand reports — not an analytics SDK                                                                 |
+| **Developer Experience**      | Wait, conditions, resilience, plugins, and an interactive playground                                                        |
 
 ## Install
 
@@ -168,16 +168,16 @@ console.log(metrics.attention().score); // 0–100
 console.log(reports.sessionSummary());
 ```
 
-| Helper | Layer | What it solves |
-| --- | --- | --- |
-| `createActivityApi` | Session Intelligence | Active / idle facade |
-| `createPresenceApi` | Session Intelligence | Page-local available / away / unknown |
-| `createTimelineApi` | Timeline | Bounded event history |
-| `createMetricsApi` | Session Insights | Durations, counts, attention score |
-| `createReportsApi` | Session Insights | On-demand session summaries |
-| `createWaitApi` | Developer Experience | `untilVisible`, `untilOnline`, … |
-| `createConditionsApi` | Developer Experience | `when.hidden(...)`, … |
-| `createResilienceApi` | Developer Experience | Reconnect / wake / restore |
+| Helper                | Layer                | What it solves                        |
+| --------------------- | -------------------- | ------------------------------------- |
+| `createActivityApi`   | Session Intelligence | Active / idle facade                  |
+| `createPresenceApi`   | Session Intelligence | Page-local available / away / unknown |
+| `createTimelineApi`   | Timeline             | Bounded event history                 |
+| `createMetricsApi`    | Session Insights     | Durations, counts, attention score    |
+| `createReportsApi`    | Session Insights     | On-demand session summaries           |
+| `createWaitApi`       | Developer Experience | `untilVisible`, `untilOnline`, …      |
+| `createConditionsApi` | Developer Experience | `when.hidden(...)`, …                 |
+| `createResilienceApi` | Developer Experience | Reconnect / wake / restore            |
 
 `createSessionHealthApi` and `createSessionPredictApi` are **experimental** helpers — documented in the intelligence guide, not homepage flagships.
 
