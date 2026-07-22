@@ -1,11 +1,11 @@
 ---
 title: JOC Philosophy
-description: Design principles behind the JayOnCode monorepo — independent packages, headless cores, and contributor-ready standards.
+description: Design principles behind the JayOnCode JOC Ecosystem — independent packages, headless cores, docs, and playgrounds.
 ---
 
 # Philosophy
 
-JOC is built on a small set of non-negotiable ideas. They explain why the monorepo looks the way it does — and what “good” means as the ecosystem grows.
+The **JOC Ecosystem** is built on a small set of non-negotiable ideas. They explain why the monorepo looks the way it does — and what “good” means as the ecosystem grows.
 
 ## Headless first
 

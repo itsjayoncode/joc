@@ -305,5 +305,16 @@ describe("documentation integration output", () => {
     expect(existsSync(formIntelligentApiIndex)).toBe(true);
     expect(existsSync(formIntelligentIndex)).toBe(true);
     expect(readdirSync(formIntelligentModulesDir).length).toBeGreaterThan(0);
-  }, 30_000);
+
+    const storageModulesDir = path.join(rootDir, "apps/docs/docs/packages/storage/modules");
+    const storagePlaygroundDir = path.join(rootDir, "apps/docs/docs/packages/storage/playground");
+    const storageApiIndex = path.join(rootDir, "apps/docs/docs/packages/storage/api/index.md");
+    const storageIndex = path.join(rootDir, "apps/docs/docs/packages/storage/index.md");
+
+    expect(existsSync(storageModulesDir)).toBe(true);
+    expect(existsSync(storagePlaygroundDir)).toBe(true);
+    expect(existsSync(storageApiIndex)).toBe(true);
+    expect(existsSync(storageIndex)).toBe(true);
+    expect(readdirSync(storageModulesDir).length).toBeGreaterThan(0);
+  }, 120_000);
 });

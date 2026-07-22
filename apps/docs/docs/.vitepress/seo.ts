@@ -4,18 +4,20 @@ const DEFAULT_PLAYGROUND_URL = "https://itsjayoncode.github.io/joc/playground/br
 export const docsSiteUrl = (process.env.VITE_DOCS_SITE_URL ?? DEFAULT_SITE_URL).replace(/\/$/, "");
 export const docsPlaygroundUrl = process.env.VITE_DOCS_PLAYGROUND_URL ?? DEFAULT_PLAYGROUND_URL;
 
-export const siteName = "JOC by JayOnCode";
+export const siteName = "JayOnCode";
 export const siteTagline =
-  "Headless TypeScript libraries for the web — forms, browser lifecycle, object diffing, and more under @jayoncode/*.";
+  "JOC Ecosystem — independent, headless TypeScript libraries for modern web apps. Framework-agnostic, thoroughly documented, with interactive playgrounds.";
 
 export const defaultKeywords = [
   "JOC",
+  "JOC Ecosystem",
   "JayOnCode",
   "form intelligence",
   "headless forms",
   "object diff",
   "browser lifecycle",
   "browser session",
+  "storage",
   "TypeScript",
   "JavaScript",
   "page visibility API",
@@ -49,7 +51,9 @@ export function buildOrganizationJsonLd(siteUrl: string): string {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "JayOnCode",
-    alternateName: "JOC",
+    alternateName: ["JOC", "JOC Ecosystem"],
+    description:
+      "An ecosystem of independent, headless TypeScript libraries engineered for modern web applications. Every package is framework-agnostic, thoroughly documented, and backed by interactive playgrounds for a consistent developer experience.",
     url: siteUrl,
     sameAs: ["https://github.com/itsjayoncode", "https://www.npmjs.com/~jayoncode"],
   });

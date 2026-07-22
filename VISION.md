@@ -1,10 +1,10 @@
 # JOC Vision
 
-JOC (JayOnCode) exists to grow a **durable ecosystem of headless TypeScript libraries** that feel cohesive without becoming tightly coupled.
+**JayOnCode** builds the **JOC Ecosystem**: an ecosystem of independent, headless TypeScript libraries engineered for modern web applications. Every package is framework-agnostic, thoroughly documented, and backed by interactive playgrounds for a consistent developer experience.
 
 ## What JOC is
 
-A monorepo of independently installable `@jayoncode/*` packages — each solving one hard frontend problem (browser session lifecycle, form workflows, object diffing, and more) with typed, tree-shakeable, framework-agnostic cores.
+A monorepo of independently installable `@jayoncode/*` packages — each solving one hard frontend problem (browser session lifecycle, form workflows, object diffing, client storage, and more) with typed, tree-shakeable, framework-agnostic cores.
 
 ## What JOC should become
 
@@ -24,7 +24,7 @@ A monorepo of independently installable `@jayoncode/*` packages — each solving
 
 ## Guiding belief
 
-Strong repository architecture is part of product quality. Docs, CI, SemVer, and package boundaries are not overhead — they are how JOC stays trustworthy as the ecosystem grows.
+Strong repository architecture is part of product quality. Docs, CI, SemVer, and package boundaries are not overhead — they are how the JOC Ecosystem stays trustworthy as it grows.
 
 ## North star
 

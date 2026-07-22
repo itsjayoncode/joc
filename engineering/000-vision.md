@@ -2,11 +2,11 @@
 
 ## Why This Document Exists
 
-This document anchors the long-term intent of the JOC ecosystem so repository decisions can be measured against a consistent vision before implementation details begin to compete for attention.
+This document anchors the long-term intent of the **JOC Ecosystem** (JayOnCode) so repository decisions can be measured against a consistent vision before implementation details begin to compete for attention.
 
 ## Vision
 
-JOC should become a durable ecosystem of focused libraries that share quality standards, documentation habits, and architectural discipline without becoming tightly coupled products.
+The JOC Ecosystem should become a durable collection of independent, headless TypeScript libraries that share quality standards, documentation habits, and architectural discipline — without becoming tightly coupled products. Every package should be framework-agnostic, thoroughly documented, and backed by interactive playgrounds for a consistent developer experience.
 
 ## Repository-Level Goals
 

@@ -1,13 +1,14 @@
 ---
 layout: home
-title: JOC | Headless TypeScript libraries for the web
-description: JOC is an open-source ecosystem of headless TypeScript libraries — browser lifecycle, forms, object diffing, and more — composable, tree-shakeable, and framework-agnostic.
+title: JayOnCode | JOC Ecosystem
+description: An ecosystem of independent, headless TypeScript libraries engineered for modern web applications. Every package is framework-agnostic, thoroughly documented, and backed by interactive playgrounds for a consistent developer experience.
 hero:
-  text: Headless TypeScript libraries for real frontend infrastructure.
-  tagline: JOC (JayOnCode) ships focused @jayoncode/* packages — forms, browser session lifecycle, object diffing, and more — so you stop rewriting the same orchestration in every app.
+  name: JayOnCode
+  text: JOC Ecosystem
+  tagline: An ecosystem of independent, headless TypeScript libraries engineered for modern web applications. Every package is framework-agnostic, thoroughly documented, and backed by interactive playgrounds for a consistent developer experience.
   image:
     src: /jayoncode-profile-logo-opt.png
-    alt: JOC by JayOnCode logo
+    alt: JayOnCode — JOC Ecosystem logo
   actions:
     - theme: brand
       text: Get Started
@@ -24,10 +25,10 @@ features:
     details: Import only what you use. Optional engines stay out of your bundle.
   - title: Framework agnostic
     details: React, Vue, Angular, Svelte, or vanilla — same cores everywhere.
-  - title: SSR safe
-    details: Capability detection and client-safe startup for modern frameworks.
-  - title: Composable
-    details: Small focused packages you combine — no monolithic SDK.
+  - title: Thoroughly documented
+    details: Learning paths, guides, and API reference that stay in sync with the code.
+  - title: Interactive playgrounds
+    details: Try real APIs in the browser before you install — same contracts as production.
 ---
 
 <HomeFx />

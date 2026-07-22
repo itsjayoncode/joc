@@ -1,11 +1,11 @@
 ---
 title: Contributing to JOC
-description: How to contribute to the JayOnCode monorepo — setup, good first contributions, PR expectations, and Changesets.
+description: How to contribute to the JayOnCode JOC Ecosystem — setup, good first contributions, PR expectations, and Changesets.
 ---
 
 # Contributing
 
-Thanks for helping build JOC. Contributions are welcome across **docs, packages, playgrounds, and repository health** — as long as they respect package boundaries and the [roadmap](/roadmap/).
+Thanks for helping build the **JOC Ecosystem**. Contributions are welcome across **docs, packages, playgrounds, and repository health** — as long as they respect package boundaries and the [roadmap](/roadmap/).
 
 For the full project policy, also read [CONTRIBUTING.md](https://github.com/itsjayoncode/joc/blob/master/CONTRIBUTING.md) on GitHub.
 

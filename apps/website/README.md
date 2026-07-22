@@ -1,6 +1,6 @@
 # JayOnCode website
 
-Public landing for **JOC** — routes people to docs, playgrounds, and packages. Not a framework shell.
+Public landing for the **JOC Ecosystem** — routes people to docs, playgrounds, and packages. Not a framework shell.
 
 ## Local
 
