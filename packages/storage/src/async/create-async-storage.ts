@@ -1,42 +1,40 @@
-import { createEnvelope, defaultDeserialize, defaultSerialize, isEnvelope } from "./envelope.js";
-import { assertNamespace, assertPolicyName, namespacedKey } from "./keys.js";
-import { computeExpiresAt, isExpired } from "./ttl.js";
+import {
+  createEnvelope,
+  defaultDeserialize,
+  defaultSerialize,
+  isEnvelope,
+} from "../core/envelope.js";
+import { assertNamespace, assertPolicyName, namespacedKey } from "../core/keys.js";
+import { computeExpiresAt, isExpired } from "../core/ttl.js";
 import { ConfigurationError, MigrationError, SerializationError } from "../errors/index.js";
-import { STORAGE_INTERNALS } from "../internals.js";
 
-import type { StorageInternals } from "../internals.js";
 import type {
-  CreateStorageOptions,
-  JayOnCodeStorage,
+  AsyncStorageAdapter,
+  CreateAsyncStorageOptions,
+  JayOnCodeAsyncStorage,
   SetStorageOptions,
   StorageEnvelope,
   StoragePolicy,
   TtlDuration,
 } from "../types/index.js";
 
-export function createStorage<T = unknown>(options: CreateStorageOptions<T>): JayOnCodeStorage<T> {
+export function createAsyncStorage<T = unknown>(
+  options: CreateAsyncStorageOptions<T>,
+): JayOnCodeAsyncStorage<T> {
   const namespace = assertNamespace(options.namespace);
   const schemaVersion = options.schemaVersion?.trim() || "1";
   const serialize = options.serialize ?? defaultSerialize;
   const deserialize = options.deserialize ?? defaultDeserialize;
   const prefix = `${namespace}:`;
   const policies = new Map<string, StoragePolicy>();
+  const adapter = options.adapter;
+  const now = (): number => Date.now();
 
   if (options.policies) {
     for (const [name, policy] of Object.entries(options.policies)) {
       policies.set(assertPolicyName(name), policy.ttl !== undefined ? { ttl: policy.ttl } : {});
     }
   }
-
-  const internals: StorageInternals = {
-    adapter: options.adapter,
-    namespace,
-    prefix,
-    schemaVersion,
-    serialize,
-    deserialize,
-    now: () => Date.now(),
-  };
 
   const resolveTtl = (setOptions?: SetStorageOptions): TtlDuration | undefined => {
     let policy: StoragePolicy | undefined;
@@ -63,13 +61,13 @@ export function createStorage<T = unknown>(options: CreateStorageOptions<T>): Ja
     return options.ttl;
   };
 
-  const persistEnvelope = (key: string, envelope: StorageEnvelope<T>): void => {
-    internals.adapter.setItem(namespacedKey(namespace, key), serialize(envelope));
+  const persistEnvelope = async (key: string, envelope: StorageEnvelope<T>): Promise<void> => {
+    await adapter.setItem(namespacedKey(namespace, key), serialize(envelope));
   };
 
-  const readEnvelope = (key: string): StorageEnvelope<T> | null => {
+  const readEnvelope = async (key: string): Promise<StorageEnvelope<T> | null> => {
     const physical = namespacedKey(namespace, key);
-    const raw = internals.adapter.getItem(physical);
+    const raw = await adapter.getItem(physical);
     if (raw === null) {
       return null;
     }
@@ -91,15 +89,17 @@ export function createStorage<T = unknown>(options: CreateStorageOptions<T>): Ja
     }
 
     const envelope = parsed as StorageEnvelope<T>;
-    if (isExpired(envelope.expiresAt, internals.now())) {
-      internals.adapter.removeItem(physical);
+    if (isExpired(envelope.expiresAt, now())) {
+      await adapter.removeItem(physical);
       return null;
     }
 
     return envelope;
   };
 
-  const migrateIfNeeded = (envelope: StorageEnvelope<T>): StorageEnvelope<T> | null => {
+  const migrateIfNeeded = async (
+    envelope: StorageEnvelope<T>,
+  ): Promise<StorageEnvelope<T> | null> => {
     if (envelope.schemaVersion === schemaVersion) {
       return envelope;
     }
@@ -112,7 +112,7 @@ export function createStorage<T = unknown>(options: CreateStorageOptions<T>): Ja
     }
 
     try {
-      const migrated = options.migrate(envelope, envelope.schemaVersion);
+      const migrated = await options.migrate(envelope, envelope.schemaVersion);
       if (migrated === null) {
         return null;
       }
@@ -128,57 +128,57 @@ export function createStorage<T = unknown>(options: CreateStorageOptions<T>): Ja
     }
   };
 
-  const api: JayOnCodeStorage<T> = {
+  const api: JayOnCodeAsyncStorage<T> = {
     namespace,
     schemaVersion,
 
-    get(key) {
-      const envelope = readEnvelope(key);
+    async get(key) {
+      const envelope = await readEnvelope(key);
       if (!envelope) {
         return null;
       }
 
-      const next = migrateIfNeeded(envelope);
+      const next = await migrateIfNeeded(envelope);
       if (!next) {
-        internals.adapter.removeItem(namespacedKey(namespace, key));
+        await adapter.removeItem(namespacedKey(namespace, key));
         return null;
       }
 
       if (next !== envelope || next.schemaVersion !== envelope.schemaVersion) {
-        persistEnvelope(key, next);
+        await persistEnvelope(key, next);
       }
 
       return next.value;
     },
 
-    set(key, value, setOptions?: SetStorageOptions) {
-      const savedAt = internals.now();
+    async set(key, value, setOptions?: SetStorageOptions) {
+      const savedAt = now();
       const expiresAt = computeExpiresAt(savedAt, resolveTtl(setOptions));
-      persistEnvelope(key, createEnvelope(value, schemaVersion, savedAt, expiresAt));
+      await persistEnvelope(key, createEnvelope(value, schemaVersion, savedAt, expiresAt));
     },
 
-    remove(key) {
-      internals.adapter.removeItem(namespacedKey(namespace, key));
+    async remove(key) {
+      await adapter.removeItem(namespacedKey(namespace, key));
     },
 
-    has(key) {
-      return api.peek(key) !== null;
+    async has(key) {
+      return (await api.peek(key)) !== null;
     },
 
-    clear() {
-      if (typeof internals.adapter.keys !== "function") {
+    async clear() {
+      if (typeof adapter.keys !== "function") {
         throw new ConfigurationError(
           "clear() requires adapter.keys() to enumerate namespace keys.",
         );
       }
-      for (const key of internals.adapter.keys()) {
+      for (const key of await adapter.keys()) {
         if (key.startsWith(prefix)) {
-          internals.adapter.removeItem(key);
+          await adapter.removeItem(key);
         }
       }
     },
 
-    peek(key) {
+    async peek(key) {
       return readEnvelope(key);
     },
 
@@ -187,12 +187,26 @@ export function createStorage<T = unknown>(options: CreateStorageOptions<T>): Ja
     },
   };
 
-  Object.defineProperty(api, STORAGE_INTERNALS, {
-    value: internals,
-    enumerable: false,
-    writable: false,
-    configurable: false,
-  });
-
   return api;
+}
+
+/** In-memory async adapter for tests and ephemeral sessions. */
+export function createMemoryAsyncAdapter(): AsyncStorageAdapter {
+  const map = new Map<string, string>();
+  return {
+    getItem(key) {
+      return Promise.resolve(map.get(key) ?? null);
+    },
+    setItem(key, value) {
+      map.set(key, value);
+      return Promise.resolve();
+    },
+    removeItem(key) {
+      map.delete(key);
+      return Promise.resolve();
+    },
+    keys() {
+      return Promise.resolve([...map.keys()]);
+    },
+  };
 }

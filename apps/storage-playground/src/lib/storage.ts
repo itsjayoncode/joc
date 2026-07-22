@@ -20,6 +20,8 @@ export function getStorageIntegrationSummary() {
       "observable",
       "diagnostics",
       "transactions",
+      "async",
+      "cross-tab",
     ],
   };
 }

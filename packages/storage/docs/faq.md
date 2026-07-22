@@ -16,11 +16,13 @@ You can. Storage adds namespaces, envelopes, TTL, `schemaVersion` / `migrate`, p
 
 ### Is this IndexedDB?
 
-No. v1 is **sync** Web Storage–shaped (memory / `localStorage` / `sessionStorage`). IndexedDB is a later phase.
+**Sync root (`createStorage`)** stays Web Storage–shaped (memory / `localStorage` / `sessionStorage`).
+
+**Async (0.2+):** use [`@jayoncode/storage/async`](/packages/storage/modules/async) with `createIndexedDbAdapter()` for IndexedDB. Default DB name is `jayoncode-storage`.
 
 ### How is this different from Form Intelligence drafts?
 
-FI owns draft UX. Storage is persistence policy only — you can still use Storage as an adapter under FI in app code ([Composition](/packages/storage/modules/composition)).
+FI owns draft UX and its own IndexedDB draft helper (`jayoncode-form-intelligent-drafts`). Storage IndexedDB is general persistence — keep the DBs separate.
 
 ### What does `has()` mean?
 
@@ -40,7 +42,9 @@ Tooling stays on `@jayoncode/storage/diagnostics` so the default import stays sm
 
 ### Cross-tab observe / ACID transactions?
 
-No. Observe is **in-process** (same JS realm). Transactions are **same-tab** journal + commit — not multi-tab ACID.
+- **In-process events:** [`/observable`](/packages/storage/modules/observable)
+- **Cross-tab notify (0.2+):** [`/cross-tab`](/packages/storage/modules/cross-tab) — BroadcastChannel + optional `storage` event; no auto-merge
+- **Transactions:** same-tab journal only — not multi-tab ACID
 
 ### Collections API? (`push` / `filter` on keys)
 

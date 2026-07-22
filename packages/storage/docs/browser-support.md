@@ -20,6 +20,6 @@ When `localStorage` / `sessionStorage` is missing: reads return `null`, writes t
 
 Private / blocked storage may surface as `QuotaExceededError` or `AdapterError` — catch at write boundaries.
 
-IndexedDB is not part of v1 (future async surface).
+IndexedDB: use [`@jayoncode/storage/async`](./async.md) (`createIndexedDbAdapter`). Sync core remains Web Storage–shaped.
 
 See also: [Security](/packages/storage/modules/security) · [faq.md](./faq.md)

@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/storage",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": false,
   "description": "Policy-driven client persistence — typed envelopes, TTL, migrations, and explicit adapters.",
   "license": "MIT",
@@ -56,6 +56,14 @@
     "./transactions": {
       "types": "./dist/transactions/index.d.ts",
       "import": "./dist/transactions/index.js"
+    },
+    "./async": {
+      "types": "./dist/async/index.d.ts",
+      "import": "./dist/async/index.js"
+    },
+    "./cross-tab": {
+      "types": "./dist/cross-tab/index.d.ts",
+      "import": "./dist/cross-tab/index.js"
     }
   },
   "scripts": {
