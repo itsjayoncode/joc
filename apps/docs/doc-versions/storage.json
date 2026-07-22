@@ -1,6 +1,16 @@
 {
   "package": "@jayoncode/storage",
   "basePath": "/packages/storage",
-  "archive": { "major": true, "minor": true, "patch": false },
-  "archives": []
+  "archive": {
+    "major": true,
+    "minor": true,
+    "patch": false
+  },
+  "archives": [
+    {
+      "version": "0.2.0",
+      "label": "v0.2.0",
+      "archivedAt": "2026-07-22"
+    }
+  ]
 }
