@@ -48,8 +48,15 @@ export function SandboxCanvas() {
     simulated,
     timeline,
     metricsSnapshot,
+    activityView,
+    presenceView,
+    presenceLabel,
+    sessionReport,
     timelineApiEnabled,
     metricsApiEnabled,
+    activityApiEnabled,
+    presenceApiEnabled,
+    reportsApiEnabled,
     running,
     config,
   } = useSandbox();
@@ -138,6 +145,40 @@ export function SandboxCanvas() {
               }
             />
           </div>
+          {activityApiEnabled && activityView ? (
+            <>
+              <p className={styles.hint}>
+                Session Intelligence via <code>createActivityApi</code> (page activity facade).
+              </p>
+              <div className={styles.stateGrid}>
+                <StateCard label="Activity status" value={activityView.status} />
+                <StateCard
+                  label="Last active"
+                  value={
+                    activityView.lastActiveAt !== undefined
+                      ? new Date(activityView.lastActiveAt).toLocaleTimeString()
+                      : "—"
+                  }
+                />
+              </div>
+            </>
+          ) : null}
+          {presenceApiEnabled && presenceView ? (
+            <>
+              <p className={styles.hint}>
+                Page-local presence via <code>createPresenceApi</code> (not multi-user).
+              </p>
+              <div className={styles.stateGrid}>
+                <StateCard label="Presence" value={presenceLabel ?? presenceView.status} />
+                <StateCard
+                  label="Reasons"
+                  value={
+                    presenceView.reasons.length > 0 ? presenceView.reasons.join(", ") : "none"
+                  }
+                />
+              </div>
+            </>
+          ) : null}
           {metricsApiEnabled && metricsSnapshot ? (
             <>
               <p className={styles.hint}>
@@ -159,6 +200,44 @@ export function SandboxCanvas() {
                   value={`${(metricsSnapshot.offlineMs / 1000).toFixed(1)}s`}
                 />
                 <StateCard label="Reconnects" value={String(metricsSnapshot.reconnectCount)} />
+              </div>
+            </>
+          ) : null}
+          {reportsApiEnabled && sessionReport ? (
+            <>
+              <p className={styles.hint}>
+                Session summary via <code>createReportsApi</code>
+                {metricsApiEnabled ? "" : " (metrics allocated for the report only)"}.
+              </p>
+              <div className={styles.stateGrid}>
+                <StateCard
+                  label="Session"
+                  value={`${(sessionReport.sessionDuration / 1000).toFixed(1)}s`}
+                />
+                <StateCard
+                  label="Attention"
+                  value={`${String(sessionReport.attention.score)}%`}
+                />
+                <StateCard
+                  label="Focused"
+                  value={`${(sessionReport.focusDuration / 1000).toFixed(1)}s`}
+                />
+                <StateCard
+                  label="Idle"
+                  value={`${(sessionReport.idleDuration / 1000).toFixed(1)}s`}
+                />
+                <StateCard
+                  label="Offline"
+                  value={`${(sessionReport.offlineDuration / 1000).toFixed(1)}s`}
+                />
+                <StateCard
+                  label="Highlights"
+                  value={
+                    sessionReport.highlights.length > 0
+                      ? sessionReport.highlights.slice(0, 2).join(" · ")
+                      : "—"
+                  }
+                />
               </div>
             </>
           ) : null}

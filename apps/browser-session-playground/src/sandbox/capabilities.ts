@@ -98,8 +98,8 @@ export const SANDBOX_CAPABILITIES: readonly SandboxCapability[] = [
     group: "future",
     docsPath: "/modules/activity",
     description:
-      "Shipped in package via createActivityApi (active/idle). Not wired in this sandbox UI yet.",
-    available: false,
+      "Opt-in createActivityApi — active/idle facade on the sandbox Dashboard.",
+    available: true,
     isEnabled: (c) => c.modules.activity,
   },
   {
@@ -108,8 +108,8 @@ export const SANDBOX_CAPABILITIES: readonly SandboxCapability[] = [
     group: "future",
     docsPath: "/modules/presence",
     description:
-      "Shipped in package via createPresenceApi — page-local available/away/unknown. Not wired in this sandbox UI yet.",
-    available: false,
+      "Opt-in createPresenceApi — page-local ACTIVE/AWAY/UNKNOWN on the sandbox Dashboard.",
+    available: true,
     isEnabled: (c) => c.modules.presence,
   },
   {
@@ -138,8 +138,8 @@ export const SANDBOX_CAPABILITIES: readonly SandboxCapability[] = [
     group: "future",
     docsPath: "/modules/reports",
     description:
-      "Shipped in package via createReportsApi — on-demand session summary. Not wired in this sandbox UI yet.",
-    available: false,
+      "Opt-in createReportsApi — on-demand session summary on the sandbox Dashboard (allocates metrics if needed).",
+    available: true,
     isEnabled: (c) => c.modules.reports,
   },
 ];

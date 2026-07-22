@@ -10,14 +10,27 @@ import {
 } from "react";
 
 import type {
+  ActivityApi,
+  ActivityView,
   BrowserLifecycle,
   BrowserLifecycleRuntimeDiagnostics,
   BrowserLifecycleSnapshot,
   MetricsApi,
   MetricsSnapshot,
+  PresenceApi,
+  PresenceLabel,
+  PresenceView,
+  ReportsApi,
+  SessionSummaryReport,
   TimelineApi,
 } from "@jayoncode/browser-lifecycle";
-import { createMetricsApi, createTimelineApi } from "@jayoncode/browser-lifecycle";
+import {
+  createActivityApi,
+  createMetricsApi,
+  createPresenceApi,
+  createReportsApi,
+  createTimelineApi,
+} from "@jayoncode/browser-lifecycle";
 
 import { createSandboxSession } from "./build-session.js";
 import { copyTextToClipboard, decodeSandboxShareHash } from "./clipboard.js";
@@ -47,8 +60,15 @@ interface SandboxContextValue {
   readonly consoleEntries: readonly SandboxConsoleEntry[];
   readonly timeline: readonly TimelineEntry[];
   readonly metricsSnapshot: MetricsSnapshot | null;
+  readonly activityView: ActivityView | null;
+  readonly presenceView: PresenceView | null;
+  readonly presenceLabel: PresenceLabel | null;
+  readonly sessionReport: SessionSummaryReport | null;
   readonly timelineApiEnabled: boolean;
   readonly metricsApiEnabled: boolean;
+  readonly activityApiEnabled: boolean;
+  readonly presenceApiEnabled: boolean;
+  readonly reportsApiEnabled: boolean;
   readonly simulated: SimulatedBrowserState;
   readonly workspaceTab: WorkspaceTab;
   readonly inspectorTab: InspectorTab;
@@ -133,6 +153,10 @@ export function SandboxProvider({ children }: { readonly children: ReactNode }) 
   const [consoleEntries, setConsoleEntries] = useState<readonly SandboxConsoleEntry[]>([]);
   const [timeline, setTimeline] = useState<readonly TimelineEntry[]>([]);
   const [metricsSnapshot, setMetricsSnapshot] = useState<MetricsSnapshot | null>(null);
+  const [activityView, setActivityView] = useState<ActivityView | null>(null);
+  const [presenceView, setPresenceView] = useState<PresenceView | null>(null);
+  const [presenceLabel, setPresenceLabel] = useState<PresenceLabel | null>(null);
+  const [sessionReport, setSessionReport] = useState<SessionSummaryReport | null>(null);
   const [simulated, setSimulated] = useState<SimulatedBrowserState>(EMPTY_SIMULATED);
   const [workspaceTab, setWorkspaceTab] = useState<WorkspaceTab>("dashboard");
   const [inspectorTab, setInspectorTab] = useState<InspectorTab>("runtime");
@@ -143,6 +167,9 @@ export function SandboxProvider({ children }: { readonly children: ReactNode }) 
   const sessionRef = useRef<BrowserLifecycle | null>(null);
   const timelineApiRef = useRef<TimelineApi | null>(null);
   const metricsApiRef = useRef<MetricsApi | null>(null);
+  const activityApiRef = useRef<ActivityApi | null>(null);
+  const presenceApiRef = useRef<PresenceApi | null>(null);
+  const reportsApiRef = useRef<ReportsApi | null>(null);
   const consolePausedRef = useRef(false);
   const configRef = useRef(config);
 
@@ -245,6 +272,16 @@ export function SandboxProvider({ children }: { readonly children: ReactNode }) 
         if (metricsApiRef.current) {
           setMetricsSnapshot(metricsApiRef.current.snapshot());
         }
+        if (activityApiRef.current) {
+          setActivityView(activityApiRef.current.state());
+        }
+        if (presenceApiRef.current) {
+          setPresenceView(presenceApiRef.current.state());
+          setPresenceLabel(presenceApiRef.current.label());
+        }
+        if (reportsApiRef.current) {
+          setSessionReport(reportsApiRef.current.sessionSummary());
+        }
 
         if (cfg.diagnostics.eventLogging) {
           pushConsole(event.type, "info", event.source, entry.summary);
@@ -260,9 +297,19 @@ export function SandboxProvider({ children }: { readonly children: ReactNode }) 
   const disposeCurrent = useCallback(() => {
     timelineApiRef.current?.dispose();
     metricsApiRef.current?.dispose();
+    activityApiRef.current?.dispose();
+    presenceApiRef.current?.dispose();
+    reportsApiRef.current?.dispose();
     timelineApiRef.current = null;
     metricsApiRef.current = null;
+    activityApiRef.current = null;
+    presenceApiRef.current = null;
+    reportsApiRef.current = null;
     setMetricsSnapshot(null);
+    setActivityView(null);
+    setPresenceView(null);
+    setPresenceLabel(null);
+    setSessionReport(null);
 
     const current = sessionRef.current;
     if (!current) {
@@ -281,16 +328,26 @@ export function SandboxProvider({ children }: { readonly children: ReactNode }) 
     setRunning(false);
   }, []);
 
-  // Opt-in Session Insights / Timeline factories — zero cost until toggled
+  // Opt-in Session Intelligence / Insights factories — zero cost until toggled
   useEffect(() => {
     const current = sessionRef.current;
     timelineApiRef.current?.dispose();
     metricsApiRef.current?.dispose();
+    activityApiRef.current?.dispose();
+    presenceApiRef.current?.dispose();
+    reportsApiRef.current?.dispose();
     timelineApiRef.current = null;
     metricsApiRef.current = null;
+    activityApiRef.current = null;
+    presenceApiRef.current = null;
+    reportsApiRef.current = null;
 
     if (!current) {
       setMetricsSnapshot(null);
+      setActivityView(null);
+      setPresenceView(null);
+      setPresenceLabel(null);
+      setSessionReport(null);
       return;
     }
 
@@ -299,22 +356,71 @@ export function SandboxProvider({ children }: { readonly children: ReactNode }) 
       pushConsole("createTimelineApi attached", "success", "insights");
     }
 
-    if (config.modules.metrics) {
+    const needMetrics = config.modules.metrics || config.modules.reports;
+    if (needMetrics) {
       const metrics = createMetricsApi(current);
       metricsApiRef.current = metrics;
       setMetricsSnapshot(metrics.snapshot());
-      pushConsole("createMetricsApi attached", "success", "insights");
+      if (config.modules.metrics) {
+        pushConsole("createMetricsApi attached", "success", "insights");
+      }
     } else {
       setMetricsSnapshot(null);
+    }
+
+    if (config.modules.activity) {
+      const activity = createActivityApi(current);
+      activityApiRef.current = activity;
+      setActivityView(activity.state());
+      pushConsole("createActivityApi attached", "success", "insights");
+    } else {
+      setActivityView(null);
+    }
+
+    if (config.modules.presence) {
+      const presence = createPresenceApi(current);
+      presenceApiRef.current = presence;
+      setPresenceView(presence.state());
+      setPresenceLabel(presence.label());
+      pushConsole("createPresenceApi attached", "success", "insights");
+    } else {
+      setPresenceView(null);
+      setPresenceLabel(null);
+    }
+
+    if (config.modules.reports && metricsApiRef.current) {
+      const reports = createReportsApi({
+        metrics: metricsApiRef.current,
+        ...(timelineApiRef.current ? { timeline: timelineApiRef.current } : {}),
+      });
+      reportsApiRef.current = reports;
+      setSessionReport(reports.sessionSummary());
+      pushConsole("createReportsApi attached", "success", "insights");
+    } else {
+      setSessionReport(null);
     }
 
     return () => {
       timelineApiRef.current?.dispose();
       metricsApiRef.current?.dispose();
+      activityApiRef.current?.dispose();
+      presenceApiRef.current?.dispose();
+      reportsApiRef.current?.dispose();
       timelineApiRef.current = null;
       metricsApiRef.current = null;
+      activityApiRef.current = null;
+      presenceApiRef.current = null;
+      reportsApiRef.current = null;
     };
-  }, [session, config.modules.timeline, config.modules.metrics, pushConsole]);
+  }, [
+    session,
+    config.modules.timeline,
+    config.modules.metrics,
+    config.modules.activity,
+    config.modules.presence,
+    config.modules.reports,
+    pushConsole,
+  ]);
 
   // Recreate when structural config changes
   useEffect(() => {
@@ -506,8 +612,15 @@ export function SandboxProvider({ children }: { readonly children: ReactNode }) 
     consoleEntries,
     timeline,
     metricsSnapshot,
+    activityView,
+    presenceView,
+    presenceLabel,
+    sessionReport,
     timelineApiEnabled: config.modules.timeline,
     metricsApiEnabled: config.modules.metrics,
+    activityApiEnabled: config.modules.activity,
+    presenceApiEnabled: config.modules.presence,
+    reportsApiEnabled: config.modules.reports,
     simulated,
     workspaceTab,
     inspectorTab,
