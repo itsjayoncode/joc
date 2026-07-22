@@ -23,6 +23,15 @@ export interface StorageAdapter {
   keys?(): readonly string[];
 }
 
+/** Async string key/value backend (IndexedDB-compatible). */
+export interface AsyncStorageAdapter {
+  getItem(key: string): Promise<string | null>;
+  setItem(key: string, value: string): Promise<void>;
+  removeItem(key: string): Promise<void>;
+  /** Optional: list all keys (required for namespace `clear`). */
+  keys?(): Promise<readonly string[]>;
+}
+
 export interface StorageEnvelopeV1<T = unknown> {
   readonly v: 1;
   readonly schemaVersion: string;
@@ -54,6 +63,20 @@ export interface CreateStorageOptions<T = unknown> {
   ) => StorageEnvelope<T> | null;
 }
 
+export interface CreateAsyncStorageOptions<T = unknown> {
+  readonly namespace: string;
+  readonly adapter: AsyncStorageAdapter;
+  readonly ttl?: TtlDuration;
+  readonly policies?: Readonly<Record<string, StoragePolicy>>;
+  readonly schemaVersion?: string;
+  readonly serialize?: (value: unknown) => string;
+  readonly deserialize?: (raw: string) => unknown;
+  readonly migrate?: (
+    envelope: StorageEnvelope<T>,
+    fromVersion: string,
+  ) => StorageEnvelope<T> | null | Promise<StorageEnvelope<T> | null>;
+}
+
 export interface SetStorageOptions {
   readonly ttl?: TtlDuration;
   /** Named policy from `policies` / `definePolicy` (validated even when `ttl` overrides). */
@@ -79,5 +102,17 @@ export interface JayOnCodeStorage<T = unknown> {
   /** Read the envelope without applying migration (still drops expired). */
   peek(key: string): StorageEnvelope<T> | null;
   /** Register or replace a named write preset (ttl-only in v1). */
+  definePolicy(name: string, policy: StoragePolicy): void;
+}
+
+export interface JayOnCodeAsyncStorage<T = unknown> {
+  readonly namespace: string;
+  readonly schemaVersion: string;
+  get(key: string): Promise<T | null>;
+  set(key: string, value: T, options?: SetStorageOptions): Promise<void>;
+  remove(key: string): Promise<void>;
+  has(key: string): Promise<boolean>;
+  clear(): Promise<void>;
+  peek(key: string): Promise<StorageEnvelope<T> | null>;
   definePolicy(name: string, policy: StoragePolicy): void;
 }

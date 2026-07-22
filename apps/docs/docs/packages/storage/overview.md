@@ -35,11 +35,11 @@ That is enough for many apps. Everything else (TTL, policies, migrate, cleanup, 
 
 ## Pick your path
 
-| You are…                                        | Read this                                                                                                     | Then                                                                                                                      |
-| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| **Beginner** — first time using Storage         | [Tutorial](/packages/storage/modules/getting-started)                                                         | [Concepts](/packages/storage/modules/concepts) → [Recipes](/packages/storage/modules/recipes)                             |
-| **Shipping an app** — prefs, cache, SSR         | [Core](/packages/storage/modules/core) · [Errors](/packages/storage/modules/errors)                           | [Best practices](/packages/storage/modules/best-practices) · [Browser support](/packages/storage/modules/browser-support) |
-| **Advanced** — GC, backup, events, batch writes | [Maintenance](/packages/storage/modules/maintenance) → [Transactions](/packages/storage/modules/transactions) | [Diagnostics](/packages/storage/modules/diagnostics) · [Composition](/packages/storage/modules/composition)               |
+| You are…                                          | Read this                                                                                                                                          | Then                                                                                                                      |
+| ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| **Beginner** — first time using Storage           | [Tutorial](/packages/storage/modules/getting-started)                                                                                              | [Concepts](/packages/storage/modules/concepts) → [Recipes](/packages/storage/modules/recipes)                             |
+| **Shipping an app** — prefs, cache, SSR           | [Core](/packages/storage/modules/core) · [Errors](/packages/storage/modules/errors)                                                                | [Best practices](/packages/storage/modules/best-practices) · [Browser support](/packages/storage/modules/browser-support) |
+| **Advanced** — GC, backup, events, IDB, cross-tab | [Maintenance](/packages/storage/modules/maintenance) → [Async](/packages/storage/modules/async) · [Cross-tab](/packages/storage/modules/cross-tab) | [Composition](/packages/storage/modules/composition)                                                                      |
 
 ## When to use
 
@@ -50,12 +50,12 @@ That is enough for many apps. Everything else (TTL, policies, migrate, cleanup, 
 
 ## When not to use
 
-| Need                            | Use instead                                                                       |
-| ------------------------------- | --------------------------------------------------------------------------------- |
-| Live UI state (React/Vue store) | Your framework state                                                              |
-| Form draft UX                   | [Form Intelligence](/packages/form-intelligence/)                                 |
-| Big / queryable data, IndexedDB | Not in v1 (sync Web Storage shape only)                                           |
-| Passwords / tokens              | Don’t put secrets in web storage ([Security](/packages/storage/modules/security)) |
+| Need                             | Use instead                                                                       |
+| -------------------------------- | --------------------------------------------------------------------------------- |
+| Live UI state (React/Vue store)  | Your framework state                                                              |
+| Form draft UX                    | [Form Intelligence](/packages/form-intelligence/)                                 |
+| Queryable / relational IndexedDB | `@jayoncode/storage/async` is key/value IDB — not a query engine                  |
+| Passwords / tokens               | Don’t put secrets in web storage ([Security](/packages/storage/modules/security)) |
 
 ## Install
 
@@ -158,6 +158,8 @@ flowchart LR
 | [Observable](/packages/storage/modules/observable)     | In-process `watch` / `on`          |
 | [Diagnostics](/packages/storage/modules/diagnostics)   | DEV report / activity              |
 | [Transactions](/packages/storage/modules/transactions) | Same-tab rollback                  |
+| [Async / IndexedDB](/packages/storage/modules/async)   | Promise API + IndexedDB adapter    |
+| [Cross-tab](/packages/storage/modules/cross-tab)       | Notify other tabs (no auto-merge)  |
 | [Composition](/packages/storage/modules/composition)   | Wire with BL / FI / OD in app code |
 
 ## Reference

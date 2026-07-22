@@ -6,6 +6,7 @@ import {
   type JayOnCodeStorage,
   type StorageEnvelope,
 } from "@jayoncode/storage";
+import { enableCrossTabSync } from "@jayoncode/storage/cross-tab";
 import {
   createDiagnostics,
   type DiagnosticsReport,
@@ -62,7 +63,9 @@ export function LabShell() {
   const [migrateEnabled, setMigrateEnabled] = useState(true);
   const [simulateQuota, setSimulateQuota] = useState(false);
   const [observeEnabled, setObserveEnabled] = useState(false);
+  const [crossTabEnabled, setCrossTabEnabled] = useState(false);
   const [eventLog, setEventLog] = useState<readonly string[]>([]);
+  const [crossTabLog, setCrossTabLog] = useState<readonly string[]>([]);
   const [key, setKey] = useState("demo");
   const [value, setValue] = useState('{\n  "hello": "storage"\n}');
   const [ttlMinutes, setTtlMinutes] = useState(5);
@@ -104,7 +107,7 @@ export function LabShell() {
 
   const baseAdapter = useMemo(() => resolveAdapter(adapterKind), [adapterKind]);
 
-  const storage = useMemo((): JayOnCodeStorage => {
+  const baseStorage = useMemo((): JayOnCodeStorage => {
     const adapter = withQuotaSimulation(baseAdapter, simulateQuota);
     const options = {
       namespace: "playground",
@@ -122,9 +125,28 @@ export function LabShell() {
           }
         : {}),
     };
-    const instance = createStorage(options);
-    return instance;
+    return createStorage(options);
   }, [baseAdapter, ttlMinutes, schemaVersion, migrateEnabled, simulateQuota]);
+
+  const [storage, setStorage] = useState<JayOnCodeStorage>(baseStorage);
+
+  useEffect(() => {
+    if (!crossTabEnabled) {
+      setStorage(baseStorage);
+      return;
+    }
+    const handle = enableCrossTabSync(baseStorage, {
+      onRemote: (event) => {
+        const line = `${event.via}:${event.type}${event.key ? ` ${event.key}` : ""}`;
+        setCrossTabLog((current) => [line, ...current].slice(0, 30));
+        setLog(`cross-tab remote → ${line}`);
+      },
+    });
+    setStorage(handle.storage);
+    return () => {
+      handle.stop();
+    };
+  }, [baseStorage, crossTabEnabled]);
 
   useEffect(() => {
     const handle = createDiagnostics(storage, { activityLimit: 40 });
@@ -480,11 +502,35 @@ export function LabShell() {
                 Observe events (in-process)
               </span>
             </label>
+            <label className={styles.field} style={{ marginTop: "0.35rem" }}>
+              <span className={styles.fieldLabel}>
+                <input
+                  checked={crossTabEnabled}
+                  onChange={(event) => {
+                    setCrossTabEnabled(event.target.checked);
+                    setCrossTabLog([]);
+                    setLog(
+                      `cross-tab → ${String(event.target.checked)} (open two Lab tabs; prefer Local)`,
+                    );
+                  }}
+                  type="checkbox"
+                />{" "}
+                Cross-tab notify (`/cross-tab`)
+              </span>
+            </label>
             <p className={styles.hint}>
-              Lab-only wrappers — quota sim and observe are not cross-tab.
+              Quota sim is Lab-only. Observe is in-process. Cross-tab uses BroadcastChannel (+{" "}
+              <code>storage</code> events with Local). IndexedDB lives on{" "}
+              <code>@jayoncode/storage/async</code> (see docs) — not this sync Lab shell.
             </p>
+            {crossTabLog.length > 0 ? (
+              <ul className={styles.hint} style={{ marginTop: "0.5rem" }}>
+                {crossTabLog.slice(0, 8).map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+            ) : null}
           </div>
-
           <div className={styles.section}>
             <div className={styles.sectionHead}>
               <h2 className={styles.sectionTitle}>Schema / migrate</h2>

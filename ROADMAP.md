@@ -32,7 +32,7 @@ Governance, ADRs, matrix, and package briefs: [`engineering/ecosystem/`](enginee
 | Item                      | Status                                                                                                                      |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
 | Phase 6 `packages/shared` | Blocked — [ADRs 0004–0007](engineering/ecosystem/adr/) Accepted, [zero Extract](engineering/ecosystem/shared-candidates.md) |
-| Phase 8 Storage           | **Shipped** — `@jayoncode/storage@0.1.0` on npm · docs + `pnpm storage-playground:dev`                                      |
+| Phase 8 Storage           | **Shipped** — `@jayoncode/storage@0.2.0` (async/IDB + cross-tab) · docs + `pnpm storage-playground:dev`                     |
 | Phase 10 platform         | **Closed** — [governance.md](engineering/ecosystem/governance.md)                                                           |
 | Incubation rule           | One new flagship at a time — Storage incubation complete; next package TBA                                                  |
 

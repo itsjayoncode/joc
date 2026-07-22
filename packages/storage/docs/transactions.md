@@ -3,7 +3,7 @@
 **Status:** Stable  
 **Import:** `@jayoncode/storage/transactions`
 
-**Previous:** [Diagnostics](/packages/storage/modules/diagnostics) · **Next:** [Composition](/packages/storage/modules/composition)
+**Previous:** [Diagnostics](/packages/storage/modules/diagnostics) · **Next:** [Async](/packages/storage/modules/async)
 
 Same-tab batched writes with rollback on throw. Overlay journal commits only if the callback returns; throws discard staged writes. **Not** multi-tab ACID.
 

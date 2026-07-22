@@ -2,6 +2,13 @@
 
 All notable changes to `@jayoncode/storage` will be documented in this file.
 
+## 0.2.0
+
+### Added
+
+- `@jayoncode/storage/async` — `createAsyncStorage`, `createMemoryAsyncAdapter`, `createIndexedDbAdapter` (default DB `jayoncode-storage`)
+- `@jayoncode/storage/cross-tab` — `enableCrossTabSync` (BroadcastChannel + optional `storage` event; notify-only)
+
 ## 0.1.0
 
 ### Added

@@ -1,9 +1,9 @@
 # Package brief — `@jayoncode/storage`
 
-**Status:** **Shipped** — public `@jayoncode/storage@0.1.0` on npm (2026-07-21)  
+**Status:** **Shipped** — public `@jayoncode/storage@0.2.0` on npm track (0.1.0 + async/cross-tab)  
 **Candidate:** `@jayoncode/storage`  
 **Incubation:** Phase 8 flagship — **complete**  
-**Next step:** Product maturation (docs/playground fidelity, SemVer); v2+ only per non-goals below  
+**Next step:** Product maturation; encryption/quota later; next ecosystem flagship TBA  
 **Constraint:** Do **not** create `packages/shared` unless the [shared candidates matrix](../shared-candidates.md) marks Extract.
 
 See [governance.md](../governance.md) · [ecosystem README](../README.md).
@@ -80,7 +80,7 @@ Storage depends on **none** of the public JOC packages. Ideal composition shape.
 - Does **not** automatically choose storage backends.
 - Does **not** introduce a shared runtime / plugin host / store.
 - Does **not** depend on Browser Lifecycle (or any other `@jayoncode/*` core).
-- Does **not** ship encryption, compression, or cross-tab sync in v1.
+- Does **not** ship encryption or compression (quota productization still later). Cross-tab notify shipped in **0.2**.
 - Does **not** invent `packages/shared` (Phase 6 stays blocked unless new Extract evidence appears).
 
 ## v1 scope
@@ -92,12 +92,16 @@ Storage depends on **none** of the public JOC packages. Ideal composition shape.
 - Version metadata on envelopes
 - Migration hooks
 
-## v2+ (explicitly later)
+## v2+ (later)
 
-- IndexedDB adapter (note: FI already has its own IndexedDB draft path — Storage IDB must not pretend to replace it)
 - Encryption / compression
-- Cross-tab sync helpers
-- Quota management / simulation beyond basic playground demos
+- Quota management / simulation beyond Lab demos
+- Async ports of maintenance / snapshots / transactions
+
+## Shipped in 0.2
+
+- IndexedDB via `@jayoncode/storage/async` (DB `jayoncode-storage` — not FI drafts)
+- Cross-tab notify via `@jayoncode/storage/cross-tab` (sync adapters)
 
 ## Playground plan
 

@@ -30,6 +30,8 @@ Everything updates live — no page refresh.
 | [Observable](/packages/storage/modules/observable)     | Lab observe                               | In-process events                     |
 | [Diagnostics](/packages/storage/modules/diagnostics)   | Lab diagnostics                           | Report / stats / activity             |
 | [Transactions](/packages/storage/modules/transactions) | Lab transactions                          | Batched writes + rollback             |
+| [Async / IndexedDB](/packages/storage/modules/async)   | Docs (async API)                          | `createAsyncStorage` + IDB            |
+| [Cross-tab](/packages/storage/modules/cross-tab)       | Lab cross-tab checkbox                    | Open two tabs; prefer Local           |
 | [Adapters](/packages/storage/modules/core#adapters)    | [/adapters](/playground/storage/adapters) | Memory / local / session              |
 | [TTL](/packages/storage/modules/core)                  | [/ttl](/playground/storage/ttl)           | Countdown + expiry                    |
 

@@ -87,7 +87,7 @@ export const jocPackages: JocPackage[] = [
     icon: "▣",
     capabilities: ["Adapters", "TTL", "Snapshots", "Transactions"],
     featured: true,
-    versionLabel: "v0.1.0",
+    versionLabel: "v0.2.0",
   },
 ];
 

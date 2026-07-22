@@ -108,6 +108,8 @@ Core stays small. Import extras only when you need them:
 | React to changes in-process   | `@jayoncode/storage/observable`   |
 | DEV size / activity report    | `@jayoncode/storage/diagnostics`  |
 | Multi-key write with rollback | `@jayoncode/storage/transactions` |
+| IndexedDB / async API         | `@jayoncode/storage/async`        |
+| Cross-tab notify              | `@jayoncode/storage/cross-tab`    |
 
 ## Next
 

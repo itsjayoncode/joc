@@ -13,6 +13,8 @@
       "@jayoncode/storage/observable": ["packages/storage/src/observable/index.ts"],
       "@jayoncode/storage/diagnostics": ["packages/storage/src/diagnostics/index.ts"],
       "@jayoncode/storage/transactions": ["packages/storage/src/transactions/index.ts"],
+      "@jayoncode/storage/async": ["packages/storage/src/async/index.ts"],
+      "@jayoncode/storage/cross-tab": ["packages/storage/src/cross-tab/index.ts"],
       "@jayoncode/storage/*": ["packages/storage/src/*/index.ts"],
       "@jayoncode/*": ["packages/*/src/index.ts"]
     },
