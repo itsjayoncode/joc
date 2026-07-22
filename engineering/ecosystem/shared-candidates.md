@@ -27,4 +27,4 @@ Canonical home: [`engineering/ecosystem/`](./README.md). Governance: [governance
 | -------------------------- | ------ |
 | Any row marked **Extract** | **No** |
 
-→ **`packages/shared` remains uncreated.** Storage incubation must not invent shared infra.
+→ **`packages/shared` remains uncreated.** Live packages (including Storage) must not invent shared infra.

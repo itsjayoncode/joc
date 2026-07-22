@@ -1,10 +1,10 @@
 # Package brief — `@jayoncode/storage`
 
-**Status:** **Accepted** (2026-07-16)  
+**Status:** **Shipped** — public `@jayoncode/storage@0.1.0` on npm (2026-07-21)  
 **Candidate:** `@jayoncode/storage`  
-**Incubation:** Phase 8 flagship (only one at a time)  
-**Next step:** `pnpm joc new package storage` · `pnpm joc new playground storage`  
-**Constraint:** Do **not** create `packages/shared` during incubation unless the [shared candidates matrix](../shared-candidates.md) marks Extract.
+**Incubation:** Phase 8 flagship — **complete**  
+**Next step:** Product maturation (docs/playground fidelity, SemVer); v2+ only per non-goals below  
+**Constraint:** Do **not** create `packages/shared` unless the [shared candidates matrix](../shared-candidates.md) marks Extract.
 
 See [governance.md](../governance.md) · [ecosystem README](../README.md).
 
@@ -81,7 +81,7 @@ Storage depends on **none** of the public JOC packages. Ideal composition shape.
 - Does **not** introduce a shared runtime / plugin host / store.
 - Does **not** depend on Browser Lifecycle (or any other `@jayoncode/*` core).
 - Does **not** ship encryption, compression, or cross-tab sync in v1.
-- Does **not** invent `packages/shared` while incubating (Phase 6 stays blocked unless new Extract evidence appears).
+- Does **not** invent `packages/shared` (Phase 6 stays blocked unless new Extract evidence appears).
 
 ## v1 scope
 
@@ -119,8 +119,9 @@ Storage depends on **none** of the public JOC packages. Ideal composition shape.
 
 ## Acceptance
 
-| Field       | Value                                                                 |
-| ----------- | --------------------------------------------------------------------- |
-| Maintainer  | Signed off (governance + ChatGPT/Cursor refinements)                  |
-| Accepted on | 2026-07-16                                                            |
-| Next step   | `pnpm joc new package storage` then `pnpm joc new playground storage` |
+| Field       | Value                                                |
+| ----------- | ---------------------------------------------------- |
+| Maintainer  | Signed off (governance + ChatGPT/Cursor refinements) |
+| Accepted on | 2026-07-16                                           |
+| Shipped on  | 2026-07-21 (`0.1.0` on npm)                          |
+| Next step   | Mature live package; next ecosystem flagship TBA     |

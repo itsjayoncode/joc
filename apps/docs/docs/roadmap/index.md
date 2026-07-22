@@ -11,14 +11,14 @@ This page is the **product-facing** view of where the **JOC Ecosystem** is and w
 
 ## Where we are
 
-JayOnCode has a signed governance model: four packages with docs and playgrounds on the site, no premature shared core, one flagship package at a time, and platform work closed until real pain appears.
+JayOnCode has a signed governance model: **four packages live on npm**, no premature shared core, one new flagship at a time, and platform work closed until real pain appears.
 
-| Package                                                        | Focus                                                        | Status                         |
-| -------------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------ |
-| [`@jayoncode/browser-lifecycle`](/packages/browser-lifecycle/) | Session signals — visibility, idle, connectivity, cross-tab  | Live on npm                    |
-| [`@jayoncode/form-intelligence`](/packages/form-intelligence/) | Headless form workflows — validation, rules, drafts, wizards | Live on npm                    |
-| [`@jayoncode/object-diff`](/packages/object-diff/)             | Deep diff, change records, JSON Patch                        | Live on npm                    |
-| [`@jayoncode/storage`](/packages/storage/)                     | Policy-driven client persistence — adapters, TTL, migrations | Incubating (docs + playground) |
+| Package                                                        | Focus                                                        | Status      |
+| -------------------------------------------------------------- | ------------------------------------------------------------ | ----------- |
+| [`@jayoncode/browser-lifecycle`](/packages/browser-lifecycle/) | Session signals — visibility, idle, connectivity, cross-tab  | Live on npm |
+| [`@jayoncode/form-intelligence`](/packages/form-intelligence/) | Headless form workflows — validation, rules, drafts, wizards | Live on npm |
+| [`@jayoncode/object-diff`](/packages/object-diff/)             | Deep diff, change records, JSON Patch                        | Live on npm |
+| [`@jayoncode/storage`](/packages/storage/)                     | Policy-driven client persistence — adapters, TTL, migrations | Live on npm |
 
 Each ships with docs, SemVer/Changesets, and an interactive [playground](/playground/).
 
@@ -29,16 +29,16 @@ Each ships with docs, SemVer/Changesets, and an interactive [playground](/playgr
 | 1–5 Foundation → Architecture Convergence | Complete (ADRs Accepted; [zero Extract](https://github.com/itsjayoncode/joc/blob/master/engineering/ecosystem/shared-candidates.md)) |
 | 6 Selective Shared Infrastructure         | Blocked                                                                                                                              |
 | 7 Developer Tooling                       | Usable (`pnpm joc`)                                                                                                                  |
-| 8 Ecosystem Expansion                     | Storage incubating — package + playground + docs site wired                                                                          |
+| 8 Ecosystem Expansion                     | Storage shipped (`@jayoncode/storage@0.1.0`); next package TBA                                                                       |
 | 9 Integration & Adoption                  | Kickoff bar met                                                                                                                      |
 | 10 Platform Evolution                     | Closed                                                                                                                               |
 
 ## Near term
 
-1. **Publish Storage** — first public SemVer release when readiness checks pass; keep docs/playground in sync.
-2. **Polish live packages** — APIs, budgets, adapters, playground fidelity.
-3. **Composition DX** — [composition guide](/guides/composition), recipes, examples.
-4. **Landing** — docs home + `apps/website` route to docs/playgrounds.
+1. **Polish live packages** — APIs, budgets, adapters, playground fidelity (including Storage).
+2. **Composition DX** — [composition guide](/guides/composition), recipes, examples.
+3. **Landing** — docs home + `apps/website` route to docs/playgrounds.
+4. **Next flagship** — announce and incubate only when a brief is accepted (one at a time).
 
 ## Next packages (ecosystem expansion)
 
@@ -68,4 +68,4 @@ We are **not** building a single mega-framework or UI kit. A shared platform app
 - Read [Contributing](/guides/contribution) before large PRs
 - Track package-level plans in each package’s docs and changelog
 
-**Bottom line:** Governance is public under `engineering/ecosystem/` — Storage is the current flagship incubating with docs and playground live on the site.
+**Bottom line:** Governance is public under `engineering/ecosystem/` — four packages are live on npm; Storage (`0.1.0`) completed Phase 8 incubation.

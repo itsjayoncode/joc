@@ -20,4 +20,4 @@ That sequence is **complete** for foundation. Do not restart it.
 
 ## Current focus
 
-See [`ROADMAP.md`](../ROADMAP.md): incubate `@jayoncode/storage` per the accepted brief; keep live packages mature; do not create `packages/shared` without Extract evidence; platform evolution remains Closed.
+See [`ROADMAP.md`](../ROADMAP.md): `@jayoncode/storage@0.1.0` is live on npm; keep all live packages mature; do not create `packages/shared` without Extract evidence; platform evolution remains Closed; next flagship TBA.
