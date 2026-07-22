@@ -64,6 +64,14 @@
     "./cross-tab": {
       "types": "./dist/cross-tab/index.d.ts",
       "import": "./dist/cross-tab/index.js"
+    },
+    "./quota": {
+      "types": "./dist/quota/index.d.ts",
+      "import": "./dist/quota/index.js"
+    },
+    "./transforms": {
+      "types": "./dist/transforms/index.d.ts",
+      "import": "./dist/transforms/index.js"
     }
   },
   "scripts": {

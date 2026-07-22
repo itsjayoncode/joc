@@ -28,7 +28,7 @@ Problem · Audience · Alternatives · Why JOC? · Relationship · Non-goals · 
 
 Accepted briefs live under [`briefs/`](./briefs/).
 
-Current flagship status: [`briefs/storage.md`](./briefs/storage.md) (`@jayoncode/storage@0.1.0` **shipped**). Next Phase 8 incubation: **none** until a new brief is Accepted.
+Current flagship status: [`briefs/storage.md`](./briefs/storage.md) (`@jayoncode/storage@0.3.0` **shipped**; Product Maturation). Follow-on brief: [`briefs/storage-v2.md`](./briefs/storage-v2.md) (**Accepted** — quota + transforms). Next Phase 8 incubation: **none** until a new flagship brief is Accepted.
 
 Scaffold with maintainer tooling:
 

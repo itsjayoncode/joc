@@ -40,6 +40,11 @@ It needs `adapter.keys()`. Built-in adapters provide it; custom adapters must im
 
 Tooling stays on `@jayoncode/storage/diagnostics` so the default import stays small.
 
+### Soft quota / encryption?
+
+- **Soft quota (0.3+):** [`/quota`](/packages/storage/modules/quota) — `enableQuotaGuard` uses approx bytes (not browser remaining)
+- **Transforms (0.3+):** [`/transforms`](/packages/storage/modules/transforms) — opt-in compress/encrypt hooks; defaults stay plaintext
+
 ### Cross-tab observe / ACID transactions?
 
 - **In-process events:** [`/observable`](/packages/storage/modules/observable)

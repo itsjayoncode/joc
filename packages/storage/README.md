@@ -2,7 +2,7 @@
 
 Policy-driven client persistence — typed envelopes, TTL, migrations, and explicit adapters.
 
-> **Status:** Public **0.2.0** — sync core Stable; `/async` + `/cross-tab` Stable.  
+> **Status:** Public **0.3.0** — sync core Stable; `/async` · `/cross-tab` · `/quota` · `/transforms` Stable.  
 > Install: `pnpm add @jayoncode/storage`  
 > Docs: https://itsjayoncode.github.io/joc/packages/storage/
 
@@ -69,19 +69,42 @@ const { storage: synced, stop } = enableCrossTabSync(storage, {
 });
 ```
 
+### Soft quota (0.3+)
+
+```ts
+import { enableQuotaGuard } from "@jayoncode/storage/quota";
+
+const { storage: guarded } = enableQuotaGuard(storage, {
+  maxApproxBytes: 50_000,
+});
+```
+
+### Payload transforms (0.3+)
+
+```ts
+import { defaultSerialize, defaultDeserialize } from "@jayoncode/storage";
+import { withPayloadTransforms } from "@jayoncode/storage/transforms";
+
+const { serialize, deserialize } = withPayloadTransforms(
+  { serialize: defaultSerialize, deserialize: defaultDeserialize },
+  {/* app-owned sync compress/encrypt hooks */},
+);
+```
+
 ## Non-goals
 
 - Does not own Form Intelligence drafts (keep IDB DBs separate)
 - Does not auto-select storage backends
 - Cross-tab does not auto-merge remote values
-- No encryption / compression in core yet
+- Soft quota is approx bytes — not exact browser remaining space
+- No silent encryption/compression defaults (opt-in `/transforms`)
 
-Brief: [`engineering/ecosystem/briefs/storage.md`](../../engineering/ecosystem/briefs/storage.md)
+Brief: [`engineering/ecosystem/briefs/storage.md`](../../engineering/ecosystem/briefs/storage.md) · v2: [`storage-v2.md`](../../engineering/ecosystem/briefs/storage-v2.md)
 
 ## Docs
 
 - [`docs/overview.md`](./docs/overview.md) — package overview + documentation path
-- [`docs/async.md`](./docs/async.md) · [`docs/cross-tab.md`](./docs/cross-tab.md) — 0.2 surfaces
+- [`docs/quota.md`](./docs/quota.md) · [`docs/transforms.md`](./docs/transforms.md) — 0.3 surfaces
 - Storage playground: `pnpm storage-playground:dev`
 - Docs site: https://itsjayoncode.github.io/joc/packages/storage/
 
@@ -89,5 +112,4 @@ Brief: [`engineering/ecosystem/briefs/storage.md`](../../engineering/ecosystem/b
 
 ```bash
 pnpm --filter @jayoncode/storage test
-pnpm --filter @jayoncode/storage bench
 ```

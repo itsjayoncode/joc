@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from
 
 import {
   createStorage,
+  defaultDeserialize,
+  defaultSerialize,
   isQuotaExceededError,
   type JayOnCodeStorage,
   type StorageEnvelope,
@@ -14,6 +16,7 @@ import {
 } from "@jayoncode/storage/diagnostics";
 import { cleanup, type CleanupReport } from "@jayoncode/storage/maintenance";
 import { observe, type StorageEventType } from "@jayoncode/storage/observable";
+import { enableQuotaGuard } from "@jayoncode/storage/quota";
 import {
   restore,
   snapshot,
@@ -21,6 +24,7 @@ import {
   type StorageSnapshot,
 } from "@jayoncode/storage/snapshots";
 import { transaction } from "@jayoncode/storage/transactions";
+import { withPayloadTransforms } from "@jayoncode/storage/transforms";
 
 import {
   demoMigrateEnvelope,
@@ -62,6 +66,8 @@ export function LabShell() {
   const [schemaVersion, setSchemaVersion] = useState<SchemaKind>("1");
   const [migrateEnabled, setMigrateEnabled] = useState(true);
   const [simulateQuota, setSimulateQuota] = useState(false);
+  const [softMaxBytes, setSoftMaxBytes] = useState(0);
+  const [demoTransform, setDemoTransform] = useState(false);
   const [observeEnabled, setObserveEnabled] = useState(false);
   const [crossTabEnabled, setCrossTabEnabled] = useState(false);
   const [eventLog, setEventLog] = useState<readonly string[]>([]);
@@ -109,11 +115,31 @@ export function LabShell() {
 
   const baseStorage = useMemo((): JayOnCodeStorage => {
     const adapter = withQuotaSimulation(baseAdapter, simulateQuota);
+    const codec = demoTransform
+      ? withPayloadTransforms(
+          { serialize: defaultSerialize, deserialize: defaultDeserialize },
+          {
+            // Lab demo only — reversible wire format, not encryption
+            encrypt: (plain) => (typeof btoa === "function" ? btoa(plain) : plain),
+            decrypt: (wire) => {
+              if (typeof atob !== "function") {
+                return wire;
+              }
+              try {
+                return atob(wire);
+              } catch {
+                return wire;
+              }
+            },
+          },
+        )
+      : null;
     const options = {
       namespace: "playground",
       adapter,
       schemaVersion,
       ttl: { minutes: ttlMinutes },
+      ...(codec ? { serialize: codec.serialize, deserialize: codec.deserialize } : {}),
       policies: {
         preferences: { ttl: { days: 365 } },
         cache: { ttl: { minutes: 15 } },
@@ -126,27 +152,49 @@ export function LabShell() {
         : {}),
     };
     return createStorage(options);
-  }, [baseAdapter, ttlMinutes, schemaVersion, migrateEnabled, simulateQuota]);
+  }, [baseAdapter, ttlMinutes, schemaVersion, migrateEnabled, simulateQuota, demoTransform]);
 
   const [storage, setStorage] = useState<JayOnCodeStorage>(baseStorage);
 
   useEffect(() => {
-    if (!crossTabEnabled) {
-      setStorage(baseStorage);
-      return;
+    let current = baseStorage;
+    let stopQuota: (() => void) | undefined;
+    let stopCrossTab: (() => void) | undefined;
+
+    if (softMaxBytes > 0) {
+      const handle = enableQuotaGuard(current, {
+        maxApproxBytes: softMaxBytes,
+        mode: "throw",
+        onWarn: ({ approxBytes, maxApproxBytes }) => {
+          setLog(`soft quota warn → ${String(approxBytes)}/${String(maxApproxBytes)}`);
+        },
+      });
+      current = handle.storage;
+      stopQuota = () => {
+        handle.stop();
+      };
     }
-    const handle = enableCrossTabSync(baseStorage, {
-      onRemote: (event) => {
-        const line = `${event.via}:${event.type}${event.key ? ` ${event.key}` : ""}`;
-        setCrossTabLog((current) => [line, ...current].slice(0, 30));
-        setLog(`cross-tab remote → ${line}`);
-      },
-    });
-    setStorage(handle.storage);
+
+    if (crossTabEnabled) {
+      const handle = enableCrossTabSync(current, {
+        onRemote: (event) => {
+          const line = `${event.via}:${event.type}${event.key ? ` ${event.key}` : ""}`;
+          setCrossTabLog((prev) => [line, ...prev].slice(0, 30));
+          setLog(`cross-tab remote → ${line}`);
+        },
+      });
+      current = handle.storage;
+      stopCrossTab = () => {
+        handle.stop();
+      };
+    }
+
+    setStorage(current);
     return () => {
-      handle.stop();
+      stopCrossTab?.();
+      stopQuota?.();
     };
-  }, [baseStorage, crossTabEnabled]);
+  }, [baseStorage, crossTabEnabled, softMaxBytes]);
 
   useEffect(() => {
     const handle = createDiagnostics(storage, { activityLimit: 40 });
@@ -476,6 +524,34 @@ export function LabShell() {
               ))}
             </div>
             <label className={styles.field} style={{ marginTop: "0.65rem" }}>
+              <span className={styles.fieldLabel}>Soft max bytes (`/quota`, 0 = off)</span>
+              <input
+                min={0}
+                onChange={(event) => {
+                  const next = Number(event.target.value);
+                  setSoftMaxBytes(Number.isFinite(next) ? Math.max(0, Math.floor(next)) : 0);
+                  setLog(`soft max bytes → ${event.target.value}`);
+                }}
+                type="number"
+                value={softMaxBytes}
+              />
+            </label>
+            <label className={styles.field} style={{ marginTop: "0.35rem" }}>
+              <span className={styles.fieldLabel}>
+                <input
+                  checked={demoTransform}
+                  onChange={(event) => {
+                    setDemoTransform(event.target.checked);
+                    setLog(
+                      `demo transform → ${String(event.target.checked)} (base64 wire — not encryption)`,
+                    );
+                  }}
+                  type="checkbox"
+                />{" "}
+                Demo base64 transform (`/transforms` — not crypto)
+              </span>
+            </label>
+            <label className={styles.field} style={{ marginTop: "0.35rem" }}>
               <span className={styles.fieldLabel}>
                 <input
                   checked={simulateQuota}
@@ -519,9 +595,10 @@ export function LabShell() {
               </span>
             </label>
             <p className={styles.hint}>
-              Quota sim is Lab-only. Observe is in-process. Cross-tab uses BroadcastChannel (+{" "}
-              <code>storage</code> events with Local). IndexedDB lives on{" "}
-              <code>@jayoncode/storage/async</code> (see docs) — not this sync Lab shell.
+              Soft max uses approx bytes (`/quota`). Quota sim is Lab-only hard failure. Observe is
+              in-process. Cross-tab uses BroadcastChannel (+ <code>storage</code> events with
+              Local). Demo transform is reversible base64 — not encryption. IndexedDB lives on{" "}
+              <code>@jayoncode/storage/async</code>.
             </p>
             {crossTabLog.length > 0 ? (
               <ul className={styles.hint} style={{ marginTop: "0.5rem" }}>

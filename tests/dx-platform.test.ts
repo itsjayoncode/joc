@@ -310,11 +310,30 @@ describe("documentation integration output", () => {
     const storagePlaygroundDir = path.join(rootDir, "apps/docs/docs/packages/storage/playground");
     const storageApiIndex = path.join(rootDir, "apps/docs/docs/packages/storage/api/index.md");
     const storageIndex = path.join(rootDir, "apps/docs/docs/packages/storage/index.md");
+    const storagePackageJson = JSON.parse(
+      readFileSync(path.join(rootDir, "packages/storage/package.json"), "utf8"),
+    ) as { exports?: Record<string, unknown> };
+    const storageExports = storagePackageJson.exports ?? {};
 
     expect(existsSync(storageModulesDir)).toBe(true);
     expect(existsSync(storagePlaygroundDir)).toBe(true);
     expect(existsSync(storageApiIndex)).toBe(true);
     expect(existsSync(storageIndex)).toBe(true);
     expect(readdirSync(storageModulesDir).length).toBeGreaterThan(0);
+
+    for (const subpath of [
+      "./async",
+      "./cross-tab",
+      "./quota",
+      "./transforms",
+      "./maintenance",
+      "./diagnostics",
+    ] as const) {
+      expect(storageExports[subpath]).toBeTruthy();
+    }
+
+    for (const modulePage of ["async.md", "cross-tab.md", "quota.md", "transforms.md"] as const) {
+      expect(existsSync(path.join(storageModulesDir, modulePage))).toBe(true);
+    }
   }, 120_000);
 });

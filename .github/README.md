@@ -51,14 +51,15 @@ GitHub Actions workflows, issue and pull request templates, Dependabot configura
 
 ### Workflows
 
-| Workflow                    | Trigger                                       | Purpose                                                                            |
-| --------------------------- | --------------------------------------------- | ---------------------------------------------------------------------------------- |
-| **CI**                      | Push to `main` / `master` / `develop`, manual | Quality gates; on default branch also deploys docs and runs Changesets             |
-| **Pull Request Validation** | Pull requests                                 | Quality gates only (no deploy)                                                     |
-| **CodeQL**                  | Push, pull requests, weekly schedule          | Security analysis for JavaScript and TypeScript                                    |
-| **Release**                 | Manual                                        | Draft a GitHub release for an existing tag                                         |
-| **Deploy Docs**             | Manual                                        | Rebuild and redeploy documentation without a full CI run                           |
-| **Deploy Playground**       | Manual                                        | Validate a standalone playground build (production deploy is bundled into docs CI) |
+| Workflow                    | Trigger                                       | Purpose                                                                               |
+| --------------------------- | --------------------------------------------- | ------------------------------------------------------------------------------------- |
+| **CI**                      | Push to `main` / `master` / `develop`, manual | Quality gates; on default branch also deploys docs and runs Changesets                |
+| **Pull Request Validation** | Pull requests                                 | Quality gates only (no deploy)                                                        |
+| **Auto Approve Release PR** | Version Packages PR title match               | Auto-approves `chore(release): version packages` only (needs `RELEASE_APPROVE_TOKEN`) |
+| **CodeQL**                  | Push, pull requests, weekly schedule          | Security analysis for JavaScript and TypeScript                                       |
+| **Release**                 | Manual                                        | Draft a GitHub release for an existing tag                                            |
+| **Deploy Docs**             | Manual                                        | Rebuild and redeploy documentation without a full CI run                              |
+| **Deploy Playground**       | Manual                                        | Validate a standalone playground build (production deploy is bundled into docs CI)    |
 
 On push to `master` or `main`, expect **two** workflow runs: **CI** and **CodeQL**.
 

@@ -1,0 +1,46 @@
+# Auto-approve the Changesets "Version Packages" PR only.
+# Does not merge. Pull Request Validation and CodeQL still run on the PR as usual.
+#
+# Requires secret RELEASE_APPROVE_TOKEN: a PAT (or GitHub App token) from an identity
+# other than github-actions[bot]. GITHUB_TOKEN cannot approve its own Changesets PR.
+
+name: Auto Approve Release PR
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+      - edited
+
+concurrency:
+  group: auto-approve-release-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  approve:
+    name: Approve Version Packages PR
+    if: >
+      github.event.pull_request.draft == false &&
+      github.event.pull_request.title == 'chore(release): version packages'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Ensure RELEASE_APPROVE_TOKEN is configured
+        env:
+          RELEASE_APPROVE_TOKEN: ${{ secrets.RELEASE_APPROVE_TOKEN }}
+        run: |
+          if [ -z "${RELEASE_APPROVE_TOKEN}" ]; then
+            echo "::error::Missing secret RELEASE_APPROVE_TOKEN. Create a classic or fine-grained PAT from a maintainer account (not github-actions[bot]) with Pull requests: Read and Write, then add it as a repository secret. GITHUB_TOKEN cannot approve the Changesets PR it opens."
+            exit 1
+          fi
+
+      - name: Approve pull request
+        uses: hmarr/auto-approve-action@v4
+        with:
+          github-token: ${{ secrets.RELEASE_APPROVE_TOKEN }}
+          pull-request-number: ${{ github.event.pull_request.number }}
+          review-message: "Auto-approved Changesets version PR so required checks can proceed without a manual review click."

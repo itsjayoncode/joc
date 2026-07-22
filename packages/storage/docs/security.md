@@ -17,6 +17,6 @@ Storage does not encrypt, isolate tenants beyond namespace prefixes, or protect 
 - Treat snapshot JSON and diagnostics activity (keys) as sensitive
 - Sanitize before injecting stored strings into the DOM
 
-Encryption-at-rest would need a future explicit ADR — not a silent default.
+Encryption-at-rest is opt-in via [`@jayoncode/storage/transforms`](/packages/storage/modules/transforms) — defaults stay plaintext. Key material stays app-owned; XSS can still reach in-memory keys.
 
-See also: [browser-support.md](./browser-support.md) · [faq.md](./faq.md)
+See also: [browser-support.md](./browser-support.md) · [faq.md](./faq.md) · [transforms.md](./transforms.md)
