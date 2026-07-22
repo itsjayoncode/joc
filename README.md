@@ -147,13 +147,38 @@ if (hasChanges(saved, draft)) {
 
 Playground: [Object Diff](https://itsjayoncode.github.io/joc/playground/object-diff/)
 
+### Storage
+
+Policy-driven client persistence: namespaced envelopes, TTL, migrations, explicit adapters (memory / localStorage / sessionStorage / IndexedDB), soft quota, and opt-in transforms.
+
+| Package                                                                  | Role                                      | Docs                                                         |
+| ------------------------------------------------------------------------ | ----------------------------------------- | ------------------------------------------------------------ |
+| [`@jayoncode/storage`](https://www.npmjs.com/package/@jayoncode/storage) | Prefs, cache, TTL, async IDB, quota, xfms | [Docs](https://itsjayoncode.github.io/joc/packages/storage/) |
+
+```bash
+npm i @jayoncode/storage
+```
+
+```ts
+import { createStorage, createLocalStorageAdapter } from "@jayoncode/storage";
+
+const storage = createStorage({
+  namespace: "app",
+  adapter: createLocalStorageAdapter(),
+});
+
+storage.set("theme", "dark");
+```
+
+Playground: [Storage](https://itsjayoncode.github.io/joc/playground/storage/)
+
 ---
 
 ## What ships today
 
 | Area                    | Status                                                                                                |
 | ----------------------- | ----------------------------------------------------------------------------------------------------- |
-| Core libraries          | `browser-lifecycle`, `form-intelligence`, `object-diff` on npm                                        |
+| Core libraries          | `browser-lifecycle`, `form-intelligence`, `object-diff`, `storage` on npm                             |
 | Framework adapters      | React / Vue / Angular (+ Svelte / Solid for lifecycle); form schema adapters (Zod, Yup, Valibot, AJV) |
 | Documentation site      | VitePress on GitHub Pages — guides, API reference, patterns, FAQs                                     |
 | Versioned package docs  | Latest + archived snapshots per release policy                                                        |
@@ -201,18 +226,20 @@ joc/
 └── .github/               # CI workflows and repository automation
 ```
 
-| Path                                 | Role                                         |
-| ------------------------------------ | -------------------------------------------- |
-| `apps/docs/`                         | VitePress documentation platform             |
-| `apps/playground/`                   | Playground hub                               |
-| `apps/browser-session-playground/`   | Browser Lifecycle explorer                   |
-| `apps/form-intelligence-playground/` | Form Intelligence explorer                   |
-| `apps/object-diff-playground/`       | Object Diff explorer                         |
-| `packages/browser-lifecycle*`        | Core + framework adapters                    |
-| `packages/form-intelligence*`        | Core + framework / schema adapters           |
-| `packages/object-diff/`              | Deep comparison and patch library            |
-| `templates/package-template/`        | Standard structure for future libraries      |
-| `engineering/`                       | Architecture, versioning, and release policy |
+| Path                                 | Role                                          |
+| ------------------------------------ | --------------------------------------------- |
+| `apps/docs/`                         | VitePress documentation platform              |
+| `apps/playground/`                   | Playground hub                                |
+| `apps/browser-session-playground/`   | Browser Lifecycle explorer                    |
+| `apps/form-intelligence-playground/` | Form Intelligence explorer                    |
+| `apps/object-diff-playground/`       | Object Diff explorer                          |
+| `apps/storage-playground/`           | Storage Lab                                   |
+| `packages/browser-lifecycle*`        | Core + framework adapters                     |
+| `packages/form-intelligence*`        | Core + framework / schema adapters            |
+| `packages/object-diff/`              | Deep comparison and patch library             |
+| `packages/storage/`                  | Client persistence (envelopes, TTL, adapters) |
+| `templates/package-template/`        | Standard structure for future libraries       |
+| `engineering/`                       | Architecture, versioning, and release policy  |
 
 ---
 
@@ -227,6 +254,7 @@ pnpm docs:dev          # Documentation site (port 4175)
 pnpm form-intelligence-playground:dev
 pnpm browser-session-playground:dev
 pnpm object-diff-playground:dev
+pnpm storage-playground:dev
 ```
 
 | Command                  | Purpose                                            |

@@ -1,16 +1,32 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
+import { browserLifecycleMeta } from "../../browser-lifecycle-meta.js";
+import { formIntelligenceMeta } from "../../form-intelligence-meta.js";
+import { objectDiffMeta } from "../../object-diff-meta.js";
+import { storageMeta } from "../../storage-meta.js";
 import DocsLink from "./DocsLink.vue";
 import PackageIcon from "./PackageIcon.vue";
 import { getPackageLanding } from "../data/package-landings.js";
 import { highlightTypeScript } from "../highlight-typescript.js";
+
+const PACKAGE_META = {
+  "browser-lifecycle": browserLifecycleMeta,
+  "form-intelligence": formIntelligenceMeta,
+  "object-diff": objectDiffMeta,
+  storage: storageMeta,
+} as const;
 
 const props = defineProps<{
   packageId: string;
 }>();
 
 const landing = computed(() => getPackageLanding(props.packageId));
+
+const versionLabel = computed(() => {
+  const meta = PACKAGE_META[props.packageId as keyof typeof PACKAGE_META];
+  return meta?.versionLabel;
+});
 
 const highlightedSample = computed(() => {
   const code = landing.value?.sampleCode;
@@ -26,6 +42,13 @@ const highlightedSample = computed(() => {
         <div class="joc-pkg-landing__icon" aria-hidden="true">
           <PackageIcon :package-id="landing.id" size="lg" />
         </div>
+        <span
+          v-if="versionLabel"
+          class="joc-pkg-version-tag joc-pkg-landing__version"
+          :aria-label="`${landing.name} ${versionLabel}`"
+        >
+          {{ versionLabel }}
+        </span>
         <h1 id="joc-pkg-landing-title" class="joc-pkg-landing__title">{{ landing.name }}</h1>
         <p class="joc-pkg-landing__npm">{{ landing.npmName }}</p>
         <p class="joc-pkg-landing__headline">{{ landing.headline }}</p>

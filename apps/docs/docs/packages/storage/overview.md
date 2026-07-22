@@ -35,11 +35,11 @@ That is enough for many apps. Everything else (TTL, policies, migrate, cleanup, 
 
 ## Pick your path
 
-| You are…                                          | Read this                                                                                                                                          | Then                                                                                                                      |
-| ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| **Beginner** — first time using Storage           | [Tutorial](/packages/storage/modules/getting-started)                                                                                              | [Concepts](/packages/storage/modules/concepts) → [Recipes](/packages/storage/modules/recipes)                             |
-| **Shipping an app** — prefs, cache, SSR           | [Core](/packages/storage/modules/core) · [Errors](/packages/storage/modules/errors)                                                                | [Best practices](/packages/storage/modules/best-practices) · [Browser support](/packages/storage/modules/browser-support) |
-| **Advanced** — GC, backup, events, IDB, cross-tab | [Maintenance](/packages/storage/modules/maintenance) → [Async](/packages/storage/modules/async) · [Cross-tab](/packages/storage/modules/cross-tab) | [Composition](/packages/storage/modules/composition)                                                                      |
+| You are…                                                 | Read this                                                                                                                                            | Then                                                                                                                      |
+| -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| **Beginner** — first time using Storage                  | [Tutorial](/packages/storage/modules/getting-started)                                                                                                | [Concepts](/packages/storage/modules/concepts) → [Recipes](/packages/storage/modules/recipes)                             |
+| **Shipping an app** — prefs, cache, SSR                  | [Core](/packages/storage/modules/core) · [Errors](/packages/storage/modules/errors)                                                                  | [Best practices](/packages/storage/modules/best-practices) · [Browser support](/packages/storage/modules/browser-support) |
+| **Advanced** — GC, backup, events, IDB, cross-tab, quota | [Maintenance](/packages/storage/modules/maintenance) → [Quota](/packages/storage/modules/quota) · [Transforms](/packages/storage/modules/transforms) | [Composition](/packages/storage/modules/composition)                                                                      |
 
 ## When to use
 
@@ -160,6 +160,8 @@ flowchart LR
 | [Transactions](/packages/storage/modules/transactions) | Same-tab rollback                  |
 | [Async / IndexedDB](/packages/storage/modules/async)   | Promise API + IndexedDB adapter    |
 | [Cross-tab](/packages/storage/modules/cross-tab)       | Notify other tabs (no auto-merge)  |
+| [Quota](/packages/storage/modules/quota)               | Soft limits (approx bytes)         |
+| [Transforms](/packages/storage/modules/transforms)     | Opt-in compress / encrypt hooks    |
 | [Composition](/packages/storage/modules/composition)   | Wire with BL / FI / OD in app code |
 
 ## Reference
@@ -167,4 +169,3 @@ flowchart LR
 - [API (TypeDoc)](/packages/storage/api/) — every export
 - [Playground guide](/packages/storage/playground/playground)
 - [Open Lab](/playground/storage/)
-

@@ -110,6 +110,8 @@ Core stays small. Import extras only when you need them:
 | Multi-key write with rollback | `@jayoncode/storage/transactions` |
 | IndexedDB / async API         | `@jayoncode/storage/async`        |
 | Cross-tab notify              | `@jayoncode/storage/cross-tab`    |
+| Soft quota (approx bytes)     | `@jayoncode/storage/quota`        |
+| Compress / encrypt hooks      | `@jayoncode/storage/transforms`   |
 
 ## Next
 

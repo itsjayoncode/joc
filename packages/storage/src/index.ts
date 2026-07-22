@@ -1,4 +1,5 @@
 export { createStorage } from "./core/create-storage.js";
+export { defaultDeserialize, defaultSerialize } from "./core/envelope.js";
 export {
   createLocalStorageAdapter,
   createMemoryAdapter,

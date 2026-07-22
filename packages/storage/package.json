@@ -2,7 +2,7 @@
   "name": "@jayoncode/storage",
   "version": "0.3.0",
   "private": false,
-  "description": "Policy-driven client persistence — typed envelopes, TTL, migrations, and explicit adapters.",
+  "description": "Policy-driven client persistence for modern web apps — typed envelopes, TTL, migrations, and explicit adapters.",
   "license": "MIT",
   "author": "JayOnCode",
   "repository": {
@@ -20,6 +20,7 @@
     "jayoncode",
     "localStorage",
     "sessionStorage",
+    "indexeddb",
     "ttl",
     "persistence"
   ],
@@ -64,6 +65,14 @@
     "./cross-tab": {
       "types": "./dist/cross-tab/index.d.ts",
       "import": "./dist/cross-tab/index.js"
+    },
+    "./quota": {
+      "types": "./dist/quota/index.d.ts",
+      "import": "./dist/quota/index.js"
+    },
+    "./transforms": {
+      "types": "./dist/transforms/index.d.ts",
+      "import": "./dist/transforms/index.js"
     }
   },
   "scripts": {

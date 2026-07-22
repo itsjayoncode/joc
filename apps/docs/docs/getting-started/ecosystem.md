@@ -5,7 +5,7 @@ description: How the JayOnCode JOC Ecosystem is organized — independent packag
 
 # JOC Ecosystem
 
-**JayOnCode** ships the **JOC Ecosystem**: independent, headless TypeScript libraries for modern web apps — framework-agnostic, thoroughly documented, and backed by interactive playgrounds.
+**[JayOnCode](https://www.jayoncode.com/)** ships the **JOC Ecosystem**: independent, headless TypeScript libraries for modern web apps — framework-agnostic, thoroughly documented, and backed by interactive playgrounds.
 
 It is **one repository, many libraries**. It is not a single runtime you install — it is a monorepo of `@jayoncode/*` packages that share standards, tooling, and documentation, while remaining independently versioned on npm.
 
@@ -43,7 +43,7 @@ Upcoming libraries will be **announced** as they enter development — see the [
 
 ## Documentation model
 
-### Monorepo layer (JayOnCode / JOC Ecosystem)
+### Monorepo layer ([JayOnCode](https://www.jayoncode.com/) / JOC Ecosystem)
 
 - [Introduction](/getting-started/introduction) — what the JOC Ecosystem is and why it exists
 - [Philosophy](/getting-started/philosophy) — design rules

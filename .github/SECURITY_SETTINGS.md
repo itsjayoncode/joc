@@ -19,9 +19,23 @@ To prepare JOC for public collaboration, enable the following repository setting
 
 ## Collaboration Defaults
 
-- Disable auto-merge until release automation exists
+- Auto-merge remains off by default; only the Changesets Version Packages PR is **auto-approved** (see below)
 - Require conversations to be resolved before merge
 - Restrict direct pushes to the default branch
+
+## Auto-approve: `chore(release): version packages`
+
+Workflow: [`.github/workflows/auto-approve-release-pr.yml`](./workflows/auto-approve-release-pr.yml).
+
+GitHub does **not** allow `GITHUB_TOKEN` / `github-actions[bot]` to approve a PR it opened (the Changesets version PR from CI). Add a second identity:
+
+1. Create a **fine-grained PAT** (or classic) from a maintainer account with **Pull requests: Read and write** on `itsjayoncode/joc`
+2. Repo → **Settings → Secrets and variables → Actions** → New secret  
+   Name: `RELEASE_APPROVE_TOKEN`  
+   Value: that PAT
+3. Optional: ensure the PAT owner is allowed to approve under branch protection (not blocked by “dismiss stale reviews” / CODEOWNERS-only rules you do not want)
+
+Pull Request Validation and CodeQL still run on the PR normally. This workflow only submits an approving review so you do not have to press Approve by hand. It does **not** merge the PR.
 
 ## Release Secrets / npm publish from CI
 

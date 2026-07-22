@@ -2,7 +2,7 @@
 
 **Status:** Stable (guidance)
 
-**Previous:** [Cross-tab](/packages/storage/modules/cross-tab) · **Next:** [Recipes](/packages/storage/modules/recipes)
+**Previous:** [Transforms](/packages/storage/modules/transforms) · **Next:** [Recipes](/packages/storage/modules/recipes)
 
 `@jayoncode/storage` has **no** runtime dependency on other `@jayoncode/*` packages. Compose in app code.
 

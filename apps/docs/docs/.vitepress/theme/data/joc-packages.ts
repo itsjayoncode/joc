@@ -38,7 +38,7 @@ export const jocPackages: JocPackage[] = [
     icon: "◎",
     capabilities: ["Visibility", "Focus", "Idle", "Cross-tab", "Lifecycle"],
     featured: true,
-    versionLabel: "v0.3.0",
+    versionLabel: "v0.3.2",
   },
   {
     id: "form-intelligence",
@@ -55,7 +55,7 @@ export const jocPackages: JocPackage[] = [
     icon: "▤",
     capabilities: ["Validation", "Workflow", "Wizard", "Autosave", "Offline"],
     featured: true,
-    versionLabel: "v3.3.1",
+    versionLabel: "v3.9.1",
   },
   {
     id: "object-diff",
@@ -71,7 +71,7 @@ export const jocPackages: JocPackage[] = [
     icon: "≠",
     capabilities: ["Diff", "Patch", "Serialize", "Snapshots"],
     featured: true,
-    versionLabel: "v0.3.0",
+    versionLabel: "v0.3.3",
   },
   {
     id: "storage",
@@ -85,9 +85,9 @@ export const jocPackages: JocPackage[] = [
     docsLink: "/packages/storage/",
     accent: "emerald",
     icon: "▣",
-    capabilities: ["Adapters", "TTL", "Snapshots", "Transactions"],
+    capabilities: ["Adapters", "TTL", "Async/IDB", "Quota", "Transforms"],
     featured: true,
-    versionLabel: "v0.2.0",
+    versionLabel: "v0.3.0",
   },
 ];
 

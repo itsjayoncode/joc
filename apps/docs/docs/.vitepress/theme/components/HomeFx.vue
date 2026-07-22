@@ -62,7 +62,38 @@ function tick(): void {
   frame = window.requestAnimationFrame(tick);
 }
 
+let heroOrbit: HTMLElement | null = null;
+
+function mountHeroOrbit(): void {
+  const host = document.querySelector<HTMLElement>(".VPHomeHero .image-container");
+  if (!host || host.querySelector(".joc-hero-orbit")) {
+    return;
+  }
+
+  const orbit = document.createElement("div");
+  orbit.className = "joc-hero-orbit";
+  orbit.setAttribute("aria-hidden", "true");
+  orbit.innerHTML = `
+    <span class="joc-hero-orbit__ring joc-hero-orbit__ring--1"></span>
+    <span class="joc-hero-orbit__ring joc-hero-orbit__ring--2"></span>
+    <span class="joc-hero-orbit__ring joc-hero-orbit__ring--3"></span>
+    <span class="joc-hero-orbit__path joc-hero-orbit__path--1">
+      <span class="joc-hero-orbit__planet joc-hero-orbit__planet--a"></span>
+    </span>
+    <span class="joc-hero-orbit__path joc-hero-orbit__path--2">
+      <span class="joc-hero-orbit__planet joc-hero-orbit__planet--b"></span>
+    </span>
+    <span class="joc-hero-orbit__path joc-hero-orbit__path--3">
+      <span class="joc-hero-orbit__planet joc-hero-orbit__planet--c"></span>
+    </span>
+  `;
+  host.appendChild(orbit);
+  heroOrbit = orbit;
+}
+
 onMounted(() => {
+  mountHeroOrbit();
+
   if (prefersReducedMotion() || !isFinePointer()) {
     return;
   }
@@ -75,6 +106,8 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+  heroOrbit?.remove();
+  heroOrbit = null;
   document.documentElement.classList.remove("joc-home-cursor-active");
   window.removeEventListener("pointermove", onPointerMove);
   document.removeEventListener("pointerover", onPointerOver);

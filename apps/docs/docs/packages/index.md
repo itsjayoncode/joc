@@ -5,7 +5,7 @@ description: Browse the JOC Ecosystem package catalog — independently installa
 
 # Packages
 
-**JayOnCode**’s **JOC Ecosystem** is a monorepo of focused TypeScript packages. Each `@jayoncode/*` library solves one developer problem well, ships on its own version line, and documents under its own section on this site — framework-agnostic, thoroughly documented, and backed by interactive playgrounds.
+**[JayOnCode](https://www.jayoncode.com/)**’s **JOC Ecosystem** is a monorepo of focused TypeScript packages. Each `@jayoncode/*` library solves one developer problem well, ships on its own version line, and documents under its own section on this site — framework-agnostic, thoroughly documented, and backed by interactive playgrounds.
 
 **Today:** four packages with docs and playgrounds. **Next:** additional libraries — [to be announced](/roadmap/).
 
@@ -58,14 +58,14 @@ Start with a live package below. New libraries will appear here when they ship.
 
 ### [Storage](/packages/storage/)
 
-`@jayoncode/storage` — save prefs and cache in the browser with clear names, expiry, and a backend you choose (memory / localStorage / sessionStorage).
+`@jayoncode/storage` — save prefs and cache in the browser with clear names, expiry, and a backend you choose (memory / localStorage / sessionStorage / IndexedDB).
 
 **Start here (in order):**
 
 1. [Overview & learning path](/packages/storage/)
 2. [Tutorial](/packages/storage/modules/getting-started) → [Concepts](/packages/storage/modules/concepts) → [Recipes](/packages/storage/modules/recipes)
 3. [Core](/packages/storage/modules/core) · [Errors](/packages/storage/modules/errors) · [Best practices](/packages/storage/modules/best-practices)
-4. Advanced: [Maintenance](/packages/storage/modules/maintenance) → [Transactions](/packages/storage/modules/transactions)
+4. Advanced: [Maintenance](/packages/storage/modules/maintenance) → [Async](/packages/storage/modules/async) · [Cross-tab](/packages/storage/modules/cross-tab) · [Quota](/packages/storage/modules/quota) · [Transforms](/packages/storage/modules/transforms)
 5. [Interactive playground](/playground/storage/)
 
 ## What’s next
@@ -74,7 +74,7 @@ Additional `@jayoncode/*` packages will be **announced** as they enter active de
 
 ## New to the JOC Ecosystem?
 
-1. Read [Introduction](/getting-started/introduction) — what JayOnCode and the JOC Ecosystem are.
+1. Read [Introduction](/getting-started/introduction) — what [JayOnCode](https://www.jayoncode.com/) and the JOC Ecosystem are.
 2. Skim [Philosophy](/getting-started/philosophy) — why packages stay independent.
 3. Pick a library from this catalog (or try the [playground](/playground/)).
 4. Follow the [roadmap](/roadmap/) for what’s next — and [contribute](/guides/contribution) if you want to help.

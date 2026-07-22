@@ -12,6 +12,11 @@ import { createObjectDiffSidebarMap } from "./object-diff-sidebar.js";
 import { objectDiffDocVersions } from "./object-diff-versions.js";
 import { resolveGithubEditUrl } from "./resolve-github-edit-url.js";
 import {
+  isArchivedDocsPath,
+  resolveIndexScopeLabel,
+  splitPageIntoScopedSections,
+} from "./search-index.js";
+import {
   buildOrganizationJsonLd,
   buildSoftwarePackageJsonLd,
   defaultKeywords,
@@ -21,6 +26,7 @@ import {
   resolveDocsBasePath,
   siteName,
   siteTagline,
+  ownerWebsiteUrl,
 } from "./seo.js";
 import { storageMeta } from "./storage-meta.js";
 import { createStorageSidebarMap } from "./storage-sidebar.js";
@@ -146,6 +152,53 @@ gtag('config', '${docsGaId}');`,
     siteTitle: false,
     search: {
       provider: "local",
+      options: {
+        detailedView: true,
+        translations: {
+          button: {
+            buttonText: "Search docs",
+            buttonAriaLabel: "Search JOC docs, APIs, and packages",
+          },
+          modal: {
+            displayDetails: "Show detailed list",
+            resetButtonTitle: "Clear search",
+            backButtonTitle: "Close search",
+            noResultsText: "No results for",
+            footer: {
+              selectText: "to select",
+              navigateText: "to navigate",
+              closeText: "to close",
+            },
+          },
+        },
+        miniSearch: {
+          searchOptions: {
+            fuzzy: 0.2,
+            prefix: true,
+            boost: { title: 5, text: 1, titles: 3 },
+          },
+          *_splitIntoSections(filePath: string, html: string) {
+            const scopeLabel = resolveIndexScopeLabel(filePath.replace(/\\/g, "/"));
+            yield* splitPageIntoScopedSections(html, scopeLabel);
+          },
+        },
+        async _render(src, env, md) {
+          const renderer = md as typeof md & {
+            renderAsync?: (source: string, env: unknown) => Promise<string>;
+          };
+          const html = renderer.renderAsync
+            ? await renderer.renderAsync(src, env)
+            : md.render(src, env);
+          if (env.frontmatter?.search === false) {
+            return "";
+          }
+          const relativePath = typeof env.relativePath === "string" ? env.relativePath : "";
+          if (isArchivedDocsPath(relativePath)) {
+            return "";
+          }
+          return html;
+        },
+      },
     },
     nav: [
       { component: "SponsorCta", props: { placement: "nav" } },
@@ -254,7 +307,7 @@ gtag('config', '${docsGaId}');`,
         icon: {
           svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>',
         },
-        link: "https://www.jayoncode.com/",
+        link: ownerWebsiteUrl,
         ariaLabel: "JayOnCode website",
       },
       { icon: "npm", link: "https://www.npmjs.com/~jayoncode", ariaLabel: "npm" },
@@ -268,8 +321,8 @@ gtag('config', '${docsGaId}');`,
     },
     footer: {
       message:
-        "JOC — headless @jayoncode/* TypeScript libraries. Docs sync from package source via TypeDoc and sync scripts.",
-      copyright: "MIT Licensed · JayOnCode",
+        "An ecosystem of independent, headless TypeScript libraries engineered for modern web development. Every package includes interactive playgrounds and documentation that evolves alongside the code.",
+      copyright: `MIT Licensed · Built by <a href="${ownerWebsiteUrl}" target="_blank" rel="noopener noreferrer">JayOnCode</a>`,
     },
     outline: {
       level: [2, 3],

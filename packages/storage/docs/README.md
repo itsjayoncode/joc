@@ -2,7 +2,7 @@
 
 `@jayoncode/storage` — policy-driven client persistence with explicit adapters.
 
-**Status:** Public `0.2.0` · sync core + `/async` + `/cross-tab` **Stable**
+**Status:** Public `0.3.0` · sync core + `/async` + `/cross-tab` + `/quota` + `/transforms` **Stable**
 
 ## Learning path
 
@@ -11,8 +11,16 @@ Canonical paths live in [overview.md](./overview.md) (**Pick your path** + Docum
 1. [Overview](./overview.md) — choose Beginner / Shipping / Advanced
 2. **Beginner:** [Tutorial](./getting-started.md) → [Concepts](./concepts.md) → [Recipes](./recipes.md)
 3. **Shipping:** [Core](./core.md) → [Errors](./errors.md) → [Best practices](./best-practices.md)
-4. **Advanced:** [Maintenance](./maintenance.md) → … → [Async](./async.md) · [Cross-tab](./cross-tab.md)
+4. **Advanced:** [Maintenance](./maintenance.md) → … → [Async](./async.md) · [Cross-tab](./cross-tab.md) · [Quota](./quota.md) · [Transforms](./transforms.md)
 5. Support: [FAQ](./faq.md) · [Browser support](./browser-support.md) · [Security](./security.md)
+
+## Non-goals (short)
+
+- Not Form Intelligence drafts (separate IndexedDB)
+- No auto-selected backends
+- Cross-tab notify only (no auto-merge)
+- Soft quota = approx bytes (not browser remaining)
+- No silent crypto — opt-in `/transforms` hooks; algorithms stay app-owned
 
 ## Playground
 
@@ -20,4 +28,4 @@ Canonical paths live in [overview.md](./overview.md) (**Pick your path** + Docum
 pnpm storage-playground:dev
 ```
 
-Lab covers adapters, TTL, policies, migrate dry-run, quota sim, cleanup, snapshots, observe, cross-tab notify, diagnostics, and transactions. IndexedDB is documented under `/async` (not the sync Lab adapter chips).
+Lab covers adapters, TTL, policies, migrate dry-run, hard quota sim, soft max bytes (`/quota`), demo transforms, cleanup, snapshots, observe, cross-tab notify, diagnostics, and transactions. IndexedDB is documented under `/async` (not the sync Lab adapter chips).

@@ -10,6 +10,8 @@ import PackageLanding from "./components/PackageLanding.vue";
 import PlaygroundCatalog from "./components/PlaygroundCatalog.vue";
 import SponsorCta from "./components/SponsorCta.vue";
 import Layout from "./Layout.vue";
+import { installLocalSearchEnhance } from "./local-search-enhance.js";
+import { installNavResourcesCollapse } from "./nav-resources-collapse.js";
 import { installPlaygroundNewTabLinks } from "./playground-new-tab.js";
 
 import type { Theme } from "vitepress";
@@ -33,6 +35,8 @@ const theme: Theme = {
 
     if (typeof window !== "undefined") {
       installPlaygroundNewTabLinks();
+      installLocalSearchEnhance();
+      installNavResourcesCollapse();
     }
   },
 };

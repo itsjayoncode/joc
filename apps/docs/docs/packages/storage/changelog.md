@@ -5,7 +5,21 @@ description: "Release history for @jayoncode/storage."
 
 # Changelog
 
+## 0.3.0
+
+### Minor Changes
+
+- 453cb4f: Add async IndexedDB track (`/async`) and cross-tab notify helpers (`/cross-tab`) without changing sync `createStorage`.
+
 All notable changes to `@jayoncode/storage` will be documented in this file.
+
+## 0.3.0
+
+### Added
+
+- `@jayoncode/storage/quota` — `estimateNamespaceBytes`, `enableQuotaGuard` (soft limits via approx bytes)
+- `@jayoncode/storage/transforms` — `withPayloadTransforms` (opt-in sync compress/encrypt hooks)
+- Root exports `defaultSerialize` / `defaultDeserialize` for transform composition
 
 ## 0.2.0
 
@@ -37,4 +51,3 @@ All notable changes to `@jayoncode/storage` will be documented in this file.
 ## 0.0.0
 
 - Private incubation (pre-release).
-

@@ -3,7 +3,7 @@
 **Status:** Stable (0.2)  
 **Import:** `@jayoncode/storage/cross-tab`
 
-**Previous:** [Async](/packages/storage/modules/async) · **Next:** [Composition](/packages/storage/modules/composition)
+**Previous:** [Async](/packages/storage/modules/async) · **Next:** [Quota](/packages/storage/modules/quota)
 
 Notify other same-origin tabs when a **sync** storage instance writes. Notify-only — no silent remote merge, no multi-tab ACID.
 

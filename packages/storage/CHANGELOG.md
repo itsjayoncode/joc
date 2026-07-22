@@ -8,6 +8,14 @@
 
 All notable changes to `@jayoncode/storage` will be documented in this file.
 
+## 0.3.0
+
+### Added
+
+- `@jayoncode/storage/quota` — `estimateNamespaceBytes`, `enableQuotaGuard` (soft limits via approx bytes)
+- `@jayoncode/storage/transforms` — `withPayloadTransforms` (opt-in sync compress/encrypt hooks)
+- Root exports `defaultSerialize` / `defaultDeserialize` for transform composition
+
 ## 0.2.0
 
 ### Added

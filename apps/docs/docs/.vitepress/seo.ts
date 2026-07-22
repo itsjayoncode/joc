@@ -5,6 +5,8 @@ export const docsSiteUrl = (process.env.VITE_DOCS_SITE_URL ?? DEFAULT_SITE_URL).
 export const docsPlaygroundUrl = process.env.VITE_DOCS_PLAYGROUND_URL ?? DEFAULT_PLAYGROUND_URL;
 
 export const siteName = "JayOnCode";
+/** Public brand / owner site for the JOC Ecosystem. */
+export const ownerWebsiteUrl = "https://www.jayoncode.com/";
 export const siteTagline =
   "JOC Ecosystem — independent, headless TypeScript libraries for modern web apps. Framework-agnostic, thoroughly documented, with interactive playgrounds.";
 
@@ -54,8 +56,13 @@ export function buildOrganizationJsonLd(siteUrl: string): string {
     alternateName: ["JOC", "JOC Ecosystem"],
     description:
       "An ecosystem of independent, headless TypeScript libraries engineered for modern web applications. Every package is framework-agnostic, thoroughly documented, and backed by interactive playgrounds for a consistent developer experience.",
-    url: siteUrl,
-    sameAs: ["https://github.com/itsjayoncode", "https://www.npmjs.com/~jayoncode"],
+    url: ownerWebsiteUrl,
+    sameAs: [
+      ownerWebsiteUrl,
+      siteUrl,
+      "https://github.com/itsjayoncode",
+      "https://www.npmjs.com/~jayoncode",
+    ],
   });
 }
 
