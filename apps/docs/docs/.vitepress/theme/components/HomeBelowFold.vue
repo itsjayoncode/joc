@@ -43,7 +43,7 @@ const selectedPackage = computed(
 );
 
 const learningPath = [
-  { step: "1", title: "What JOC is", href: "/getting-started/introduction" },
+  { step: "1", title: "What the JOC Ecosystem is", href: "/getting-started/introduction" },
   { step: "2", title: "Browse packages", href: "/packages/" },
   {
     step: "3",
@@ -139,11 +139,11 @@ const communityLinks = [
 
     <!-- Featured packages -->
     <section id="ecosystem" class="joc-home-section" aria-labelledby="featured-title">
-      <span class="joc-kicker">Featured packages</span>
+      <span class="joc-kicker">JOC Ecosystem</span>
       <h2 id="featured-title" class="joc-section-title">Focused tools. One ecosystem.</h2>
       <p class="joc-muted joc-section-lead">
-        Live packages under <code>@jayoncode/*</code>. Each solves one problem well — and composes
-        when you need more.
+        Independent, headless <code>@jayoncode/*</code> libraries — framework-agnostic, thoroughly
+        documented, and backed by interactive playgrounds.
       </p>
 
       <div class="joc-feature-pkgs">
@@ -259,11 +259,11 @@ await lifecycle.dispose();</code></pre>
     <!-- Vision -->
     <section class="joc-home-section" aria-labelledby="vision-title">
       <span class="joc-kicker">Vision</span>
-      <h2 id="vision-title" class="joc-section-title">What JOC is becoming</h2>
+      <h2 id="vision-title" class="joc-section-title">What the JOC Ecosystem is becoming</h2>
       <p class="joc-muted joc-section-lead">
-        A trusted toolkit of independent headless libraries — not a mega-framework. Install only
-        what you need. Compose when you need more. Stop rewriting the same infrastructure in every
-        app.
+        An ecosystem of independent, headless TypeScript libraries — framework-agnostic, thoroughly
+        documented, and backed by interactive playgrounds. Install only what you need. Compose when
+        you need more.
       </p>
       <div class="joc-choose-result__actions">
         <a class="joc-cta-primary" :href="docsHref('/getting-started/introduction')"

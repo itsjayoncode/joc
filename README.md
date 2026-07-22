@@ -1,4 +1,4 @@
-# JOC — JayOnCode TypeScript Libraries
+# JOC — JayOnCode Ecosystem
 
 [![npm](https://img.shields.io/npm/v/@jayoncode/browser-lifecycle.svg)](https://www.npmjs.com/package/@jayoncode/browser-lifecycle)
 [![docs](https://img.shields.io/badge/docs-itsjayoncode.github.io-2563eb)](https://itsjayoncode.github.io/joc/)
@@ -6,7 +6,9 @@
 [![license](https://img.shields.io/github/license/itsjayoncode/joc)](https://github.com/itsjayoncode/joc/blob/master/LICENSE)
 [![Become a Sponsor](https://img.shields.io/badge/Become%20a%20Sponsor-%23ea4aaa?style=flat&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/jayoncoding)
 
-**JOC** (JayOnCode) is an open source monorepo of focused, independently installable **TypeScript libraries** for the browser and shared app infrastructure. Each `@jayoncode/*` package solves one problem well, ships on its own version line, and is documented under its own section on the [official docs site](https://itsjayoncode.github.io/joc/).
+**JayOnCode** builds the **JOC Ecosystem**: an ecosystem of independent, headless TypeScript libraries engineered for modern web applications. Every package is framework-agnostic, thoroughly documented, and backed by interactive playgrounds for a consistent developer experience.
+
+Each `@jayoncode/*` package solves one problem well, ships on its own version line, and is documented under its own section on the [official docs site](https://itsjayoncode.github.io/joc/).
 
 Install only what you need. Compose when you need more. Keep package boundaries explicit.
 
@@ -25,9 +27,9 @@ Install only what you need. Compose when you need more. Keep package boundaries 
 
 ---
 
-## Why JOC
+## Why the JOC Ecosystem
 
-Frontend apps keep re-solving the same infrastructure problems: tab visibility and idle handling, form rules and drafts, deep object comparison and patches. JOC packages those concerns as **headless, typed cores** with optional framework adapters — not a UI kit, and not a monolith.
+Frontend apps keep re-solving the same infrastructure problems: tab visibility and idle handling, form rules and drafts, deep object comparison and patches, client prefs and cache. JOC packages those concerns as **headless, typed cores** with optional framework adapters — not a UI kit, and not a monolith.
 
 **Design principles**
 

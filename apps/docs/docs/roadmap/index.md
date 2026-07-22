@@ -1,17 +1,17 @@
 ---
 title: JOC Roadmap
-description: Where JayOnCode is today, what ships next across @jayoncode/* packages, and the long-term ecosystem vision.
+description: Where the JayOnCode JOC Ecosystem is today, what ships next across @jayoncode/* packages, and the long-term vision.
 ---
 
 # Roadmap
 
-This page is the **product-facing** view of where JOC is and where it’s going. Engineering detail: repository [ROADMAP.md](https://github.com/itsjayoncode/joc/blob/master/ROADMAP.md) and [ecosystem governance](https://github.com/itsjayoncode/joc/tree/master/engineering/ecosystem).
+This page is the **product-facing** view of where the **JOC Ecosystem** is and where it’s going. Engineering detail: repository [ROADMAP.md](https://github.com/itsjayoncode/joc/blob/master/ROADMAP.md) and [ecosystem governance](https://github.com/itsjayoncode/joc/tree/master/engineering/ecosystem).
 
 **Composition without coupling.** Independent packages first; shared infrastructure only when experience proves it.
 
 ## Where we are
 
-JOC has a signed governance model: three packages live on npm, **`@jayoncode/storage` shipping in-repo** (docs + playground wired; private `0.0.0` until first publish), no premature shared core, one flagship package at a time, and platform work closed until real pain appears.
+JayOnCode has a signed governance model: four packages with docs and playgrounds on the site, no premature shared core, one flagship package at a time, and platform work closed until real pain appears.
 
 | Package                                                        | Focus                                                        | Status                         |
 | -------------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------ |

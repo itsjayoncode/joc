@@ -1,17 +1,17 @@
 ---
-title: Introduction to JOC and JayOnCode
-description: What JOC is, the JayOnCode vision, live @jayoncode/* packages, and where to start as a consumer or contributor.
+title: Introduction to the JOC Ecosystem
+description: What JayOnCode and the JOC Ecosystem are — independent, headless TypeScript libraries with docs and playgrounds — and where to start.
 ---
 
 # Introduction
 
-**JOC** (JayOnCode) is an open-source ecosystem of **headless TypeScript libraries** for the web. Each `@jayoncode/*` package solves one hard frontend problem well — forms, browser session lifecycle, object diffing, and more — then gets out of your way.
+**JayOnCode** builds the **JOC Ecosystem**: an ecosystem of independent, headless TypeScript libraries engineered for modern web applications. Every package is framework-agnostic, thoroughly documented, and backed by interactive playgrounds for a consistent developer experience.
 
-Packages are **independently installable**, **framework-agnostic**, and **tree-shakeable**. You pick what you need; you never adopt a monolith.
+Each `@jayoncode/*` package solves one hard frontend problem well — forms, browser session lifecycle, object diffing, client storage, and more — then gets out of your way. You pick what you need; you never adopt a monolith.
 
 ## The pitch in one paragraph
 
-Modern apps keep reinventing the same infrastructure: when a tab hides, how a form validates and autosaves, what changed between two objects. JOC ships those building blocks as small, typed cores you compose in React, Vue, Angular, Svelte, or vanilla JS — with docs and playgrounds that match production APIs.
+Modern apps keep reinventing the same infrastructure: when a tab hides, how a form validates and autosaves, what changed between two objects, how prefs survive a reload. The JOC Ecosystem ships those building blocks as small, typed cores you compose in React, Vue, Angular, Svelte, or vanilla JS — with docs and playgrounds that match production APIs.
 
 ## Vision
 
@@ -33,7 +33,7 @@ Read the full [philosophy](/getting-started/philosophy) and [vision on GitHub](h
 | [`@jayoncode/browser-lifecycle`](/packages/browser-lifecycle/) | Visibility, focus, idle, connectivity, cross-tab session signals     | [Docs](/packages/browser-lifecycle/) · [Playground](/playground/browser-lifecycle/) |
 | [`@jayoncode/form-intelligence`](/packages/form-intelligence/) | Headless form workflows — validation, rules, drafts, wizards, submit | [Docs](/packages/form-intelligence/) · [Playground](/playground/form-intelligence/) |
 | [`@jayoncode/object-diff`](/packages/object-diff/)             | Deep comparison, change records, JSON Patch                          | [Docs](/packages/object-diff/) · [Playground](/playground/object-diff/)             |
-| [`@jayoncode/storage`](/packages/storage/)                     | Policy-driven client persistence — adapters, TTL, migrations         | [Docs](/packages/storage/) · [Playground](/playground/storage/)                     |
+| [`@jayoncode/storage`](/packages/storage/)                     | Save prefs and cache in the browser — adapters, TTL, migrations      | [Docs](/packages/storage/) · [Playground](/playground/storage/)                     |
 
 Browse the full [package catalog](/packages/). New libraries will be announced as they enter development.
 

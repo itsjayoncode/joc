@@ -80,7 +80,7 @@ const storageSidebar = createStorageSidebarMap(
 export default defineConfig({
   base: docsBase,
   title: siteName,
-  titleTemplate: ":title | JOC",
+  titleTemplate: ":title | JOC Ecosystem",
   description: siteTagline,
   lang: "en-US",
   srcDir: ".",
@@ -166,12 +166,12 @@ gtag('config', '${docsGaId}');`,
     sidebar: {
       "/getting-started/": [
         {
-          text: "JayOnCode Monorepo",
+          text: "JOC Ecosystem",
           items: [
             { text: "Introduction", link: "/getting-started/introduction" },
             { text: "Installation", link: "/getting-started/installation" },
             { text: "Philosophy", link: "/getting-started/philosophy" },
-            { text: "Ecosystem", link: "/getting-started/ecosystem" },
+            { text: "JOC Ecosystem", link: "/getting-started/ecosystem" },
             { text: "Package Catalog", link: "/packages/" },
           ],
         },

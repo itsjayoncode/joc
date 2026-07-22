@@ -3,7 +3,7 @@
   "version": "1.7.4",
   "private": true,
   "type": "module",
-  "description": "VitePress documentation site for the JOC ecosystem.",
+  "description": "VitePress documentation site for the JayOnCode JOC Ecosystem.",
   "scripts": {
     "docs:api": "node ../../scripts/generate-api-documentation.mjs",
     "docs:sync": "node ../../scripts/sync-documentation.mjs",

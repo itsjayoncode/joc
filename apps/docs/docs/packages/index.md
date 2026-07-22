@@ -1,11 +1,11 @@
 ---
-title: JOC Packages | JayOnCode Monorepo Catalog
-description: Browse the JayOnCode (JOC) monorepo package catalog — independently installable @jayoncode/* TypeScript libraries for browser lifecycle, forms, object diffing, and more.
+title: JOC Packages | JayOnCode Catalog
+description: Browse the JOC Ecosystem package catalog — independently installable @jayoncode/* TypeScript libraries for browser lifecycle, forms, object diffing, storage, and more.
 ---
 
 # Packages
 
-JayOnCode (**JOC**) is a monorepo of focused TypeScript packages. Each `@jayoncode/*` library solves one developer problem well, ships on its own version line, and documents under its own section on this site.
+**JayOnCode**’s **JOC Ecosystem** is a monorepo of focused TypeScript packages. Each `@jayoncode/*` library solves one developer problem well, ships on its own version line, and documents under its own section on this site — framework-agnostic, thoroughly documented, and backed by interactive playgrounds.
 
 **Today:** four packages with docs and playgrounds. **Next:** additional libraries — [to be announced](/roadmap/).
 
@@ -72,9 +72,9 @@ Start with a live package below. New libraries will appear here when they ship.
 
 Additional `@jayoncode/*` packages will be **announced** as they enter active development. We won’t list unreleased package names here — watch the [roadmap](/roadmap/), [GitHub Discussions](https://github.com/itsjayoncode/joc/discussions), and this catalog when new libraries ship.
 
-## New to JOC?
+## New to the JOC Ecosystem?
 
-1. Read [Introduction](/getting-started/introduction) — what JOC is, the vision, and live packages.
+1. Read [Introduction](/getting-started/introduction) — what JayOnCode and the JOC Ecosystem are.
 2. Skim [Philosophy](/getting-started/philosophy) — why packages stay independent.
 3. Pick a library from this catalog (or try the [playground](/playground/)).
 4. Follow the [roadmap](/roadmap/) for what’s next — and [contribute](/guides/contribution) if you want to help.

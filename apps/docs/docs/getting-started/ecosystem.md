@@ -1,11 +1,13 @@
 ---
 title: JOC Ecosystem
-description: How the JayOnCode monorepo is organized — packages, apps, docs, playgrounds, and how new libraries land.
+description: How the JayOnCode JOC Ecosystem is organized — independent packages, apps, docs, playgrounds, and how new libraries land.
 ---
 
-# Ecosystem
+# JOC Ecosystem
 
-JOC is **one repository, many libraries**. It is not a single runtime you install — it is a monorepo of `@jayoncode/*` packages that share standards, tooling, and documentation, while remaining independently versioned on npm.
+**JayOnCode** ships the **JOC Ecosystem**: independent, headless TypeScript libraries for modern web apps — framework-agnostic, thoroughly documented, and backed by interactive playgrounds.
+
+It is **one repository, many libraries**. It is not a single runtime you install — it is a monorepo of `@jayoncode/*` packages that share standards, tooling, and documentation, while remaining independently versioned on npm.
 
 ## At a glance
 
@@ -41,9 +43,9 @@ Upcoming libraries will be **announced** as they enter development — see the [
 
 ## Documentation model
 
-### Monorepo layer (JayOnCode / JOC)
+### Monorepo layer (JayOnCode / JOC Ecosystem)
 
-- [Introduction](/getting-started/introduction) — what JOC is and why it exists
+- [Introduction](/getting-started/introduction) — what the JOC Ecosystem is and why it exists
 - [Philosophy](/getting-started/philosophy) — design rules
 - [Package catalog](/packages/) — live libraries (new ones announced when ready)
 - [Contributor guides](/guides/contribution)
@@ -69,4 +71,4 @@ New packages follow the same path:
 3. Ship docs + (usually) a playground
 4. Version with Changesets; archive docs on release
 
-That keeps the collection coherent as JOC expands — without forcing consumers onto a single mega-version.
+That keeps the collection coherent as the JOC Ecosystem expands — without forcing consumers onto a single mega-version.
