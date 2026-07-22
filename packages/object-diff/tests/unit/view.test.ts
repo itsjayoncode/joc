@@ -26,6 +26,59 @@ describe("createDiffView", () => {
     expect(view.summary().total).toBe(result.metadata.changeCount);
     expect(view.statistics().totalChanges).toBeGreaterThan(0);
   });
+
+  it("explains changes as structured records", () => {
+    const explanations = createDiffView(result).exclude(["secret"]).explain();
+
+    expect(explanations).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          path: "user.name",
+          type: "changed",
+          reason: "Primitive value changed",
+          confidence: "high",
+          summary: "`user.name` updated",
+        }),
+        expect.objectContaining({
+          path: "tag",
+          type: "added",
+        }),
+      ]),
+    );
+  });
+
+  it("explains moves with identityKey hint and human format", () => {
+    const moved = diff(
+      [
+        { id: 1, name: "a" },
+        { id: 2, name: "b" },
+        { id: 3, name: "c" },
+      ],
+      [
+        { id: 2, name: "b" },
+        { id: 3, name: "c" },
+        { id: 1, name: "a" },
+      ],
+      { identityKey: "id", detectMoves: true },
+    );
+
+    const view = createDiffView(moved).moved();
+    const structured = view.explain({ identityKey: "id" });
+
+    expect(structured.length).toBeGreaterThanOrEqual(1);
+    expect(structured[0]).toEqual(
+      expect.objectContaining({
+        type: "moved",
+        reason: "Matched using identityKey 'id'",
+        confidence: "high",
+      }),
+    );
+
+    const human = view.explain({ format: "human", identityKey: "id" });
+    expect(human).toContain("item moved");
+    expect(human).toContain("matched using id");
+    expect(human).toMatch(/index \d+ → \d+/);
+  });
 });
 
 describe("root isolation", () => {

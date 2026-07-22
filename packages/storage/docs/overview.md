@@ -1,8 +1,10 @@
 # Package overview
 
+**Namespace it. Expire it. Upgrade it — without localStorage glue.**
+
 Persist app data in the browser — with namespaces, expiry, and schema upgrades — without reinventing `localStorage` helpers.
 
-Think of Storage as a **small policy layer** on top of an adapter you choose (memory, `localStorage`, or `sessionStorage`). You call `set` / `get`; Storage wraps values in an **envelope** (metadata + your data).
+Think of Storage as a **small policy layer** on top of an adapter you choose (memory, `localStorage`, `sessionStorage`, or IndexedDB). You call `set` / `get`; Storage wraps values in an **envelope** (metadata + your data).
 
 ::: tip Start here
 **New to the package?** → [Tutorial](/packages/storage/modules/getting-started) (10 minutes)  

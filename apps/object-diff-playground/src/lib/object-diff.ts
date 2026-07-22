@@ -11,10 +11,12 @@ import {
 } from "@jayoncode/object-diff";
 import { merge } from "@jayoncode/object-diff/merge";
 import { statistics } from "@jayoncode/object-diff/stats";
+import { createDiffView } from "@jayoncode/object-diff/view";
 
 import type { DiffResult, Patch, SerializeFormat } from "@jayoncode/object-diff";
 import type { MergeOptions, MergeResult } from "@jayoncode/object-diff/merge";
 import type { DiffStatistics, StatisticsOptions } from "@jayoncode/object-diff/stats";
+import type { DiffExplanation, ExplainOptions } from "@jayoncode/object-diff/view";
 
 export const SAMPLE_OBJECT_A = {
   user: { name: "John", active: true },
@@ -41,6 +43,7 @@ export function getObjectDiffIntegrationSummary() {
       "applyPatch",
       "serialize",
       "view",
+      "explain",
       "merge",
       "query",
       "stats",
@@ -93,6 +96,13 @@ export function runStatistics(
   return statistics(result, patchOps, options);
 }
 
+export function runExplain(
+  result: DiffResult,
+  options?: ExplainOptions,
+): DiffExplanation[] | string {
+  return createDiffView(result).explain(options);
+}
+
 export {
   compare,
   diff,
@@ -105,6 +115,7 @@ export {
   serialize,
   merge,
   statistics,
+  createDiffView,
 };
 
 export type {
@@ -118,6 +129,6 @@ export type {
   PatchOptions,
   ApplyPatchOptions,
 } from "@jayoncode/object-diff";
-export type { MergeOptions, MergeResult } from "@jayoncode/object-diff/merge";
+export type { MergeOptions, MergeResult, MergeConflict } from "@jayoncode/object-diff/merge";
 export type { DiffStatistics, StatisticsOptions } from "@jayoncode/object-diff/stats";
-
+export type { DiffExplanation, ExplainOptions } from "@jayoncode/object-diff/view";

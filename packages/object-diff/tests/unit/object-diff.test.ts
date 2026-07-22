@@ -177,6 +177,86 @@ describe("phase 2 options", () => {
   });
 });
 
+describe("phase 1 algorithms", () => {
+  it("detectMoves reports array reorder as moved", () => {
+    const result = diff(["A", "B", "C"], ["B", "C", "A"], { detectMoves: true });
+
+    expect(result.changes).toEqual([
+      expect.objectContaining({
+        type: "moved",
+        from: "[0]",
+        path: "[2]",
+        previous: "A",
+        current: "A",
+      }),
+    ]);
+    expect(result.metadata.movedCount).toBe(1);
+  });
+
+  it("identityKey + detectMoves emits moved on reorder", () => {
+    const before = [
+      { id: 1, name: "a" },
+      { id: 2, name: "b" },
+      { id: 3, name: "c" },
+    ];
+    const after = [
+      { id: 2, name: "b" },
+      { id: 3, name: "c" },
+      { id: 1, name: "a" },
+    ];
+
+    const result = diff(before, after, { identityKey: "id", detectMoves: true });
+
+    expect(result.changes.some((change) => change.type === "moved")).toBe(true);
+    expect(result.metadata.movedCount).toBeGreaterThanOrEqual(1);
+    expect(hasChanges(before, after, { identityKey: "id", detectMoves: true })).toBe(true);
+  });
+
+  it("ignore prefix.** still reports a change on the prefix", () => {
+    const result = diff(
+      { secrets: { token: "a", nested: { x: 1 } }, keep: 1 },
+      { secrets: { token: "b", nested: { x: 2 } }, keep: 1 },
+      { ignore: ["secrets.**"] },
+    );
+
+    expect(result.changes.some((change) => change.path.startsWith("secrets."))).toBe(false);
+    expect(result.changes).toEqual([
+      expect.objectContaining({
+        type: "changed",
+        path: "secrets",
+      }),
+    ]);
+    expect(
+      hasChanges(
+        { secrets: { token: "a" } },
+        { secrets: { token: "b" } },
+        { ignore: ["secrets.**"] },
+      ),
+    ).toBe(true);
+    expect(
+      hasChanges(
+        { secrets: { token: "a" }, keep: 1 },
+        { secrets: { token: "a" }, keep: 1 },
+        { ignore: ["secrets.**"] },
+      ),
+    ).toBe(false);
+  });
+
+  it("hasChanges with identityKey early-exits without requiring a full collect", () => {
+    const before = [
+      { id: 1, name: "a" },
+      { id: 2, name: "b" },
+    ];
+    const after = [
+      { id: 2, name: "b" },
+      { id: 1, name: "a2" },
+    ];
+
+    expect(hasChanges(before, after, { identityKey: "id" })).toBe(true);
+    expect(hasChanges(before, before, { identityKey: "id" })).toBe(false);
+  });
+});
+
 describe("phase 3 patch hardening", () => {
   it("validates patch shape and unsupported ops", () => {
     expect(() => {

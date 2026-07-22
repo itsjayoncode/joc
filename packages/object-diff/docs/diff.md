@@ -106,7 +106,7 @@ diff(before, after, {
 | ------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `maxDepth`                | `Infinity`  | Throws `MaxDepthExceededError` once traversal depth exceeds this value                                                                              |
 | `includeUnchanged`        | `false`     | Keep `unchanged` records in `changes` (otherwise only counted in `metadata.unchangedCount`)                                                         |
-| `detectMoves`             | `false`     | Post-process equal `removed`/`added` pairs into a single `moved` record (`from` + `path`)                                                           |
+| `detectMoves`             | `false`     | Emit `moved` for array reorders (LCS + equality / identity) and coalesce equal object-key remove+add pairs into `moved` (`from` + `path`)           |
 | `circular`                | `"error"`   | `"error"` throws `CircularReferenceError` on a repeated object/Map/Set reference; `"skip"` stops descending into it                                 |
 | `customComparator`        | `undefined` | `(a, b, path) => boolean \| undefined` — `true`/`false` overrides equality at that path, `undefined` falls back to default logic                    |
 | `treatUndefinedAsMissing` | `false`     | Treat an explicit `undefined` value like an absent key (see above)                                                                                  |
@@ -119,7 +119,7 @@ diff(before, after, {
 `ignore`/`include` affect two things: which paths get **visited** during traversal, and which resulting changes get **emitted**. Both share glob syntax, but plain strings (no `*`) get extra "prefix" behavior:
 
 - **Exact string** (no `*`): `ignore: ["secrets"]` skips `secrets` itself **and** every descendant (`secrets.token`, `secrets[0]`) — acts as a subtree prefix, not just an exact path.
-- **`.**` suffix**: `ignore: ["secrets.**"]` behaves the same as bare `"secrets"` in the current implementation — it also drops `secrets` itself, not only its descendants. There is currently no glob that ignores a subtree while still reporting a change on the prefix key itself.
+- **`.**` suffix**: `ignore: ["secrets.**"]` skips **descendants only** (`secrets.token`, `secrets[0]`). If the `secrets` value itself changes, a change is still emitted at `secrets` (without listing ignored child paths).
 - **`*`** matches exactly one segment: `include: ["user.*"]` matches `user.name`, not `user.address.city`.
 - **`**`** matches zero or more segments: `include: ["user.**"]` matches `user`, `user.name`, and `user.address.city`.
 - **`include` still visits ancestors**: `include: ["user.name"]` visits `user` (and the root) so the walk can reach `user.name`, but only `user.name` is emitted as a change.
@@ -127,6 +127,7 @@ diff(before, after, {
 
 ```ts
 diff(before, after, { ignore: ["password", "meta.*"] }); // drop "password" subtree + one level under "meta"
+diff(before, after, { ignore: ["secrets.**"] }); // ignore nested noise; still report if `secrets` itself changed
 diff(before, after, { include: ["user.**"] }); // only emit changes under "user"
 ```
 

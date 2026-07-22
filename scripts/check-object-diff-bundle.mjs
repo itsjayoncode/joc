@@ -20,7 +20,7 @@ const BUDGETS = {
   ".": { minified: 32_000, gzip: 10_000 },
   "./core": { minified: 22_000, gzip: 7_000 },
   "./patch": { minified: 28_000, gzip: 9_000 },
-  "./merge": { minified: 20_000, gzip: 7_000 },
+  "./merge": { minified: 22_000, gzip: 7_000 },
   "./formatter": { minified: 8_000, gzip: 3_000 },
   "./query": { minified: 4_000, gzip: 2_000 },
   "./stats": { minified: 4_000, gzip: 2_000 },

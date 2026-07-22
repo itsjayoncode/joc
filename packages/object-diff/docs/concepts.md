@@ -6,23 +6,23 @@ Terminology and data flow for `@jayoncode/object-diff`.
 
 ## Glossary
 
-| Term           | Meaning                                                               |
-| -------------- | --------------------------------------------------------------------- |
-| **Change**     | One typed record from `diff()` (`path`, `type`, values)               |
-| **DiffResult** | `{ changes, metadata }` returned by `diff`                            |
-| **Patch**      | RFC 6902 operations derived from a DiffResult (`patch()`)             |
-| **Merge**      | Combine two/three snapshots with strategy + conflicts (`/merge`)      |
-| **Query**      | Filter/summarize an existing DiffResult without re-diffing (`/query`) |
-| **View**       | Fluent wrapper over a DiffResult (`createDiffView` on `/view`)        |
+| Term           | Meaning                                                                             |
+| -------------- | ----------------------------------------------------------------------------------- |
+| **Change**     | One typed record from `diff()` (`path`, `type`, values)                             |
+| **DiffResult** | `{ changes, metadata }` returned by `diff`                                          |
+| **Patch**      | RFC 6902 operations derived from a DiffResult (`patch()`)                           |
+| **Merge**      | Combine two/three snapshots with strategy + conflicts (`/merge`)                    |
+| **Query**      | Filter/summarize an existing DiffResult without re-diffing (`/query`)               |
+| **View**       | Fluent toolbox over a DiffResult — `explain` / filter / serialize / patch (`/view`) |
 
 ## Problem → approach
 
-| Manual comparison                                                                  | With Object Diff                                    |
-| ---------------------------------------------------------------------------------- | --------------------------------------------------- |
-| `JSON.stringify(a) !== JSON.stringify(b)` — no paths, false positives on key order | `diff(a, b)` — typed change records with paths      |
-| Hand-rolled patch objects for every API                                            | `patch(result)` — RFC 6902 operations from any diff |
-| Full re-send of large state on every edit                                          | `applyPatch(target, ops)` — minimal updates         |
-| Custom formatters for audit UIs                                                    | `serialize(result, "markdown" \| "json" \| …)`      |
+| Manual comparison                                                                  | With Object Diff                                      |
+| ---------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| `JSON.stringify(a) !== JSON.stringify(b)` — no paths, false positives on key order | `diff(a, b)` — typed change records with paths        |
+| Hand-rolled patch objects for every API                                            | `patch(result)` — RFC 6902 operations from any diff   |
+| Full re-send of large state on every edit                                          | `applyPatch(target, ops)` — minimal updates           |
+| Custom formatters for audit UIs                                                    | `createDiffView(result).explain()` / `serialize(...)` |
 
 ## Snapshots and change records
 

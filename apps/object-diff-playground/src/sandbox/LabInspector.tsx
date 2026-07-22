@@ -9,6 +9,7 @@ const TABS: readonly { id: InspectorTab; label: string }[] = [
   { id: "diff", label: "Diff" },
   { id: "patch", label: "Patch" },
   { id: "stats", label: "Stats" },
+  { id: "explain", label: "Explain" },
   { id: "performance", label: "Perf" },
   { id: "code", label: "Code" },
 ];
@@ -151,9 +152,33 @@ export function LabInspector() {
           </dl>
         ) : null}
 
+        {inspectorTab === "explain" && compute.ok ? (
+          <>
+            <p className={styles.hint}>createDiffView(result).explain()</p>
+            <pre className={styles.pre}>{compute.explainHuman}</pre>
+            <ul className={styles.treeList}>
+              {compute.explanations.slice(0, 24).map((entry) => (
+                <li
+                  className={styles.treeItem}
+                  key={`${entry.type}:${entry.path}:${entry.from ?? ""}`}
+                >
+                  <strong>{entry.type}</strong> · {entry.summary}
+                  <div className={styles.hint}>{entry.reason}</div>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : null}
+
         {inspectorTab === "performance" && compute.ok ? (
           <>
             <div className={styles.metricGrid}>
+              <div className={styles.metric}>
+                <span className={styles.metricLabel}>hasChanges</span>
+                <span className={styles.metricValue}>
+                  {compute.timings.hasChangesMs.toFixed(2)}ms
+                </span>
+              </div>
               <div className={styles.metric}>
                 <span className={styles.metricLabel}>Compare</span>
                 <span className={styles.metricValue}>{compute.timings.compareMs.toFixed(2)}ms</span>
@@ -177,6 +202,12 @@ export function LabInspector() {
                 </span>
               </div>
             </div>
+            <dl className={styles.kv}>
+              <dt>Dirty (hasChanges)</dt>
+              <dd>{String(compute.dirty)}</dd>
+              <dt>Full diff changes</dt>
+              <dd>{compute.result.metadata.changeCount}</dd>
+            </dl>
             <p className={styles.hint}>
               Nodes/records: {String(compute.result.changes.length)} · Ops/sec approx:{" "}
               {compute.timings.compareMs > 0

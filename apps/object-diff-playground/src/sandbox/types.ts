@@ -18,9 +18,17 @@ export type SnapshotTemplateId =
   | "large-dataset";
 
 export type WorkspaceTab =
-  "raw" | "tree" | "side-by-side" | "patch" | "merge" | "visual" | "formatter";
+  | "raw"
+  | "tree"
+  | "side-by-side"
+  | "moves"
+  | "patch"
+  | "merge"
+  | "explain"
+  | "visual"
+  | "formatter";
 
-export type InspectorTab = "diff" | "patch" | "stats" | "performance" | "code";
+export type InspectorTab = "diff" | "patch" | "stats" | "explain" | "performance" | "code";
 
 export type MergeStrategyUi = "latest-wins" | "manual";
 
@@ -126,6 +134,7 @@ export interface LabTimings {
   readonly patchMs: number;
   readonly serializeMs: number;
   readonly mergeMs: number | null;
+  readonly hasChangesMs: number;
   readonly totalMs: number;
 }
 

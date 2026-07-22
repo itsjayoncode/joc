@@ -63,7 +63,8 @@ export function shouldVisitPath(
 
       if (pattern.endsWith(".**")) {
         const prefix = pattern.slice(0, -3);
-        if (prefix && isAncestorDisplayPath(prefix, display)) {
+        // Descendants only — still visit/emit the prefix key itself when it changes.
+        if (prefix && display !== prefix && isAncestorDisplayPath(prefix, display)) {
           return false;
         }
       }
@@ -98,8 +99,28 @@ export function isChangePathAllowed(
   ignore: readonly string[] | undefined,
   include: readonly string[] | undefined,
 ): boolean {
-  if (ignore && ignore.some((pattern) => pathMatches(displayPath, pattern))) {
-    return false;
+  if (ignore && ignore.length > 0) {
+    for (const pattern of ignore) {
+      if (pathMatches(displayPath, pattern)) {
+        return false;
+      }
+
+      if (
+        !pattern.includes("*") &&
+        isAncestorDisplayPath(pattern, displayPath) &&
+        displayPath !== pattern
+      ) {
+        return false;
+      }
+
+      if (pattern.endsWith(".**")) {
+        const prefix = pattern.slice(0, -3);
+        // Descendants only — prefix key itself may still emit.
+        if (prefix && displayPath !== prefix && isAncestorDisplayPath(prefix, displayPath)) {
+          return false;
+        }
+      }
+    }
   }
 
   if (!include || include.length === 0) {

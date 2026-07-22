@@ -5,7 +5,11 @@ description: "Documentation overview for @jayoncode/object-diff."
 
 # Package overview
 
-Typed deep comparison, change records, JSON Patch, and optional engines for merge, query, and stats.
+**Stop guessing what changed. Get paths, patches, and review-ready output.**
+
+Typed deep comparison, change records, JSON Patch, DiffView, and optional engines for merge, query, and stats.
+
+`DiffResult` is plain data. DiffView is DX. Merge and other engines are opt-in subpaths — not a CRDT / live sync runtime.
 
 ## When to use
 
@@ -24,6 +28,7 @@ Typed deep comparison, change records, JSON Patch, and optional engines for merg
 - `diff` / `hasChanges` / `compare` with typed change records and paths
 - RFC 6902 `patch` / `applyPatch` (root or `/patch`)
 - `serialize` to JSON, Markdown, table, HTML, console, human
+- **DiffView** (`/view`): fluent filter → explain → serialize → patch → stats
 - Opt-in engines: `/merge`, `/query`, `/stats`, `/view`, `/plugins`, `/formatter`
 
 ## Install
@@ -58,7 +63,19 @@ if (hasChanges(before, after)) {
 
 Use `diff()` for audit trails and inspectors; `hasChanges()` for dirty checks; `patch()` / `applyPatch()` to propagate updates between stores or clients.
 
-Slim entry: `@jayoncode/object-diff/core` (compare/diff only). Patch domain: `@jayoncode/object-diff/patch`.
+### Review with DiffView
+
+```ts
+import { diff } from "@jayoncode/object-diff";
+import { createDiffView } from "@jayoncode/object-diff/view";
+
+const view = createDiffView(diff(before, after, { detectMoves: true }));
+view.explain({ format: "human" }); // review text
+view.serialize("markdown");
+view.patch();
+```
+
+Slim entry: `@jayoncode/object-diff/core` (compare/diff only). Patch domain: `@jayoncode/object-diff/patch`. Fluent toolbox: `@jayoncode/object-diff/view`.
 
 [Inspect changes interactively →](/playground/object-diff/)
 
@@ -68,20 +85,21 @@ Slim entry: `@jayoncode/object-diff/core` (compare/diff only). Patch domain: `@j
 | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
 | `JSON.stringify(a) !== JSON.stringify(b)` — no paths, no types, order-sensitive | `diff()` returns typed change records with paths (`user.name`, `items[2]`) |
 | Hand-rolled deep equality and patch logic for optimistic UI                     | `patch()` / `applyPatch()` emit and apply RFC 6902 operations              |
-| Explaining what changed in PRs or logs requires custom formatting               | `serialize()` exports JSON, Markdown, table, HTML, console, human          |
+| Explaining what changed in PRs or logs requires custom formatting               | `createDiffView(result).explain()` / `serialize()`                         |
 | Collaborative drafts need conflict-aware combine                                | `@jayoncode/object-diff/merge`                                             |
 
 ## Overview
 
 Object Diff compares structured values — plain objects, arrays, `Date`, `RegExp`, `Map`, `Set`, and typed arrays, not just JSON-safe primitives — emits structured **change records**, and can serialize results or produce [RFC 6902](https://datatracker.ietf.org/doc/html/rfc6902)-style patch operations (`add` / `remove` / `replace` / `move` / `copy` / `test`).
 
-| API                       | Purpose                                    |
-| ------------------------- | ------------------------------------------ |
-| `diff(a, b)`              | Full change list with paths and types      |
-| `hasChanges(a, b)`        | Boolean dirty check without full diff cost |
-| `patch(diffResult)`       | Generate patch operations                  |
-| `applyPatch(target, ops)` | Immutable apply                            |
-| `serialize(diff, format)` | JSON, Markdown, table, and more            |
+| API                       | Purpose                                               |
+| ------------------------- | ----------------------------------------------------- |
+| `diff(a, b)`              | Full change list with paths and types                 |
+| `hasChanges(a, b)`        | Boolean dirty check without full diff cost            |
+| `createDiffView(result)`  | Fluent explain / filter / serialize / patch (`/view`) |
+| `patch(diffResult)`       | Generate patch operations                             |
+| `applyPatch(target, ops)` | Immutable apply                                       |
+| `serialize(diff, format)` | JSON, Markdown, table, and more                       |
 
 Optional engines: `/merge`, `/query`, `/stats`, `/formatter`, `/plugins`, `/view` — see [Engines](/packages/object-diff/modules/engines).
 
@@ -100,7 +118,7 @@ Root import of merge/query/stats/plugins/view is **not** supported — use the s
 
 | #   | Guide                                                    | Topics                       | Playground                                                               |
 | --- | -------------------------------------------------------- | ---------------------------- | ------------------------------------------------------------------------ |
-| 3   | [Diffing](/packages/object-diff/modules/diff)            | Options, moves, filters      | [Lab](/playground/object-diff/) / [Diff](/playground/object-diff/diff)   |
+| 3   | [Diffing](/packages/object-diff/modules/diff)            | Options, moves, filters      | Lab **Moves** tab / [Diff](/playground/object-diff/diff)                 |
 | 4   | [Patching](/packages/object-diff/modules/patch)          | RFC ops, validate, optimize  | [Lab](/playground/object-diff/) / [Patch](/playground/object-diff/patch) |
 | 5   | [Serialization](/packages/object-diff/modules/serialize) | Formats + custom serializers | [Lab](/playground/object-diff/) / [JSON](/playground/object-diff/json)   |
 
@@ -108,14 +126,14 @@ Root import of merge/query/stats/plugins/view is **not** supported — use the s
 
 | #   | Guide                                                      | Topics                      | Playground                                        |
 | --- | ---------------------------------------------------------- | --------------------------- | ------------------------------------------------- |
-| 6   | [Engines](/packages/object-diff/modules/engines)           | Subpath map                 | —                                                 |
-| 7   | [Merge](/packages/object-diff/modules/merge)               | Two-/three-way strategies   | [Lab](/playground/object-diff/) Merge tab         |
-| 8   | [Query](/packages/object-diff/modules/query)               | Filter existing DiffResults | —                                                 |
-| 9   | [Statistics](/packages/object-diff/modules/stats)          | Metrics, hot prefixes       | —                                                 |
-| 10  | [Plugins](/packages/object-diff/modules/plugins)           | Matchers, formatters, hooks | —                                                 |
-| 11  | [Integrations](/packages/object-diff/modules/integrations) | Forms, session, audit       | [Examples](/playground/object-diff/examples)      |
-| 12  | [Performance](/packages/object-diff/modules/performance)   | Complexity, budgets         | [Benchmarks](/playground/object-diff/performance) |
-| 13  | [DX](/packages/object-diff/modules/dx)                     | Fluent `createDiffView`     | [Examples](/playground/object-diff/examples)      |
+| 6   | [DX / DiffView](/packages/object-diff/modules/dx)          | `explain`, fluent toolbox   | Lab **Explain** tab                               |
+| 7   | [Engines](/packages/object-diff/modules/engines)           | Subpath map                 | —                                                 |
+| 8   | [Merge](/packages/object-diff/modules/merge)               | Two-/three-way strategies   | Lab **Merge** tab                                 |
+| 9   | [Query](/packages/object-diff/modules/query)               | Filter existing DiffResults | —                                                 |
+| 10  | [Statistics](/packages/object-diff/modules/stats)          | Metrics, hot prefixes       | —                                                 |
+| 11  | [Plugins](/packages/object-diff/modules/plugins)           | Matchers, formatters, hooks | —                                                 |
+| 12  | [Integrations](/packages/object-diff/modules/integrations) | Forms, session, audit       | [Examples](/playground/object-diff/examples)      |
+| 13  | [Performance](/packages/object-diff/modules/performance)   | Complexity, budgets         | [Benchmarks](/playground/object-diff/performance) |
 
 ## Mental model (compare → changes → patch)
 
@@ -130,14 +148,14 @@ Form Intelligence can call these via plugins / `form.diffFrom*` without coupling
 
 ## Package fit
 
-| Requirement                  | API                           |
-| ---------------------------- | ----------------------------- |
-| Form/state dirty detection   | `hasChanges(a, b)`            |
-| Structured audit log         | `diff()` change records       |
-| Partial sync between clients | `patch()` + `applyPatch()`    |
-| Human-readable changelogs    | `serialize(..., "markdown")`  |
-| Collaborative merge          | `merge` from `/merge`         |
-| Slim compare-only bundle     | `@jayoncode/object-diff/core` |
+| Requirement                  | API                                           |
+| ---------------------------- | --------------------------------------------- |
+| Form/state dirty detection   | `hasChanges(a, b)`                            |
+| Structured audit log         | `diff()` change records                       |
+| Partial sync between clients | `patch()` + `applyPatch()`                    |
+| Human-readable changelogs    | `createDiffView(...).explain()` / `serialize` |
+| Collaborative merge          | `merge` from `/merge`                         |
+| Slim compare-only bundle     | `@jayoncode/object-diff/core`                 |
 
 ## Reference
 

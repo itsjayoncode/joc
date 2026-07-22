@@ -2,7 +2,9 @@ import type { DiffOptions, PatchOptions } from "@jayoncode/object-diff";
 
 import {
   applyPatch,
+  createDiffView,
   diff,
+  hasChanges,
   merge,
   patch,
   revertPatch,
@@ -12,7 +14,13 @@ import {
 } from "../lib/object-diff.js";
 
 import type { LabConfig, LabTimings } from "./types.js";
-import type { DiffResult, DiffStatistics, MergeResult, Patch } from "../lib/object-diff.js";
+import type {
+  DiffExplanation,
+  DiffResult,
+  DiffStatistics,
+  MergeResult,
+  Patch,
+} from "../lib/object-diff.js";
 
 export interface LabComputeSuccess {
   readonly ok: true;
@@ -25,6 +33,9 @@ export interface LabComputeSuccess {
   readonly reverted: unknown;
   readonly mergeResult: MergeResult | null;
   readonly formatted: string;
+  readonly explainHuman: string;
+  readonly explanations: readonly DiffExplanation[];
+  readonly dirty: boolean;
   readonly stats: DiffStatistics;
   readonly timings: LabTimings;
   readonly patchValid: boolean;
@@ -110,6 +121,17 @@ export function computeLab(config: LabConfig): LabComputeResult {
   }
 
   const diffOptions = buildDiffOptions(config);
+  const identityKey = config.diff.identityKey.trim() || undefined;
+
+  const dirtyStarted = performance.now();
+  let dirty: boolean;
+  try {
+    dirty = hasChanges(before, after, diffOptions);
+  } catch {
+    dirty = true;
+  }
+  const hasChangesMs = performance.now() - dirtyStarted;
+
   const compareStarted = performance.now();
   let result: DiffResult;
 
@@ -173,6 +195,7 @@ export function computeLab(config: LabConfig): LabComputeResult {
         base,
         strategy: config.merge.strategy,
         includeApplied: true,
+        ...(identityKey ? { identityKey } : {}),
       });
     } catch (caught) {
       return {
@@ -186,16 +209,22 @@ export function computeLab(config: LabConfig): LabComputeResult {
 
   const serializeStarted = performance.now();
   let formatted: string;
+  let explainHuman: string;
+  let explanations: DiffExplanation[];
   try {
     formatted = serialize(result, config.format, {
       title: "Object Diff Result",
       color: false,
     });
+    const view = createDiffView(result);
+    const explainOpts = identityKey ? { identityKey } : undefined;
+    explainHuman = view.explain({ format: "human", ...explainOpts }) as string;
+    explanations = view.explain(explainOpts) as DiffExplanation[];
   } catch (caught) {
     return {
       ok: false,
       stage: "serialize",
-      error: caught instanceof Error ? caught.message : "Serialize failed.",
+      error: caught instanceof Error ? caught.message : "Serialize / explain failed.",
     };
   }
   const serializeMs = performance.now() - serializeStarted;
@@ -214,12 +243,16 @@ export function computeLab(config: LabConfig): LabComputeResult {
     reverted,
     mergeResult,
     formatted,
+    explainHuman,
+    explanations,
+    dirty,
     stats,
     timings: {
       compareMs,
       patchMs,
       serializeMs,
       mergeMs,
+      hasChangesMs,
       totalMs,
     },
     patchValid,

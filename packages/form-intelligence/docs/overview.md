@@ -1,6 +1,8 @@
 # Package overview
 
-Headless form workflow engine — validation, submission, state, and multi-step orchestration without UI coupling.
+**Declare the workflow. Keep the markup. Submit with confidence.**
+
+Headless form workflow engine — validation, `when()` rules, drafts, wizards, and safe submit without UI coupling.
 
 ## The problem
 
@@ -291,7 +293,7 @@ Work through the journey groups below. Each guide links to a playground route.
 | Guide                                                              | Topics                                      | Playground                                   |
 | ------------------------------------------------------------------ | ------------------------------------------- | -------------------------------------------- |
 | [Core concepts](/packages/form-intelligence/modules/concepts)      | Instance model, flags, architecture         | [State](/playground/form-intelligence/state) |
-| [Capabilities](/packages/form-intelligence/modules/capabilities)   | Form OS feature map and status              | [Sandbox](/playground/form-intelligence/)    |
+| [Capabilities](/packages/form-intelligence/modules/capabilities)   | Feature map and status                      | [Sandbox](/playground/form-intelligence/)    |
 | [Entrypoints](/packages/form-intelligence/modules/entrypoints)     | Main vs `/format`, `/devtools`, `/ui`, …    | [Sandbox](/playground/form-intelligence/)    |
 | [UI projection](/packages/form-intelligence/modules/ui-projection) | `showError`, `canSubmit`, `status`, explain | [UI lab](/playground/form-intelligence/ui)   |
 

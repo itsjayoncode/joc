@@ -1,13 +1,44 @@
-# Storage — Policy-driven client persistence for modern web apps.
+# Storage
+
+**Namespace it. Expire it. Upgrade it — without localStorage glue.**
+
+[`@jayoncode/storage`](https://www.npmjs.com/package/@jayoncode/storage) — policy-driven client persistence for modern web apps.
 
 [![npm version](https://img.shields.io/npm/v/@jayoncode/storage.svg)](https://www.npmjs.com/package/@jayoncode/storage)
 [![license](https://img.shields.io/npm/l/@jayoncode/storage.svg)](https://github.com/itsjayoncode/joc/blob/master/packages/storage/package.json)
 [![docs](https://img.shields.io/badge/docs-itsjayoncode.github.io-2563eb)](https://itsjayoncode.github.io/joc/packages/storage/)
 [![Become a Sponsor](https://img.shields.io/badge/Become%20a%20Sponsor-%23ea4aaa?style=flat&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/jayoncoding)
 
-Published as [`@jayoncode/storage`](https://www.npmjs.com/package/@jayoncode/storage) on npm.
+A small policy layer for browser persistence — namespaces, envelopes, TTL, migrations — on adapters **you** choose: memory, localStorage, sessionStorage, and IndexedDB.
 
-Stop re-building namespaced keys, JSON envelopes, TTL, and schema migrations on top of `localStorage`. One explicit TypeScript API covers sync Web Storage adapters, async IndexedDB, soft quota guards, and opt-in payload transforms — with the same docs and Lab bar as every JOC package.
+> **Explicit adapters. Optional policy.**  
+> Soft quota and transforms hooks are opt-in — no silent encryption.
+
+## Persist → Policy → Adapt
+
+```text
+createStorage({ namespace, adapter })
+    ↓
+TTL · schema version · migrations (optional)
+    ↓
+peek · quota · transforms · maintenance (optional)
+```
+
+| Pillar      | What you get                                                           |
+| ----------- | ---------------------------------------------------------------------- |
+| **Persist** | Typed `set` / `get` with namespaced keys                               |
+| **Policy**  | TTL, schema version, migrations, soft quota                            |
+| **Adapt**   | Memory · localStorage · sessionStorage · IndexedDB — never auto-picked |
+
+### Five capabilities
+
+| Card                  | What it is                                          |
+| --------------------- | --------------------------------------------------- |
+| **createStorage()**   | Namespace + adapter + optional TTL / schema version |
+| **Explicit adapters** | Memory · localStorage · sessionStorage · IndexedDB  |
+| **Peek & TTL**        | See when a value was saved and when it expires      |
+| **Migrations**        | Schema upgrades without ad-hoc key rewrites         |
+| **Extra tools**       | Soft quota, transforms hooks, maintenance — opt-in  |
 
 ## Install
 

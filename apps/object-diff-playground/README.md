@@ -1,6 +1,8 @@
 # Object Diff Playground
 
-Official engineering shell for `@jayoncode/object-diff`.
+**Stop guessing what changed. Get paths, patches, and review-ready output.**
+
+Official engineering shell for `@jayoncode/object-diff`. Compare → Review → Patch → Merge surfaces live in the Lab (Moves, Explain, Merge, Patch, Perf).
 
 The home route (`/`) is the **Interactive Object Diff Laboratory** — a multi-panel workspace for configuring snapshots, diff/patch/merge options, inspecting results, benchmarking, and copying generated API code.
 

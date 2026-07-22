@@ -420,7 +420,13 @@ export function LabProvider({ children }: { readonly children: ReactNode }) {
             diff: { ...config.diff, detectMoves: true, identityKey: "id" },
             injectCircular: false,
           });
-          pushConsole("Array reorder with identityKey=id", "success", "experiment");
+          setWorkspaceTab("moves");
+          setInspectorTab("explain");
+          pushConsole(
+            "Array reorder with identityKey=id — open Moves / Explain tabs",
+            "success",
+            "experiment",
+          );
           break;
         }
         case "identity-changes": {

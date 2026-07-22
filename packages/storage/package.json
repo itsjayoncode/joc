@@ -2,7 +2,7 @@
   "name": "@jayoncode/storage",
   "version": "0.4.0",
   "private": false,
-  "description": "Policy-driven client persistence for modern web apps — typed envelopes, TTL, migrations, and explicit adapters.",
+  "description": "Storage — Namespace it. Expire it. Upgrade it — without localStorage glue. Explicit adapters (memory / localStorage / sessionStorage / IndexedDB), TTL, migrations.",
   "license": "MIT",
   "author": "JayOnCode",
   "repository": {

@@ -1,6 +1,8 @@
 # Storage Playground
 
-Official Vite + React QA shell for `@jayoncode/storage`.
+**Namespace it. Expire it. Upgrade it — without localStorage glue.**
+
+Official Vite + React QA shell for `@jayoncode/storage` — Lab + explorers for adapters you choose (including IndexedDB), TTL, and policy options.
 
 Matches the Object Diff / Browser Lifecycle playground structure: AppShell, theme, navigation, Storage Lab, and focused explorers.
 

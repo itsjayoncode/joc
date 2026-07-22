@@ -1,6 +1,8 @@
 # Form Intelligence Playground
 
-The Form Intelligence Playground is the official engineering shell for `@jayoncode/form-intelligence` inside the JOC monorepo.
+**Declare the workflow. Keep the markup. Submit with confidence.**
+
+Official engineering shell for `@jayoncode/form-intelligence` — interactive explorers that match shipped APIs (validation, rules, drafts, submit), not a form-builder product demo.
 
 It is the shared environment for:
 

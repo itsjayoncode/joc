@@ -94,10 +94,11 @@ import { merge } from "@jayoncode/object-diff/merge";
 const result = merge(localDraft, remoteDraft, {
   base: lastSynced,
   strategy: "latest-wins",
+  // identityKey: "id", // merge list items by id when drafts contain arrays of entities
 });
 
 if (result.conflicts.length > 0) {
-  // surface conflicts in UI; value is still a usable merge
+  // surface conflicts in UI (path, reason, identity); value is still a usable merge
 }
 ```
 

@@ -45,11 +45,16 @@ export function generateLabCode(config: LabConfig): string {
   const hasOptions = optionLines.length > 0;
   const imports = [
     'import { diff, patch, applyPatch, revertPatch, serialize } from "@jayoncode/object-diff";',
+    'import { createDiffView } from "@jayoncode/object-diff/view";',
   ];
   if (config.merge.enabled) {
     imports.push('import { merge } from "@jayoncode/object-diff/merge";');
   }
   imports.push('import { statistics } from "@jayoncode/object-diff/stats";');
+
+  const identityHint = config.diff.identityKey.trim()
+    ? `, identityKey: "${config.diff.identityKey.trim()}"`
+    : "";
 
   const body: string[] = [
     "const before = /* Snapshot A */ undefined as unknown;",
@@ -65,13 +70,15 @@ export function generateLabCode(config: LabConfig): string {
     "",
     `const formatted = serialize(result, "${config.format}");`,
     "const stats = statistics(result, operations);",
+    `const view = createDiffView(result);`,
+    `const explained = view.explain({ format: "human"${identityHint} });`,
   ];
 
   if (config.merge.enabled) {
     body.push(
       "",
       "const base = /* Merge base */ undefined as unknown;",
-      `const merged = merge(before, after, { base, strategy: "${config.merge.strategy}" });`,
+      `const merged = merge(before, after, { base, strategy: "${config.merge.strategy}"${identityHint} });`,
     );
   }
 

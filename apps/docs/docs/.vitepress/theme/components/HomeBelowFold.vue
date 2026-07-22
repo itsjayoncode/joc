@@ -71,12 +71,9 @@ const highlightedCodeSample = computed(() => {
 
 const flagshipBlurbs: Record<string, string> = {
   "browser-lifecycle": "Observe browser state. Derive session intelligence. React with confidence.",
-  "form-intelligence":
-    "Build intelligent forms with validation, submission orchestration, UI state projection, and developer-friendly workflows.",
-  "object-diff":
-    "Detect, analyze, and explain object changes through powerful comparison utilities and structured diff results.",
-  storage:
-    "Persist prefs and cache with namespaced envelopes, TTL, migrations, and adapters you choose—including IndexedDB.",
+  "form-intelligence": "Declare the workflow. Keep the markup. Submit with confidence.",
+  "object-diff": "Stop guessing what changed. Get paths, patches, and review-ready output.",
+  storage: "Namespace it. Expire it. Upgrade it — without localStorage glue.",
 };
 
 const learningPath = [

@@ -1,7 +1,7 @@
 {
   "name": "joc",
   "private": true,
-  "description": "JayOnCode — JOC Ecosystem of independent, headless TypeScript libraries for modern web apps. Framework-agnostic packages under @jayoncode/*, thoroughly documented with interactive playgrounds.",
+  "description": "JayOnCode — JOC Ecosystem of independent, headless TypeScript libraries for real frontend infrastructure. One package, one job. Docs and playgrounds stay honest with the API.",
   "type": "module",
   "packageManager": "pnpm@10.13.1",
   "workspaces": [

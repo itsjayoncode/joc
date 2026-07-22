@@ -49,3 +49,16 @@
   --joc-shadow-soft: 0 12px 40px rgba(var(--joc-dark-alt-rgb), 0.08);
   --joc-shadow-card: 0 4px 24px rgba(var(--joc-dark-alt-rgb), 0.06);
 }
+
+/* Dark theme — readable text/surfaces (VitePress uses html.dark / .dark) */
+html.dark,
+.dark {
+  --joc-text: #edf4ff;
+  --joc-muted: #9bb0cc;
+  --joc-border: rgba(77, 159, 255, 0.22);
+  --joc-surface: rgba(10, 31, 68, 0.72);
+  --joc-light: #edf4ff;
+  --joc-shadow-soft: 0 12px 40px rgba(0, 0, 0, 0.35);
+  --joc-shadow-card: 0 4px 24px rgba(0, 0, 0, 0.28);
+  --joc-grid-line: rgba(var(--joc-primary-rgb), 0.12);
+}

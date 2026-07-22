@@ -55,4 +55,35 @@ describe("computeLab", () => {
     expect(result.mergeResult).not.toBeNull();
     expect(result.mergeResult?.conflicts.length).toBeGreaterThan(0);
   });
+
+  it("explains moves and reports dirty-check timing", () => {
+    const result = computeLab({
+      ...DEFAULT_LAB_CONFIG,
+      snapshotA: JSON.stringify([
+        { id: 1, name: "a" },
+        { id: 2, name: "b" },
+        { id: 3, name: "c" },
+      ]),
+      snapshotB: JSON.stringify([
+        { id: 2, name: "b" },
+        { id: 3, name: "c" },
+        { id: 1, name: "a" },
+      ]),
+      diff: {
+        ...DEFAULT_LAB_CONFIG.diff,
+        detectMoves: true,
+        identityKey: "id",
+      },
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+    expect(result.dirty).toBe(true);
+    expect(result.timings.hasChangesMs).toBeGreaterThanOrEqual(0);
+    expect(result.result.metadata.movedCount).toBeGreaterThanOrEqual(1);
+    expect(result.explainHuman).toContain("moved");
+    expect(result.explanations.some((entry) => entry.type === "moved")).toBe(true);
+  });
 });
