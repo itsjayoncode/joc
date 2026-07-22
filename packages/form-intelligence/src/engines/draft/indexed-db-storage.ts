@@ -1,3 +1,5 @@
+import { restoreDeclinedMarkerKey } from "./decline-marker.js";
+
 import type { AsyncDraftStorageAdapter } from "./storage-adapter.js";
 
 const DEFAULT_DB_NAME = "jayoncode-form-intelligent-drafts";
@@ -128,4 +130,5 @@ export async function clearDraftAsync(
   adapter: AsyncDraftStorageAdapter,
 ): Promise<void> {
   await adapter.clear(key);
+  await adapter.clear(restoreDeclinedMarkerKey(key));
 }

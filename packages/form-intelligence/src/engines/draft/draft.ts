@@ -1,3 +1,4 @@
+import { restoreDeclinedMarkerKey } from "./decline-marker.js";
 import { resolveDraftStorage } from "./storage-adapter.js";
 
 import type { DraftStorageOptions } from "./storage-adapter.js";
@@ -18,5 +19,7 @@ export function saveDraft(
 }
 
 export function clearDraft(storageKey: string, options?: DraftStorageOptions): void {
-  resolveDraftStorage(options).clear(storageKey);
+  const storage = resolveDraftStorage(options);
+  storage.clear(storageKey);
+  storage.clear(restoreDeclinedMarkerKey(storageKey));
 }

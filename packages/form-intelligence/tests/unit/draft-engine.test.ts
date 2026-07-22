@@ -125,6 +125,121 @@ describe("promptOnRestore decline", () => {
     form.destroy();
     clearDraft("prompt-restore-draft");
   });
+
+  it("clears the draft when onRestoreDecline is clear", async () => {
+    const key = "prompt-decline-clear";
+    saveDraft(key, { email: "saved@x.com" });
+    const form = createForm({
+      initialValues: { email: "" },
+      workflow: {
+        draft: {
+          enabled: true,
+          storageKey: key,
+          onRestoreDecline: "clear",
+          onRestorePrompt: () => false,
+        },
+      },
+    });
+
+    await expect(form.restoreDraft({ prompt: true })).resolves.toBe(false);
+    expect(loadDraft(key)).toBeNull();
+    form.destroy();
+  });
+
+  it("remembers decline until draft content changes", async () => {
+    const key = "prompt-decline-remember";
+    const prompt = vi.fn(() => false);
+    saveDraft(key, { email: "saved@x.com" });
+
+    const form = createForm({
+      initialValues: { email: "" },
+      workflow: {
+        draft: {
+          enabled: true,
+          storageKey: key,
+          onRestoreDecline: "remember",
+          onRestorePrompt: prompt,
+        },
+      },
+    });
+
+    await expect(form.restoreDraft({ prompt: true })).resolves.toBe(false);
+    expect(prompt).toHaveBeenCalledTimes(1);
+
+    await expect(form.restoreDraft({ prompt: true })).resolves.toBe(false);
+    expect(prompt).toHaveBeenCalledTimes(1);
+    expect(loadDraft(key)).toEqual({ email: "saved@x.com" });
+
+    form.setValue("email", "edited@x.com");
+    form.saveDraft();
+    prompt.mockReturnValueOnce(true);
+    await expect(form.restoreDraft({ prompt: true, force: true })).resolves.toBe(true);
+    expect(prompt).toHaveBeenCalledTimes(2);
+    expect(form.values("email")).toBe("edited@x.com");
+
+    form.destroy();
+    clearDraft(key);
+  });
+
+  it("defer skips restore without applying decline policy", async () => {
+    const key = "prompt-decline-defer";
+    saveDraft(key, { email: "saved@x.com" });
+    const form = createForm({
+      initialValues: { email: "" },
+      workflow: {
+        draft: {
+          enabled: true,
+          storageKey: key,
+          onRestoreDecline: "clear",
+          onRestorePrompt: () => "defer",
+        },
+      },
+    });
+
+    await expect(form.restoreDraft({ prompt: true })).resolves.toBe(false);
+    expect(loadDraft(key)).toEqual({ email: "saved@x.com" });
+
+    form.destroy();
+    clearDraft(key);
+  });
+
+  it("ignores savedAt when comparing remembered draft content", async () => {
+    const key = "prompt-decline-remember-envelope";
+    const prompt = vi.fn(() => false);
+    const first = wrapDraftEnvelope(
+      { email: "saved@x.com" },
+      { persistWorkflow: true, workflow: { currentStep: 1 } },
+    ) as Record<string, unknown>;
+    saveDraft(key, first);
+
+    const form = createForm({
+      initialValues: { email: "" },
+      workflow: {
+        draft: {
+          enabled: true,
+          storageKey: key,
+          onRestoreDecline: "remember",
+          onRestorePrompt: prompt,
+        },
+      },
+    });
+
+    await expect(form.restoreDraft({ prompt: true })).resolves.toBe(false);
+    expect(prompt).toHaveBeenCalledTimes(1);
+
+    const rewritten = {
+      ...first,
+      savedAt: (first.savedAt as number) + 1_000,
+    };
+    expect(rewritten.savedAt).not.toBe(first.savedAt);
+    saveDraft(key, rewritten);
+
+    await expect(form.restoreDraft({ prompt: true })).resolves.toBe(false);
+    expect(prompt).toHaveBeenCalledTimes(1);
+
+    form.destroy();
+    clearDraft(key);
+  });
 });
 
 describe("restoreDraft after mount", () => {

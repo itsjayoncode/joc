@@ -219,7 +219,7 @@ workflow: { autosave: { enabled: true, debounceMs: 5000, onSave } }
 
 ### 14. Draft recovery — **SHIPPED**
 
-`form.saveDraft()`, `form.restoreDraft({ force?, prompt?, merge? })`, restore on reload, optional `promptOnRestore` + envelopes/`migrateDraft`.
+`form.saveDraft()`, `form.restoreDraft({ force?, prompt?, merge? })`, restore on reload, optional `promptOnRestore` / `onRestorePrompt` / `onRestoreDecline` (`keep` \| `clear` \| `remember`) + envelopes/`migrateDraft`.
 
 ### 15. Offline queue — **SHIPPED**
 

@@ -2,12 +2,21 @@ export { clearDraft, loadDraft, saveDraft } from "../engines/draft/index.js";
 export type { DraftStorageOptions } from "../engines/draft/storage-adapter.js";
 export { resolveDraftStorage } from "../engines/draft/storage-adapter.js";
 
-import { applyDraftRestore, wrapDraftEnvelope } from "../engines/draft/envelope.js";
+import { restoreDeclinedMarkerKey } from "../engines/draft/decline-marker.js";
+import {
+  applyDraftRestore,
+  draftContentSignature,
+  wrapDraftEnvelope,
+} from "../engines/draft/envelope.js";
 import { resolveDraftStorage } from "../engines/draft/storage-adapter.js";
 import { DraftStorageError, isQuotaExceededError } from "../errors/index.js";
 
 import type { DraftMergeMode } from "../engines/draft/merge.js";
-import type { DraftConfig } from "../types/index.js";
+import type {
+  DraftConfig,
+  DraftRestoreDeclinePolicy,
+  RestorePromptResult,
+} from "../types/index.js";
 import type { DraftStorageAdapter } from "../types/index.js";
 
 export interface DraftRestoreResult<TValues extends Record<string, unknown>> {
@@ -25,6 +34,37 @@ export interface DraftManagerRestoreOptions {
    * `undefined` — honor `DraftConfig.promptOnRestore` (init path).
    */
   readonly prompt?: boolean;
+}
+
+const DECLINED_MARKER_VERSION = 1 as const;
+
+interface RestoreDeclinedMarker {
+  readonly __jocRestoreDeclined: typeof DECLINED_MARKER_VERSION;
+  readonly signature: string;
+}
+
+function isRestoreDeclinedMarker(value: unknown): value is RestoreDeclinedMarker {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return false;
+  }
+  const candidate = value as Record<string, unknown>;
+  return (
+    candidate.__jocRestoreDeclined === DECLINED_MARKER_VERSION &&
+    typeof candidate.signature === "string"
+  );
+}
+
+function resolveDeclinePolicy(
+  promptResult: RestorePromptResult,
+  configured: DraftRestoreDeclinePolicy | undefined,
+): DraftRestoreDeclinePolicy | null {
+  if (promptResult === true) {
+    return null;
+  }
+  if (promptResult === "defer") {
+    return "keep";
+  }
+  return configured ?? "keep";
 }
 
 export class DraftManager<TValues extends Record<string, unknown>> {
@@ -79,8 +119,22 @@ export class DraftManager<TValues extends Record<string, unknown>> {
       options.prompt === true ||
       (options.prompt === undefined && this.config?.promptOnRestore === true);
 
-    if (shouldPrompt && this.config?.onRestorePrompt?.(restoredRaw) === false) {
-      return { values: defaultValues, restored: false, reason: "declined" };
+    if (shouldPrompt) {
+      if (this.isRememberedDecline(restoredRaw)) {
+        return { values: defaultValues, restored: false, reason: "declined" };
+      }
+
+      const prompt = this.config?.onRestorePrompt;
+      if (prompt) {
+        const decision = prompt(restoredRaw);
+        if (decision !== true) {
+          this.applyDeclinePolicy(
+            restoredRaw,
+            resolveDeclinePolicy(decision, this.config?.onRestoreDecline),
+          );
+          return { values: defaultValues, restored: false, reason: "declined" };
+        }
+      }
     }
 
     const applied = applyDraftRestore({
@@ -103,6 +157,7 @@ export class DraftManager<TValues extends Record<string, unknown>> {
       };
     }
 
+    this.clearDeclinedMarker();
     this.config?.onRestore?.(applied.values);
     return {
       values: applied.values,
@@ -147,6 +202,8 @@ export class DraftManager<TValues extends Record<string, unknown>> {
       }
       throw error;
     }
+
+    this.clearDeclinedMarkerIfContentChanged(payload);
   }
 
   public clear(): void {
@@ -155,5 +212,64 @@ export class DraftManager<TValues extends Record<string, unknown>> {
     }
 
     this.storage.clear(this.storageKey);
+    this.clearDeclinedMarker();
+  }
+
+  private readDeclinedMarker(): RestoreDeclinedMarker | null {
+    const raw = this.storage.load(restoreDeclinedMarkerKey(this.storageKey));
+    return isRestoreDeclinedMarker(raw) ? raw : null;
+  }
+
+  private clearDeclinedMarker(): void {
+    this.storage.clear(restoreDeclinedMarkerKey(this.storageKey));
+  }
+
+  private isRememberedDecline(raw: Record<string, unknown>): boolean {
+    const marker = this.readDeclinedMarker();
+    if (!marker) {
+      return false;
+    }
+    const signature = draftContentSignature(raw);
+    return Boolean(signature) && marker.signature === signature;
+  }
+
+  private rememberDecline(raw: Record<string, unknown>): void {
+    const signature = draftContentSignature(raw);
+    if (!signature) {
+      return;
+    }
+    const marker: RestoreDeclinedMarker = {
+      __jocRestoreDeclined: DECLINED_MARKER_VERSION,
+      signature,
+    };
+    this.storage.save(
+      restoreDeclinedMarkerKey(this.storageKey),
+      marker as unknown as Record<string, unknown>,
+    );
+  }
+
+  private applyDeclinePolicy(
+    raw: Record<string, unknown>,
+    policy: DraftRestoreDeclinePolicy | null,
+  ): void {
+    if (!policy || policy === "keep") {
+      return;
+    }
+    if (policy === "clear") {
+      this.clear();
+      return;
+    }
+    this.rememberDecline(raw);
+  }
+
+  private clearDeclinedMarkerIfContentChanged(payload: Record<string, unknown>): void {
+    const marker = this.readDeclinedMarker();
+    if (!marker) {
+      return;
+    }
+    const signature = draftContentSignature(payload);
+    if (!signature || signature !== marker.signature) {
+      this.clearDeclinedMarker();
+    }
   }
 }

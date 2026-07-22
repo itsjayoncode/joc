@@ -95,6 +95,7 @@ workflow: {
     onRestore: (values) => console.log("Welcome back!", values),
     // promptOnRestore: true,
     // onRestorePrompt: (values) => window.confirm("Restore draft?"),
+    // onRestoreDecline: "remember", // keep | clear | remember (default keep)
     // versioning: true,
     // schemaVersion: "2",
     // migrateDraft: (envelope) => ({ ...envelope, schemaVersion: "2" }),
@@ -105,28 +106,68 @@ workflow: {
 
 ### Draft options
 
-| Option            | Type                                   | Default          | Notes                                                                   |
-| ----------------- | -------------------------------------- | ---------------- | ----------------------------------------------------------------------- |
-| `enabled`         | `boolean`                              | —                | Opt-in                                                                  |
-| `storageKey`      | `string`                               | —                | Key used by the storage adapter                                         |
-| `storage`         | `"localStorage"` \| `"sessionStorage"` | `"localStorage"` | Built-in sync web storage                                               |
-| `adapter`         | `DraftStorageAdapter`                  | —                | Custom sync `{ get, set, remove }` — wins over `storage`                |
-| `onRestore`       | `(values) => void`                     | —                | Fired after a successful restore                                        |
-| `promptOnRestore` | `boolean`                              | `false`          | When true with `restoreDraft({ prompt: true })`, call `onRestorePrompt` |
-| `onRestorePrompt` | `(values) => boolean`                  | —                | Return `false` to skip restore                                          |
-| `versioning`      | `boolean`                              | `false`          | Persist versioned `DraftEnvelopeV1` instead of raw values               |
-| `schemaVersion`   | `string`                               | —                | Compared / migrated when envelopes are enabled                          |
-| `migrateDraft`    | `(envelope) => envelope`               | —                | Migrate before restore; throw to reject                                 |
+| Option             | Type                                   | Default          | Notes                                                                          |
+| ------------------ | -------------------------------------- | ---------------- | ------------------------------------------------------------------------------ |
+| `enabled`          | `boolean`                              | —                | Opt-in                                                                         |
+| `storageKey`       | `string`                               | —                | Key used by the storage adapter                                                |
+| `storage`          | `"localStorage"` \| `"sessionStorage"` | `"localStorage"` | Built-in sync web storage                                                      |
+| `adapter`          | `DraftStorageAdapter`                  | —                | Custom sync `{ load, save, clear }` — wins over `storage`                      |
+| `onRestore`        | `(values) => void`                     | —                | Fired after a successful restore                                               |
+| `promptOnRestore`  | `boolean`                              | `false`          | When true with `restoreDraft({ prompt: true })`, call `onRestorePrompt`        |
+| `onRestorePrompt`  | `(values) => boolean \| "defer"`       | —                | `true` restore · `false` decline · `"defer"` skip without decline side effects |
+| `onRestoreDecline` | `"keep"` \| `"clear"` \| `"remember"`  | `"keep"`         | Policy when prompt returns `false` (see below)                                 |
+| `versioning`       | `boolean`                              | `false`          | Persist versioned `DraftEnvelopeV1` instead of raw values                      |
+| `schemaVersion`    | `string`                               | —                | Compared / migrated when envelopes are enabled                                 |
+| `migrateDraft`     | `(envelope) => envelope`               | —                | Migrate before restore; throw to reject                                        |
+
+### Declining restore
+
+When `onRestorePrompt` returns `false`, `onRestoreDecline` controls what happens to the stored draft:
+
+| Policy     | Behavior                                                                                                      |
+| ---------- | ------------------------------------------------------------------------------------------------------------- |
+| `keep`     | Leave the draft. The next `restoreDraft({ prompt: true })` / init prompt can ask again (default, back-compat) |
+| `clear`    | Delete the draft (and any remember marker) so it will not prompt again                                        |
+| `remember` | Keep the draft; suppress prompts for the **same content** until a later `saveDraft` changes values/step       |
+
+`remember` fingerprints values + wizard step and ignores volatile envelope fields such as `savedAt`. Return `"defer"` from `onRestorePrompt` when you need to skip restore **without** applying the decline policy — for example, declining during `createForm` so you can call `restoreDraft({ prompt: true })` after mount:
+
+```ts
+let canPrompt = false;
+
+createForm({
+  workflow: {
+    draft: {
+      enabled: true,
+      storageKey: "signup-draft-v1",
+      promptOnRestore: true,
+      onRestoreDecline: "remember",
+      onRestorePrompt: (values) => {
+        if (!canPrompt) return "defer";
+        return window.confirm("Restore your saved draft?");
+      },
+    },
+  },
+});
+
+// after mount
+canPrompt = true;
+await form.restoreDraft({ prompt: true });
+```
+
+::: tip Gotcha
+If you decline with `remember` and then autosave **different** values into the same draft key, content changed — prompts re-arm. Keep the declined draft intact until the user edits, or use `clear` if cancel should discard the draft.
+:::
 
 ```ts
 import type { DraftStorageAdapter } from "@jayoncode/form-intelligence";
 
 const memory: DraftStorageAdapter = {
-  get: (key) => map.get(key) ?? null,
-  set: (key, value) => {
+  load: (key) => map.get(key) ?? null,
+  save: (key, value) => {
     map.set(key, value);
   },
-  remove: (key) => {
+  clear: (key) => {
     map.delete(key);
   },
 };

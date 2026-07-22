@@ -8,6 +8,7 @@ export {
 export { createDraftStorage, resolveDraftStorage } from "./storage-adapter.js";
 export {
   applyDraftRestore,
+  draftContentSignature,
   isDraftEnvelopeV1,
   parseDraftPayload,
   resolveDraftValuesFromPayload,
