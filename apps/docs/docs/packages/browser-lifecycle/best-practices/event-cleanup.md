@@ -10,7 +10,7 @@ Use the [Event Explorer](/playground/browser-lifecycle/events) to confirm listen
 
 Subscribing inside render without storing the unsubscribe handle — or creating a session without ever calling `dispose()`.
 
-Prefer **one shared session** and tear it down with `await lifecycle.dispose()` on route/app unmount (unsubscribes alone are not enough if the session still owns browser listeners).
+Prefer **one shared session** and tear it down with `lifecycle.dispose()` on route/app unmount (unsubscribes alone are not enough if the session still owns browser listeners).
 
 ## Related
 

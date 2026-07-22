@@ -8,7 +8,7 @@ import "./styles/global.css";
 const rootElement = globalThis.document.getElementById("root");
 
 if (!rootElement) {
-  throw new Error("Browser Session Playground root element was not found.");
+  throw new Error("Browser Lifecycle Playground root element was not found.");
 }
 
 createRoot(rootElement).render(

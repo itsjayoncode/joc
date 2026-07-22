@@ -55,7 +55,7 @@ lifecycle.on("session:active", resume);
 ## Step 4 — Start the session
 
 ```ts
-await lifecycle.start();
+lifecycle.start();
 ```
 
 ## Expected behavior

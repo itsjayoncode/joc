@@ -6,7 +6,7 @@ No. Initialize on the client after hydration. Capability detection is SSR-safe, 
 
 ## Do I still need `dispose()`?
 
-Yes — on the client, call `await lifecycle.dispose()` when the shell unmounts. Disposed sessions cannot be restarted.
+Yes — on the client, call `lifecycle.dispose()` when the shell unmounts. Disposed sessions cannot be restarted.
 
 ## Example
 
@@ -16,7 +16,7 @@ import { isBrowser, createBrowserLifecycle } from "@jayoncode/browser-lifecycle"
 if (isBrowser()) {
   const lifecycle = createBrowserLifecycle({ autoStart: true });
   // …subscribe…
-  // on unmount: await lifecycle.dispose();
+  // on unmount: lifecycle.dispose();
 }
 ```
 

@@ -1,6 +1,6 @@
 # Deployment Guide
 
-Deploy the Browser Session Playground as a static SPA.
+Deploy the Browser Lifecycle Playground as a static SPA.
 
 ## Build
 

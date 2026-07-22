@@ -23,7 +23,7 @@ Start with a live package below. New libraries will appear here when they ship.
 
 ### [Browser Lifecycle](/packages/browser-lifecycle/)
 
-`@jayoncode/browser-lifecycle` — know when the tab is hidden, idle, offline, or back online, without scattering listeners across the app.
+`@jayoncode/browser-lifecycle` — observe browser state, derive session intelligence, react with confidence. One session, one snapshot, one event stream — without scattering listeners across the app.
 
 **Start here (in order):**
 

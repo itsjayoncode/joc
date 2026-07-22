@@ -1,4 +1,4 @@
-# Release Checklist — Browser Session Playground v1.0.0
+# Release Checklist — Browser Lifecycle Playground v1.0.0
 
 ## Pre-release
 

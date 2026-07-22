@@ -17,9 +17,9 @@ const folderResponsibilities = [
 export function AboutPage() {
   return (
     <PageContainer
-      description="The Playground Foundation is designed as infrastructure for future Browser Lifecycle modules, not as a one-off showcase."
+      description="Interactive playground for Browser Lifecycle — observe browser state, explore the normalized session, and extend explorers over time. Session intelligence factories ship in the package; sandbox panels opt in as they are wired."
       eyebrow="About"
-      title="Architecture tuned for long-term extension"
+      title="Browser Lifecycle Playground"
     >
       <div className={styles.cardGrid}>
         <Card

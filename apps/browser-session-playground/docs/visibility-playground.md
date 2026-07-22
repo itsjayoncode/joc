@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The Visibility Playground demonstrates the Browser Lifecycle Visibility module inside the Browser Session Playground.
+The Visibility Playground demonstrates the Browser Lifecycle Visibility module inside the Browser Lifecycle Playground.
 
 It teaches developers:
 

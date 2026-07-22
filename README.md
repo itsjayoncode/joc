@@ -51,7 +51,7 @@ Typed, SSR-safe session signals: page visibility, focus, idle, connectivity / re
 
 | Package                                                                                                      | Role                   | Docs                                                                   |
 | ------------------------------------------------------------------------------------------------------------ | ---------------------- | ---------------------------------------------------------------------- |
-| [`@jayoncode/browser-lifecycle`](https://www.npmjs.com/package/@jayoncode/browser-lifecycle)                 | Core engine            | [Docs](https://itsjayoncode.github.io/joc/packages/browser-lifecycle/) |
+| [`@jayoncode/browser-lifecycle`](https://www.npmjs.com/package/@jayoncode/browser-lifecycle)                 | Session lifecycle      | [Docs](https://itsjayoncode.github.io/joc/packages/browser-lifecycle/) |
 | [`@jayoncode/browser-lifecycle-react`](https://www.npmjs.com/package/@jayoncode/browser-lifecycle-react)     | React provider & hooks | —                                                                      |
 | [`@jayoncode/browser-lifecycle-vue`](https://www.npmjs.com/package/@jayoncode/browser-lifecycle-vue)         | Vue adapter            | —                                                                      |
 | [`@jayoncode/browser-lifecycle-angular`](https://www.npmjs.com/package/@jayoncode/browser-lifecycle-angular) | Angular adapter        | —                                                                      |
@@ -76,7 +76,7 @@ lifecycle.on("page:visible", () => resumePolling());
 lifecycle.on("connection:reconnect", () => flushOfflineQueue());
 ```
 
-Playground: [Browser Session](https://itsjayoncode.github.io/joc/playground/browser-session/)
+Playground: [Browser Lifecycle](https://itsjayoncode.github.io/joc/playground/browser-lifecycle/)
 
 ### Form Intelligence
 

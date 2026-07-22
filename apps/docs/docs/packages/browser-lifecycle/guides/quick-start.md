@@ -46,7 +46,7 @@ console.log(snapshot.page.visibility);
 ## 5. Clean up
 
 ```ts
-await lifecycle.dispose();
+lifecycle.dispose();
 ```
 
 ## Common mistakes

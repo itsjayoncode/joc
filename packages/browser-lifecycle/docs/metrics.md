@@ -1,6 +1,6 @@
 # Metrics
 
-Live O(1) reducers over public events — session duration, focus/hidden/idle/sleep time, counts, and attention score.
+Part of **Session Insights** — live O(1) reducers over public events: session duration, focus/hidden/idle/sleep time, counts, and attention score. In-process session understanding, not a product analytics SDK.
 
 **Previous:** [Timeline](./timeline.md) · **Next:** [Reports](./reports.md)
 

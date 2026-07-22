@@ -2,7 +2,7 @@
   "name": "@jayoncode/browser-lifecycle",
   "version": "0.3.2",
   "private": false,
-  "description": "Browser Lifecycle — Typed, framework-agnostic browser session API for page visibility, focus, idle detection, connectivity, cross-tab sync, and plugins. SSR-safe.",
+  "description": "Typed browser session lifecycle for modern web apps — one API for visibility, focus, connectivity, idle, page lifecycle, and cross-tab, with optional session intelligence and DX. Observe browser state. Derive session intelligence. React with confidence.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
   "type": "module",

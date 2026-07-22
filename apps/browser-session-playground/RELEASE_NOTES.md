@@ -1,4 +1,4 @@
-# Release Notes — Browser Session Playground v1.0.0
+# Release Notes — Browser Lifecycle Playground v1.0.0
 
 **Release date:** 2026-07-15  
 **Application:** `@jayoncode/browser-session-playground`  
@@ -6,7 +6,7 @@
 
 ## Overview
 
-Browser Session Playground v1.0.0 is the first public release of the official Browser Lifecycle engineering console. It provides interactive documentation, manual QA, integration testing, and developer diagnostics for every shipped Browser Lifecycle module.
+Browser Lifecycle Playground v1.0.0 is the first public release of the official Browser Lifecycle engineering console. It provides interactive documentation, manual QA, integration testing, and developer diagnostics for every shipped Browser Lifecycle module.
 
 ## Highlights
 

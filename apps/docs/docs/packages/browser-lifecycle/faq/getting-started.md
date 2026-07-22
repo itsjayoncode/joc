@@ -2,7 +2,9 @@
 
 ## What is Browser Lifecycle?
 
-Browser Lifecycle is the JOC package for browser session orchestration. Construction docs call it **Browser Session**; the public API is `createBrowserLifecycle()`.
+Browser Lifecycle (`@jayoncode/browser-lifecycle`) normalizes browser session signals into one session, one snapshot, and one event stream — with optional session intelligence and DX. **Observe browser state. Derive session intelligence. React with confidence.**
+
+Older construction notes may say “Browser Session”; the public product name is **Browser Lifecycle**.
 
 ## Where do I start?
 

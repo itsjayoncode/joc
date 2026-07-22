@@ -37,12 +37,12 @@ Configuration changes require a session restart. Full option table: [Core infras
 ## Lifecycle control
 
 ```ts
-await lifecycle.start();
-await lifecycle.stop();
-await lifecycle.dispose();
+lifecycle.start();
+lifecycle.stop();
+lifecycle.dispose();
 ```
 
-`dispose()` is terminal. After disposal, the instance must not be reused.
+`start()`, `stop()`, and `dispose()` are synchronous. `dispose()` is terminal — after disposal, the instance must not be reused.
 
 ## Event subscriptions
 
@@ -59,8 +59,8 @@ unsubscribe();
 Subscribe to the full event feed for debugging:
 
 ```ts
-lifecycle.onEvent((event) => {
-  console.log(event.name, event.timestamp);
+lifecycle.subscribe((event, snapshot) => {
+  console.log(event.type, event.timestamp, snapshot.visibility);
 });
 ```
 

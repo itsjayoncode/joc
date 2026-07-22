@@ -50,7 +50,7 @@ The event infrastructure is:
 - framework agnostic
 - free of browser-specific logic
 
-It exists to support Browser Lifecycle Manager modules without embedding browser semantics into the event layer itself.
+It exists to support Browser Lifecycle modules without embedding browser semantics into the event layer itself.
 
 ## Event catalog
 

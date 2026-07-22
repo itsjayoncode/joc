@@ -186,11 +186,11 @@ export function SandboxConfigPanel({ resizeHandle }: { readonly resizeHandle?: R
             patchModules({ crossTab });
           }}
         />
-        <p className={styles.hint}>Future (UI preview)</p>
+        <p className={styles.hint}>Session Insights (opt-in factories)</p>
         <Toggle
           checked={config.modules.activity}
           disabled
-          label="Activity"
+          label="Activity (UI soon)"
           onChange={(activity) => {
             patchModules({ activity });
           }}
@@ -198,23 +198,21 @@ export function SandboxConfigPanel({ resizeHandle }: { readonly resizeHandle?: R
         <Toggle
           checked={config.modules.presence}
           disabled
-          label="Presence"
+          label="Presence (UI soon)"
           onChange={(presence) => {
             patchModules({ presence });
           }}
         />
         <Toggle
           checked={config.modules.timeline}
-          disabled
-          label="Timeline"
+          label="Timeline (createTimelineApi)"
           onChange={(timeline) => {
             patchModules({ timeline });
           }}
         />
         <Toggle
           checked={config.modules.metrics}
-          disabled
-          label="Metrics"
+          label="Metrics (createMetricsApi)"
           onChange={(metrics) => {
             patchModules({ metrics });
           }}
@@ -222,7 +220,7 @@ export function SandboxConfigPanel({ resizeHandle }: { readonly resizeHandle?: R
         <Toggle
           checked={config.modules.reports}
           disabled
-          label="Reports"
+          label="Reports (UI soon)"
           onChange={(reports) => {
             patchModules({ reports });
           }}

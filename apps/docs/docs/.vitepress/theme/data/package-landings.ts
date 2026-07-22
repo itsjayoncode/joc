@@ -23,36 +23,38 @@ export interface PackageLandingContent {
 export const packageLandings: Record<string, PackageLandingContent> = {
   "browser-lifecycle": {
     id: "browser-lifecycle",
-    name: "Browser Lifecycle Manager",
+    name: "Browser Lifecycle",
     npmName: "@jayoncode/browser-lifecycle",
     accent: "cyan",
-    headline: "Know when the tab is hidden, idle, or back online",
+    headline: "Observe browser state. Derive session intelligence. React with confidence.",
     description:
-      "One small API for visibility, focus, network, idle, and multi-tab signals — so you don’t wire document and window listeners all over the app.",
+      "One session, one snapshot, one event stream — visibility, focus, connectivity, idle, page lifecycle, and cross-tab, with optional session intelligence and DX.",
     getStartedLink: "/packages/browser-lifecycle/overview",
     playgroundLink: "/playground/browser-lifecycle/",
     overviewLink: "/packages/browser-lifecycle/overview",
     highlights: [
       {
-        title: "One session object",
+        title: "Unified Browser Lifecycle",
         detail:
-          "createBrowserLifecycle() replaces scattered visibility, focus, and online handlers.",
+          "One typed session for visibility, focus, connectivity, idle, page lifecycle, and cross-tab — instead of scattered listeners.",
       },
       {
-        title: "Extra insights when you want them",
+        title: "Session Intelligence",
         detail:
-          "Timeline, metrics, and reports stay off until you opt in — free if you never call them.",
+          "Opt-in activity and page-local presence — current derived state for this browser session.",
       },
       {
-        title: "Works with your UI library",
-        detail: "React, Vue, Svelte, Solid, and Angular wrappers around the same core.",
+        title: "Timeline & Session Insights",
+        detail:
+          "Chronological history plus metrics and reports. Nothing allocates until you call the factories.",
       },
       {
-        title: "Safe on the server",
-        detail: "Detects what’s available and only starts in the browser — calm under SSR.",
+        title: "Developer Experience",
+        detail:
+          "Wait, Conditions, Resilience, plugins, and a playground — react with confidence.",
       },
     ],
-    sampleTitle: "Pause work when the user looks away",
+    sampleTitle: "Pause work when the tab is hidden",
     sampleCode: `import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
 
 const lifecycle = createBrowserLifecycle({

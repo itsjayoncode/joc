@@ -41,8 +41,18 @@ function StateCard({
 }
 
 export function SandboxCanvas() {
-  const { workspaceTab, setWorkspaceTab, snapshot, simulated, timeline, running, config } =
-    useSandbox();
+  const {
+    workspaceTab,
+    setWorkspaceTab,
+    snapshot,
+    simulated,
+    timeline,
+    metricsSnapshot,
+    timelineApiEnabled,
+    metricsApiEnabled,
+    running,
+    config,
+  } = useSandbox();
 
   const visibility = displayVisibility(snapshot, simulated);
   const attention = simulated.attention
@@ -128,12 +138,43 @@ export function SandboxCanvas() {
               }
             />
           </div>
+          {metricsApiEnabled && metricsSnapshot ? (
+            <>
+              <p className={styles.hint}>
+                Session Insights via <code>createMetricsApi</code> (attention + durations).
+              </p>
+              <div className={styles.stateGrid}>
+                <StateCard label="Attention" value={`${String(metricsSnapshot.attentionScore)}%`} />
+                <StateCard
+                  label="Focused"
+                  value={`${(metricsSnapshot.focusedMs / 1000).toFixed(1)}s`}
+                />
+                <StateCard
+                  label="Hidden"
+                  value={`${(metricsSnapshot.hiddenMs / 1000).toFixed(1)}s`}
+                />
+                <StateCard
+                  label="Idle"
+                  value={`${(metricsSnapshot.idleMs / 1000).toFixed(1)}s`}
+                />
+                <StateCard
+                  label="Offline"
+                  value={`${(metricsSnapshot.offlineMs / 1000).toFixed(1)}s`}
+                />
+                <StateCard label="Reconnects" value={String(metricsSnapshot.reconnectCount)} />
+              </div>
+            </>
+          ) : null}
         </>
       ) : null}
 
       {workspaceTab === "timeline" ? (
         <>
-          <p className={styles.hint}>Lifecycle transitions (newest first).</p>
+          <p className={styles.hint}>
+            {timelineApiEnabled
+              ? "Package Timeline (createTimelineApi) — newest first."
+              : "Sandbox transition log (enable Timeline toggle to use createTimelineApi)."}
+          </p>
           <ul className={styles.timeline}>
             {timeline.map((entry, index) => (
               <li className={styles.timelineItem} key={entry.id}>

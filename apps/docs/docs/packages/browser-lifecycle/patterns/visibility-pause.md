@@ -19,7 +19,7 @@ lifecycle.on("page:hidden", () => worker.pause());
 lifecycle.on("page:visible", () => worker.resume());
 
 // later
-await lifecycle.dispose();
+lifecycle.dispose();
 ```
 
 ## Performance

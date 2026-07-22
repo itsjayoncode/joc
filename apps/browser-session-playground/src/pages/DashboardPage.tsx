@@ -20,8 +20,8 @@ export function DashboardPage() {
       compact
       description={
         <>
-          Package overview. Open the <Link to="/">Lifecycle Sandbox</Link> for the full interactive
-          laboratory.
+          Observe browser state. Derive session intelligence. React with confidence. Open the{" "}
+          <Link to="/">Lifecycle Sandbox</Link> for the full interactive laboratory.
         </>
       }
     >

@@ -1,13 +1,48 @@
-# Browser Lifecycle — Typed, framework-agnostic browser session lifecycle for modern web apps.
+# Browser Lifecycle
+
+**Observe browser state. Derive session intelligence. React with confidence.**
+
+[`@jayoncode/browser-lifecycle`](https://www.npmjs.com/package/@jayoncode/browser-lifecycle) — typed, framework-agnostic browser session lifecycle for modern web apps.
 
 [![npm version](https://img.shields.io/npm/v/@jayoncode/browser-lifecycle.svg)](https://www.npmjs.com/package/@jayoncode/browser-lifecycle)
-[![license](https://img.shields.io/npm/l/@jayoncode/browser-lifecycle.svg)](https://github.com/itsjayoncode/joc/blob/master/packages/browser-lifecycle/package.json)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/itsjayoncode/joc/blob/master/packages/browser-lifecycle/package.json)
 [![docs](https://img.shields.io/badge/docs-jayoncode.github.io-2563eb)](https://itsjayoncode.github.io/joc/packages/browser-lifecycle/)
 [![Become a Sponsor](https://img.shields.io/badge/Become%20a%20Sponsor-%23ea4aaa?style=flat&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/jayoncoding)
 
-Published as [`@jayoncode/browser-lifecycle`](https://www.npmjs.com/package/@jayoncode/browser-lifecycle) on npm.
+One API for visibility, focus, connectivity, idle, page lifecycle, and cross-tab — with optional session intelligence and DX. Works with React, Vue, Angular, Svelte, Next.js, and vanilla JavaScript.
 
-Stop wiring `visibilitychange`, `focus`, `online`, and idle timers by hand. One composable TypeScript API covers page visibility, window focus, connectivity, idle, page lifecycle, and cross-tab coordination — with SSR-safe feature detection and opt-in intelligence. Works with React, Vue, Angular, Svelte, Next.js, and vanilla JavaScript.
+> **One session. One snapshot. One event stream.**  
+> Everything else is derived.
+
+## Observe → Understand → React
+
+Most libraries stop at browser events. Browser Lifecycle continues:
+
+```text
+Browser APIs
+    ↓
+Normalized Session
+    ↓
+Session Intelligence (opt-in)
+    ↓
+Developer APIs (opt-in)
+```
+
+| Pillar | What you get |
+| --- | --- |
+| **Observe** | Normalize browser lifecycle into one consistent API |
+| **Understand** | Transform signals into meaningful session insights |
+| **React** | Wait, conditions, resilience, plugins, playground |
+
+### Five capabilities
+
+| Card | What it is |
+| --- | --- |
+| **Unified Browser Lifecycle** | One typed session for visibility, focus, connectivity, idle, page lifecycle, and cross-tab — instead of scattered listeners |
+| **Session Intelligence** | Opt-in activity (active / idle) and **page-local** presence (available / away / unknown) |
+| **Timeline** | Bounded chronological history of session events |
+| **Session Insights** | Opt-in metrics and on-demand reports — not an analytics SDK |
+| **Developer Experience** | Wait, conditions, resilience, plugins, and an interactive playground |
 
 ## Install
 
@@ -38,7 +73,7 @@ window.addEventListener("offline", ...);
 
 `@jayoncode/browser-lifecycle` replaces that sprawl with one session object.
 
-## Quick start — stop wasting work in a background tab
+## Quick start — Observe first
 
 ```ts
 import { createBrowserLifecycle } from "@jayoncode/browser-lifecycle";
@@ -65,14 +100,25 @@ lifecycle.on("connection:reconnect", () => {
   flushOfflineQueue();
 });
 
-// Read a typed snapshot any time
 const snapshot = lifecycle.getSnapshot();
 
-// Clean up when your app unmounts
+// Sync teardown — do not reuse the instance
 lifecycle.dispose();
 ```
 
-## More problem → solution snippets
+## Zero-cost until you ask
+
+Core observation stays lightweight. Session intelligence and developer experience are completely opt-in — you only pay for what you use. Creating a session does **not** allocate Activity, Presence, Timeline, Metrics, or Reports.
+
+```ts
+const lifecycle = createBrowserLifecycle({ autoStart: true });
+// lean core only
+
+const timeline = createTimelineApi(lifecycle);
+// cost starts here
+```
+
+## Understand & React (opt-in factories)
 
 ### Flush work when the network comes back
 
@@ -103,30 +149,44 @@ await wait.untilVisible({ timeoutMs: 10_000 });
 startExpensiveHydration();
 ```
 
-### Measure attention without building your own telemetry
+### Session insights — metrics without building your own counters
 
 ```ts
-import { createBrowserLifecycle, createMetricsApi } from "@jayoncode/browser-lifecycle";
+import {
+  createBrowserLifecycle,
+  createMetricsApi,
+  createReportsApi,
+  createTimelineApi,
+} from "@jayoncode/browser-lifecycle";
 
 const lifecycle = createBrowserLifecycle({ autoStart: true, idleTimeout: 30_000 });
 const metrics = createMetricsApi(lifecycle);
+const timeline = createTimelineApi(lifecycle);
+const reports = createReportsApi({ metrics, timeline });
 
 console.log(metrics.attention().score); // 0–100
-console.log(metrics.snapshot().durations);
+console.log(reports.sessionSummary());
 ```
 
-## Optional intelligence & DX (pay only when you import)
+| Helper | Layer | What it solves |
+| --- | --- | --- |
+| `createActivityApi` | Session Intelligence | Active / idle facade |
+| `createPresenceApi` | Session Intelligence | Page-local available / away / unknown |
+| `createTimelineApi` | Timeline | Bounded event history |
+| `createMetricsApi` | Session Insights | Durations, counts, attention score |
+| `createReportsApi` | Session Insights | On-demand session summaries |
+| `createWaitApi` | Developer Experience | `untilVisible`, `untilOnline`, … |
+| `createConditionsApi` | Developer Experience | `when.hidden(...)`, … |
+| `createResilienceApi` | Developer Experience | Reconnect / wake / restore |
 
-| Helper                | What it solves                      |
-| --------------------- | ----------------------------------- |
-| `createActivityApi`   | Idle/active facade over the session |
-| `createPresenceApi`   | Page-local away/active reasons      |
-| `createTimelineApi`   | Bounded event history               |
-| `createMetricsApi`    | Durations, counts, attention score  |
-| `createReportsApi`    | On-demand session summaries         |
-| `createWaitApi`       | Promise helpers (`untilVisible`, …) |
-| `createConditionsApi` | Tiny event DSL (`when.hidden(...)`) |
-| `createResilienceApi` | Reconnect / wake / restore helpers  |
+`createSessionHealthApi` and `createSessionPredictApi` are **experimental** helpers — documented in the intelligence guide, not homepage flagships.
+
+## What this is not
+
+- Not multi-user / Slack-like presence — presence is **page-local**
+- Not an analytics or telemetry SDK — Session Insights stay in-process
+- Connectivity is **advisory** (`navigator.onLine`), not reachability
+- Not auth, routing, or storage
 
 ## Framework adapters
 
@@ -138,24 +198,10 @@ Thin wrappers live in separate packages (dispose on unmount; client-only start):
 - `@jayoncode/browser-lifecycle-solid`
 - `@jayoncode/browser-lifecycle-angular`
 
-## Why use it
-
-| Capability       | What you get                                    |
-| ---------------- | ----------------------------------------------- |
-| **Session core** | Start, stop, pause, and inspect lifecycle state |
-| **Visibility**   | `page:visible` / `page:hidden`                  |
-| **Focus**        | `window:focus` / `window:blur`                  |
-| **Connectivity** | `connection:online` / `offline` / `reconnect`   |
-| **Idle**         | Activity-based `session:idle`                   |
-| **Cross-tab**    | Leader election and tab messaging               |
-| **Plugins**      | Register hooks and inspect diagnostics          |
-| **SSR-safe**     | Capability helpers that do not throw in Node    |
-
 ## Documentation
 
 - [Package overview](https://itsjayoncode.github.io/joc/packages/browser-lifecycle/)
 - [Quick start guide](https://itsjayoncode.github.io/joc/packages/browser-lifecycle/guides/quick-start)
-- [Configuration](https://itsjayoncode.github.io/joc/packages/browser-lifecycle/guides/configuration)
 - [Interactive playground](https://itsjayoncode.github.io/joc/playground/browser-lifecycle/)
 
 ## Requirements

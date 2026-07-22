@@ -2,8 +2,8 @@ import type { SandboxConfig } from "./types.js";
 
 /**
  * Extensibility registry for sandbox capabilities.
- * Future modules (Activity, Presence, Timeline, Metrics, Reports) register here
- * so dashboard, inspector, console, and generated code pick them up without redesign.
+ * Opt-in Session Intelligence / Insights factories ship in the package;
+ * sandbox panels may still be incomplete — descriptions must stay honest.
  */
 export interface SandboxCapability {
   readonly id: string;
@@ -97,7 +97,8 @@ export const SANDBOX_CAPABILITIES: readonly SandboxCapability[] = [
     label: "Activity",
     group: "future",
     docsPath: "/modules/activity",
-    description: "Future: interaction counts and active duration.",
+    description:
+      "Shipped in package via createActivityApi (active/idle). Not wired in this sandbox UI yet.",
     available: false,
     isEnabled: (c) => c.modules.activity,
   },
@@ -106,7 +107,8 @@ export const SANDBOX_CAPABILITIES: readonly SandboxCapability[] = [
     label: "Presence",
     group: "future",
     docsPath: "/modules/presence",
-    description: "Future: available / away / offline presence.",
+    description:
+      "Shipped in package via createPresenceApi — page-local available/away/unknown. Not wired in this sandbox UI yet.",
     available: false,
     isEnabled: (c) => c.modules.presence,
   },
@@ -115,8 +117,9 @@ export const SANDBOX_CAPABILITIES: readonly SandboxCapability[] = [
     label: "Timeline",
     group: "future",
     docsPath: "/modules/timeline",
-    description: "Future: chronological history + replay.",
-    available: false,
+    description:
+      "Opt-in createTimelineApi — chronological history in the sandbox Timeline tab (no replay/export).",
+    available: true,
     isEnabled: (c) => c.modules.timeline,
   },
   {
@@ -124,8 +127,9 @@ export const SANDBOX_CAPABILITIES: readonly SandboxCapability[] = [
     label: "Metrics",
     group: "future",
     docsPath: "/modules/metrics",
-    description: "Future: focus %, idle duration, attention score.",
-    available: false,
+    description:
+      "Opt-in createMetricsApi — Session Insights on the sandbox Dashboard (durations, attention).",
+    available: true,
     isEnabled: (c) => c.modules.metrics,
   },
   {
@@ -133,7 +137,8 @@ export const SANDBOX_CAPABILITIES: readonly SandboxCapability[] = [
     label: "Reports",
     group: "future",
     docsPath: "/modules/reports",
-    description: "Future: session summary exports.",
+    description:
+      "Shipped in package via createReportsApi — on-demand session summary. Not wired in this sandbox UI yet.",
     available: false,
     isEnabled: (c) => c.modules.reports,
   },

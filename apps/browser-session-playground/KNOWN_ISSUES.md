@@ -1,4 +1,4 @@
-# Known Issues — Browser Session Playground v1.0.0
+# Known Issues — Browser Lifecycle Playground v1.0.0
 
 ## Application
 

@@ -1,6 +1,8 @@
 # Tutorial — your first session
 
-Install, start a session, subscribe to events, read snapshot state, dispose. Progressive path: **Basic** (this page) → [Concepts](/packages/browser-lifecycle/modules/concepts) → [Visibility](/packages/browser-lifecycle/modules/visibility) / [Events](/packages/browser-lifecycle/modules/events).
+**Observe browser state** first — install, start a session, subscribe to events, read the snapshot, dispose. Optional session intelligence and DX come later (zero-cost until you ask).
+
+Progressive path: **Basic** (this page) → [Concepts](/packages/browser-lifecycle/modules/concepts) → [Visibility](/packages/browser-lifecycle/modules/visibility) / [Events](/packages/browser-lifecycle/modules/events).
 
 **Previous:** [Core concepts](/packages/browser-lifecycle/modules/concepts) · **Next:** [Visibility](/packages/browser-lifecycle/modules/visibility)
 
@@ -62,7 +64,7 @@ lifecycle.on("page:hidden", () => {
 
 ```ts
 const snapshot = lifecycle.getSnapshot();
-console.log(snapshot.page.visibility); // "visible" | "hidden"
+console.log(snapshot.visibility); // "visible" | "hidden" | "unknown"
 ```
 
 **Outcome:** Readonly view of current session state without manual listener bookkeeping.
@@ -89,7 +91,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     return () => {
       offVisible();
       offHidden();
-      void lifecycle.dispose();
+      lifecycle.dispose();
     };
   }, [lifecycle]);
 
@@ -109,7 +111,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     lifecycle.on("page:hidden", () => console.log("tab hidden"));
 
     window.addEventListener("pagehide", () => {
-      void lifecycle.dispose();
+      lifecycle.dispose();
     });
   </script>
 </body>
@@ -120,10 +122,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 ## Step 5 — Dispose
 
 ```ts
-await lifecycle.dispose();
+lifecycle.dispose();
 ```
 
-**Outcome:** Listeners removed; instance must not be reused.
+**Outcome:** Listeners removed (sync); instance must not be reused.
 
 ---
 

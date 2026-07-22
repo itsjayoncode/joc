@@ -41,7 +41,7 @@ console.log(lifecycle.getSnapshot().page.visibility);
 ```ts
 stopVisible();
 stopHidden();
-await lifecycle.dispose();
+lifecycle.dispose();
 ```
 
 ## Common mistakes

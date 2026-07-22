@@ -42,7 +42,7 @@ This document covers the Visibility Module introduced in Phase `2.2.3`.
 
 ## Overview
 
-The Visibility Module is the first browser-facing module in Browser Lifecycle Manager.
+The Visibility Module is the first browser-facing module in Browser Lifecycle.
 
 It is responsible only for:
 

@@ -13,7 +13,11 @@ import type {
   BrowserLifecycle,
   BrowserLifecycleRuntimeDiagnostics,
   BrowserLifecycleSnapshot,
+  MetricsApi,
+  MetricsSnapshot,
+  TimelineApi,
 } from "@jayoncode/browser-lifecycle";
+import { createMetricsApi, createTimelineApi } from "@jayoncode/browser-lifecycle";
 
 import { createSandboxSession } from "./build-session.js";
 import { copyTextToClipboard, decodeSandboxShareHash } from "./clipboard.js";
@@ -42,6 +46,9 @@ interface SandboxContextValue {
   readonly events: readonly SandboxEventEntry[];
   readonly consoleEntries: readonly SandboxConsoleEntry[];
   readonly timeline: readonly TimelineEntry[];
+  readonly metricsSnapshot: MetricsSnapshot | null;
+  readonly timelineApiEnabled: boolean;
+  readonly metricsApiEnabled: boolean;
   readonly simulated: SimulatedBrowserState;
   readonly workspaceTab: WorkspaceTab;
   readonly inspectorTab: InspectorTab;
@@ -125,6 +132,7 @@ export function SandboxProvider({ children }: { readonly children: ReactNode }) 
   const [events, setEvents] = useState<readonly SandboxEventEntry[]>([]);
   const [consoleEntries, setConsoleEntries] = useState<readonly SandboxConsoleEntry[]>([]);
   const [timeline, setTimeline] = useState<readonly TimelineEntry[]>([]);
+  const [metricsSnapshot, setMetricsSnapshot] = useState<MetricsSnapshot | null>(null);
   const [simulated, setSimulated] = useState<SimulatedBrowserState>(EMPTY_SIMULATED);
   const [workspaceTab, setWorkspaceTab] = useState<WorkspaceTab>("dashboard");
   const [inspectorTab, setInspectorTab] = useState<InspectorTab>("runtime");
@@ -133,6 +141,8 @@ export function SandboxProvider({ children }: { readonly children: ReactNode }) 
   const [eventFilter, setEventFilter] = useState("");
   const [recreateNonce, setRecreateNonce] = useState(0);
   const sessionRef = useRef<BrowserLifecycle | null>(null);
+  const timelineApiRef = useRef<TimelineApi | null>(null);
+  const metricsApiRef = useRef<MetricsApi | null>(null);
   const consolePausedRef = useRef(false);
   const configRef = useRef(config);
 
@@ -209,17 +219,34 @@ export function SandboxProvider({ children }: { readonly children: ReactNode }) 
         };
         setEvents((current) => [entry, ...current].slice(0, 250));
 
-        setTimeline((current) =>
-          [
-            {
-              id: `t-${String(++timelineCounter)}`,
-              at: entry.at,
-              label: event.type,
-              type: event.type,
-            },
-            ...current,
-          ].slice(0, 80),
-        );
+        const packageTimeline = timelineApiRef.current;
+        if (configRef.current.modules.timeline && packageTimeline) {
+          const mapped = [...packageTimeline.events()]
+            .reverse()
+            .map((item) => ({
+              id: item.id,
+              at: new Date(item.timestamp).toLocaleTimeString(),
+              label: item.type,
+              type: item.type,
+            }));
+          setTimeline(mapped);
+        } else {
+          setTimeline((current) =>
+            [
+              {
+                id: `t-${String(++timelineCounter)}`,
+                at: entry.at,
+                label: event.type,
+                type: event.type,
+              },
+              ...current,
+            ].slice(0, 80),
+          );
+        }
+
+        if (metricsApiRef.current) {
+          setMetricsSnapshot(metricsApiRef.current.snapshot());
+        }
 
         if (cfg.diagnostics.eventLogging) {
           pushConsole(event.type, "info", event.source, entry.summary);
@@ -233,6 +260,12 @@ export function SandboxProvider({ children }: { readonly children: ReactNode }) 
   );
 
   const disposeCurrent = useCallback(() => {
+    timelineApiRef.current?.dispose();
+    metricsApiRef.current?.dispose();
+    timelineApiRef.current = null;
+    metricsApiRef.current = null;
+    setMetricsSnapshot(null);
+
     const current = sessionRef.current;
     if (!current) {
       return;
@@ -249,6 +282,41 @@ export function SandboxProvider({ children }: { readonly children: ReactNode }) 
     setSession(null);
     setRunning(false);
   }, []);
+
+  // Opt-in Session Insights / Timeline factories — zero cost until toggled
+  useEffect(() => {
+    const current = sessionRef.current;
+    timelineApiRef.current?.dispose();
+    metricsApiRef.current?.dispose();
+    timelineApiRef.current = null;
+    metricsApiRef.current = null;
+
+    if (!current) {
+      setMetricsSnapshot(null);
+      return;
+    }
+
+    if (config.modules.timeline) {
+      timelineApiRef.current = createTimelineApi(current, { maxEvents: 80 });
+      pushConsole("createTimelineApi attached", "success", "insights");
+    }
+
+    if (config.modules.metrics) {
+      const metrics = createMetricsApi(current);
+      metricsApiRef.current = metrics;
+      setMetricsSnapshot(metrics.snapshot());
+      pushConsole("createMetricsApi attached", "success", "insights");
+    } else {
+      setMetricsSnapshot(null);
+    }
+
+    return () => {
+      timelineApiRef.current?.dispose();
+      metricsApiRef.current?.dispose();
+      timelineApiRef.current = null;
+      metricsApiRef.current = null;
+    };
+  }, [session, config.modules.timeline, config.modules.metrics, pushConsole]);
 
   // Recreate when structural config changes
   useEffect(() => {
@@ -389,6 +457,7 @@ export function SandboxProvider({ children }: { readonly children: ReactNode }) 
   }, []);
 
   const clearTimeline = useCallback(() => {
+    timelineApiRef.current?.clear();
     setTimeline([]);
   }, []);
 
@@ -438,6 +507,9 @@ export function SandboxProvider({ children }: { readonly children: ReactNode }) 
     events,
     consoleEntries,
     timeline,
+    metricsSnapshot,
+    timelineApiEnabled: config.modules.timeline,
+    metricsApiEnabled: config.modules.metrics,
     simulated,
     workspaceTab,
     inspectorTab,

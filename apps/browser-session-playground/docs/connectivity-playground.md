@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The Connectivity Playground demonstrates the Browser Lifecycle Connectivity module inside the Browser Session Playground.
+The Connectivity Playground demonstrates the Browser Lifecycle Connectivity module inside the Browser Lifecycle Playground.
 
 It teaches developers:
 
