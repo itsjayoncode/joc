@@ -4,6 +4,7 @@ import { InvalidOptionsError, PluginError } from "../errors/index.js";
 import {
   merge as coreMerge,
   type MergeConflict,
+  type MergeConflictReason,
   type MergeOptions,
   type MergeResult,
   type MergeStrategy,
@@ -326,6 +327,6 @@ export function createEngine(options: CreateEngineOptions = {}): EngineApi {
   };
 }
 
-export type { MergeConflict, MergeResult };
+export type { MergeConflict, MergeConflictReason, MergeResult };
 export type { FormatterPlugin };
 export { PluginError };

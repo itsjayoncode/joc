@@ -1,3 +1,9 @@
+import {
+  explainDiff,
+  formatExplainHuman,
+  type DiffExplanation,
+  type ExplainOptions,
+} from "./explain.js";
 import { patch as corePatch } from "../patch/index.js";
 import {
   exclude,
@@ -42,6 +48,11 @@ export interface DiffView extends DiffQuery {
   serialize(format: SerializeFormat, options?: SerializeOptions): string;
   patch(options?: PatchOptions): Patch;
   statistics(patchOps?: Patch, options?: StatisticsOptions): DiffStatistics;
+  /**
+   * Explain each change for reviews / UIs.
+   * Default: structured `DiffExplanation[]`. Pass `{ format: "human" }` for review text.
+   */
+  explain(options?: ExplainOptions): DiffExplanation[] | string;
 }
 
 class DiffResultView implements DiffView {
@@ -114,16 +125,34 @@ class DiffResultView implements DiffView {
   public statistics(patchOps?: Patch, options?: StatisticsOptions): DiffStatistics {
     return statistics(this.current, patchOps, options);
   }
+
+  public explain(options?: ExplainOptions): DiffExplanation[] | string {
+    if (options?.format === "human") {
+      return formatExplainHuman(this.current, options);
+    }
+
+    return explainDiff(this.current, options);
+  }
 }
 
 /**
  * Create a fluent view over a DiffResult without mutating it or the core `diff()` return type.
  *
  * Heavy engines (merge/plugins) stay on their own subpaths — this view only wires
- * query + serialize + patch + stats for discoverability.
+ * query + serialize + patch + stats + explain for discoverability.
  */
 export function createDiffView(result: DiffResult): DiffView {
   return new DiffResultView(result);
 }
 
-export type { DiffPredicate, DiffQuery, ExcludeSpec, QuerySummary, DiffStatistics };
+export type {
+  DiffPredicate,
+  DiffQuery,
+  ExcludeSpec,
+  QuerySummary,
+  DiffStatistics,
+  DiffExplanation,
+  ExplainOptions,
+};
+
+export type { ExplainConfidence } from "./explain.js";

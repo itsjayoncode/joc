@@ -28,12 +28,12 @@ Read the full [philosophy](/getting-started/philosophy) and [vision on GitHub](h
 
 ## Live packages today
 
-| Package                                                        | What it solves                                                       | Start here                                                                          |
-| -------------------------------------------------------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| [`@jayoncode/browser-lifecycle`](/packages/browser-lifecycle/) | Visibility, focus, idle, connectivity, cross-tab session signals     | [Docs](/packages/browser-lifecycle/) · [Playground](/playground/browser-lifecycle/) |
-| [`@jayoncode/form-intelligence`](/packages/form-intelligence/) | Headless form workflows — validation, rules, drafts, wizards, submit | [Docs](/packages/form-intelligence/) · [Playground](/playground/form-intelligence/) |
-| [`@jayoncode/object-diff`](/packages/object-diff/)             | Deep comparison, change records, JSON Patch                          | [Docs](/packages/object-diff/) · [Playground](/playground/object-diff/)             |
-| [`@jayoncode/storage`](/packages/storage/)                     | Save prefs and cache in the browser — adapters, TTL, migrations      | [Docs](/packages/storage/) · [Playground](/playground/storage/)                     |
+| Package                                                        | What it solves                                                             | Start here                                                                          |
+| -------------------------------------------------------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| [`@jayoncode/browser-lifecycle`](/packages/browser-lifecycle/) | Observe browser state. Derive session intelligence. React with confidence. | [Docs](/packages/browser-lifecycle/) · [Playground](/playground/browser-lifecycle/) |
+| [`@jayoncode/form-intelligence`](/packages/form-intelligence/) | Declare the workflow. Keep the markup. Submit with confidence.             | [Docs](/packages/form-intelligence/) · [Playground](/playground/form-intelligence/) |
+| [`@jayoncode/object-diff`](/packages/object-diff/)             | Stop guessing what changed. Get paths, patches, and review-ready output.   | [Docs](/packages/object-diff/) · [Playground](/playground/object-diff/)             |
+| [`@jayoncode/storage`](/packages/storage/)                     | Namespace it. Expire it. Upgrade it — without localStorage glue.           | [Docs](/packages/storage/) · [Playground](/playground/storage/)                     |
 
 Browse the full [package catalog](/packages/). New libraries will be announced as they enter development.
 

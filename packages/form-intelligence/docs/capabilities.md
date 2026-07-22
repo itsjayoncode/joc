@@ -1,6 +1,6 @@
-# Form OS — Capabilities
+# Capabilities
 
-`@jayoncode/form-intelligence` is a **headless form workflow engine** — an operating system for forms. You pick the features you need; the engine centralizes validation, formatting, conditional logic, business rules, autosave, drafts, submission, and integrations while you keep full control of UI.
+`@jayoncode/form-intelligence` is a **headless form workflow engine**. You pick the features you need; the engine centralizes validation, formatting, conditional logic, business rules, autosave, drafts, submission, and integrations while you keep full control of UI.
 
 **Previous:** [Core concepts](/packages/form-intelligence/modules/concepts) · **Next:** [Validation](/packages/form-intelligence/modules/validation)
 

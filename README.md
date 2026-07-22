@@ -6,9 +6,7 @@
 [![license](https://img.shields.io/github/license/itsjayoncode/joc)](https://github.com/itsjayoncode/joc/blob/master/LICENSE)
 [![Become a Sponsor](https://img.shields.io/badge/Become%20a%20Sponsor-%23ea4aaa?style=flat&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/jayoncoding)
 
-**JayOnCode** builds the **JOC Ecosystem**: an ecosystem of independent, headless TypeScript libraries engineered for modern web applications. Every package is framework-agnostic, thoroughly documented, and backed by interactive playgrounds for a consistent developer experience.
-
-Each `@jayoncode/*` package solves one problem well, ships on its own version line, and is documented under its own section on the [official docs site](https://itsjayoncode.github.io/joc/).
+**JayOnCode** builds the **JOC Ecosystem**: independent, headless TypeScript libraries for real frontend infrastructure — **one package, one job**. Every `@jayoncode/*` library is framework-agnostic, documented with guides that match shipped APIs, and backed by an interactive playground.
 
 Install only what you need. Compose when you need more. Keep package boundaries explicit.
 
@@ -36,7 +34,7 @@ Frontend apps keep re-solving the same infrastructure problems: tab visibility a
 - **One package, one job** — clear public APIs and independent SemVer lines
 - **Framework-agnostic cores** — React / Vue / Angular (and others) are thin adapters
 - **Composable, not coupled** — packages may compose in apps; they do not force sibling installs
-- **Docs and playgrounds ship with the product** — examples stay honest with the API
+- **Docs and playgrounds ship with the product** — copy stays honest with what is on npm today
 - **Engineering as product quality** — CI, Changesets, package blueprints, versioned docs
 
 ---
@@ -47,7 +45,7 @@ All packages below are published under the [`@jayoncode`](https://www.npmjs.com/
 
 ### Browser Lifecycle
 
-Typed, SSR-safe session signals: page visibility, focus, idle, connectivity / reconnect, and cross-tab coordination.
+**Observe browser state. Derive session intelligence. React with confidence.** One session, one snapshot, one event stream — with optional session intelligence and DX.
 
 | Package                                                                                                      | Role                   | Docs                                                                   |
 | ------------------------------------------------------------------------------------------------------------ | ---------------------- | ---------------------------------------------------------------------- |
@@ -80,7 +78,7 @@ Playground: [Browser Lifecycle](https://itsjayoncode.github.io/joc/playground/br
 
 ### Form Intelligence
 
-Headless form engine for validation modes, conditional `when()` rules, autosave, drafts, wizards, plugins, and submit — one place instead of scattered effects.
+**Declare the workflow. Keep the markup. Submit with confidence.** Headless form engine for validation, `when()` rules, drafts, wizards, and safe submit — one place instead of scattered effects.
 
 | Package                                                                                                      | Role                       | Docs                                                                   |
 | ------------------------------------------------------------------------------------------------------------ | -------------------------- | ---------------------------------------------------------------------- |
@@ -125,7 +123,7 @@ Playground: [Form Intelligence](https://itsjayoncode.github.io/joc/playground/fo
 
 ### Object Diff
 
-Deep comparison, dirty checks, change records, patches, and serialization for structured data.
+**Stop guessing what changed. Get paths, patches, and review-ready output.** Typed deep comparison, DiffView, RFC 6902 patches, and optional snapshot merge — not a CRDT runtime.
 
 | Package                                                                          | Role                          | Docs                                                             |
 | -------------------------------------------------------------------------------- | ----------------------------- | ---------------------------------------------------------------- |
@@ -149,7 +147,7 @@ Playground: [Object Diff](https://itsjayoncode.github.io/joc/playground/object-d
 
 ### Storage
 
-Policy-driven client persistence: namespaced envelopes, TTL, migrations, explicit adapters (memory / localStorage / sessionStorage / IndexedDB), soft quota, and opt-in transforms.
+**Namespace it. Expire it. Upgrade it — without localStorage glue.** Explicit adapters (memory / localStorage / sessionStorage / IndexedDB), TTL, migrations, soft quota, and opt-in transforms.
 
 | Package                                                                  | Role                                      | Docs                                                         |
 | ------------------------------------------------------------------------ | ----------------------------------------- | ------------------------------------------------------------ |

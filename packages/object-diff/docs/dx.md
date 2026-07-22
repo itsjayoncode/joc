@@ -1,8 +1,8 @@
 # Developer Experience
 
-Fluent helpers, docs, and playground polish for shipped engines.
+Fluent DiffView toolbox — explain, filter, serialize, patch, and stats over a `DiffResult` without mutating `diff()` output.
 
-**Previous:** [Performance](/packages/object-diff/modules/performance) · **Back to:** [Overview](/packages/object-diff/overview)
+**Previous:** [Serialization](/packages/object-diff/modules/serialize) · **Next:** [Engines](/packages/object-diff/modules/engines) · **Back to:** [Overview](/packages/object-diff/overview)
 
 ## Import path
 
@@ -13,30 +13,90 @@ import { createDiffView } from "@jayoncode/object-diff/view";
 
 `createDiffView` is **`/view` only** (not on root). Canonical map: [Engines](/packages/object-diff/modules/engines).
 
-## Fluent API (ADR 0006)
+## Why DiffView?
+
+| Need                                            | Use                      |
+| ----------------------------------------------- | ------------------------ |
+| Plain data for storage / wire                   | `diff()` → `DiffResult`  |
+| Review, filter, explain, patch from that result | `createDiffView(result)` |
+
+`DiffResult` stays serializable data. DiffView is the **developer toolbox** on top — same architecture lock as the package ADR (no methods attached to `diff()` return values).
+
+## Fluent API
 
 ```ts
 import { diff } from "@jayoncode/object-diff";
 import { createDiffView } from "@jayoncode/object-diff/view";
 
-const view = createDiffView(diff(before, after)).exclude(["password"]).updated();
+const view = createDiffView(diff(before, after, { detectMoves: true }))
+  .exclude(["password"])
+  .updated();
 
 view.serialize("markdown");
 view.patch();
 view.statistics();
+view.explain(); // structured DiffExplanation[]
+view.explain({ format: "human" }); // review text
 ```
 
-- Free functions remain canonical
-- `createDiffView` is opt-in on `/view` (not on root — tree-shaking)
-- Does not attach methods onto `diff()` return values
+- Free functions remain canonical (`diff`, `serialize`, `patch`, …)
+- `createDiffView` is opt-in on `/view` (tree-shake friendly)
+- Chaining returns new views — the source `DiffResult` is never mutated
+
+## `explain()`
+
+Turn change records into review-friendly explanations (especially moves / identity):
+
+```ts
+const result = diff(before, after, { identityKey: "id", detectMoves: true });
+const view = createDiffView(result);
+
+view.explain({ identityKey: "id" });
+// [
+//   {
+//     path: "[2]",
+//     type: "moved",
+//     reason: "Matched using identityKey 'id'",
+//     confidence: "high",
+//     summary: "item moved",
+//     from: "[0]",
+//   },
+//   {
+//     path: "name",
+//     type: "changed",
+//     reason: "Primitive value changed",
+//     confidence: "high",
+//     summary: "`name` updated",
+//     previous: "John",
+//     current: "Johnny",
+//   },
+// ]
+
+view.explain({ format: "human", identityKey: "id" });
+// ✓ item moved
+//   index 0 → 2
+//   matched using id
+//
+// ✓ name updated
+//   John → Johnny
+```
+
+| Option        | Default        | Meaning                                                                      |
+| ------------- | -------------- | ---------------------------------------------------------------------------- |
+| `format`      | `"structured"` | `"structured"` → `DiffExplanation[]`; `"human"` → string                     |
+| `identityKey` | —              | Property name hint when the diff used identity matching (improves move copy) |
+
+`DiffResult` does not store the options used to produce it — pass `identityKey` again when you want identity-aware wording.
+
+Prefer `explain({ format: "human" })` for reviews; keep `serialize("human")` for compact changelog-style bullets.
 
 ## Subpath map
 
-Prefer linking here rather than duplicating forever — canonical table: [Engines](/packages/object-diff/modules/engines).
+Canonical table: [Engines](/packages/object-diff/modules/engines).
 
 | Import                         | Use                           |
 | ------------------------------ | ----------------------------- |
-| `@jayoncode/object-diff/view`  | `createDiffView`              |
+| `@jayoncode/object-diff/view`  | `createDiffView` + `explain`  |
 | `@jayoncode/object-diff/stats` | `statistics`                  |
 | `@jayoncode/object-diff/query` | `find` / `filter` / `query()` |
 
@@ -44,6 +104,7 @@ Prefer linking here rather than duplicating forever — canonical table: [Engine
 
 - Do not expect `createDiffView` on the root entry.
 - Free functions remain canonical; the view does not mutate DiffResults.
+- `explain({ identityKey })` is a **hint for wording**, not a re-diff — run `diff(..., { identityKey })` first.
 
 ## Errors
 
@@ -78,4 +139,6 @@ All error classes are exported from the root entry, `/core`, and their owning su
 
 ## Playground
 
-Interactive explorers cover diff, patch, serialize, performance, and examples (including fluent/view snippets).
+Interactive Lab tabs cover **Moves**, **Patch** (apply/revert), **Merge** conflicts, **Explain** (`view.explain()`), and Perf (`hasChanges` vs full `diff`). Open the [Array Reorder](/playground/object-diff/) experiment to jump straight into moves + explain.
+
+[Open Object Diff Lab →](/playground/object-diff/)

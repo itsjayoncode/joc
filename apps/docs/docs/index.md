@@ -1,11 +1,11 @@
 ---
 layout: home
 title: JayOnCode™ | JOC Ecosystem
-description: An ecosystem of independent, headless TypeScript libraries designed to solve real frontend engineering problems. Every package is framework-agnostic, independently installable, and supported by interactive playgrounds, comprehensive documentation, and long-term engineering standards.
+description: Headless TypeScript libraries for real frontend infrastructure — one package, one job. Framework-agnostic @jayoncode/* packages with docs and playgrounds that stay honest with the API.
 hero:
   name: JAYONCODE
   text: JOC Ecosystem
-  tagline: An ecosystem of independent, headless TypeScript libraries designed to solve real frontend engineering problems. Every package is framework-agnostic, independently installable, and supported by interactive playgrounds, comprehensive documentation, and long-term engineering standards.
+  tagline: Headless TypeScript libraries for real frontend infrastructure — one package, one job. Install only what you need. Docs and playgrounds stay honest with the API.
   image:
     src: /jayoncode-profile-logo-opt.png
     alt: JayOnCode™ — JOC Ecosystem logo
@@ -18,7 +18,7 @@ hero:
       link: /packages/
 features:
   - title: Headless by Design
-    details: Bring your own UI. JOC provides reusable logic and intelligent orchestration—not components or design systems.
+    details: Bring your own UI. JOC provides typed cores and workflow engines — not components or design systems.
   - title: TypeScript First
     details: Strong typing, predictable APIs, and excellent developer ergonomics for a reliable experience.
   - title: Modular & Tree-shakeable

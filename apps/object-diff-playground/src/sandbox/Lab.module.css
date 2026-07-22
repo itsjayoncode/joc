@@ -724,3 +724,113 @@
   color: #dc2626;
   font-size: 0.78rem;
 }
+
+.moveLane {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.moveLaneItem {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  padding: 0.4rem 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-strong);
+  font-size: 0.72rem;
+}
+
+.moveLaneHot {
+  border-color: color-mix(in srgb, #2563eb 45%, var(--border-subtle));
+  background: color-mix(in srgb, #2563eb 10%, var(--surface-strong));
+}
+
+.moveIndex {
+  color: var(--text-muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  flex-shrink: 0;
+}
+
+.moveArrows {
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.moveArrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, #2563eb 30%, var(--border-subtle));
+  background: color-mix(in srgb, #2563eb 8%, var(--surface-strong));
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.75rem;
+}
+
+.moveFrom,
+.moveTo {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.moveGlyph {
+  color: #2563eb;
+  font-weight: 700;
+}
+
+.moveValue {
+  margin-left: auto;
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+}
+
+.conflictList {
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.conflictCard {
+  border: 1px solid color-mix(in srgb, #d97706 35%, var(--border-subtle));
+  background: color-mix(in srgb, #d97706 8%, var(--surface-strong));
+  border-radius: 10px;
+  padding: 0.55rem 0.65rem;
+}
+
+.conflictHead {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: baseline;
+  font-size: 0.78rem;
+  margin-bottom: 0.4rem;
+}
+
+.conflictId {
+  color: var(--text-muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+}
+
+.conflictBody {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+}
+
+.conflictBody code {
+  display: block;
+  word-break: break-word;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}

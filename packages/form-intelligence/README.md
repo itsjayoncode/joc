@@ -1,11 +1,44 @@
-# Form Intelligence — Typed, framework-agnostic headless form engine for modern web apps.
+# Form Intelligence
+
+**Declare the workflow. Keep the markup. Submit with confidence.**
+
+[`@jayoncode/form-intelligence`](https://www.npmjs.com/package/@jayoncode/form-intelligence) — typed, framework-agnostic headless form engine for modern web apps.
 
 [![npm version](https://img.shields.io/npm/v/@jayoncode/form-intelligence.svg)](https://www.npmjs.com/package/@jayoncode/form-intelligence)
 [![license](https://img.shields.io/npm/l/@jayoncode/form-intelligence.svg)](https://github.com/itsjayoncode/joc/blob/master/packages/form-intelligence/package.json)
 [![docs](https://img.shields.io/badge/docs-jayoncode.github.io-2563eb)](https://itsjayoncode.github.io/joc/packages/form-intelligence/)
 [![Become a Sponsor](https://img.shields.io/badge/Become%20a%20Sponsor-%23ea4aaa?style=flat&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/jayoncoding)
 
-Published as [`@jayoncode/form-intelligence`](https://www.npmjs.com/package/@jayoncode/form-intelligence).
+Validation, `when()` rules, drafts, wizards, and safe submit in one `createForm()`. You keep full control of UI — native HTML or any framework.
+
+> **Headless form workflow engine.**  
+> Declare once. The engine owns timing and state.
+
+## Declare → Orchestrate → Submit
+
+```text
+Schema + rules
+    ↓
+Drafts / wizards / plugins
+    ↓
+Safe submit (+ optional offline queue)
+```
+
+| Pillar          | What you get                                      |
+| --------------- | ------------------------------------------------- |
+| **Declare**     | Schema, validation modes, declarative `when()`    |
+| **Orchestrate** | Drafts, autosave, wizards, plugins                |
+| **Submit**      | Submitting guards, cancel, optional offline queue |
+
+### Five capabilities
+
+| Card                  | What it is                                                             |
+| --------------------- | ---------------------------------------------------------------------- |
+| **Validation**        | Sync/async modes and schema adapters — you choose when fields validate |
+| **Rules (`when()`)**  | Show / hide / require without scattered effects                        |
+| **Drafts & autosave** | Survive refresh; debounce saves you own                                |
+| **Submit safety**     | Block double-submit; optional offline queue — not a payment SDK        |
+| **Keep your markup**  | Native HTML or any UI framework — not a component kit or form builder  |
 
 > **Renamed from `form-intelligent`:** use `@jayoncode/form-intelligence` only. Old shim packages are EOL and no longer published from this repo.
 
@@ -46,7 +79,7 @@ Every feature adds another effect, flag, or handler. Rules drift between screens
 
 ## The solution
 
-`@jayoncode/form-intelligence` is a **headless form workflow engine**. You declare validation, rules, drafts, wizards, and submit once. The engine owns timing and state. You keep full control of UI — native HTML or any framework.
+`@jayoncode/form-intelligence` is a **headless form workflow engine**. You declare validation, rules, drafts, wizards, and submit once. The engine owns timing and state. You keep full control of UI — native HTML or any framework. Not a form builder UI or CMS.
 
 ```ts
 import { createForm, when } from "@jayoncode/form-intelligence";

@@ -2,7 +2,7 @@
   "name": "@jayoncode/object-diff",
   "version": "0.3.3",
   "private": false,
-  "description": "Object Diff — Typed, framework-agnostic deep comparison, change reporting, and patch generation for structured data.",
+  "description": "Object Diff — Stop guessing what changed. Get paths, patches, and review-ready output. Typed deep comparison, DiffView, RFC 6902 patches, and optional merge.",
   "license": "MIT",
   "author": "JayOnCode <jayoncode@gmail.com> (https://github.com/itsjayoncode)",
   "type": "module",

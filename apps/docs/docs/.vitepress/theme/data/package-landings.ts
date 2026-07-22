@@ -83,30 +83,34 @@ lifecycle.on("connection:reconnect", () => {
     name: "Form Intelligence",
     npmName: "@jayoncode/form-intelligence",
     accent: "amber",
-    headline: "Forms that show, save, and submit — without effect spaghetti",
+    headline: "Declare the workflow. Keep the markup. Submit with confidence.",
     description:
-      "Validation, show/hide rules, draft restore, and safe submit in one createForm(). Your UI binds to state; the library owns the workflow.",
+      "Headless form engine — validation, when() rules, drafts, wizards, and safe submit in one createForm(). Your UI binds to state; the library owns the workflow.",
     getStartedLink: "/packages/form-intelligence/overview",
     playgroundLink: "/playground/form-intelligence/",
     overviewLink: "/packages/form-intelligence/overview",
     highlights: [
       {
-        title: "when() instead of useEffect",
-        detail: "Plan is enterprise? Show seats, require company, gate submit — declare it once.",
+        title: "Validation",
+        detail: "Modes and schema adapters — you choose when fields validate.",
       },
       {
-        title: "Drafts that survive refresh",
-        detail: "Autosave and restore so long checkouts don’t disappear when the tab reloads.",
+        title: "Rules (when())",
+        detail: "Show / hide / require without scattered useEffect copies.",
       },
       {
-        title: "Submit without double-clicks",
+        title: "Drafts & autosave",
+        detail: "Survive refresh; debounce saves you own.",
+      },
+      {
+        title: "Submit safety",
         detail:
-          "Built-in submitting state, duplicate-submit guard, cancel, and optional offline queue.",
+          "Built-in submitting state, duplicate-submit guard, cancel, and optional offline queue — not a payment SDK.",
       },
       {
         title: "Keep your markup",
         detail:
-          "Enhance a normal <form>, or bind() into React / Vue / your own inputs — same engine.",
+          "Enhance a normal <form>, or bind() into React / Vue / your own inputs — same engine, not a form builder.",
       },
     ],
     sampleTitle: "Checkout: show fields when needed + keep a draft",
@@ -154,38 +158,42 @@ createForm({
     name: "Object Diff",
     npmName: "@jayoncode/object-diff",
     accent: "blue",
-    headline: "See what changed in an object — then sync it",
+    headline: "Stop guessing what changed. Get paths, patches, and review-ready output.",
     description:
-      "Compare two values, get a clear list of changes (with paths), check “anything dirty?”, and build patches you can apply or log.",
+      "Typed deep comparison with path-aware records, fast dirty checks, DiffView explain, RFC 6902 patches, and optional snapshot merge — not a CRDT runtime.",
     getStartedLink: "/packages/object-diff/overview",
     playgroundLink: "/playground/object-diff/",
     overviewLink: "/packages/object-diff/overview",
     highlights: [
       {
-        title: "Changes with paths",
-        detail: "Every change points to where it happened — user.name, items[2], nested objects.",
+        title: "Typed deep diff",
+        detail:
+          "Path-aware records for objects, arrays, Dates, Maps, and Sets — plus ignore / include.",
       },
       {
-        title: "hasChanges()",
-        detail: "Quick yes/no dirty check when you don’t need the full diff yet.",
+        title: "Intuitive moves & dirty checks",
+        detail:
+          "detectMoves for reorders; hasChanges for cheap dirty flags without a full DiffResult.",
       },
       {
-        title: "Patch + apply",
-        detail: "Turn changes into patch ops and apply them to keep clients or stores in sync.",
+        title: "DiffView toolbox",
+        detail:
+          "createDiffView(result).explain() turns moves and edits into review-ready structured or human text.",
       },
       {
-        title: "Export for humans",
-        detail: "Same diff → JSON, Markdown, or tables for logs and reviews.",
+        title: "RFC 6902 patches",
+        detail:
+          "Generate, validate, apply, and inverse patches for optimistic UI and audit trails.",
+      },
+      {
+        title: "Snapshot merge",
+        detail:
+          "Optional /merge with identity-aware lists and structured conflicts — not live collab.",
       },
     ],
-    sampleTitle: "Spot the edit — log it — apply the patch",
-    sampleCode: `import {
-  diff,
-  hasChanges,
-  patch,
-  applyPatch,
-  serialize,
-} from "@jayoncode/object-diff";
+    sampleTitle: "Spot the edit — explain it — apply the patch",
+    sampleCode: `import { diff, hasChanges, patch, applyPatch } from "@jayoncode/object-diff";
+import { createDiffView } from "@jayoncode/object-diff/view";
 
 const saved = {
   profile: { name: "Ada", role: "admin" },
@@ -197,9 +205,9 @@ const draft = {
 };
 
 if (hasChanges(saved, draft)) {
-  const changes = diff(saved, draft);
-  await audit.log(serialize(changes, "markdown"));
-  const synced = applyPatch(saved, patch(changes));
+  const view = createDiffView(diff(saved, draft));
+  await audit.log(view.explain({ format: "human" }));
+  const synced = applyPatch(saved, view.patch());
 }`,
   },
   storage: {
@@ -207,30 +215,34 @@ if (hasChanges(saved, draft)) {
     name: "Storage",
     npmName: "@jayoncode/storage",
     accent: "emerald",
-    headline: "Save app data in the browser — without the usual glue",
+    headline: "Namespace it. Expire it. Upgrade it — without localStorage glue.",
     description:
-      "Pick where values live (memory, localStorage, or sessionStorage), keep keys under a clear name, and optionally add expiry or upgrades when your data shape changes.",
+      "A small policy layer for browser persistence — namespaces, envelopes, TTL, migrations — on adapters you choose: memory, localStorage, sessionStorage, and IndexedDB.",
     getStartedLink: "/packages/storage/overview",
     playgroundLink: "/playground/storage/",
     overviewLink: "/packages/storage/overview",
     highlights: [
       {
         title: "createStorage()",
-        detail: "One place to set a namespace, choose a backend, and save or load values.",
+        detail: "Namespace + adapter + optional TTL / schema version in one place.",
       },
       {
-        title: "You choose the backend",
+        title: "Explicit adapters",
         detail:
-          "Memory for tests, localStorage to survive reload, sessionStorage for the tab — no surprise picks.",
+          "Memory · localStorage · sessionStorage · IndexedDB — the library never auto-picks a backend.",
       },
       {
-        title: "See what’s stored",
+        title: "Peek & TTL",
         detail: "peek() shows when something was saved, when it expires, and which version it is.",
       },
       {
-        title: "Extra tools when you need them",
+        title: "Migrations",
+        detail: "Schema upgrades without ad-hoc key rewrites across releases.",
+      },
+      {
+        title: "Extra tools (opt-in)",
         detail:
-          "Cleanup, backup, watchers, diagnostics, and transactions live on separate imports.",
+          "Soft quota, transforms hooks, cleanup, backup, and watchers — only when you import them.",
       },
     ],
     sampleTitle: "Theme prefs that last — cache that doesn’t",

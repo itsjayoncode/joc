@@ -34,7 +34,7 @@ Start with a live package below. New libraries will appear here when they ship.
 
 ### [Object Diff](/packages/object-diff/)
 
-`@jayoncode/object-diff` — compare two objects, see what changed (with paths), and build patches you can apply or log.
+`@jayoncode/object-diff` — stop guessing what changed. Get paths, patches, and review-ready output (DiffView) — snapshot merge optional, not a CRDT runtime.
 
 **Start here (in order):**
 
@@ -45,7 +45,7 @@ Start with a live package below. New libraries will appear here when they ship.
 
 ### [Form Intelligence](/packages/form-intelligence/)
 
-`@jayoncode/form-intelligence` — validation, show/hide rules, drafts, and safe submit in one form engine — keep your own markup.
+`@jayoncode/form-intelligence` — declare the workflow, keep the markup, submit with confidence. Validation, `when()` rules, drafts, and safe submit in one headless engine.
 
 **Start here (in order):**
 
@@ -58,7 +58,7 @@ Start with a live package below. New libraries will appear here when they ship.
 
 ### [Storage](/packages/storage/)
 
-`@jayoncode/storage` — save prefs and cache in the browser with clear names, expiry, and a backend you choose (memory / localStorage / sessionStorage / IndexedDB).
+`@jayoncode/storage` — namespace it, expire it, upgrade it — without localStorage glue. Explicit backends: memory / localStorage / sessionStorage / IndexedDB.
 
 **Start here (in order):**
 

@@ -10,6 +10,7 @@ import {
   InvalidOptionsError,
   MaxDepthExceededError,
 } from "../../errors/index.js";
+import { resolveIdentity } from "../../utils/identity.js";
 import {
   getValueKind,
   isMap,
@@ -18,8 +19,10 @@ import {
   isTypedArray,
   valuesEqualPrimitives,
 } from "../../utils/index.js";
+import { compareValues } from "../comparison/compare-values.js";
+import { longestCommonSubsequencePairs, pairRemainingEquals } from "../difference/detect-moves.js";
 
-import type { IdentityKey, Path } from "../../types/index.js";
+import type { IdentityKey, Path, ResolvedCompareOptions } from "../../types/index.js";
 
 function trackCircular(
   value: object,
@@ -69,23 +72,15 @@ function ensureDepth(context: TraversalContext): void {
   }
 }
 
-function resolveIdentity(
-  item: unknown,
-  path: Path,
-  identityKey: IdentityKey,
-): string | number | undefined {
-  if (typeof identityKey === "string") {
-    if (item !== null && typeof item === "object" && identityKey in item) {
-      const value = (item as Record<string, unknown>)[identityKey];
-      if (typeof value === "string" || typeof value === "number") {
-        return value;
-      }
-    }
-
-    return undefined;
+function elementEquals(
+  left: unknown,
+  right: unknown,
+  compareOptions: ResolvedCompareOptions | undefined,
+): boolean {
+  if (!compareOptions) {
+    return Object.is(left, right);
   }
-
-  return identityKey(item, path);
+  return compareValues(left, right, compareOptions);
 }
 
 function walkPairValue(
@@ -144,6 +139,10 @@ function walkArrayPair(
   context: TraversalContext,
   visitor: PairVisitor,
 ): boolean | undefined {
+  if (context.detectMoves) {
+    return walkArrayPairDetectMoves(a, b, context, visitor);
+  }
+
   if (context.identityKey) {
     return walkArrayPairByIdentity(a, b, context, visitor, context.identityKey);
   }
@@ -159,6 +158,264 @@ function walkArrayPair(
     const result = walkPairValue(a[index], b[index], child, visitor);
     if (result === true) {
       return true;
+    }
+  }
+
+  return undefined;
+}
+
+function walkArrayPairDetectMoves(
+  a: unknown[],
+  b: unknown[],
+  context: TraversalContext,
+  visitor: PairVisitor,
+): boolean | undefined {
+  if (context.identityKey) {
+    return walkArrayPairDetectMovesByIdentity(a, b, context, visitor, context.identityKey);
+  }
+
+  const equals = (left: unknown, right: unknown) =>
+    elementEquals(left, right, context.compareOptions);
+
+  const lcs = longestCommonSubsequencePairs(a, b, equals);
+  const pairedA = new Set(lcs.map((pair) => pair.aIndex));
+  const pairedB = new Set(lcs.map((pair) => pair.bIndex));
+  const movePairs = pairRemainingEquals(a, b, pairedA, pairedB, equals);
+
+  for (const pair of lcs) {
+    const child = childContext(context, pair.bIndex);
+    if (context.shouldVisit && !context.shouldVisit(child.path)) {
+      continue;
+    }
+    const result = walkPairValue(a[pair.aIndex], b[pair.bIndex], child, visitor);
+    if (result === true) {
+      return true;
+    }
+  }
+
+  for (const pair of movePairs) {
+    if (context.onMove) {
+      const from = [...context.path, pair.aIndex] as Path;
+      const to = [...context.path, pair.bIndex] as Path;
+      const stop = context.onMove(from, to, a[pair.aIndex], b[pair.bIndex]);
+      if (stop === true) {
+        return true;
+      }
+    }
+
+    const child = childContext(context, pair.bIndex);
+    if (context.shouldVisit && !context.shouldVisit(child.path)) {
+      continue;
+    }
+
+    if (equals(a[pair.aIndex], b[pair.bIndex])) {
+      continue;
+    }
+
+    const result = walkPairValue(a[pair.aIndex], b[pair.bIndex], child, visitor);
+    if (result === true) {
+      return true;
+    }
+  }
+
+  const matchedA = new Set([...pairedA, ...movePairs.map((pair) => pair.aIndex)]);
+  const matchedB = new Set([...pairedB, ...movePairs.map((pair) => pair.bIndex)]);
+
+  for (let aIndex = 0; aIndex < a.length; aIndex += 1) {
+    if (matchedA.has(aIndex)) {
+      continue;
+    }
+    const child = childContext(context, aIndex);
+    if (context.shouldVisit && !context.shouldVisit(child.path)) {
+      continue;
+    }
+    const result = visitor(a[aIndex], undefined, aIndex, child);
+    if (result === true) {
+      return true;
+    }
+  }
+
+  for (let bIndex = 0; bIndex < b.length; bIndex += 1) {
+    if (matchedB.has(bIndex)) {
+      continue;
+    }
+    const child = childContext(context, bIndex);
+    if (context.shouldVisit && !context.shouldVisit(child.path)) {
+      continue;
+    }
+    const result = visitor(undefined, b[bIndex], bIndex, child);
+    if (result === true) {
+      return true;
+    }
+  }
+
+  return undefined;
+}
+
+function walkArrayPairDetectMovesByIdentity(
+  a: unknown[],
+  b: unknown[],
+  context: TraversalContext,
+  visitor: PairVisitor,
+  identityKey: IdentityKey,
+): boolean | undefined {
+  const leftById = new Map<string | number, { index: number; value: unknown }>();
+  const rightById = new Map<string | number, { index: number; value: unknown }>();
+  const leftNoId: Array<{ index: number; value: unknown }> = [];
+  const rightNoId: Array<{ index: number; value: unknown }> = [];
+
+  for (let index = 0; index < a.length; index += 1) {
+    const value = a[index];
+    const id = resolveIdentity(value, [...context.path, index], identityKey);
+    if (id === undefined) {
+      leftNoId.push({ index, value });
+      continue;
+    }
+    if (leftById.has(id)) {
+      throw new InvalidOptionsError(
+        `Duplicate identity key "${String(id)}" in left array at path "${formatPath(context.path)}".`,
+        { details: { path: formatPath(context.path), id } },
+      );
+    }
+    leftById.set(id, { index, value });
+  }
+
+  for (let index = 0; index < b.length; index += 1) {
+    const value = b[index];
+    const id = resolveIdentity(value, [...context.path, index], identityKey);
+    if (id === undefined) {
+      rightNoId.push({ index, value });
+      continue;
+    }
+    if (rightById.has(id)) {
+      throw new InvalidOptionsError(
+        `Duplicate identity key "${String(id)}" in right array at path "${formatPath(context.path)}".`,
+        { details: { path: formatPath(context.path), id } },
+      );
+    }
+    rightById.set(id, { index, value });
+  }
+
+  for (const [id, right] of rightById) {
+    const left = leftById.get(id);
+    const child = childContext(context, right.index);
+    if (context.shouldVisit && !context.shouldVisit(child.path)) {
+      continue;
+    }
+
+    if (!left) {
+      const result = visitor(undefined, right.value, right.index, child);
+      if (result === true) {
+        return true;
+      }
+      continue;
+    }
+
+    if (left.index !== right.index && context.onMove) {
+      const from = [...context.path, left.index] as Path;
+      const to = [...context.path, right.index] as Path;
+      const stop = context.onMove(from, to, left.value, right.value);
+      if (stop === true) {
+        return true;
+      }
+    }
+
+    const result = walkPairValue(left.value, right.value, child, visitor);
+    if (result === true) {
+      return true;
+    }
+  }
+
+  for (const [id, left] of leftById) {
+    if (rightById.has(id)) {
+      continue;
+    }
+    const child = childContext(context, left.index);
+    if (context.shouldVisit && !context.shouldVisit(child.path)) {
+      continue;
+    }
+    const result = visitor(left.value, undefined, left.index, child);
+    if (result === true) {
+      return true;
+    }
+  }
+
+  if (leftNoId.length > 0 || rightNoId.length > 0) {
+    const leftValues = leftNoId.map((entry) => entry.value);
+    const rightValues = rightNoId.map((entry) => entry.value);
+    const equals = (left: unknown, right: unknown) =>
+      elementEquals(left, right, context.compareOptions);
+    const lcs = longestCommonSubsequencePairs(leftValues, rightValues, equals);
+    const pairedL = new Set(lcs.map((pair) => pair.aIndex));
+    const pairedR = new Set(lcs.map((pair) => pair.bIndex));
+    const moves = pairRemainingEquals(leftValues, rightValues, pairedL, pairedR, equals);
+
+    for (const pair of lcs) {
+      const left = leftNoId[pair.aIndex];
+      const right = rightNoId[pair.bIndex];
+      if (!left || !right) {
+        continue;
+      }
+      const child = childContext(context, right.index);
+      if (context.shouldVisit && !context.shouldVisit(child.path)) {
+        continue;
+      }
+      const result = walkPairValue(left.value, right.value, child, visitor);
+      if (result === true) {
+        return true;
+      }
+    }
+
+    for (const pair of moves) {
+      const left = leftNoId[pair.aIndex];
+      const right = rightNoId[pair.bIndex];
+      if (!left || !right) {
+        continue;
+      }
+      if (context.onMove) {
+        const from = [...context.path, left.index] as Path;
+        const to = [...context.path, right.index] as Path;
+        const stop = context.onMove(from, to, left.value, right.value);
+        if (stop === true) {
+          return true;
+        }
+      }
+    }
+
+    for (let i = 0; i < leftNoId.length; i += 1) {
+      if (pairedL.has(i) || moves.some((pair) => pair.aIndex === i)) {
+        continue;
+      }
+      const left = leftNoId[i];
+      if (!left) {
+        continue;
+      }
+      const child = childContext(context, left.index);
+      if (context.shouldVisit && !context.shouldVisit(child.path)) {
+        continue;
+      }
+      const result = visitor(left.value, undefined, left.index, child);
+      if (result === true) {
+        return true;
+      }
+    }
+
+    for (let i = 0; i < rightNoId.length; i += 1) {
+      if (pairedR.has(i) || moves.some((pair) => pair.bIndex === i)) {
+        continue;
+      }
+      const right = rightNoId[i];
+      if (!right) {
+        continue;
+      }
+      const child = childContext(context, right.index);
+      if (context.shouldVisit && !context.shouldVisit(child.path)) {
+        continue;
+      }
+      const result = visitor(undefined, right.value, right.index, child);
+      if (result === true) {
+        return true;
+      }
     }
   }
 
@@ -284,12 +541,15 @@ function walkObjectPair(
   }
 
   const keys = new Set([...Object.keys(a), ...Object.keys(b)]);
+  let visitedChild = false;
 
   for (const key of keys) {
     const child = childContext(context, key);
     if (context.shouldVisit && !context.shouldVisit(child.path)) {
       continue;
     }
+
+    visitedChild = true;
 
     const aHas = Object.prototype.hasOwnProperty.call(a, key);
     const bHas = Object.prototype.hasOwnProperty.call(b, key);
@@ -316,6 +576,10 @@ function walkObjectPair(
     if (result === true) {
       return true;
     }
+  }
+
+  if (!visitedChild && context.compareOptions && !compareValues(a, b, context.compareOptions)) {
+    return visitor(a, b, undefined, context);
   }
 
   return undefined;

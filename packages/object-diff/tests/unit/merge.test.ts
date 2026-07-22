@@ -80,4 +80,102 @@ describe("merge engine", () => {
     const result = merge(left, { a: 2 });
     expect(result.applied?.metadata.changeCount).toBeGreaterThan(0);
   });
+
+  it("merges arrays by identityKey instead of as atomic leaves", () => {
+    const result = merge(
+      {
+        items: [
+          { id: 1, name: "a" },
+          { id: 2, name: "b" },
+        ],
+      },
+      {
+        items: [
+          { id: 2, name: "b2" },
+          { id: 3, name: "c" },
+        ],
+      },
+      { identityKey: "id", strategy: "latest-wins" },
+    );
+
+    expect(result.value).toEqual({
+      items: [
+        { id: 2, name: "b2" },
+        { id: 3, name: "c" },
+        { id: 1, name: "a" },
+      ],
+    });
+    expect(result.conflicts).toEqual([
+      expect.objectContaining({
+        path: "items[0].name",
+        reason: "both-changed",
+        left: "b",
+        right: "b2",
+        identity: 2,
+      }),
+    ]);
+  });
+
+  it("three-way identity merge keeps one-sided edits and reports delete-edit", () => {
+    const base = {
+      items: [
+        { id: 1, name: "a" },
+        { id: 2, name: "b" },
+        { id: 3, name: "c" },
+      ],
+    };
+    const left = {
+      items: [
+        { id: 1, name: "a-left" },
+        { id: 2, name: "b" },
+        { id: 3, name: "c" },
+      ],
+    };
+    const right = {
+      items: [
+        { id: 2, name: "b" },
+        { id: 3, name: "c-right" },
+        { id: 4, name: "d" },
+      ],
+    };
+
+    const result = merge(left, right, {
+      base,
+      identityKey: "id",
+      strategy: "latest-wins",
+    });
+
+    expect(result.value).toEqual({
+      items: [
+        { id: 2, name: "b" },
+        { id: 3, name: "c-right" },
+        { id: 4, name: "d" },
+      ],
+    });
+    expect(result.conflicts).toEqual([
+      expect.objectContaining({
+        reason: "delete-edit",
+        identity: 1,
+        left: { id: 1, name: "a-left" },
+      }),
+    ]);
+  });
+
+  it("exposes reason on leaf conflicts", () => {
+    const result = merge({ x: 1 }, { x: 2 });
+    expect(result.conflicts[0]).toEqual(
+      expect.objectContaining({
+        path: "x",
+        reason: "both-changed",
+        left: 1,
+        right: 2,
+      }),
+    );
+  });
+
+  it("throws on duplicate identity keys during merge", () => {
+    expect(() =>
+      merge({ items: [{ id: 1 }, { id: 1 }] }, { items: [{ id: 1 }] }, { identityKey: "id" }),
+    ).toThrow(InvalidOptionsError);
+  });
 });

@@ -43,5 +43,5 @@ Pure — never mutates the input `DiffResult`.
 ## Related
 
 - Richer metrics: `@jayoncode/object-diff/stats` → `statistics(result)`
-- Fluent + serialize/patch/stats: [DX / createDiffView](/packages/object-diff/modules/dx)
+- Fluent + explain/serialize/patch/stats: [DX / createDiffView](/packages/object-diff/modules/dx)
 - [Engines](/packages/object-diff/modules/engines)

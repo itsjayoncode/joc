@@ -1,4 +1,4 @@
-import type { IdentityKey, Path, PathSegment } from "../../types/index.js";
+import type { IdentityKey, Path, PathSegment, ResolvedCompareOptions } from "../../types/index.js";
 
 export interface TraversalContext {
   readonly path: Path;
@@ -9,6 +9,15 @@ export interface TraversalContext {
   readonly seenB: WeakMap<object, Path>;
   readonly identityKey: IdentityKey | undefined;
   readonly shouldVisit: ((path: Path) => boolean) | undefined;
+  readonly detectMoves: boolean;
+  readonly compareOptions: ResolvedCompareOptions | undefined;
+  /**
+   * Called when an array element moves from one index to another.
+   * Return true to stop traversal early (hasChanges).
+   */
+  readonly onMove:
+    | ((from: Path, to: Path, previous: unknown, current: unknown) => boolean | undefined)
+    | undefined;
 }
 
 export type PairVisitor = (
@@ -21,6 +30,14 @@ export type PairVisitor = (
 export interface CreateTraversalContextOptions {
   readonly identityKey?: IdentityKey;
   readonly shouldVisit?: (path: Path) => boolean;
+  readonly detectMoves?: boolean;
+  readonly compareOptions?: ResolvedCompareOptions;
+  readonly onMove?: (
+    from: Path,
+    to: Path,
+    previous: unknown,
+    current: unknown,
+  ) => boolean | undefined;
 }
 
 export function createTraversalContext(
@@ -37,6 +54,9 @@ export function createTraversalContext(
     seenB: new WeakMap<object, Path>(),
     identityKey: options.identityKey,
     shouldVisit: options.shouldVisit,
+    detectMoves: options.detectMoves === true,
+    compareOptions: options.compareOptions,
+    onMove: options.onMove,
   };
 }
 

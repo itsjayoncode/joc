@@ -5,7 +5,7 @@ import { isChangePathAllowed, shouldVisitPath } from "../../utils/path-filter.js
 import { compareValues } from "../comparison/compare-values.js";
 import { walkPair } from "../traversal/walk-pair.js";
 
-import type { DiffOptions, DiffRecord, DiffResult, DiffType } from "../../types/index.js";
+import type { DiffOptions, DiffRecord, DiffResult, DiffType, Path } from "../../types/index.js";
 
 interface CollectState {
   readonly changes: DiffRecord[];
@@ -31,6 +31,7 @@ function pushChange(
   type: DiffType,
   previous?: unknown,
   current?: unknown,
+  from?: string,
 ): void {
   const displayPath = joinPath(path);
 
@@ -48,6 +49,7 @@ function pushChange(
     type,
     ...(previous !== undefined ? { previous } : {}),
     ...(current !== undefined ? { current } : {}),
+    ...(from !== undefined ? { from } : {}),
   });
 
   switch (type) {
@@ -71,31 +73,17 @@ function pushChange(
   }
 }
 
-function isLeafChange(a: unknown, b: unknown): boolean {
-  if (typeof a !== typeof b) {
-    return true;
-  }
-
-  if (a === null || b === null) {
-    return a !== b;
-  }
-
-  if (typeof a !== "object") {
-    return true;
-  }
-
-  if (Array.isArray(a) !== Array.isArray(b)) {
-    return true;
-  }
-
-  return false;
-}
-
-function walkOptionsFrom(options: ReturnType<typeof normalizeDiffOptions>) {
+function walkOptionsFrom(
+  options: ReturnType<typeof normalizeDiffOptions>,
+  compareOptions: ReturnType<typeof normalizeCompareOptions>,
+  onMove?: (from: Path, to: Path, previous: unknown, current: unknown) => boolean | undefined,
+) {
   return {
     ...(options.identityKey ? { identityKey: options.identityKey } : {}),
-    shouldVisit: (path: readonly (string | number)[]) =>
-      shouldVisitPath(path, options.ignore, options.include),
+    shouldVisit: (path: Path) => shouldVisitPath(path, options.ignore, options.include),
+    detectMoves: options.detectMoves,
+    compareOptions,
+    ...(onMove ? { onMove } : {}),
   };
 }
 
@@ -105,17 +93,18 @@ function collectDiff(
   options: ReturnType<typeof normalizeDiffOptions>,
 ): DiffResult {
   const started = performance.now();
+  const compareOptions = normalizeCompareOptions({
+    maxDepth: options.maxDepth,
+    circular: options.circular,
+    ...(options.customComparator ? { customComparator: options.customComparator } : {}),
+  });
   const state: CollectState = {
     changes: [],
     includeUnchanged: options.includeUnchanged,
     treatUndefinedAsMissing: options.treatUndefinedAsMissing,
     ignore: options.ignore,
     include: options.include,
-    compareOptions: normalizeCompareOptions({
-      maxDepth: options.maxDepth,
-      circular: options.circular,
-      ...(options.customComparator ? { customComparator: options.customComparator } : {}),
-    }),
+    compareOptions,
     addedCount: 0,
     removedCount: 0,
     changedCount: 0,
@@ -174,16 +163,16 @@ function collectDiff(
         return undefined;
       }
 
-      if (isLeafChange(left, right)) {
-        pushChange(state, context.path, "changed", left, right);
-        return undefined;
-      }
-
+      // Walker only surfaces containers here when children were skipped (e.g. ignore `prefix.**`).
+      pushChange(state, context.path, "changed", left, right);
       return undefined;
     },
     options.maxDepth,
     options.circular,
-    walkOptionsFrom(options),
+    walkOptionsFrom(options, compareOptions, (from, to, previous, current) => {
+      pushChange(state, to, "moved", previous, current, joinPath(from));
+      return undefined;
+    }),
   );
 
   if (
@@ -258,15 +247,10 @@ export function diff(a: unknown, b: unknown, options?: DiffOptions): DiffResult 
 
 /**
  * Fast boolean check for whether two values differ.
- * Avoids allocating a DiffResult unless `identityKey` requires full collection.
+ * Early-exits on the first allowed change; does not allocate a DiffResult.
  */
 export function hasChanges(a: unknown, b: unknown, options?: DiffOptions): boolean {
   const resolved = normalizeDiffOptions(options);
-
-  // Identity matching can reorder array pairing — reuse collectDiff for correctness.
-  if (resolved.identityKey) {
-    return collectDiff(a, b, resolved).metadata.changeCount > 0;
-  }
 
   const compareOptions = normalizeCompareOptions({
     maxDepth: resolved.maxDepth,
@@ -274,7 +258,12 @@ export function hasChanges(a: unknown, b: unknown, options?: DiffOptions): boole
     ...(resolved.customComparator ? { customComparator: resolved.customComparator } : {}),
   });
 
-  if (!resolved.ignore?.length && !resolved.include?.length) {
+  if (
+    !resolved.ignore?.length &&
+    !resolved.include?.length &&
+    !resolved.identityKey &&
+    !resolved.detectMoves
+  ) {
     return !compareValues(a, b, compareOptions);
   }
 
@@ -298,7 +287,6 @@ export function hasChanges(a: unknown, b: unknown, options?: DiffOptions): boole
       }
 
       if (!compareValues(left, right, compareOptions)) {
-        // Only count differences on paths that would emit changes.
         if (isChangePathAllowed(joinPath(context.path), resolved.ignore, resolved.include)) {
           found = true;
           return true;
@@ -309,9 +297,10 @@ export function hasChanges(a: unknown, b: unknown, options?: DiffOptions): boole
     },
     resolved.maxDepth,
     resolved.circular,
-    {
-      shouldVisit: (path) => shouldVisitPath(path, resolved.ignore, resolved.include),
-    },
+    walkOptionsFrom(resolved, compareOptions, () => {
+      found = true;
+      return true;
+    }),
   );
 
   return found;

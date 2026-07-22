@@ -59,13 +59,17 @@ function toMarkdown(diff: DiffResult, options?: SerializeOptions): string {
   const lines = [`# ${title}`, "", `Changes: ${String(diff.metadata.changeCount)}`, ""];
 
   for (const change of diff.changes) {
-    lines.push(`- **${change.type}** \`${change.path}\``);
+    lines.push(
+      change.type === "moved" && change.from
+        ? `- **moved** \`${change.from}\` → \`${change.path}\``
+        : `- **${change.type}** \`${change.path}\``,
+    );
 
-    if (change.previous !== undefined) {
+    if (change.type !== "moved" && change.previous !== undefined) {
       lines.push(`  - previous: \`${formatValue(change.previous)}\``);
     }
 
-    if (change.current !== undefined) {
+    if (change.type !== "moved" && change.current !== undefined) {
       lines.push(`  - current: \`${formatValue(change.current)}\``);
     }
   }
@@ -139,9 +143,12 @@ function toConsole(diff: DiffResult, options?: SerializeOptions): string {
   const lines = [`${title} (${String(diff.metadata.changeCount)} changes)`];
 
   for (const change of diff.changes) {
-    const label = `${change.type} ${change.path}`;
+    const label =
+      change.type === "moved" && change.from
+        ? `moved ${change.from} → ${change.path}`
+        : `${change.type} ${change.path}`;
     const detail =
-      change.previous !== undefined || change.current !== undefined
+      change.type !== "moved" && (change.previous !== undefined || change.current !== undefined)
         ? `  ${formatValue(change.previous)} → ${formatValue(change.current)}`
         : "";
     const colored = useColor
@@ -213,7 +220,8 @@ function toHuman(diff: DiffResult, options?: SerializeOptions): string {
     }
 
     if (change.type === "moved") {
-      return `- moved \`${change.from ?? "?"}\` → \`${change.path}\``;
+      const from = change.from ?? "?";
+      return `- moved \`${from}\` → \`${change.path}\``;
     }
 
     return `- ${change.type} \`${change.path}\``;
