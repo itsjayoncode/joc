@@ -97,8 +97,7 @@ export const SANDBOX_CAPABILITIES: readonly SandboxCapability[] = [
     label: "Activity",
     group: "future",
     docsPath: "/modules/activity",
-    description:
-      "Opt-in createActivityApi — active/idle facade on the sandbox Dashboard.",
+    description: "Opt-in createActivityApi — active/idle facade on the sandbox Dashboard.",
     available: true,
     isEnabled: (c) => c.modules.activity,
   },

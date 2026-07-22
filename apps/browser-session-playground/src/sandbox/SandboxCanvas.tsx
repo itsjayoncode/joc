@@ -172,9 +172,7 @@ export function SandboxCanvas() {
                 <StateCard label="Presence" value={presenceLabel ?? presenceView.status} />
                 <StateCard
                   label="Reasons"
-                  value={
-                    presenceView.reasons.length > 0 ? presenceView.reasons.join(", ") : "none"
-                  }
+                  value={presenceView.reasons.length > 0 ? presenceView.reasons.join(", ") : "none"}
                 />
               </div>
             </>
@@ -214,10 +212,7 @@ export function SandboxCanvas() {
                   label="Session"
                   value={`${(sessionReport.sessionDuration / 1000).toFixed(1)}s`}
                 />
-                <StateCard
-                  label="Attention"
-                  value={`${String(sessionReport.attention.score)}%`}
-                />
+                <StateCard label="Attention" value={`${String(sessionReport.attention.score)}%`} />
                 <StateCard
                   label="Focused"
                   value={`${(sessionReport.focusDuration / 1000).toFixed(1)}s`}
