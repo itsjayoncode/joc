@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.9.2
+
+### Patch Changes
+
+- fc1705e: Object Diff: LCS array move detection, identity-aware merge, and DiffView `explain()`. Form Intelligence and Storage: align npm package messaging with the JOC ecosystem briefs.
+
 ## 3.9.1
 
 ### Patch Changes
