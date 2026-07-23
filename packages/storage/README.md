@@ -1,8 +1,8 @@
 # Storage
 
-**Namespace it. Expire it. Upgrade it — without localStorage glue.**
+**Typed, framework-agnostic client-side storage for modern web apps.**
 
-[`@jayoncode/storage`](https://www.npmjs.com/package/@jayoncode/storage) — policy-driven client persistence for modern web apps.
+[`@jayoncode/storage`](https://www.npmjs.com/package/@jayoncode/storage)
 
 [![npm version](https://img.shields.io/npm/v/@jayoncode/storage.svg)](https://www.npmjs.com/package/@jayoncode/storage)
 [![license](https://img.shields.io/npm/l/@jayoncode/storage.svg)](https://github.com/itsjayoncode/joc/blob/master/packages/storage/package.json)

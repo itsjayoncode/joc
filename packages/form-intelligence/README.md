@@ -1,8 +1,8 @@
 # Form Intelligence
 
-**Declare the workflow. Keep the markup. Submit with confidence.**
+**Typed, headless form workflows for modern web apps.**
 
-[`@jayoncode/form-intelligence`](https://www.npmjs.com/package/@jayoncode/form-intelligence) — typed, framework-agnostic headless form engine for modern web apps.
+[`@jayoncode/form-intelligence`](https://www.npmjs.com/package/@jayoncode/form-intelligence)
 
 [![npm version](https://img.shields.io/npm/v/@jayoncode/form-intelligence.svg)](https://www.npmjs.com/package/@jayoncode/form-intelligence)
 [![license](https://img.shields.io/npm/l/@jayoncode/form-intelligence.svg)](https://github.com/itsjayoncode/joc/blob/master/packages/form-intelligence/package.json)

@@ -1,8 +1,8 @@
 # Object Diff
 
-**Stop guessing what changed. Get paths, patches, and review-ready output.**
+**Typed, framework-agnostic object diffing for modern web apps.**
 
-[`@jayoncode/object-diff`](https://www.npmjs.com/package/@jayoncode/object-diff) — typed, framework-agnostic deep comparison for structured data.
+[`@jayoncode/object-diff`](https://www.npmjs.com/package/@jayoncode/object-diff)
 
 [![npm version](https://img.shields.io/npm/v/@jayoncode/object-diff.svg)](https://www.npmjs.com/package/@jayoncode/object-diff)
 [![license](https://img.shields.io/npm/l/@jayoncode/object-diff.svg)](https://github.com/itsjayoncode/joc/blob/master/packages/object-diff/package.json)
