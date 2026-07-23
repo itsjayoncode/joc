@@ -188,14 +188,14 @@ Construct and `start()` only in the browser (or after hydration). Capability det
 
 ### Understand & React (opt-in)
 
-| #   | Guide                                                                             | Topics                                       |
-| --- | --------------------------------------------------------------------------------- | -------------------------------------------- |
-| 14  | [Intelligence overview](/packages/browser-lifecycle/modules/intelligence)                                        | Observe → Understand → React; factories      |
-| 15  | [Activity](/packages/browser-lifecycle/modules/activity) / [Presence](/packages/browser-lifecycle/modules/presence)                             | Session Intelligence (current derived state) |
-| 16  | [Timeline](/packages/browser-lifecycle/modules/timeline)                                                         | Chronological history                        |
-| 17  | [Metrics](/packages/browser-lifecycle/modules/metrics) / [Reports](/packages/browser-lifecycle/modules/reports)                                 | Session Insights (aggregates)                |
+| #   | Guide                                                                                                                                                                          | Topics                                       |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------- |
+| 14  | [Intelligence overview](/packages/browser-lifecycle/modules/intelligence)                                                                                                      | Observe → Understand → React; factories      |
+| 15  | [Activity](/packages/browser-lifecycle/modules/activity) / [Presence](/packages/browser-lifecycle/modules/presence)                                                            | Session Intelligence (current derived state) |
+| 16  | [Timeline](/packages/browser-lifecycle/modules/timeline)                                                                                                                       | Chronological history                        |
+| 17  | [Metrics](/packages/browser-lifecycle/modules/metrics) / [Reports](/packages/browser-lifecycle/modules/reports)                                                                | Session Insights (aggregates)                |
 | 18  | [Wait](/packages/browser-lifecycle/modules/wait) / [Conditions](/packages/browser-lifecycle/modules/conditions) / [Resilience](/packages/browser-lifecycle/modules/resilience) | Developer Experience                         |
-| 19  | [Framework adapters](/packages/browser-lifecycle/modules/adapters)                                               | React, Vue, Svelte, Solid, Angular           |
+| 19  | [Framework adapters](/packages/browser-lifecycle/modules/adapters)                                                                                                             | React, Vue, Svelte, Solid, Angular           |
 
 ## Package fit
 
@@ -205,10 +205,10 @@ Construct and `start()` only in the browser (or after hydration). Capability det
 | React to window focus             | `window:focus` / `window:blur`                                                 |
 | Offline-aware UI                  | `connection:*` (advisory)                                                      |
 | Idle timeout / autosave triggers  | Idle module                                                                    |
-| Session duration / attention      | [Metrics](/packages/browser-lifecycle/modules/metrics) (Session Insights)                                     |
-| Event audit log                   | [Timeline](/packages/browser-lifecycle/modules/timeline)                                                      |
-| Reconnect / wake / restore        | [Resilience](/packages/browser-lifecycle/modules/resilience)                                                  |
-| React / Vue / etc. bindings       | [Adapters](/packages/browser-lifecycle/modules/adapters)                                                      |
+| Session duration / attention      | [Metrics](/packages/browser-lifecycle/modules/metrics) (Session Insights)      |
+| Event audit log                   | [Timeline](/packages/browser-lifecycle/modules/timeline)                       |
+| Reconnect / wake / restore        | [Resilience](/packages/browser-lifecycle/modules/resilience)                   |
+| React / Vue / etc. bindings       | [Adapters](/packages/browser-lifecycle/modules/adapters)                       |
 | Cross-tab coordination            | [Cross-tab](/packages/browser-lifecycle/modules/cross-tab)                     |
 | Cross-cutting observation         | [Plugins](/packages/browser-lifecycle/modules/plugins)                         |
 | SSR / capability guards           | [Core infrastructure](/packages/browser-lifecycle/modules/core-infrastructure) |
@@ -229,4 +229,3 @@ Construct and `start()` only in the browser (or after hydration). Capability det
 ## Version
 
 <BrowserLifecycleVersion mode="overview" />
-

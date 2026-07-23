@@ -63,4 +63,3 @@ All notable changes to `@jayoncode/storage` will be documented in this file.
 ## 0.0.0
 
 - Private incubation (pre-release).
-
