@@ -57,7 +57,7 @@ function ensureExtraResources(): void {
       anchor.className = "VPLink link";
       anchor.href = docsHref(item.link);
       anchor.textContent = item.text;
-      if ("external" in item && item.external) {
+      if ("external" in item) {
         anchor.target = "_blank";
         anchor.rel = "noreferrer";
       }
