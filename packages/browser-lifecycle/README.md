@@ -1,8 +1,8 @@
-# Browser Lifecycle
+# Browser Lifecycle — Typed, framework-agnostic browser session lifecycle for modern web apps.
 
-**Typed, framework-agnostic browser session lifecycle for modern web apps.**
+**Observe browser state. Derive session intelligence. React with confidence.**
 
-[`@jayoncode/browser-lifecycle`](https://www.npmjs.com/package/@jayoncode/browser-lifecycle)
+[`@jayoncode/browser-lifecycle`](https://www.npmjs.com/package/@jayoncode/browser-lifecycle) — typed, framework-agnostic browser session lifecycle for modern web apps.
 
 [![npm version](https://img.shields.io/npm/v/@jayoncode/browser-lifecycle.svg)](https://www.npmjs.com/package/@jayoncode/browser-lifecycle)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/itsjayoncode/joc/blob/master/packages/browser-lifecycle/package.json)
