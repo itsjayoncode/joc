@@ -5,7 +5,13 @@
 
 import { docsHref } from "./docs-href.js";
 
-const RESOURCES = [
+type ResourceLink = {
+  readonly text: string;
+  readonly link: string;
+  readonly external?: boolean;
+};
+
+const RESOURCES: readonly ResourceLink[] = [
   {
     text: "Draft Desk ↗",
     link: "https://jayoncode.com/draft-desk",
@@ -14,7 +20,7 @@ const RESOURCES = [
   { text: "Playground", link: "/playground/" },
   { text: "Roadmap", link: "/roadmap/" },
   { text: "Contribute", link: "/guides/contribution" },
-] as const;
+];
 
 let installed = false;
 let observer: MutationObserver | null = null;
@@ -57,7 +63,7 @@ function ensureExtraResources(): void {
       anchor.className = "VPLink link";
       anchor.href = docsHref(item.link);
       anchor.textContent = item.text;
-      if ("external" in item) {
+      if (item.external === true) {
         anchor.target = "_blank";
         anchor.rel = "noreferrer";
       }
