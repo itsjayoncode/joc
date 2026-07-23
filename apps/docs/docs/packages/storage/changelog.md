@@ -5,6 +5,12 @@ description: "Release history for @jayoncode/storage."
 
 # Changelog
 
+## 0.4.1
+
+### Patch Changes
+
+- fc1705e: Object Diff: LCS array move detection, identity-aware merge, and DiffView `explain()`. Form Intelligence and Storage: align npm package messaging with the JOC ecosystem briefs.
+
 ## 0.4.0
 
 ### Minor Changes
