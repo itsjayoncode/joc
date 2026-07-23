@@ -5,6 +5,12 @@ description: "Release history for @jayoncode/form-intelligence."
 
 # Changelog
 
+## 3.10.0
+
+### Minor Changes
+
+- ad77726: Draft restore: add `onRestoreDecline` (`keep` | `clear` | `remember`) and allow `onRestorePrompt` to return `"defer"` so apps can skip restore without clearing or remembering a decline. `remember` suppresses re-prompts for the same draft content until values/step change; `clearDraft` also removes the remember marker.
+
 ## 3.9.2
 
 ### Patch Changes
@@ -225,3 +231,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Examples: `vanilla-html`, `basic-validation`, `wizard-workflow` (+ framework stubs)
 
 ## 0.1.1
+

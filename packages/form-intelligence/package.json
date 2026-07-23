@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/form-intelligence",
-  "version": "3.10.0",
+  "version": "3.10.1",
   "private": false,
   "description": "Form Intelligence — Declare the workflow. Keep the markup. Submit with confidence. Headless form engine for validation, when() rules, drafts, wizards, and safe submit.",
   "license": "MIT",
