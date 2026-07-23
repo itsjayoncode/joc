@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.2
+
+### Patch Changes
+
+- 3891e45: Align npm and GitHub package README titles with the final positioning line in each H1 (for example, `Object Diff — Typed, framework-agnostic object diffing for modern web apps.`), while keeping each product slogan under the heading.
+
 ## 0.4.1
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@jayoncode/browser-lifecycle",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "private": false,
   "description": "Typed browser session lifecycle for modern web apps — one API for visibility, focus, connectivity, idle, page lifecycle, and cross-tab, with optional session intelligence and DX. Observe browser state. Derive session intelligence. React with confidence.",
   "license": "MIT",
