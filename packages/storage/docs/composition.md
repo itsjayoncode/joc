@@ -20,4 +20,6 @@ FI owns draft UX. Storage may hold opaque blobs later; it does not replace FI dr
 
 Dogfood: Object Diff playground shell prefs use Storage without a package dependency edge.
 
+Live composition: [Draft Desk](https://jayoncode.com/draft-desk) wires Storage with Form Intelligence, Object Diff, and Browser Lifecycle in one official reference app.
+
 See also: [Recipes](/packages/storage/modules/recipes) · [Overview](/packages/storage/overview)

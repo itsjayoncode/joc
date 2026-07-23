@@ -215,15 +215,16 @@ Construct and `start()` only in the browser (or after hydration). Capability det
 
 ## Reference
 
-| Resource           | Link                                                                                                   |
-| ------------------ | ------------------------------------------------------------------------------------------------------ |
-| API (TypeDoc)      | [/packages/browser-lifecycle/api/](/packages/browser-lifecycle/api/)                                   |
-| Framework adapters | [/packages/browser-lifecycle/modules/adapters](/packages/browser-lifecycle/modules/adapters)           |
-| Framework examples | [/packages/browser-lifecycle/examples/](/packages/browser-lifecycle/examples/)                         |
-| Best practices     | [/packages/browser-lifecycle/best-practices/](/packages/browser-lifecycle/best-practices/)             |
-| Patterns           | [/packages/browser-lifecycle/patterns/](/packages/browser-lifecycle/patterns/)                         |
-| FAQ                | [/packages/browser-lifecycle/faq/](/packages/browser-lifecycle/faq/)                                   |
-| Playground guide   | [/packages/browser-lifecycle/playground/playground](/packages/browser-lifecycle/playground/playground) |
+| Resource           | Link                                                                                                              |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| API (TypeDoc)      | [/packages/browser-lifecycle/api/](/packages/browser-lifecycle/api/)                                              |
+| Framework adapters | [/packages/browser-lifecycle/modules/adapters](/packages/browser-lifecycle/modules/adapters)                      |
+| Framework examples | [/packages/browser-lifecycle/examples/](/packages/browser-lifecycle/examples/)                                    |
+| Best practices     | [/packages/browser-lifecycle/best-practices/](/packages/browser-lifecycle/best-practices/)                        |
+| Patterns           | [/packages/browser-lifecycle/patterns/](/packages/browser-lifecycle/patterns/)                                    |
+| FAQ                | [/packages/browser-lifecycle/faq/](/packages/browser-lifecycle/faq/)                                              |
+| Playground guide   | [/packages/browser-lifecycle/playground/playground](/packages/browser-lifecycle/playground/playground)            |
+| Draft Desk         | [Official reference app — online/offline & session signals in a live form flow](https://jayoncode.com/draft-desk) |
 
 ## Version
 

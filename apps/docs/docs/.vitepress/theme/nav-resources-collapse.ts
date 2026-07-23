@@ -6,6 +6,11 @@
 import { docsHref } from "./docs-href.js";
 
 const RESOURCES = [
+  {
+    text: "Draft Desk ↗",
+    link: "https://jayoncode.com/draft-desk",
+    external: true,
+  },
   { text: "Playground", link: "/playground/" },
   { text: "Roadmap", link: "/roadmap/" },
   { text: "Contribute", link: "/guides/contribution" },
@@ -52,6 +57,10 @@ function ensureExtraResources(): void {
       anchor.className = "VPLink link";
       anchor.href = docsHref(item.link);
       anchor.textContent = item.text;
+      if ("external" in item && item.external) {
+        anchor.target = "_blank";
+        anchor.rel = "noreferrer";
+      }
       row.appendChild(anchor);
       group.appendChild(row);
     }

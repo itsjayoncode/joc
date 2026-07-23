@@ -15,6 +15,8 @@ export interface PackageLandingContent {
   readonly getStartedLink: string;
   readonly playgroundLink: string;
   readonly overviewLink: string;
+  /** Official composition reference app (Draft Desk). */
+  readonly draftDeskLink?: string;
   readonly highlights: readonly PackageLandingHighlight[];
   readonly sampleTitle: string;
   readonly sampleCode: string;
@@ -32,6 +34,7 @@ export const packageLandings: Record<string, PackageLandingContent> = {
     getStartedLink: "/packages/browser-lifecycle/overview",
     playgroundLink: "/playground/browser-lifecycle/",
     overviewLink: "/packages/browser-lifecycle/overview",
+    draftDeskLink: "https://jayoncode.com/draft-desk",
     highlights: [
       {
         title: "Unified Browser Lifecycle",
@@ -89,6 +92,7 @@ lifecycle.on("connection:reconnect", () => {
     getStartedLink: "/packages/form-intelligence/overview",
     playgroundLink: "/playground/form-intelligence/",
     overviewLink: "/packages/form-intelligence/overview",
+    draftDeskLink: "https://jayoncode.com/draft-desk",
     highlights: [
       {
         title: "Validation",
@@ -164,6 +168,7 @@ createForm({
     getStartedLink: "/packages/object-diff/overview",
     playgroundLink: "/playground/object-diff/",
     overviewLink: "/packages/object-diff/overview",
+    draftDeskLink: "https://jayoncode.com/draft-desk",
     highlights: [
       {
         title: "Typed deep diff",
@@ -221,6 +226,7 @@ if (hasChanges(saved, draft)) {
     getStartedLink: "/packages/storage/overview",
     playgroundLink: "/playground/storage/",
     overviewLink: "/packages/storage/overview",
+    draftDeskLink: "https://jayoncode.com/draft-desk",
     highlights: [
       {
         title: "createStorage()",

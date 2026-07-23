@@ -37,6 +37,10 @@ Read the full [philosophy](/getting-started/philosophy) and [vision on GitHub](h
 
 Browse the full [package catalog](/packages/). New libraries will be announced as they enter development.
 
+## Official reference application
+
+**[Draft Desk](https://jayoncode.com/draft-desk)** is the official JOC reference app — a resilient multi-step form that composes Browser Lifecycle, Storage, Form Intelligence, and Object Diff together. Use it when you want to feel the packages in one product flow before wiring them into your own app.
+
 ## Who this is for
 
 - **Application developers** who want battle-tested primitives without UI lock-in
