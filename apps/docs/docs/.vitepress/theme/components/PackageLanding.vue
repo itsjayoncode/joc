@@ -67,6 +67,14 @@ const highlightedSample = computed(() => {
           >
             Open playground
           </DocsLink>
+          <DocsLink
+            v-if="landing.draftDeskLink"
+            class="joc-pkg-landing__cta joc-pkg-landing__cta--draft-desk"
+            :href="landing.draftDeskLink"
+          >
+            <span class="joc-pkg-landing__cta-draft-desk__label">Try Draft Desk</span>
+            <span class="joc-pkg-landing__cta-draft-desk__arrow" aria-hidden="true">↗</span>
+          </DocsLink>
         </div>
       </div>
     </section>

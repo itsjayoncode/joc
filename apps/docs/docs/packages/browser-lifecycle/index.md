@@ -8,4 +8,3 @@ pageClass: joc-package-landing-page
 ---
 
 <PackageLanding package-id="browser-lifecycle" />
-

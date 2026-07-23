@@ -7,6 +7,7 @@ import DocTitleVersionBadge from "./components/DocTitleVersionBadge.vue";
 import DocsVersionSwitcher from "./components/DocsVersionSwitcher.vue";
 import NavPackageVersion from "./components/NavPackageVersion.vue";
 import SponsorCta from "./components/SponsorCta.vue";
+import HomeDraftDeskCallout from "./components/HomeDraftDeskCallout.vue";
 
 const { Layout: DefaultLayout } = DefaultTheme;
 </script>
@@ -38,6 +39,7 @@ const { Layout: DefaultLayout } = DefaultTheme;
       <div class="joc-sponsor-slot">
         <SponsorCta placement="hero" />
       </div>
+      <HomeDraftDeskCallout />
     </template>
 
     <template #doc-before>

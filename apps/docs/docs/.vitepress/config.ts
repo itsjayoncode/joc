@@ -210,6 +210,12 @@ gtag('config', '${docsGaId}');`,
       {
         text: "Resources",
         items: [
+          {
+            text: "Draft Desk ↗",
+            link: "https://jayoncode.com/draft-desk",
+            target: "_blank",
+            rel: "noreferrer",
+          },
           { text: "Playground", link: "/playground/" },
           { text: "Roadmap", link: "/roadmap/" },
           { text: "Contribute", link: "/guides/contribution" },
