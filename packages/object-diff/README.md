@@ -1,4 +1,4 @@
-# Object Diff
+# Object Diff — Typed, framework-agnostic object diffing for modern web apps.
 
 **Stop guessing what changed. Get paths, patches, and review-ready output.**
 

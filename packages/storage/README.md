@@ -1,4 +1,4 @@
-# Storage
+# Storage — Typed, framework-agnostic client-side storage for modern web apps.
 
 **Namespace it. Expire it. Upgrade it — without localStorage glue.**
 

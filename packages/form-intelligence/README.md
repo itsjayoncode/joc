@@ -1,4 +1,4 @@
-# Form Intelligence
+# Form Intelligence — Typed, headless form workflows for modern web apps.
 
 **Declare the workflow. Keep the markup. Submit with confidence.**
 

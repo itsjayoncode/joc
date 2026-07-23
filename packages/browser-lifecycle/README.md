@@ -1,4 +1,4 @@
-# Browser Lifecycle
+# Browser Lifecycle — Typed, framework-agnostic browser session lifecycle for modern web apps.
 
 **Observe browser state. Derive session intelligence. React with confidence.**
 
