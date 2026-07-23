@@ -205,6 +205,22 @@ export interface AutosaveConfig {
   readonly onSave: (values: Record<string, unknown>) => void | Promise<void>;
 }
 
+/**
+ * Policy when `onRestorePrompt` returns `false` (user declined).
+ * - `keep` — leave the draft; the next prompt can ask again (default)
+ * - `clear` — delete the draft so it will not prompt again
+ * - `remember` — keep the draft; suppress prompts for the same draft content until it changes
+ */
+export type DraftRestoreDeclinePolicy = "keep" | "clear" | "remember";
+
+/**
+ * Result of `onRestorePrompt`.
+ * - `true` — restore
+ * - `false` — decline and apply `onRestoreDecline`
+ * - `"defer"` — skip this attempt without applying decline policy (e.g. wait until after mount)
+ */
+export type RestorePromptResult = boolean | "defer";
+
 export interface DraftConfig {
   readonly enabled?: boolean;
   readonly storageKey?: string;
@@ -212,7 +228,12 @@ export interface DraftConfig {
   readonly adapter?: DraftStorageAdapter;
   readonly onRestore?: (values: Record<string, unknown>) => void;
   readonly promptOnRestore?: boolean;
-  readonly onRestorePrompt?: (values: Record<string, unknown>) => boolean;
+  readonly onRestorePrompt?: (values: Record<string, unknown>) => RestorePromptResult;
+  /**
+   * What to do when `onRestorePrompt` returns `false`.
+   * @default "keep"
+   */
+  readonly onRestoreDecline?: DraftRestoreDeclinePolicy;
   /** Persist versioned envelopes (`DraftEnvelopeV1`) instead of raw values. */
   readonly versioning?: boolean;
   /** App schema id compared / migrated when envelopes are enabled. */

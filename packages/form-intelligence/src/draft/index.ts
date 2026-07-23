@@ -4,6 +4,7 @@ export {
   clearDraftAsync,
   createDraftStorage,
   createIndexedDbDraftStorage,
+  draftContentSignature,
   isDraftEnvelopeV1,
   loadDraft,
   loadDraftAsync,

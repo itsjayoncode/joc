@@ -7,3 +7,5 @@ lib
 *.tsbuildinfo
 pnpm-lock.yaml
 _constuction
+_construction
+_apps

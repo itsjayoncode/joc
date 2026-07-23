@@ -79,6 +79,36 @@ export function wrapDraftEnvelope(
   };
 }
 
+/**
+ * Stable fingerprint of draft *content* (values + wizard step), ignoring `savedAt`
+ * and other volatile envelope metadata. Used by `onRestoreDecline: "remember"`.
+ */
+export function draftContentSignature(raw: Record<string, unknown> | null): string {
+  if (!raw) {
+    return "";
+  }
+
+  const resolved = resolveDraftValuesFromPayload(raw);
+  if (!resolved.values) {
+    try {
+      return JSON.stringify(sanitizeDraftRecord(raw));
+    } catch {
+      return "";
+    }
+  }
+
+  try {
+    return JSON.stringify({
+      values: resolved.values,
+      ...(resolved.workflow?.currentStep !== undefined
+        ? { step: resolved.workflow.currentStep }
+        : {}),
+    });
+  } catch {
+    return "";
+  }
+}
+
 export function resolveDraftValuesFromPayload(
   raw: Record<string, unknown> | null,
   options: DraftEnvelopeOptions = {},
