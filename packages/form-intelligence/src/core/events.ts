@@ -1,6 +1,6 @@
 import type { FormEvent } from "../types/index.js";
 
-type EventListener = () => void;
+type EventListener = (payload?: unknown) => void;
 
 export class FormEventBus {
   private readonly listeners = new Map<FormEvent, Set<EventListener>>();
@@ -15,14 +15,14 @@ export class FormEventBus {
     };
   }
 
-  public emit(event: FormEvent): void {
+  public emit(event: FormEvent, payload?: unknown): void {
     const bucket = this.listeners.get(event);
     if (!bucket) {
       return;
     }
 
     for (const listener of bucket) {
-      listener();
+      listener(payload);
     }
   }
 

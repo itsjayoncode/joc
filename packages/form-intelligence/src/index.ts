@@ -65,6 +65,12 @@ export {
   regex,
   required,
   url,
+  accept,
+  maxSize,
+  minSize,
+  maxFiles,
+  minFiles,
+  parseByteSize,
 } from "./validation/validators/index.js";
 export { parseTtl } from "./validation/async/parse-ttl.js";
 export { clearSharedValidationCaches } from "./validation/async/memory-cache.js";
@@ -129,6 +135,8 @@ export type {
   RestoreDraftOptions,
   RestorePromptResult,
   FieldBinding,
+  FileFieldBinding,
+  ValueFieldBinding,
   FieldHandle,
   FieldMetaState,
   FieldOption,
@@ -189,6 +197,18 @@ export type {
   WorkflowState,
 } from "./types/index.js";
 export { ASYNC_VALIDATOR_OPTION_DEFAULTS } from "./types/index.js";
-export type { AsyncValidator, AsyncValidatorWithOptions } from "./validation/validators/index.js";
+export type {
+  AsyncValidator,
+  AsyncValidatorWithOptions,
+  FileSizeInput,
+} from "./validation/validators/index.js";
+export type {
+  FormPayload,
+  FormPayloadKind,
+  JsonFormPayload,
+  MultipartFormPayload,
+  ToFormDataOptions,
+} from "./fields/form-data.js";
+export type { CanonicalFileValue } from "./fields/file.js";
 export type { FormModule, FormModuleContext } from "./core/module-types.js";
 export type { FormatPreset } from "./engines/formatter/presets.js";

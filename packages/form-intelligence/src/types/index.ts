@@ -62,7 +62,10 @@ export type FormEvent =
   | "validate"
   | "validated"
   | "autosave"
-  | "draft";
+  | "draft"
+  | "upload:progress"
+  | "upload:complete"
+  | "upload:error";
 
 export type ValidatorResult = true | false | string | undefined;
 
@@ -96,7 +99,7 @@ export type {
   DependencyNode,
 } from "../engines/dependency/types.js";
 
-export type BuiltInFieldType = "text" | "email" | "password" | "url";
+export type BuiltInFieldType = "text" | "email" | "password" | "url" | "file";
 
 export interface FieldValidateRules {
   readonly required?: boolean;
@@ -187,13 +190,27 @@ export interface FieldHandle<_TValues extends Record<string, unknown>> {
   bind(): FieldBinding;
 }
 
-export interface FieldBinding {
+export interface ValueFieldBinding {
+  readonly kind?: "value";
   readonly name: string;
   readonly value: unknown;
   readonly onChange: (value: unknown) => void;
   readonly onBlur: () => void;
   readonly onFocus: () => void;
 }
+
+export interface FileFieldBinding {
+  readonly kind: "file";
+  readonly name: string;
+  /** Canonical file selection (`File[]`). */
+  readonly files: File[];
+  readonly onChange: (files: File[] | FileList | null | undefined) => void;
+  readonly onBlur: () => void;
+  readonly onFocus: () => void;
+}
+
+/** Headless binding — file fields omit controlled `value` (ADR-FILE-001). */
+export type FieldBinding = ValueFieldBinding | FileFieldBinding;
 
 export type { Formatter, Parser } from "../format/types.js";
 export type { FormatPreset } from "../format/presets.js";
@@ -391,12 +408,21 @@ export interface SubmitSecurityMeta {
   readonly captcha?: SubmitSecurityCaptcha;
 }
 
+/** Populated by the opt-in upload transport plugin (`@jayoncode/form-intelligence/upload`). */
+export interface SubmitUploadMeta {
+  readonly status: number;
+  readonly responseText: string;
+  readonly response: unknown;
+}
+
 export interface SubmitMeta {
   readonly changedFields?: readonly FieldPath[];
   readonly diff?: FormDiffResult;
   readonly signal?: AbortSignal;
   /** Populated by the Security Stage (e.g. CAPTCHA plugin). */
   readonly security?: SubmitSecurityMeta;
+  /** Populated after a successful upload-transport submit. */
+  readonly upload?: SubmitUploadMeta;
 }
 
 export interface ValidateOptions {
@@ -568,6 +594,23 @@ export interface FormInstance<TValues extends Record<string, unknown>> {
   get(path: FieldPath): unknown;
   errors(path?: FieldPath): string | undefined | Readonly<Record<FieldPath, string>>;
   setValue(path: FieldPath, value: unknown, options?: SetValueOptions): void;
+  /**
+   * Mark a path as browser-owned ephemeral (non-persistent).
+   * File fields are registered automatically from DOM `type="file"` or file-shaped values.
+   * Drafts, autosave, offline queue, and history omit these paths (ADR-FILE-001).
+   */
+  markNonPersistent(path: FieldPath): void;
+  /**
+   * Build `FormData` from current values (files as binary parts).
+   * Applications remain responsible for the network transport (ADR-FILE-001).
+   */
+  toFormData(options?: import("../fields/form-data.js").ToFormDataOptions): FormData;
+  /**
+   * JSON when no files are present; multipart `FormData` when any file selection is non-empty.
+   */
+  payload(
+    options?: import("../fields/form-data.js").ToFormDataOptions,
+  ): import("../fields/form-data.js").FormPayload<TValues>;
   setError(path: FieldPath, message: string): void;
   clearErrors(path?: FieldPath): void;
   getFieldState(path: FieldPath): FieldState;
@@ -641,7 +684,9 @@ export interface FormInstance<TValues extends Record<string, unknown>> {
    * For declarative create-time listeners, prefer `createForm({ subscribe })`.
    */
   subscribe(listener: () => void): () => void;
-  on(event: FormEvent, listener: () => void): () => void;
+  on(event: FormEvent, listener: (payload?: unknown) => void): () => void;
+  /** Emit a form lifecycle event (plugins may use for `upload:*`). */
+  emit(event: FormEvent, payload?: unknown): void;
   destroy(): void;
   registerPlugin(plugin: FormPlugin<TValues>): void;
   workflow: {

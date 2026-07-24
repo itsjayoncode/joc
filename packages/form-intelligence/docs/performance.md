@@ -18,11 +18,11 @@ Budgets below measure **entry chunks**, not “all features in one bundle.”
 
 Measured as **entry chunk** gzip (esbuild minify + `splitting: true`) so dynamic `import()` of offline/analytics/object-diff/integrations stays out of the login graph.
 
-| Fixture          | maxGzipKb | Notes                                                                               |
-| ---------------- | --------- | ----------------------------------------------------------------------------------- |
-| `core-login`     | 27        | `createForm` login graph; forbids DevTools / offline queue class / analytics module |
-| `workflow-rules` | 3         | Rules-only subpath                                                                  |
-| `format-only`    | 2         | Format subpath                                                                      |
+| Fixture          | maxGzipKb | Notes                                                                                     |
+| ---------------- | --------- | ----------------------------------------------------------------------------------------- |
+| `core-login`     | 28        | `createForm` login graph; forbids DevTools / offline queue class / analytics / upload XHR |
+| `workflow-rules` | 3         | Rules-only subpath                                                                        |
+| `format-only`    | 2         | Format subpath                                                                            |
 
 ### Ratcheting (ADR-013)
 
@@ -48,6 +48,13 @@ Measured as **entry chunk** gzip (esbuild minify + `splitting: true`) so dynamic
 - Kind merge (`mergeValidatorsByKind`) runs on `createForm`; HTML extract stays sync on DOM attach (lazy `import()` would race `target` / `form.ref` attach)
 - core-login entry ≈ **26.1 KB** gzip with merge + extract on the always-on graph
 - Raised budget **26 → 27**; DevTools / offline / captcha forbid list unchanged
+
+### File fields + upload stage (2026-07)
+
+- Phase A/B file orchestration (`File[]`, `toFormData` / `payload`, ephemeral omit) lives on the main `createForm` graph
+- Opt-in `/upload` XHR stays out of core (`xhrMultipartUpload` / `uploadTransport` forbid needles); submit override WeakMap mirrors Security Stage under `/submission`
+- core-login entry ≈ **27.8 KB** gzip
+- Raised budget **27 → 28**; DevTools / offline / captcha / upload XHR forbid list unchanged
 
 ## Timing budgets (Vitest)
 

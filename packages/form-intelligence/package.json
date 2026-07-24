@@ -106,6 +106,10 @@
     "./captcha": {
       "types": "./dist/captcha/index.d.ts",
       "import": "./dist/captcha/index.js"
+    },
+    "./upload": {
+      "types": "./dist/upload/index.d.ts",
+      "import": "./dist/upload/index.js"
     }
   },
   "repository": {

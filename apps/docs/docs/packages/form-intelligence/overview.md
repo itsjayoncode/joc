@@ -38,6 +38,7 @@ Form Intelligence makes those workflows **declarative** on one `createForm()` in
 
 - Sync + async validation (including multiple async checks per field)
 - **HTML constraints** on DOM-backed forms (`required`, `minlength`, `type="email"`, … → validators on attach)
+- **File inputs** — `File[]` from `input.files`, file validators, `toFormData()` / `payload()`; optional [`/upload`](/packages/form-intelligence/modules/upload) transport; excluded from drafts/history (not an upload framework)
 - Declarative `when()` rules (show / require / populate / gate submit)
 - Autosave, draft restore, wizard steps, offline submit queue
 - Headless `bind()` + optional framework/schema adapters

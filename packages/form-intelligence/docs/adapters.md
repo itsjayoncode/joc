@@ -64,6 +64,51 @@ Merge precedence for the same validator **kind**: **Field > Schema > HTML**. Cus
 
 Deferred: `min` / `max` / `step` / `multiple` / date-time constraints, MutationObserver re-extraction.
 
+## File inputs (Phase A + B)
+
+Form Intelligence **orchestrates** native file fields; it does **not** manage uploads.
+
+| Rule        | Behavior                                                                                                                                                                         |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Read        | `input.files` → canonical `File[]` in form values                                                                                                                                |
+| Never read  | `input.value` (fake path string)                                                                                                                                                 |
+| State → DOM | Never restore a file selection; clear only                                                                                                                                       |
+| Persistence | File fields are browser-owned ephemeral values — omitted from drafts, autosave, offline queue, and history                                                                       |
+| Validation  | `required` (presence) plus `accept`, `maxSize`, `minSize`, `maxFiles`, `minFiles`                                                                                                |
+| Submit      | `onSubmit` values, or `form.toFormData()` / `form.payload()` — apps own the network transport (optional helper: [`uploadTransport`](/packages/form-intelligence/modules/upload)) |
+
+```ts
+import { createForm, required, accept, maxSize, maxFiles } from "@jayoncode/form-intelligence";
+
+const form = createForm({
+  target: "#profile",
+  schema: {
+    name: { required: true },
+    avatar: "file",
+  },
+  validators: {
+    avatar: [required, accept("image/*"), maxSize("5MB"), maxFiles(1)],
+  },
+  async onSubmit() {
+    await fetch("/api/profile", { method: "POST", body: form.toFormData() });
+  },
+});
+```
+
+```html
+<form id="profile">
+  <input name="name" required />
+  <input name="avatar" type="file" accept="image/*" />
+  <button type="submit">Save</button>
+</form>
+```
+
+`form.payload()` returns `{ kind: "json", values }` when no files are selected, or `{ kind: "multipart", formData }` when any file selection is non-empty.
+
+`field().bind()` returns a file-shaped binding (`kind: "file"`, `files`, no controlled `value`) for file fields — do not spread it onto the input as controlled props.
+
+For abortable multipart upload with progress, use the opt-in [`@jayoncode/form-intelligence/upload`](/packages/form-intelligence/modules/upload) plugin. Form Intelligence still does **not** ship cloud SDKs, chunking, or resumable protocols.
+
 ```ts
 createForm({
   target: "#register",
