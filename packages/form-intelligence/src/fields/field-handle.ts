@@ -1,3 +1,4 @@
+import { coerceToCanonicalFileValue, emptyFileValue, isCanonicalFileValue } from "./file.js";
 import { computeFieldAria } from "../engines/accessibility/compute-aria.js";
 
 import type { FieldAriaIds, FieldAriaResult } from "../engines/accessibility/types.js";
@@ -29,6 +30,8 @@ export interface FieldHandleContext {
   emitBlur(): void;
   emitFocus(): void;
   validateOnBlur(): void;
+  /** True for browser-owned ephemeral file fields. */
+  isFileField?: () => boolean;
 }
 
 function resolveAria(context: FieldHandleContext): FieldAriaResult {
@@ -102,7 +105,31 @@ export function createFieldHandle<TValues extends Record<string, unknown>>(
       return context.validateField();
     },
     bind(): FieldBinding {
+      const useFile = context.isFileField?.() === true || isCanonicalFileValue(context.getValue());
+
+      if (useFile) {
+        return {
+          kind: "file",
+          name: context.path,
+          get files() {
+            const current = context.getValue();
+            return isCanonicalFileValue(current) ? current : emptyFileValue();
+          },
+          onChange: (files) => {
+            if (files === null || files === undefined) {
+              context.setValue(emptyFileValue());
+              return;
+            }
+            const coerced = coerceToCanonicalFileValue(files);
+            context.setValue(coerced ?? emptyFileValue());
+          },
+          onBlur,
+          onFocus,
+        };
+      }
+
       return {
+        kind: "value",
         name: context.path,
         get value() {
           return context.getValue();

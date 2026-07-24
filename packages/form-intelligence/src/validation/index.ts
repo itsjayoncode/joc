@@ -12,6 +12,12 @@ export {
   phone,
   currency,
   password,
+  accept,
+  maxSize,
+  minSize,
+  maxFiles,
+  minFiles,
+  parseByteSize,
   custom,
   asyncValidator,
   isAsyncValidator,
@@ -28,6 +34,7 @@ export type {
   DateValidatorOptions,
   CurrencyValidatorOptions,
   PasswordValidatorOptions,
+  FileSizeInput,
 } from "./validators/index.js";
 export {
   validatePaths,

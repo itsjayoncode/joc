@@ -3,7 +3,7 @@
     {
       "id": "core-login",
       "file": "core-login.mjs",
-      "maxGzipKb": 27,
+      "maxGzipKb": 28,
       "forbid": [
         "OfflineSubmitQueue",
         "createDevToolsPlugin",
@@ -14,7 +14,9 @@
         "js.hcaptcha.com",
         "turnstile",
         "grecaptcha",
-        "hcaptcha"
+        "hcaptcha",
+        "xhrMultipartUpload",
+        "uploadTransport"
       ]
     },
     {

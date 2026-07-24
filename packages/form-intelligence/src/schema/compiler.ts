@@ -51,6 +51,8 @@ function validatorsForBuiltinType(type: BuiltInFieldType): Validator[] {
       return [required, password()];
     case "url":
       return [required, url];
+    case "file":
+      return [];
     case "text":
     default:
       return [];
@@ -125,7 +127,10 @@ export function compileSchema(
       continue;
     }
 
-    initialValues[path] = "";
+    const isFile =
+      definition === "file" ||
+      (typeof definition === "object" && definition !== null && definition.type === "file");
+    initialValues[path] = isFile ? [] : "";
     const compiled = compileFieldSchema(definition);
     if (compiled.length > 0) {
       validators[path] = compiled;

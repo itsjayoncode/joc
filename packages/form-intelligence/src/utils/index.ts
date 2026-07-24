@@ -14,11 +14,36 @@ export function cloneValue<T>(value: T): T {
     return value;
   }
 
-  if (typeof structuredClone === "function") {
-    return structuredClone(value);
+  // Browser-owned opaque values — keep by reference (ADR-FILE-001).
+  if (typeof File !== "undefined" && value instanceof File) {
+    return value;
   }
 
-  return JSON.parse(JSON.stringify(value)) as T;
+  if (Array.isArray(value)) {
+    return value.map((entry) => cloneValue(entry)) as T;
+  }
+
+  if (isPlainObject(value)) {
+    const output: Record<string, unknown> = {};
+    for (const [key, entry] of Object.entries(value)) {
+      output[key] = cloneValue(entry);
+    }
+    return output as T;
+  }
+
+  if (typeof structuredClone === "function") {
+    try {
+      return structuredClone(value);
+    } catch {
+      return value;
+    }
+  }
+
+  try {
+    return JSON.parse(JSON.stringify(value)) as T;
+  } catch {
+    return value;
+  }
 }
 
 export function parsePath(path: FieldPath): string[] {

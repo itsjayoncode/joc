@@ -47,6 +47,7 @@ export function createFormIntelligenceSidebar(
         { text: "Validation", link: `${base}/modules/validation` },
         { text: "Submission", link: `${base}/modules/submission` },
         { text: "CAPTCHA", link: `${base}/modules/captcha` },
+        { text: "Upload transport", link: `${base}/modules/upload` },
         { text: "State", link: `${base}/modules/state` },
         { text: "Workflow", link: `${base}/modules/workflow` },
         { text: "Rules", link: `${base}/modules/rules` },

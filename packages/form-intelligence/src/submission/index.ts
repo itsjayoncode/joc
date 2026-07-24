@@ -38,3 +38,5 @@ export {
   runSecurityStage,
 } from "./security-stage.js";
 export type { SecurityStageHandler, SecurityStageResult } from "./security-stage.js";
+export { registerUploadTransport, resolveSubmitHandler } from "./upload-stage.js";
+export type { UploadSubmitHandler } from "./upload-stage.js";

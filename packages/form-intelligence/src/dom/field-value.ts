@@ -1,5 +1,18 @@
+import {
+  clearFileInput,
+  coerceToCanonicalFileValue,
+  emptyFileValue,
+  isEmptyFileValue,
+  isFileInputElement,
+  readFileInputValue,
+} from "../fields/file.js";
+
 export function readControlValue(control: HTMLElement): unknown {
   if (control instanceof HTMLInputElement) {
+    if (isFileInputElement(control)) {
+      return readFileInputValue(control);
+    }
+
     if (control.type === "checkbox") {
       return control.checked;
     }
@@ -28,6 +41,14 @@ export function readControlValue(control: HTMLElement): unknown {
 
 export function writeControlValue(control: HTMLElement, value: unknown): void {
   if (control instanceof HTMLInputElement) {
+    if (isFileInputElement(control)) {
+      // State → DOM: never restore a file selection; clear only.
+      if (isEmptyFileValue(value)) {
+        clearFileInput(control);
+      }
+      return;
+    }
+
     if (control.type === "checkbox") {
       control.checked = Boolean(value);
       return;
@@ -78,3 +99,5 @@ export function readNamedFieldValue(form: HTMLFormElement, name: string): unknow
 
   return "";
 }
+
+export { coerceToCanonicalFileValue, emptyFileValue, isFileInputElement };

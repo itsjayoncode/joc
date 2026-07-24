@@ -9,6 +9,9 @@ export { date } from "./date.js";
 export { phone } from "./phone.js";
 export { currency } from "./currency.js";
 export { password } from "./password.js";
+export { accept, maxSize, minSize, maxFiles, minFiles } from "./file.js";
+export type { FileSizeInput } from "./file.js";
+export { parseByteSize, fileMatchesAccept, asFileList } from "./file-utils.js";
 export {
   custom,
   asyncValidator,

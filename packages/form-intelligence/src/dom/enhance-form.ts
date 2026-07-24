@@ -1,5 +1,5 @@
 import { findFieldContainer, findFieldControl, findFieldControls } from "./discover-fields.js";
-import { readControlValue, writeControlValue } from "./field-value.js";
+import { isFileInputElement, readControlValue, writeControlValue } from "./field-value.js";
 import { shouldShowErrorWithPolicies } from "../ui/show-error.js";
 import { hasUiPoliciesRegistered } from "../ui/store.js";
 import { resolvePoliciesForForm } from "../ui/store.js";
@@ -211,6 +211,13 @@ export function attachDomEnhancer<TValues extends Record<string, unknown>>(
         continue;
       }
 
+      // File inputs: never restore selection from state; clear-only via writeControlValue.
+      if (isFileInputElement(control)) {
+        const nextValue = form.get(path);
+        writeControlValue(control, nextValue);
+        continue;
+      }
+
       const nextValue = form.get(path);
       const currentValue = readControlValue(control);
       if (currentValue !== nextValue) {
@@ -266,6 +273,14 @@ export function attachDomEnhancer<TValues extends Record<string, unknown>>(
     }
 
     form.field(path);
+
+    if (isFileInputElement(control)) {
+      form.markNonPersistent(path);
+      const current = form.get(path);
+      if (current === "" || current === undefined || current === null) {
+        form.setValue(path, [], { markDirty: false, recordHistory: false });
+      }
+    }
 
     const handleInput = (): void => {
       form.setValue(path, readControlValue(control));

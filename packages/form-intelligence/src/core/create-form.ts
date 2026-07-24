@@ -46,6 +46,14 @@ import {
 import { WhenRuleBuilder } from "../engines/workflow/when.js";
 import { ConfigurationError } from "../errors/index.js";
 import { createFieldHandle } from "../fields/field-handle.js";
+import {
+  coerceToCanonicalFileValue,
+  emptyFileValue,
+  isCanonicalFileValue,
+  mergePreservingNonPersistent,
+  omitPaths,
+} from "../fields/file.js";
+import { buildFormPayload, valuesToFormData } from "../fields/form-data.js";
 import { formatFieldValue as runFieldFormatPipeline } from "../format/pipeline.js";
 import { registerConfiguredModules } from "../modules/register-configured.js";
 import { resolveHookResult } from "../plugins/hooks.js";
@@ -57,6 +65,7 @@ import { FormStateStore } from "../state/store.js";
 import { evaluateSubmissionGuard } from "../submission/guard.js";
 import { bindSecurityStageNotify, runSecurityStage } from "../submission/security-stage.js";
 import { SubmissionOrchestrator } from "../submission/submit.js";
+import { resolveSubmitHandler } from "../submission/upload-stage.js";
 import { ASYNC_VALIDATOR_OPTION_DEFAULTS } from "../types/async-validation.js";
 import { explainDisabled } from "../ui/explain-disabled.js";
 import { projectFieldUi } from "../ui/field-projection.js";
@@ -94,6 +103,7 @@ import type {
   FieldOption,
   FieldUiState,
 } from "../engines/workflow/types.js";
+import type { ToFormDataOptions } from "../fields/form-data.js";
 import type { MiddlewareInput } from "../plugins/middleware.js";
 import type { FormCoreState } from "../state/store.js";
 import type { SubmissionGuardResult } from "../submission/guard.js";
@@ -144,6 +154,8 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
   /** Kind-merged Schema + Field + HTML used by the validation pipeline. */
   private effectiveValidators: FormConfig<TValues>["validators"];
   private readonly fieldOptions = new Map<FieldPath, FieldOptions<TValues>>();
+  /** Browser-owned ephemeral paths (file fields) — omitted from drafts/history/offline. */
+  private readonly nonPersistentPaths = new Set<FieldPath>();
   private readonly store: FormStateStore<TValues>;
   private readonly moduleHost: FormModuleHost<TValues>;
   private readonly undoRedo = new UndoRedoController<TValues>();
@@ -230,6 +242,23 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
         ? Object.keys(config.schema)
         : options.fieldPaths;
     this.requiredBaseline = new Set(options.requiredBaseline ?? []);
+
+    for (const [path, value] of Object.entries(this.config.initialValues)) {
+      if (Array.isArray(value) && value.length === 0) {
+        const schemaDef =
+          config.schema && !isSchemaAdapter(config.schema)
+            ? (config.schema as Record<string, unknown>)[path]
+            : undefined;
+        const isFileSchema =
+          schemaDef === "file" ||
+          (typeof schemaDef === "object" &&
+            schemaDef !== null &&
+            (schemaDef as { type?: string }).type === "file");
+        if (isFileSchema) {
+          this.nonPersistentPaths.add(path);
+        }
+      }
+    }
 
     const draftKey = this.config.workflow?.draft?.storageKey ?? `${this.id}:draft`;
     const draftConfig = this.config.workflow?.draft;
@@ -566,6 +595,7 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
         }
         void this.validate({ paths: [path], mode: "onBlur" });
       },
+      isFileField: () => this.nonPersistentPaths.has(path),
     });
   }
 
@@ -694,7 +724,7 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
       if (this.config.workflow?.offlineQueue?.enabled && isNavigatorOffline()) {
         const offline = await this.ensureOfflineService();
         try {
-          offline.ensure().enqueue(cloneValue(this.core.values));
+          offline.ensure().enqueue(cloneValue(this.valuesForPersistence()));
         } catch (error) {
           this.config.onSubmitError?.(error);
           this.setSubmitPhase("error");
@@ -743,11 +773,12 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
       this.events.emit("submit");
 
       try {
+        const onSubmit = resolveSubmitHandler(this as FormInstance<TValues>, this.config.onSubmit);
         const result = await this.submission.execute({
           values: this.core.values,
           submitCount: this.core.submitCount,
           ...(meta ? { meta } : {}),
-          ...(this.config.onSubmit ? { onSubmit: this.config.onSubmit } : {}),
+          ...(onSubmit ? { onSubmit } : {}),
           ...(this.config.onSubmitError ? { onSubmitError: this.config.onSubmitError } : {}),
           ...(options ? { options } : {}),
         });
@@ -1064,6 +1095,18 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     this.patchValues(path, value, options);
   }
 
+  public markNonPersistent(path: FieldPath): void {
+    this.nonPersistentPaths.add(path);
+  }
+
+  public toFormData(options?: ToFormDataOptions): FormData {
+    return valuesToFormData(this.core.values as Record<string, unknown>, options);
+  }
+
+  public payload(options?: ToFormDataOptions) {
+    return buildFormPayload(this.core.values, options);
+  }
+
   public setError(path: FieldPath, message: string): void {
     this.patchState({ errors: { ...this.core.errors, [path]: message } });
   }
@@ -1180,7 +1223,7 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
       version: 1,
       kind: "checkpoint",
       capturedAt: Date.now(),
-      values: cloneValue(this.core.values),
+      values: this.valuesForPersistence(),
     };
 
     const withMeta = {
@@ -1205,7 +1248,11 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     }
 
     const restoreMeta = options.restoreMeta !== false;
-    const nextValues = cloneValue(checkpoint.values);
+    const nextValues = mergePreservingNonPersistent(
+      cloneValue(checkpoint.values),
+      this.core.values,
+      this.nonPersistentPaths,
+    );
 
     this.store.replaceValues(nextValues);
     this.store.patchCore({
@@ -1221,7 +1268,7 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     }
 
     if (options.recordHistory) {
-      this.undoRedo.record(cloneValue(nextValues));
+      this.undoRedo.record(cloneValue(omitPaths(nextValues, this.nonPersistentPaths)));
     }
 
     this.recomputeFieldUi();
@@ -1370,7 +1417,7 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
   public saveDraft(): void {
     const persistStep = this.config.workflow?.wizard?.persistStepInDraft === true;
     this.draftManager.save(
-      this.core.values,
+      this.valuesForPersistence(),
       persistStep ? { currentStep: this.core.currentStep, persistWorkflow: true } : {},
     );
     this.events.emit("draft");
@@ -1400,7 +1447,13 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
       return false;
     }
 
-    this.store.replaceValues(cloneValue(result.values));
+    this.store.replaceValues(
+      mergePreservingNonPersistent(
+        cloneValue(result.values),
+        this.core.values,
+        this.nonPersistentPaths,
+      ),
+    );
     if (result.workflow?.currentStep !== undefined) {
       this.store.patchCore({ currentStep: result.workflow.currentStep });
     }
@@ -1420,7 +1473,12 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
       return false;
     }
 
-    this.store.replaceValues(cloneValue(previous));
+    const restored = mergePreservingNonPersistent(
+      previous,
+      this.core.values,
+      this.nonPersistentPaths,
+    );
+    this.store.replaceValues(cloneValue(restored));
     this.recomputeFieldUi();
     this.notify();
     this.events.emit("change");
@@ -1433,7 +1491,8 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
       return false;
     }
 
-    this.store.replaceValues(cloneValue(next));
+    const restored = mergePreservingNonPersistent(next, this.core.values, this.nonPersistentPaths);
+    this.store.replaceValues(cloneValue(restored));
     this.recomputeFieldUi();
     this.notify();
     this.events.emit("change");
@@ -1518,8 +1577,12 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     return this.store.subscribe(listener);
   }
 
-  public on(event: FormEvent, listener: () => void): () => void {
+  public on(event: FormEvent, listener: (payload?: unknown) => void): () => void {
     return this.events.on(event, listener);
+  }
+
+  public emit(event: FormEvent, payload?: unknown): void {
+    this.events.emit(event, payload);
   }
 
   public destroy(): void {
@@ -1607,7 +1670,7 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
   }
 
   private setupAutosave(): void {
-    this.autosave.configure(this.config.workflow?.autosave, () => cloneValue(this.core.values), {
+    this.autosave.configure(this.config.workflow?.autosave, () => this.valuesForPersistence(), {
       onStart: () => {
         this.patchState({ isAutosaving: true });
         this.events.emit("autosave");
@@ -1615,7 +1678,7 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
       onSuccess: async (savedAt) => {
         this.patchState({ isAutosaving: false, lastAutosaveAt: savedAt });
         await this.pluginRegistry.hookBus.runOnAutosave({
-          values: cloneValue(this.core.values),
+          values: this.valuesForPersistence(),
           savedAt,
         });
       },
@@ -1626,7 +1689,7 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
         if (this.config.workflow?.draft?.enabled) {
           const persistStep = this.config.workflow?.wizard?.persistStepInDraft === true;
           this.draftManager.save(
-            this.core.values,
+            this.valuesForPersistence(),
             persistStep ? { currentStep: this.core.currentStep, persistWorkflow: true } : {},
           );
           this.events.emit("draft");
@@ -1864,6 +1927,10 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     path: FieldPath,
     fieldOptions?: FieldOptions<TValues>,
   ): unknown {
+    if (this.nonPersistentPaths.has(path) && isCanonicalFileValue(value)) {
+      return value;
+    }
+
     const ctx = {
       path,
       values: this.core.values,
@@ -1881,9 +1948,30 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     return runFieldFormatPipeline(next, fieldOptions);
   }
 
+  private resolvePatchValue(path: FieldPath, value: unknown): unknown {
+    const coerced = coerceToCanonicalFileValue(value);
+    if (coerced !== null) {
+      this.nonPersistentPaths.add(path);
+      return coerced;
+    }
+
+    if (this.nonPersistentPaths.has(path)) {
+      if (value === null || value === undefined || value === "") {
+        return emptyFileValue();
+      }
+    }
+
+    return value;
+  }
+
+  private valuesForPersistence(): TValues {
+    return cloneValue(omitPaths(this.core.values, this.nonPersistentPaths));
+  }
+
   private patchValuesSilent(path: FieldPath, value: unknown, options?: SetValueOptions): void {
+    const resolved = this.resolvePatchValue(path, value);
     const fieldOptions = this.fieldOptions.get(path);
-    const formatted = this.applyFieldFormatting(value, path, fieldOptions);
+    const formatted = this.applyFieldFormatting(resolved, path, fieldOptions);
     const previous = getIn(this.core.values, path);
     if (previous === formatted) {
       return;
@@ -1904,15 +1992,16 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
   }
 
   private patchValues(path: FieldPath, value: unknown, options?: SetValueOptions): void {
+    const resolved = this.resolvePatchValue(path, value);
     const fieldOpts = this.fieldOptions.get(path);
-    const formatted = this.applyFieldFormatting(value, path, fieldOpts);
+    const formatted = this.applyFieldFormatting(resolved, path, fieldOpts);
     const previous = getIn(this.core.values, path);
     if (previous === formatted) {
       return;
     }
 
     if (options?.recordHistory !== false) {
-      this.undoRedo.record(cloneValue(this.core.values));
+      this.undoRedo.record(cloneValue(this.valuesForPersistence()));
     }
 
     this.store.setValueAt(path, formatted);
@@ -2047,7 +2136,7 @@ class FormInstanceImpl<TValues extends Record<string, unknown>> implements FormI
     nextArray: unknown[],
     mutation?: ArrayFieldMutation,
   ): void {
-    this.undoRedo.record(cloneValue(this.core.values));
+    this.undoRedo.record(cloneValue(this.valuesForPersistence()));
 
     if (mutation) {
       this.store.patchCore({

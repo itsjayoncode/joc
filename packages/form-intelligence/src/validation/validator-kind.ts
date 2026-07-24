@@ -1,7 +1,18 @@
 import type { Validator } from "../types/index.js";
 
-/** Phase 1 kind registry for HTML / schema / field merge (ADR-VAL-002). */
-export type ValidatorKind = "required" | "email" | "url" | "minLength" | "maxLength" | "regex";
+/** Kind registry for mergeable validators (ADR-VAL-002 + ADR-FILE-001 Phase B). */
+export type ValidatorKind =
+  | "required"
+  | "email"
+  | "url"
+  | "minLength"
+  | "maxLength"
+  | "regex"
+  | "accept"
+  | "maxSize"
+  | "minSize"
+  | "maxFiles"
+  | "minFiles";
 
 export const VALIDATOR_KIND_ORDER: readonly ValidatorKind[] = [
   "required",
@@ -10,6 +21,11 @@ export const VALIDATOR_KIND_ORDER: readonly ValidatorKind[] = [
   "minLength",
   "maxLength",
   "regex",
+  "accept",
+  "maxSize",
+  "minSize",
+  "maxFiles",
+  "minFiles",
 ] as const;
 
 const VALIDATOR_KIND = Symbol.for("@jayoncode/form-intelligence/validatorKind");
